@@ -1,0 +1,215 @@
+﻿@using Business.CommonBusiness;
+@model List<TreeDataBO>
+@{
+    var type = ViewBag.TypeTree;
+}
+<style>
+    .smart-form .checkbox {
+        line-height: 8px !important;
+        padding: 3px 3px 3px 17px !important;
+        font-size: 11px !important;
+    }
+
+        .smart-form .checkbox i {
+            width: 10px !important;
+            height: 10px !important;
+            top: 0;
+        }
+
+            .smart-form .checkbox i::after {
+                top: 0px !important;
+                font-size: 10px !important;
+                width: 10px !important;
+                height: 10px !important;
+            }
+
+    .tree li {
+        padding-left: 3px !important;
+        padding-bottom: 0px !important;
+        margin-top: 0px !important;
+        padding-top: 0px !important;
+    }
+
+        .tree li.parent_li > span {
+            padding: 5px !important;
+        }
+
+        .tree li span {
+            margin: 2px !important;
+            border: 1px solid #999 !important;
+        }
+
+    .smart-form .checkbox input + i:after {
+        top: -5px !important;
+        left: -2px !important;
+    }
+
+    .tree ul ul {
+        padding-top: 0px !important;
+    }
+
+    .tree li:after {
+        width: 26px !important;
+    }
+
+    .tree li:before {
+        top: -3px !important;
+    }
+
+    .ui-datepicker {
+        z-index: 999 !important;
+    }
+</style>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="model-header" style="margin-left:20px !important; margin-right:20px !important; ">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3 class="model-title">Chọn người dùng</h3>
+        </div>
+        <div class="modal-body " style=" border-top: 1px solid #ddd !important;">
+            <div class="row" style=" padding-bottom:10px !important;">
+                <div class="col-sm-2">
+                    <p style="padding-top:7px;">Tìm kiếm</p>
+                </div>
+                <div class="col-sm-5">
+                    <div class="input-group">
+                        <input type="text" placeholder="Tìm kiếm" id="keySearch" onkeyup="permissionLiveSearch($(this))" class="form-control" />
+                        <div class="input-group-btn">
+                            <a href="javascript:void(0)" id="btn-earse" class="btn btn-primary"><i class="fa fa-eraser"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-scroll" style="height: calc(100vh - 300px) !important; border: 1px solid #ddd !important; overflow-y: scroll !important; overflow-x: hidden !important; ">
+                <div class="tree smart-form">
+                    <ul>
+                        <li>
+                            <span class="label " style="background-color: #34495e !important; color:white!important"><i class="fa fa-lg fa-folder-open"></i> Phòng ban</span>
+                            <ul>
+                                @foreach (var item in @Model)
+                                {
+                                    if (!string.IsNullOrEmpty(item.Type))
+                                    {
+
+                                        <li>
+                                            <span style=" background-color: #1abc9c !important; color:white!important"><i class="fa fa-lg fa-plus-circle"></i>@item.Type</span>
+                                            <ul>
+                                                @foreach (var ngdung in item.Item)
+                                                {
+                                                    var check = (ngdung.Selected) ? "checked" : "";
+                                                    <li class="li-name" style="display:none">
+                                                        <span>
+                                                            <label class="checkbox inline-block">
+                                                                @if (type == 1)
+                                                                {
+                                                                    <input type="checkbox" value="@ngdung.Value" @check>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="radio" name="user" onclick="actionSelect(this)" value="@ngdung.Value" @check>
+                                                                }
+                                                                <i></i><b class="input-Name">@ngdung.Text</b>
+                                                            </label>
+                                                        </span>
+                                                    </li>
+                                                }
+
+                                            </ul>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="javascript:void(0)" class="btn btn-primary btn-sm" id="btn-hoantat">Hoàn tất</a>
+        </div>
+    </div>
+</div>
+<script>
+    var UserSelect = {Name:"",Value:""};
+
+    function actionSelect(obj) {
+        UserSelect.Value = $(obj).val();
+        UserSelect.Name = $(obj).siblings("b").html();
+    }
+
+    $("#btn-hoantat").click(function () {
+        if (@type==1) {
+            var lst = $(".tree input[type=checkbox]:checked");
+            var resultName = "";
+            var resultVal = "";
+            var count = 0;
+            lst.each(function () {
+                var item = $(this).next().next().html();
+                resultName += item + ", ";
+                count++;
+                resultVal += $(this).val() + ", ";
+            })
+            if (resultName.length > 30) {
+                resultName = resultName.substr(0, 30) + "...";
+            }
+            $("#txtNGUOIXULY").val(resultName);
+            $("#NGUOIXULY").val(resultVal);
+
+        }else {
+            $("#txtNGUOIXULY").val(UserSelect.Name);
+            $("#NGUOIXULY").val(UserSelect.Value);
+        }
+        $("#ModalNguoiXuLy").modal("hide");
+    });
+
+    $("#btn-earse").click(function () {
+        $('#keySearch').val("");
+    })
+    function generate_slugable(str) {
+        str = str.toLowerCase();
+        str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+        str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+        str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+        str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+        str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+        str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+        str = str.replace(/đ/g, "d");
+        return str;
+    }
+    var isSearch = false;
+    function permissionLiveSearch(event) {
+
+        var key = generate_slugable(event.val());
+        if (key != "") {
+            isSearch = true;
+        } else {
+            isSearch = false;
+        }
+        $(".tree b.input-Name").each(function () {
+            var $row = $(this);
+            var name = generate_slugable($row.html());
+            if (name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
+                $row.parent().parent().parent().show();
+            }
+            else {
+                $row.parent().parent().parent().hide();
+            }
+        });
+    }
+
+    //author duynn
+    //created dated 8/6/2017
+    //show tree node
+    $(".tree b.input-Name").each(function () {
+        $(this).parent().parent().parent().show();
+    });
+
+    $(document).ready(function () {
+        if (treeDefined == false) {
+            loadScript("js/plugin/bootstraptree/bootstrap-tree.min.js");
+            treeDefined = true;
+        }
+    });
+    
+</script>

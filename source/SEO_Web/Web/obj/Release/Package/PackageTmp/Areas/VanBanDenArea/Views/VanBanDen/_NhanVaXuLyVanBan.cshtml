@@ -1,0 +1,160 @@
+﻿@using Web.Models
+@model Web.Areas.VanBanDenArea.Models.VanBanDenViewModel
+<style>
+    .field-label{
+        padding: 6px 0px;
+    }
+</style>
+<div id="collapseNhanVaXuLy">
+    <div class="form-group">
+        <div class="col-sm-3">
+            <div class="field-label">
+                Thời hạn xử lý
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="col-sm-2">
+                <div class="field-label">
+                    Từ ngày
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <input type="text" name="THOIHANXULY_BATDAU" id="THOIHANXULY_BATDAU" maxlength="10" class="form-control datepicker" data-mask="99/99/9999" data-mask-placeholder="-">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+                <div id="ERR_THOIHANXULY" class="note note-success"></div>
+            </div>
+            <div class="col-sm-2">
+                <div class="field-label">
+                    Thời hạn xử lý
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <input type="text" name="THOIHANXULY_KETTHUC" id="THOIHANXULY_KETTHUC" maxlength="10" class="form-control datepicker" data-mask="99/99/9999" data-mask-placeholder="-">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+                <div id="ERR_THOIHANXULY" class="note note-success"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-3">
+            <div class="field-label">
+                Đơn vị nhận hồ sơ
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="col-sm-12">
+                @Html.DropDownList("DONVINHANHOSO_ID", Model.ListDonViNhanHoSo, "Không chọn", new { @class = "select2 select2-hidden-accessible", @style = "width: 100%", @multiple = "multiple", @tabindex = "-1" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-3">
+            <div class="field-label">
+                Người xử lý chính
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="col-sm-12">
+                <div class="note"></div>
+
+                <div id="ShowTextChonNguoiXuLy" style="float: left; margin-right: 20px">
+                </div>
+                <input type="hidden" id="ValueNguoiXuLyChinh" name="ValueNguoiXuLyChinh" />
+                <a href="javascript:void(0)" class="btn btn-primary btn-xs" style="margin-left:6px;" id="CLICK_TO_CHOOSE_USER_XULY_ID">
+                    <i class="fa fa-plus"></i> Chọn người xử lý
+                </a>
+                <div class="note"></div>
+
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-3">
+            <div class="field-label">
+                Đơn vị phối hợp xử lý
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="col-sm-12">
+                @Html.DropDownList("DONVIPHOIHOPXULY_IDS", Model.ListDonViNhanHoSo, "Không chọn", new { @class = "select2 select2-hidden-accessible", @style = "width: 100%", @multiple = "multiple", @tabindex = "-1" })
+            </div>
+        </div>
+    </div>
+    
+
+
+        <div class="form-group">
+            <div class="col-sm-3">
+                <div class="field-label">
+                    Cá nhân
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="col-sm-12">
+                    <div class="note"></div>
+
+                    <span id="ADD_USER_TEXT_ID"></span>
+                    <input type="hidden" id="ADD_USER_ID" name="ADD_USER_ID" />
+                    <a href="javascript:void(0)" class="btn btn-primary btn-xs" style="margin-left:6px;" id="CLICK_TO_CHOOSE_USER_PHOIHOP_ID">
+                        <i class="fa fa-plus"></i> Chọn cá nhân
+                    </a>
+                    <div class="note"></div>
+
+                </div>
+            </div>
+        </div>
+    
+</div>
+
+
+
+@{
+    #region Tạo model Người xu ly văn bản
+    ChonNguoiDungModel nguoixuly = new ChonNguoiDungModel();
+    nguoixuly.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoixuly.DONVI_ID = 0;
+    nguoixuly.PHONGBAN_ID = 0;
+    nguoixuly.TEXT_ID = "ShowTextChonNguoiXuLy";
+    nguoixuly.VALUE_ID = "ValueNguoiXuLyChinh";
+    nguoixuly.ID_CLICK = "CLICK_TO_CHOOSE_USER_XULY_ID";
+    nguoixuly.IS_MULTICHOICE = 0;
+    nguoixuly.INDEX = 1;
+    nguoixuly.TITLE = "Chọn người xử lý văn bản";
+    nguoixuly.SHOW_CHUC_VU_ID = "CHUCVU";
+    //nguoiky.CALLBACK_FUNCTION = "";
+    #endregion
+
+    #region Tạo model Người phối hợp
+    ChonNguoiDungModel nguoiphoihop = new ChonNguoiDungModel();
+    nguoiphoihop.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoiphoihop.DONVI_ID = 0;
+    nguoiphoihop.PHONGBAN_ID = 0;
+    nguoiphoihop.TEXT_ID = "ADD_USER_TEXT_ID";
+    nguoiphoihop.VALUE_ID = "ADD_USER_ID";
+    nguoiphoihop.ID_CLICK = "CLICK_TO_CHOOSE_USER_PHOIHOP_ID";
+    nguoiphoihop.IS_MULTICHOICE = 1;
+    nguoiphoihop.INDEX = 2;
+    nguoiphoihop.TITLE = "Chọn người phối hợp xử lý văn bản";
+    nguoiphoihop.SHOW_CHUC_VU_ID = "CHUCVU";
+    //nguoiky.CALLBACK_FUNCTION = "";
+    #endregion
+    #region Tạo model phòng ban
+    ChonNguoiDungModel phongban = new ChonNguoiDungModel();
+    phongban.COSO_ID = Model.UserInfo.CoSoID.Value;
+    phongban.DONVI_ID = 0;
+    phongban.TEXT_ID = "ADD_DEPARTMENT_TEXT_ID";
+    phongban.VALUE_ID = "ADD_DEPARTMENT_ID";
+    phongban.ID_CLICK = "CLICK_TO_CHOOSE_DEPARTMENT_PHOIHOP_ID";
+    phongban.IS_MULTICHOICE = 1;
+    phongban.INDEX = 1;
+    phongban.TITLE = "Chọn phòng ban";
+    //nguoiky.CALLBACK_FUNCTION = "";
+    #endregion
+}
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoixuly);}
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiphoihop);}
+@{ Html.RenderPartial("../Common/_ChoosePhongBanV1", phongban);}

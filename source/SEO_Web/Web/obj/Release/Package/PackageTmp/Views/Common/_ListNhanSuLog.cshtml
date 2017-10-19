@@ -1,0 +1,20 @@
+﻿@model Web.Models.ListLogNhanSuViewModel
+<h3 class="group-tittle1 mt10" style="color:blue">
+    @Model.title
+</h3>
+<div id="result" style="margin-top:1%">
+</div>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: 'Post',
+            cache: false,
+            url: '/Common/GetLog',
+            data: { ID: '@Model.object_id', TYPE: '@Model.type_log', exclude: '@Model.exclude' },
+            success: function (data) {
+                $("#result").html(data);
+            }
+
+        });
+    });
+</script>

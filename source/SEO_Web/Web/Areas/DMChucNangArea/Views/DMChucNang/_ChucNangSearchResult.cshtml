@@ -1,0 +1,271 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.DBTool;
+@using Newtonsoft.Json;
+@using System.Data;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@using PagedList.Mvc;
+@using PagedList;
+
+@model List<DMChucNangVM>
+
+<style>
+    .modal-dialog {
+        width: 950px;
+        margin: 50px auto;
+        margin-top: 5%;
+        z-index:99;
+    }
+
+    .modal-backdrop {
+        z-index: 99 !important;
+    }
+
+    .center {
+        text-align: center;
+    }
+</style>
+@{
+
+    var jsonDatas = Html.Raw(JsonConvert.SerializeObject(Model));
+
+}
+@Html.AntiForgeryToken()
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <h2 class="group-tittle mt10">
+            Danh sách chức năng (@(Model == null ? "0" : Model.Count.ToString()))
+        </h2>
+    </header>
+    <div class="widge-t-body no-padding">
+        <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+            <table class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tên chức năng</th>
+                        <th>Mã chức năng</th>
+                        @*<th>Chức năng cha</th>*@
+                        <th>Trạng thái</th>
+                        <th>URL</th>
+                        <th>Thao tác</th>
+
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="CreateChucNang" title="Thêm mới chức năng" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content" id="form-createChucNang">
+           
+        </div>
+
+    </div>
+</div>
+
+<div id="PrepareChucNang" title="Sửa chức năng" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content" id="form-editChucNang">
+
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+  
+    
+    var JsonDatas = eval(@jsonDatas);
+
+    var loadDataTable = function (item) {
+        var table = $('.wtfayo').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "iDisplayLength": 20,
+            paging: true,
+            "aoColumns": [
+                 {
+                     "mData": function (data, type, dataToSet) {
+                         return '<input class="global_checkbox" ' + ((data.IS_READ == true) ? "is_read" : "is_unread") + ' type="checkbox" name="ids" value="' + data.ID + '" />';
+                     },
+                     "orderable": false,
+                 },
+
+                    //{
+                    //    "class": 'details-control',
+                    //    "orderable": false,
+                    //    "data": null,
+                    //    "defaultContent": ''
+                    //},
+
+                  {
+                      "mData": function (data, type, dataToSet) {
+                          return "<span class='tr_left'>" + data.TEN_CHUCNANG + "</span>";
+                      },
+
+                  },
+                   {
+                       "width": "100px",
+                       "mData": function (data, type, dataToSet) {
+                           return "<span >" + data.MA_CHUCNANG + "</span>";
+                       },
+
+                   },
+
+                    //{
+                    //    "width": "100px",
+                    //    "mData": function (data, type, dataToSet) {
+                    //        return "<span >" + data.CHUCNANG_CHA + "</span>";
+                    //    },
+
+                    //},
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            return (data.TRANGTHAI == 0) ? "<span style='color:red; text-align:center;'>Không hiệu lực</span>" : "<span style='color:green;text-align:center;'>Hiệu lực</span>"
+                        },
+
+                    },
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            return data.URL;
+                        },
+
+                    },
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            var result = "<div class='btn-group'>";
+                            result += "<a href='javascript:void(0)' onclick='EditChucNang(" + data.DM_CHUCNANG_ID + ")'   title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>";
+                            result += "<a href='javascript:void(0)' onclick='DeleteChucNang(" + data.DM_CHUCNANG_ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
+                            result += "</div>";
+                            return result;
+                        },
+
+                    },
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                runAllCharts()
+            }
+        });
+    }
+    var pagefunction = function () {
+        loadDataTable(JsonDatas);
+
+    };
+    $(document).ready(function () {
+        $('.grid tbody').on('hover', function () {
+            $(this).toggleClass('clickable');
+        })
+        
+    });
+
+    function OnCreate() {
+       
+        $.ajax({
+            url: '@Url.Action("AddFormChucNang", "DMChucNang")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#form-createChucNang").empty();
+                $("#form-editChucNang").empty();
+                $("#form-createChucNang").html(data);
+                $("#CreateChucNang").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function OnPrint() {
+        window.location = "/ChucNangArea/ChucNang/Print";
+    }
+    function EditChucNang(DM_CHUCNANG_ID) {
+        $.ajax({
+            url: '@Url.Action("EditFromChucNang", "DMChucNang")',
+            type: 'post',
+            cache: false,
+            data: {
+                DM_CHUCNANG_ID: DM_CHUCNANG_ID
+            },
+            success: function (data) {
+                $("#form-createChucNang").empty();
+                $("#form-editChucNang").empty();
+
+                $("#form-editChucNang").html(data);
+                $("#PrepareChucNang").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+
+    function DeleteChucNang(DM_CHUCNANG_ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn muốn xóa chức năng này?',
+            'buttons': {
+                'Đồng ý': {
+                    'class': 'btn-confirm-yes btn-primary',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("DeleteChucNang", "DMChucNang")',
+                            type: 'post',
+                            cache: false,
+                            data: {
+                                DM_CHUCNANG_ID: DM_CHUCNANG_ID
+                            },
+                            success: function (data) {
+                                NotiSuccess("Xóa chức năng thành công");
+                                reloadGrid();
+                            },
+                            error: function (xhr) {
+                                CommonJS.alert(xhr.responseText);
+                            }
+                        });
+                    }
+                },
+                'Hủy bỏ': {
+                    'class': 'btn-default',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+
+    }
+    $(document).ready(function () {
+        pageSetUp();
+        loadScript("/js/plugin/datatables/jquery.dataTables.min.js", function () {
+            loadScript("/js/plugin/datatables/dataTables.colVis.min.js", function () {
+                loadScript("/js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                    loadScript("/js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                        loadScript("/js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
+                    });
+                });
+            });
+        });
+    })
+  
+
+</script>

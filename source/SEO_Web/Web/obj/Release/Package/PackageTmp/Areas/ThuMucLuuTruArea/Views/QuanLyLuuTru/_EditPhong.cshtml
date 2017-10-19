@@ -1,0 +1,252 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.QuanLyPhongModel
+@using (Ajax.BeginForm("SavePhong", "QuanLyLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmThuMucCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cập nhật phòng lưu trữ</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td>
+                            Tòa nhà:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix">
+                                @Html.DropDownList("TOANHA_ID", new SelectList(Model.lstToaNha, "Value", "Text", Model.PHONG.TOANHA_ID), "[---Lựa chọn tòa nhà---]", new { @style = "", @id = "TOANHA_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TOANHA_NULL">Bạn cần phải chọn tòa nhà</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Tên tầng:<span style="color:red;">*</span>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" id="TANGLUUTRU">
+                                @Html.DropDownList("TANG_ID", new SelectList(Model.lstTang, "Value", "Text", Model.PHONG.TANG_ID), "[---Lựa chọn tầng---]", new { @style = "", @id = "TANG_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TANG_NULL">Bạn cần phải chọn tầng lưu trữ</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px">
+                            Mã phòng:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" value="@Model.PHONG.MAPHONG" class="e-input" style="width:233px" name="MAPHONG" id="MAPHONG" placeholder="Nhập mã phòng lưu trữ" maxlength="10">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="MAPHONG_NULL">Mã phòng lưu trữ không được để trống</span>
+                            <span style="color: red; display: none" id="MAPHONG_ERROR">Mã phòng lưu trữ đã tồn tại</span>
+                            <span style="color: red; display: none" id="MAPHONG_HTML">Mã phòng lưu trữ chỉ được chứa chữ và số</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100px">
+                            Tên phòng:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" class="e-input" style="width:233px" value="@Model.PHONG.TENPHONG" name="TENPHONG" id="TENPHONG" placeholder="Nhập tên phòng lưu trữ" maxlength="255">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TENPHONG_NULL">Tên phòng lưu trữ không được để trống</span>
+                            <span style="color: red; display: none" id="TENPHONG_ERROR">Tên phòng lưu trữ đã tồn tại</span>
+                            <span style="color: red; display: none" id="TENPHONG_HTML">Tên phòng lưu trữ không được chứa ký tự HTML(<>)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px">
+                            Mô tả:
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="MOTA" id="MOTA" placeholder="Nhập mô tả cho phòng lưu trữ" maxlength="255">@Model.PHONG.MOTA</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color: red; display: none" id="MOTA_HTML">Mô tả phòng lưu trữ không được chứa ký tự HTML(<>)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Trạng thái:
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix">
+                                <select name="TRANGTHAI">
+                                    @if (Model.PHONG.TRANGTHAI.Value)
+                                    {
+                                    <option value="true" selected>Sử dụng</option>
+                                    <option value="false">Không sử dụng</option>
+                                    }
+                                    else
+                                    {
+                                    <option value="true">Sử dụng</option>
+                                    <option value="false" selected>Không sử dụng</option>
+                                    }
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnSave">Cập nhật</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" value="@Model.PHONG.ID" name="ID" />
+    <input type="hidden" id="MAPHONG_CHECK" value="@Model.MAPHONG" />
+    <input type="hidden" id="TENPHONG_CHECK" value="@Model.TENPHONG" />
+
+}
+<script>
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Đã cập nhật phòng lưu trữ!',
+        });
+
+        $("#EditPhong").modal("hide");
+        reloadGrid();
+
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $(function () {
+        $("#MAPHONG").blur(function () {
+            if ($(this).val().trim() != "") {
+                $("#MAPHONG_NULL").hide();
+                $("#MAPHONG_HTML").hide();
+                $("#MAPHONG_ERROR").hide();
+            }
+        });
+        $("#TENPHONG").blur(function () {
+            if ($(this).val().trim() != "") {
+                $("#TENPHONG_NULL").hide();
+                $("#TENPHONG_HTML").hide();
+                $("#TENPHONG_ERROR").hide();
+            }
+        });
+        var PhongLuuTru = $('#TENPHONG').val();
+        var MaPhong = $('#MAPHONG').val();
+        $("#TOANHA_ID").change(function () {
+            if ($("#TOANHA_ID").val() != "") {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("LoadTangByToaNha", "QuanLyLuuTru")',
+                    data: {
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        $("#TANGLUUTRU").html(data);
+                    }
+                });
+            } else {
+                $("#TANGLUUTRU").html("");
+            }
+        });
+        $("#btnSave").click(function () {
+            var element = this;
+            if ($("#TOANHA_ID").val().trim() == "") {
+                $("#TOANHA_NULL").show();
+                return false;
+            } else {
+                $("#TOANHA_NULL").hide();
+            }
+            if ($("#TANG_ID").val().trim() == "") {
+                $("#TANG_NULL").show();
+                return false;
+            } else {
+                $("#TANG_NULL").hide();
+            }
+            if ($("#MAPHONG").val().trim() == "") {
+                $("#MAPHONG_NULL").show();
+                $("#MAPHONG").focus();
+                return false;
+            } else {
+                $("#MAPHONG_NULL").hide();
+                if (/^[a-z0-9]*$/i.test($("#MAPHONG").val()) == false) {
+                    $("#MAPHONG").focus();
+                    $("#MAPHONG_HTML").show();
+                    return false;
+                } else {
+                    $("#MAPHONG_HTML").hide();
+
+                }
+                if (MaPhong != $("#MAPHONG").val()) {
+                    var Ma = $("#MAPHONG_CHECK").val();
+                    var lstMa = Ma.split(",");
+
+                    if ($.inArray($("#MAPHONG").val().toLowerCase(), lstMa) != -1) {
+                        $("#MAPHONG").focus();
+                        $("#MAPHONG_ERROR").show();
+                        return false;
+                    } else {
+                        $("#MAPHONG_ERROR").hide();
+                    }
+                }
+            }
+            if ($("#TENPHONG").val().trim() == "") {
+                $("#TENPHONG_NULL").show();
+                $("#TENPHONG").focus();
+                return false;
+            } else {
+                $("#TENPHONG_NULL").hide();
+                if (/<[a-z][\s\S]*>/i.test($("#TENPHONG").val())) {
+                    $("#TENPHONG").focus();
+                    $("#TENPHONG_HTML").show();
+                    return false;
+                } else {
+                    $("#TENPHONG_HTML").hide();
+                    if (PhongLuuTru != $("#TENPHONG").val()) {
+                        var Ma = $("#TENPHONG_CHECK").val();
+                        var lstMa = Ma.split(",");
+
+                        if ($.inArray($("#TENPHONG").val().toLowerCase(), lstMa) != -1) {
+                            $("#TENPHONG").focus();
+                            $("#TENPHONG_ERROR").show();
+                            return false;
+                        } else {
+                            $("#TENPHONG_ERROR").hide();
+                        }
+                    }
+                }
+            }
+            return true;
+        });
+    });
+</script>

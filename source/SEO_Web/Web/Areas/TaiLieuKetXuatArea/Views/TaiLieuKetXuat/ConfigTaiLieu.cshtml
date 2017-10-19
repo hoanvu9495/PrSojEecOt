@@ -1,0 +1,195 @@
+﻿@{
+    ViewBag.Title = "Cấu hình tài liệu";
+    Layout = "~/Views/Shared/_LayoutSmartDms.cshtml";
+}
+@using System.Text.RegularExpressions;
+@using Web.Areas.TaiLieuKetXuatArea.Models;
+@model ConfigTaiLieuVM
+
+<style>
+    input.width-size {
+        border: none;
+        border-bottom: 1px dotted red;
+    }
+
+    #div-docx table {
+        width: 100%;
+    }
+
+    span {
+        white-space: inherit !important;
+    }
+</style>
+
+<div id="ribbon" style=" background-color:#57889c">
+
+
+    <div class="col-md-6">
+        <ol class="breadcrumb">
+            <!-- This is auto generated -->
+        </ol>
+    </div>
+
+
+    <div class="col-md-6">
+        <a class="btn btn-default btn-flat pull-right" href="/TaiLieuKetXuatArea/TaiLieuKetXuat/KetXuat/3">
+            <i class="fa fa-plus"></i> <span>Export  tài liệu</span>
+        </a>
+    </div>
+</div>
+<!-- #MAIN CONTENT -->
+<div id="content">
+    <div class="jarviswidget" id="wid-id-0">
+        <header role="heading">
+            <h2 class="group-tittle mt10">
+                Tài liệu: <strong>@Model.TaiLieu.TENTAILIEU</strong>
+            </h2>
+
+        </header>
+        <div class="widge-t-body no-padding">
+
+            @{
+                var reg = new Regex(@"\[\[\w*\]\]");
+                var reg_Checkbox = new Regex(@"\[\[ck\.\w*\]\]");
+                var reg_Area = new Regex(@"\[\[area\.\w*\]\]");
+                var matches = reg.Matches(Model.HtmlString.ToString());
+                var matches_Area = reg_Area.Matches(Model.HtmlString.ToString());
+                var matches_Checkbox = reg_Checkbox.Matches(Model.HtmlString.ToString());
+                var rootHtml = Model.HtmlString.ToString();
+                for (int i = 0; i < matches_Checkbox.Count; i++)
+                {
+                    string name = string.Empty;
+                    name = matches_Checkbox[i].Value.Replace("[[", "").Replace("]]", "");
+                    var htmlstring = string.Empty;
+                    htmlstring = "<input type='checkbox'  name='" + name + "' />";
+                    rootHtml = rootHtml.Replace(matches_Checkbox[i].Value, htmlstring);
+                }
+
+                //Thay thể area
+                for (int i = 0; i < matches_Area.Count; i++)
+                {
+                    string name = string.Empty;
+                    name = matches_Area[i].Value.Replace("[[", "").Replace("]]", "");
+                    var htmlstring = string.Empty;
+                    htmlstring = "<textarea rows=3 name='" + name + "' style='width:100%; resize:vertical '></textarea>";
+                    htmlstring += "<a href = 'javascript:void(0)' onclick = settingfield('" + name + "'," + Model.TaiLieu.ID + ")><i class='fa fa-cog' aria-hidden='true'></i></a>";
+                    rootHtml = rootHtml.Replace(matches_Area[i].Value, htmlstring);
+                }
+
+                for (int i = 0; i < matches.Count; i++)
+                {
+                    string name = string.Empty;
+                    name = matches[i].Value.Replace("[[", "").Replace("]]", "");
+                    var htmlstring = string.Empty;
+
+                    if (!name.Contains("ISTABLE_"))
+                    {
+                        var width = name.Length * 14;
+                        //var fieldCof = Model.lstFieldConfig.Where(x => x.st_key.Equals(name)).FirstOrDefault();
+                        var widcss = "";
+                        //if (fieldCof != null && fieldCof.WIDTH > 0)
+                        //{
+                        //    widcss = " width:" + fieldCof.WIDTH + "px; ";
+                        //}
+                        htmlstring = "<input type='number' style='" + widcss + "' name='" + name + "' class='width-size'/>";
+                        //for (int w = 0; w < name.Length; w++)
+                        //{
+                        //    htmlstring += ".";
+                        //}
+
+                    }
+                    htmlstring += "<a href = 'javascript:void(0)' onclick = settingfield('" + name + "'," + Model.TaiLieu.ID + ")><i class='fa fa-cog' aria-hidden='true'></i></a>";
+                    rootHtml = rootHtml.Replace(matches[i].Value, htmlstring);
+                    //reg.Replace(rootHtml, htmlstring);
+                }
+            }
+            @using (Ajax.BeginForm("SaveWidthField", "DichVuCong", new AjaxOptions()
+        {
+            HttpMethod = "post",
+            OnSuccess = "ActionSuccess",
+            OnFailure = "ActionFail",
+        }, new { id = "formWidthKeKhai" }))
+            {
+                <div id="div-docx" style="width:80%; margin:auto; margin-top:30px">
+                    @Html.Raw(rootHtml)
+                    @*<input type="hidden" name="TAILIEUID" value="@Model.TaiLieu.ID" />
+                    <div style=" text-align:center">
+                        <button type="button" class="btn btn-primary btn-sm" id="btn-width">Lưu thao tác</button>
+                    </div>*@
+                </div>
+
+            }
+
+            <div id="settingfield-@Model.TaiLieu.ID" title="Cấu hình trường thông tin dữ liệu" role="dialog" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content" id="formCreate-@Model.TaiLieu.ID">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#btn-width").click(function () {
+        $("#formWidthKeKhai").submit();
+    })
+    function ActionSuccess(rs) {
+        if (rs.Status) {
+            NotiSuccess("Lưu thông tin thành công");
+        } else {
+            NotiError("Thao tác thất bại");
+        }
+    }
+
+    function ActionFail() {
+        NotiError("Server không trả lời");
+    }
+    $(document).ready(function () {
+        //$("input.width-size").each(function () {
+        //    var size = parseInt($(this).css("width"));
+        //    $(this).val(size);
+        //})
+    })
+    function settingfield(name, tailieuid) {
+        $.ajax({
+            url: '@Url.Action("settingfield", "TaiLieuKetXuat")',
+            type: 'post',
+            cache: false,
+            data: {
+                name: name,
+                tailieuid: tailieuid
+            },
+            success: function (data) {
+                $("#settingfield-" + tailieuid).modal("show");
+                $("#formCreate-" + tailieuid).html(data);
+            },
+            error: function (xhr) {
+                NotiError("Không thực hiện được thao tác")
+            }
+        });
+    }
+
+    //$("input.width-size").change(function () {
+    //    changeWidth($(this));
+    //})
+
+    //function changeWidth(element) {
+    //    var widt = 40;
+    //    if (!isNaN($(element).val()) && widt < parseInt($(element).val())) {
+    //        widt = parseInt($(element).val());
+    //    }
+    //    $(element).css("width", widt + 'px');
+
+    //}
+    function pagefunction() {
+        pageSetUp();
+    }
+
+    $(document).ready(function () {
+        loadScript("/Scripts/jquery.unobtrusive-ajax.min.js", pagefunction)
+
+    })
+</script>
+

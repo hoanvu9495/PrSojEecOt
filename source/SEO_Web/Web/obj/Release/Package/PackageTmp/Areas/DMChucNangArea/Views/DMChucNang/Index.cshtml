@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Quản lý chức năng";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+@model  Web.Areas.DMChucNangArea.Models.DMChucNangIndexViewModel
+@*<div id="menu-toolbar">
+    
+    <div class="right-all-page" style="border: 0px; background: none; width: calc(100% - 245px);">
+        <div id="menu-child">
+            <div class="menu-left">
+                <div class="btnAddNew">
+                    <a href="javascript:OnCreate()">
+                        <span>Thêm mới chức năng</span>
+                    </a>
+                </div>
+            </div>
+            <div class="menu-right">
+                <div class="btn-group" role="group">
+                    <div class="dropdown-toggle btnHienThi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer; padding:0px;">
+                        <a href="javascript:void(0)">
+                            <span>Hiển thị</span>
+                        </a>
+                    </div>
+                    <div id="dropdown-menu-display" class="dropdown-menu">
+                        <ul>
+                            <li><a href="javascript:void(0)">Logout</a></li>
+                            <li><a href="javascript:void(0)">Settings display</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>*@
+<div class="row" style="margin-bottom:7px; ">
+    <div class="col-sm-9">
+
+    </div>
+    <div class="col-sm-3" >
+        <a class="btn btn-success btn-sm" href="javascript:OnCreate()" style="float:right">
+            <i class="fa fa-plus"></i> <span>Thêm mới chức năng</span>
+        </a>
+    </div>
+</div>
+@*<div class="left-all-page" id="menu-middle-left">
+
+        <div id="block-search-form">
+            @using (Ajax.BeginForm("FindChucNang", "ChucNang", new AjaxOptions()
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "GET",
+            OnFailure = "failure",
+            UpdateTargetId = "grid",
+        }, new { id = "search-form" }))
+    {
+        <input type="text" placeholder="" value="" name="TENCHUCNANG" id="Keyword" />
+                        <input type="submit" value="search" name="" id="" />
+    }
+        </div>
+        @*<div id="menu-left-content-scroll" class="menu-left-content block">
+            @{Html.RenderAction("GetMenuChild", "Common", new { area = "" });}
+        </div>
+    </div>*@
+<div class="right-all-page" >
+
+    <div class="right-content clearfix">
+
+        <div class="SearchCriterial">
+            @*@Html.Partial("_ChucNangSearch", Model)*@
+        </div>
+
+        <div class="SearchResult clearfix">
+            <div id="SearchResult">
+                @Html.Partial("_ChucNangSearchResult", Model.ListChucNang)
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    $("#Keyword").change(function () {
+        $("#TENCHUCNANG").val($(this).val());
+    });
+    function reloadGrid() {
+        var TENCHUCNANG = $("#TENCHUCNANG").val();
+        var CHUCNANGCHA = $("#CHUCNANGCHA").val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadDataTable", "DMChucNang")',
+            cache: false,
+            async:false,
+            dataType: "json",
+            success: function (data) {
+                loadDataTable(data);
+            }
+        });
+    }
+
+</script>

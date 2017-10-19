@@ -1,0 +1,145 @@
+﻿<style>
+    .txt {
+        width: 250px;
+    }
+
+    /*.btn {
+        height: 30px;
+        background: #0099CC;
+        font-weight: bold;
+        color: white;
+        border: none;
+    }*/
+    .SearchCriterial {
+        margin: 0px;
+    }
+
+    .SearchResult {
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+@Html.AntiForgeryToken()
+@using (Ajax.BeginForm("FinDonVi", "DMDonVi", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearch" }))
+{
+    <div>
+        <h3 class="group-tittle mt10"><a href="javascript:void(0)" id="showSearch" style="color: #35498e">Tìm kiếm đơn vị</a></h3>
+        <table style="margin:0 auto; width:75%; display:none" id="contentSearch">
+            <tr class="height_20"></tr>
+            <tr>
+                <td class="width_100px">
+                    <label>Cấp cơ sở:</label>
+                </td>
+                <td class="width_222">
+                    <div class="input-field4 clearfix width_233">
+                        @Html.DropDownList("CAPCOSO", (List<SelectListItem>)ViewData["ListCapCoSo"], "[--- Tất cả ---]", new { @class = "width_100" })
+                    </div>
+                </td>
+                <td class="width_100px">
+                    <label style="margin-left:20px">Cơ sở:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix width_233">
+                        @Html.DropDownList("COSO", (List<SelectListItem>)ViewData["ListCoSo"], "[--- Tất cả ---]", new { @class = "width_100" })
+                    </div>
+                </td>
+            </tr>
+            <tr style="height:20px"></tr>
+            <tr>
+                <td class="width_100px">
+                    <label>Tên đơn vị:</label>
+                </td>
+                <td colspan="3">
+                    @Html.TextBox("DONVI", "", new { @style = "width:567px", @class = "e-input",@id="DOMVI_SEARCH" })
+                </td>
+            </tr>
+            <tr style="height:20px"></tr>
+            <tr>
+                <td colspan="4">
+                    <div class="margin-top-10" style="margin-left:40%;">
+                        <button type="submit" id="btnTimKiem" class="btn btn-primary">Tìm kiếm</button>
+                        <button type="button" onclick="CloseSearch()" class="btn btn-default">Đóng</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#DONVI").val(@ViewData["DonVi"]);
+        $("#CAPCOSO").change(function () {
+            if ($(this).val() != "") {
+                $.ajax({
+                    type: "GET",
+                    cache: false,
+                    data: { CapCoSoID: $(this).val() },
+                    url: '@Url.Action("GetCoSo", "DMDonVi")',
+                    success: function (data) {
+                        $("#COSO").html(data);
+                    }
+                });
+            }
+        })
+        $("#showSearch").click(function () {
+            if ($("#contentSearch").is(':hidden')) {
+                $("#contentSearch").fadeIn();
+            } else {
+                $("#contentSearch").fadeOut();
+            }
+
+        });
+        $("#btnTimKiem").click(function () {
+            
+            if (/<[a-z][\s\S]*>/i.test($("#DOMVI_SEARCH").val()) || /<[a-z][\s\S]*/i.test($("#DOMVI_SEARCH").val()) || /[a-z][\s\S]*>/i.test($("#DOMVI_SEARCH").val())) {
+                $.confirm({
+                    'title': 'Không thể tìm kiếm',
+                    'message': 'Nội dung tìm kiếm không thể chứa ký tự HTML',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-confirm-yes',
+                            'action': function () {
+                                $("#DOMVI_SEARCH").focus();
+                            }
+                        }
+                    }
+                });
+                
+                return false;
+            }
+            $("#DONVI").val($("#DOMVI_SEARCH").val());
+            return true;
+        });
+    });
+    //function Search() {
+    //    if (/<[a-z][\s\S]*>/i.test($("#DONVI").val()) || /<[a-z][\s\S]*/i.test($("#DONVI").val()) || /[a-z][\s\S]*>/i.test($("#DONVI").val())) {
+    //        $.confirm({
+    //            'title': 'Không thể tìm kiếm',
+    //            'message': 'Nội dung tìm kiếm không thể chứa ký tự HTML',
+    //            'buttons': {
+    //                'Đóng': {
+    //                    'class': 'btn-confirm-yes',
+    //                    'action': function () {
+    //                    }
+    //                }
+    //            }
+    //        });
+    //        return false;
+    //    }
+    //    $("#frmSearch").submit();
+    //}
+    function CloseSearch() {
+        $("#contentSearch").fadeOut();
+    }
+    function failure(xhr, response) {
+        CommonJS.alert(xhr.responseText);
+        $("#DONVI").val("");
+    }
+</script>

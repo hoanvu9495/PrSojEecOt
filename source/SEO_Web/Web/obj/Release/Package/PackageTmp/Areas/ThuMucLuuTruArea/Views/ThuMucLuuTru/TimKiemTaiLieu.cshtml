@@ -1,0 +1,1762 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.ThuMucLuuTruModel
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@{
+    ViewBag.Title = "Tìm kiếm tài liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/themes/base/treeview/jquery.treeview.css" rel="stylesheet" />
+<script src="~/Scripts/ContextMenu/jquery.contextMenu.js"></script>
+<link href="~/Content/Custom/Font/jquery.contextMenu.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(function () {
+        $('#selectAll').click(function (event) {
+            if (this.checked) {
+                $('.checkbox1').each(function () {
+                    this.checked = true;
+                });
+            } else {
+                $('.checkbox1').each(function () {
+                    this.checked = false;
+                });
+            }
+        });
+        $("#selectnam").change(function () {
+            reloadGrid();
+            reloadTable();
+        });
+    });
+</script>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Tìm kiếm tài liệu</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-left">
+                @if (Model.listNam.Count > 0)
+                {
+                    <select id="selectnam">
+                        @foreach (var a in Model.listNam)
+                        {
+                            if (DateTime.Now.Year == a)
+                            {
+                                <option selected="selected" value="@a">@a</option>
+                            }
+                            else
+                            {
+                                <option value="@a">@a</option>
+                            }
+                        }
+                    </select>
+                }
+            </div>
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;" onclick="location.href='@Url.Action("Index")'" class="b_btn b_btn-default vbdi_search">Quản lý tài liệu</button>
+                <button style="margin-bottom: 10px;" onclick="ShowFormSearch()" class="b_btn b_btn-default vbdi_search">Tìm kiếm nâng cao</button>
+                @if (SessionManager.GetValue("ISCUCTRUONG").Equals("true"))
+                {
+                    <div class="btn-group" role="group" style="margin-bottom: 10px;">
+                        <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Phê duyệt tài liệu
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("Index", "CucTruongPheDuyet")">Phê duyệt tài liệu</a></li>
+                            <li><a href="@Url.Action("Index", "PheDuyetDanhMucThongTin" )">Phê duyệt danh mục thông tin,tài liệu</a></li>
+                        </ul>
+                    </div>
+                }
+                @if (SessionManager.GetValue("ISVANPHONG").Equals("true"))
+                {
+                    <button style="margin-bottom: 10px; " class="b_btn b_btn-default vbdi_search" id="XULYYEUCAU" onclick="location.href = '@Url.Action("Index", "DanhMucThongTin")'">Quản lý danh mục thông tin,tài liệu</button>
+                }
+                @if (SessionManager.GetValue("ISSYSTEM").Equals("true"))
+                {
+                    <button style="margin-bottom: 10px; " class="b_btn b_btn-default vbdi_search" onclick="location.href='@Url.Action("Index", "TmLoaiTaiLieu")'">Thuộc tính tài liệu</button>
+                }
+                @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                {
+                    <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" id="XULYYEUCAU" onclick="location.href = '@Url.Action("Index", "DanhMucThongTin")'">Quản lý danh mục thông tin,tài liệu</button>
+                    @*<button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" id="XULYYEUCAU" onclick="location.href = '@Url.Action("DanhSachYeuCauDuocChiaSe", "ThuMucLuuTru")'">Xử lý yêu cầu chia sẻ (@Model.XuLy)</button>
+                    <button onclick="location.href = '@Url.Action("DanhSachYeuCauChiaSe", "ThuMucLuuTru")'" id="DANHSACHYEUCAUSHARE" class="b_btn b_btn-default vbdi_search" style="margin-bottom: 10px;">Yêu cầu chia sẻ</button>*@
+                }
+                <div class="btn-group" role="group" style="margin-bottom: 10px;margin-right:50px">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chia sẻ tài liệu
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("DanhSachTaiLieuDaChiaSe", "ThuMucLuuTru")">Đang chia sẻ</a></li>
+                        <li><a href="@Url.Action("DanhSachTaiLieuDuocChiaSe", "ThuMucLuuTru")">Được chia sẻ</a></li>
+                        @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                        {
+                            <li><a href="@Url.Action("Index", "YeuCauChiaSe")">Yêu cầu chia sẻ</a></li>
+                        <li><a href="@Url.Action("YeuCauCanChiaSe", "YeuCauChiaSe")">Xử lý yêu cầu chia sẻ (@Model.XuLy)</a></li>
+                        }
+                        @if (SessionManager.GetValue("ISCUCTRUONG").Equals("true"))
+                        {
+                            <li><a href="@Url.Action("DanhSachYeuCauChiaSe", "ThuMucLuuTru")">Yêu cầu chia sẻ</a></li>
+                        }
+                    </ul>
+                </div>
+                @*<button style="margin-bottom: 10px;" onclick="location.href = '@Url.Action("DanhSachTaiLieuDaChiaSe", "ThuMucLuuTru")'" id="YEUCAUSHARED" class="b_btn b_btn-default vbdi_search">Đang chia sẻ</button>
+                    <button style="margin-bottom: 10px;margin-right:20px" class="b_btn b_btn-default vbdi_search" id="YEUCAUSHARE" onclick="location.href = '@Url.Action("DanhSachTaiLieuDuocChiaSe", "ThuMucLuuTru")'">Được chia sẻ</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right-all-page" oncontextmenu="return false;" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+
+    <div class="right-content clearfix">
+        <div class="SearchCriterial" style="margin-bottom: 0px;">
+            @Html.Partial("_TimKiemNangCao")
+        </div>
+        <div class="SearchResult ">
+            <div style="margin-top:11px;">
+                <a style="display:none" class="btnAdd" id="THEMTHUMUC" title="Thêm mới thư mục" href='javascript:void(0)' data-pid="0">Thêm thư mục</a>
+                @*<div class="THEMTHUMUC" style="margin-top: -10px; float: right;">
+                    <img width="24" height="24" src="~/Content/Images/1464768649_Folder.png" id="InputImage" />
+                    
+                </div>*@
+                @*<div id="UPLOAD_FILE" style="margin-top: -10px; float: right; margin-right: 20px;display:none">
+                    <img width="24" height="24" src="~/Content/Images/1464772109_old-go-top.png" id="InputImage" />
+                    <a class="btnAdd" id="THEMTAILIEU" title="Tải tài liệu lên" href='javascript:void(0)' data-pid="0">Tải lên tài liệu</a>
+                </div>*@
+                <div style="margin-top:-14px;float:right;margin-right:20px">
+                    <div class="input-group" style="width:5px">
+                        <div class="input-group-btn search-panel">
+                            <button type="button" class="btn btn-default btn-select dropdown-toggle" data-toggle="dropdown">
+                                <span>Xắp xếp</span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#contains">Tên tăng dần</a></li>
+                                <li><a href="#contains">Tên giảm dần</a></li>
+                                <li><a href="#contains">Tác giả tăng dần</a></li>
+                                <li><a href="#contains">Tác giả giảm dần</a></li>
+                                <li><a href="#its_equal">Ngày tạo tăng dần</a></li>
+                                <li><a href="#greather_than">Ngày tạo giảm dần</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:-14px;float:right;margin-right:20px">
+                    <div class="input-group" style="width:5px">
+                        <div class="input-group-btn search-panel">
+                            <button type="button" class="btn btn-default btn-select dropdown-toggle" data-toggle="dropdown">
+                                <span id="search_concept">Tìm theo</span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#contains">Tìm theo thư mục</a></li>
+                                @*<li><a href="#contains">Tìm file cá nhân</a></li>
+                                    <li><a href="#contains">Tìm file công khai</a></li>*@
+                                <li><a href="#contains">Tìm theo người tải lên</a></li>
+                                <li><a href="#its_equal">Tìm theo tên file</a></li>
+                                @*<li><a href="#greather_than">Tìm trong nội dung file</a></li>*@
+                                <li><a href="#greather_than">Số hiệu của tài liệu</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#all">Tất cả</a></li>
+                            </ul>
+                        </div>
+                        <input type="hidden" name="search_param" value="all" id="search_param">
+                        <input type="text" id="txtSearch" class="form-control" name="x" placeholder="Tìm kiếm file......" style="height:35px;min-width:300px;display:none">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" id="btnSearch" type="button" style="min-width:30px"><span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div id="URLPath">
+                <ul id="Path">
+                    <li data-fid='F_0'>
+                        <span class='folder' data-loaded='false' data-pid='0'><i class="fa fa-folder-open-o"></i>Gốc<i class="fa fa-chevron-right"></i></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="folder-content" style="float:left;width:100%">
+                <div id="treeview">
+                    @Html.Partial("_ThuMucAll")
+                </div>
+                <div id="display">
+                    <form>
+                        <table class="webGrid">
+                            <thead>
+                                <tr class="head">
+                                    @* <th><input type="checkbox" id="selectAll" title="Lựa chọn tất cả" /></th>*@
+                                    <th>
+                                        Thư mục
+                                    </th>
+                                    <th>
+                                        Người tạo
+                                    </th>
+                                    <th>
+                                        Chi tiết
+                                    </th>
+                                    <th>
+                                        Ngày cập nhật
+                                    </th>
+                                    <th>
+                                        Chia sẻ
+                                    </th>
+                                    @*<th>
+                                            Trạng thái
+                                        </th>*@
+                                </tr>
+                            </thead>
+                            <tbody id="bodyItem">@Html.Partial("_ThuMucTable")</tbody>
+                            <tfoot id="footItem"></tfoot>
+                        </table>
+                    </form>
+                    <span class="emptydata">Thư mục lưu trữ rỗng</span>
+                </div>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+</div>
+<input type="hidden" value="0" id="THUMUC_ID_HIDDEN" />
+<input type="hidden" value="0" id="TAILIEU_HIDDEN_ID" />
+<div class="modal fade" id="CreateThuMuc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="CreateThuMucCha" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="UploadSingle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="Uploadfile_TM" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="RenameFile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="FileDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="VersionFile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="chuyentrangthai" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="RenameThuMuc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="ShareFile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="LichSuPheDuyet" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<script type="text/javascript">
+    $(document).keydown(function (event) {
+        var x = event.keyCode;
+        if (x == 116) {//F5
+            var _data_id = $("#THUMUC_ID_HIDDEN").val();
+            if (parseInt(_data_id) > 0) {
+                $(".folder").each(function () {//data-loaded
+                    if ($(this).attr("data-pid") == _data_id && $(this).attr("data-loaded") != undefined) {
+                        $("#bodyItem").html("");
+                        $("#footItem").html("");
+                        $(this).click();
+                        return false;
+                    }
+                });
+                event.preventDefault();
+            }
+        }
+    });
+    $(function () {
+        $("#btnSearch").click(function () {
+            if ($('#txtSearch:visible').length == 0) {
+                $("#txtSearch").show();
+            } else {
+                if ($("#txtSearch").val().trim().length == 0) {
+                    $("#txtSearch").hide();
+                } else {
+                    if ($('.btn-select').text().trim() == "Tìm theo thư mục") {
+                        $("#search_param").val("1");
+                    }
+                    else if ($('.btn-select').text().trim() == "Tìm file cá nhân") {
+                        $("#search_param").val("2");
+                    }
+                    else if ($('.btn-select').text().trim() == "Tìm file công khai") {
+                        $("#search_param").val("3");
+                    } else if ($('.btn-select').text().trim() == "Tìm theo người tải lên") {
+                        $("#search_param").val("4");
+                    }
+                    else if ($('.btn-select').text().trim() == "Tìm theo tên file") {
+                        $("#search_param").val("5");
+                    }
+                    else if ($('.btn-select').text().trim() == "Tìm trong nội dung file") {
+                        $("#search_param").val("6");
+                    }
+                    else if ($('.btn-select').text().trim() == "Số hiệu của tài liệu") {
+                        $("#search_param").val("8");
+                    }
+                    else {
+                        $("#search_param").val("7");
+                    }
+                    $.ajax({
+                        url: '@Url.Action("FindtaiLieu", "ThuMucLuuTru")',
+                        type: 'POST',
+                        cache: false,
+                        data: {
+                            FILTER_BOX: $("#search_param").val(),
+                            FILTER: $("#txtSearch").val(),
+                            FOLDER_ID: $("#THEMTAILIEU").attr("data-pid")
+                        },
+                        success: function (data) {
+                            $("#footItem").html(data);
+                            $("#bodyItem").html("");
+                            //$(".webGrid th:first-child").hide();
+                            //$(".webGrid th:last-child").hide();
+                            $(".webGrid td:nth-child(2)").css("width", "20%");
+                            //$(".webGrid td:first-child").css("width", "40%");
+                        },
+                        error: function (xhr) {
+                            CommonJS.alert(xhr.responseText);
+                        }
+                    });
+                }
+            }
+        });
+        //filter search box
+        $('.search-panel .dropdown-menu').find('a').click(function (e) {
+            e.preventDefault();
+            var param = $(this).attr("href").replace("#", "");
+            var concept = $(this).text();
+            switch (concept) {
+                case "Tìm theo thư mục":
+                    $('#txtSearch').attr('placeholder', 'Nhập tên thư mục');
+                    break;
+                case "Tìm file cá nhân":
+                    $('#txtSearch').attr('placeholder', 'Nhập tên file cá nhân');
+                    break;
+                case "Tìm file công khai":
+                    $('#txtSearch').attr('placeholder', 'Nhập tên file công khai');
+                    break;
+                case "Tìm theo tên file":
+                    $('#txtSearch').attr('placeholder', 'Nhập tên file');
+                    break;
+                case "Tìm trong nội dung file":
+                    $('#txtSearch').attr('placeholder', 'Nhập Nội dung file');
+                    break;
+                case "Tìm theo người tải lên":
+                    $('#txtSearch').attr('placeholder', 'Nhập tên người tải lên');
+                    break;
+                case "Số hiệu của tài liệu":
+                    $('#txtSearch').attr('placeholder', 'Nhập số hiệu của tài liệu');
+                    break;
+                case "Tất cả":
+                    $('#txtSearch').attr('placeholder', 'Tìm kiếm...');
+                    break;
+                case "Tên tăng dần":
+                    SortItem($("#THEMTHUMUC").attr("data-pid"), '@ThuMucLuuTruSortModel.SortByName');
+                    break;
+                case "Tên giảm dần":
+                    SortItem($("#THEMTHUMUC").attr("data-pid"), '@ThuMucLuuTruSortModel.SortByNameDesc');
+                    break;
+                case "Tác giả tăng dần":
+                    SortItem($("#THEMTHUMUC").attr("data-pid"), '@ThuMucLuuTruSortModel.SortByAuthor');
+                    break;
+                case "Tác giả giảm dần":
+                    SortItem($("#THEMTHUMUC").attr("data-pid"), '@ThuMucLuuTruSortModel.SortByAuthorDesc');
+                    break;
+                case "Ngày tạo tăng dần":
+                    SortItem($("#THEMTHUMUC").attr("data-pid"), '@ThuMucLuuTruSortModel.SortByDate');
+                    break;
+                case "Ngày tạo giảm dần":
+                    SortItem($("#THEMTHUMUC").attr("data-pid"), '@ThuMucLuuTruSortModel.SortByDateDesc');
+                    break;
+            }
+            $('.search-panel span#search_concept').text(concept);
+            $('.input-group #search_param').val(param);
+        });
+        $(document).on('click', '.share-file', function () {
+            ShareFile($(this).attr('data-fid'), $(this).attr('data-file'));
+        });
+        $(document).on('click', '.share-fileplus', function () {
+            ShareFile($(this).attr('data-fid'), $(this).attr('data-file'));
+        });
+        $(".AddFolder").click(function () {
+            CreateThuMuc(0);
+        });
+    });
+    //Load lại data khi đổi tên
+    function ReloadData(ID, FName) {
+        $("#treeview li").each(function () {
+            if ($(this).attr("data-fid") == "F_" + ID) {
+                $(this).children("span").html(FName);
+            }
+        });
+        $("#bodyItem td").each(function () {
+            if ($(this).attr("data-pid") == "F_" + ID) {
+                $(this).children("span").html(FName);
+            }
+        });
+    }
+    function ReloadDataRename(ID, FName, IS_CENSOR) {
+        $("#treeview li").each(function () {
+            if ($(this).attr("data-fid") == "F_" + ID) {
+                $(this).children("span").html(FName);
+            }
+        });
+        $("#bodyItem td").each(function () {
+            if ($(this).attr("data-pid") == "F_" + ID) {
+                $(this).children("span").html(FName);
+                if (IS_CENSOR) {
+                    $(this).closest("tr").find("td:first-child").html("<input type='checkbox' class='checkbox1' value='" + ID + "' data-pid='" + ID + "' />");
+                }
+            }
+        });
+    }
+    //Xóa thư mục
+    function RemoveThuMuc(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa thư mục này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveThuMuc", "ThuMucLuuTru")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                if (ID == 0) {
+                                    reloadGrid();
+                                    reloadTable();
+                                } else {
+                                    notif({
+                                        type: 'success',
+                                        position: 'bottom',
+                                        msg: 'Xóa thư mục thành công!',
+                                    });
+                                    if ($("#THEMTHUMUC").attr("data-pid") <= 0) {
+                                        reloadGrid();
+                                        reloadTable();
+                                    } else {
+                                        $("#treeview li").each(function () {
+                                            if ($(this).attr("data-fid") == "F_" + ID) {
+                                                $(this).fadeOut("slow");
+                                            }
+                                        });
+                                        $("#bodyItem td").each(function () {
+                                            if ($(this).attr("data-fid") == "F_" + ID) {
+                                                $(this).closest("tr").fadeOut("slow");
+                                            }
+                                        });
+                                    }
+                                }
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { }
+                }
+            }
+        });
+    }
+    function CheckFolderRemove(THUMUC_ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("KiemTraXoaThuMuc", "ThuMucLuuTru")',
+            data: {
+                THUMUC_ID: THUMUC_ID
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                if (data == "Co") {
+                    RemoveThuMuc(THUMUC_ID);
+                } else {
+                    $.confirm({
+                        'title': 'Không thể xóa thư mục này!',
+                        'message': 'Bạn không có quyền xóa thư mục này.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+    //Load lại dữ liệu khi thêm mới
+    function LoadDataByID(ParentID) {
+        $(".folder").each(function () {//data-loaded
+            if ($(this).attr("data-pid") == ParentID && $(this).attr("data-loaded") != undefined) {
+                $(this).click();
+                return false;
+            }
+        });
+        //$("#browser .folder").each(function () {//data-loaded
+        //    if ($(this).attr("data-pid") == ParentID && $(this).attr("data-loaded") != undefined) {
+        //        $(this).attr("data-loaded", false);
+        //        $(this).click();
+        //        return false;
+        //    }
+        //});
+    }
+    function SortItem(ParentID, sort) {
+        if (ParentID > 0) {
+            $(".folder").each(function () {
+                if ($(this).attr("data-pid") == ParentID && $(this).attr("data-loaded") != undefined) {
+                    $(this).attr("data-sort", sort);
+                    $(this).click();
+                    return false;
+                }
+            });
+        } else {
+            reloadGridSort(sort);
+            reloadTableSort(sort);
+            $("#URLPath").html("");
+            $(".webGrid").show();
+            $(".emptydata").hide();
+            $("#THEMTHUMUC").attr("data-pid", "0");
+            $("#UPLOAD_FILE").hide();
+        }
+    }
+    function RenameThuMuc(ID) {
+        $.ajax({
+            url: '@Url.Action("RenameThuMuc", "ThuMucLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#RenameThuMuc").html(data);
+                    $("#RenameThuMuc").modal("show");
+                    $("#RenameThuMuc").find(".modal-dialog").css("width", "600px");
+                } else {
+                    $.confirm({
+                        'title': 'Không thể cập nhập!',
+                        'message': 'Thư mục này đang được trình cục trưởng bạn không thể cập nhập vào lúc này!',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function UploadFile(ID) {
+        $.ajax({
+            url: '@Url.Action("UploadFile", "ThuMucLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+                FOLDER_ID: ID
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#Uploadfile_TM").html(data);
+                    $("#Uploadfile_TM").modal('show');
+                    $("#Uploadfile_TM").find(".modal-dialog").css("width", "1300px");
+                    $("#Uploadfile_TM").find(".modal-dialog").css("height", "550px");
+                } else {
+                    $.confirm({
+                        'title': 'Không thể tải lên tài liệu',
+                        'message': 'Thư mục này đang chờ duyệt hoặc đã hết hạn.Vui lòng thử lại vào lúc khác.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function UploadSingle(ID) {
+        $.ajax({
+            url: '@Url.Action("UploadFileSingle", "ThuMucLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+                FOLDER_ID: ID
+            },
+            success: function (data) {
+                //alert(data);
+                if (data.trim().length > 0) {
+                    $("#UploadSingle").html(data);
+                    $("#UploadSingle").modal('show');
+                    $("#UploadSingle").find(".modal-dialog").css("width", "1100px");
+                    $("#UploadSingle").find(".modal-dialog").css("height", "550px");
+                } else {
+                    $.confirm({
+                        'title': 'Không thể tải lên tài liệu',
+                        'message': 'Thư mục này đang chờ duyệt hoặc đã hết hạn.Vui lòng thử lại vào lúc khác.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function CreateThuMuc(ID) {
+        $.ajax({
+            url: '@Url.Action("CreateThuMuc", "ThuMucLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#CreateThuMuc").html(data);
+                    $("#CreateThuMuc").modal('show');
+                    $("#CreateThuMuc").find(".modal-dialog").css("width", "650px");
+                } else {
+                    $.confirm({
+                        'title': 'Không thể thêm thư mục!',
+                        'message': 'Xin lỗi thư mục này đang chờ phê duyệt.\n Bạn không thể thêm thư mục vào lúc này.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function CreateThuMucCha(ID) {
+        $.ajax({
+            url: '@Url.Action("CreateThuMuc", "ThuMucLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#CreateThuMucCha").html(data);
+                $("#CreateThuMucCha").dialog("open");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function GetPath(pid) {
+        $.ajax({
+            url: '@Url.Action("GetURLBar", "ThuMucLuuTru")',
+            type: 'GET',
+            data: {
+                pID: pid
+            },
+            dataType: "json",
+            success: function (d) {
+                $("#URLPath").html("");
+                var $ul = $("<ul id='Path' ></ul>");
+                $ul.append($("<li data-fid='F_0'></li>").append(
+                                   "<span class='folder_root' data-loaded='false' data-pid='0'><i class=\"fa fa-folder-open-o\"></i>Gốc<i class=\"fa fa-chevron-right\"></i></span>"
+                                   )
+                                        )
+                if (d.length > 1) {
+                    for (var i = d.length - 1; i >= 0; i--) {
+                        if (i == 0) {
+                            $ul.append(
+                                   $("<li data-fid='F_" + d[i].ID + "'></li>").append(
+                                   "<span class='folder' data-loaded='false' data-pid='" + d[i].ID + "'><i class=\"fa fa-folder-open-o\"></i>" + d[i].TENTHUMUC + "</span>"
+                                   )
+                                        )
+                        } else {
+                            $ul.append(
+                                   $("<li data-fid='F_" + d[i].ID + "'></li>").append(
+                                   "<span class='folder' data-loaded='false' data-pid='" + d[i].ID + "'><i class=\"fa fa-folder-open-o\"></i>" + d[i].TENTHUMUC + "<i class=\"fa fa-chevron-right\"></i></span>"
+                                   )
+                                        )
+                        }
+                    }
+                } else if (d[0] != null) {
+                    $ul.append(
+                               $("<li data-fid='F_" + d[0].ID + "'></li>").append(
+                              "<i class=\"fa fa-folder-open-o\"></i><span class='folder' data-loaded='false' data-pid='" + d[0].ID + "'>" + d[0].TENTHUMUC + "</span>"
+                               )
+                                    )
+                } else {
+                    $ul.append("");
+                }
+                $("#URLPath").append($ul);
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    var isRun = false;
+    $(document).on('click', '#DUTHAO', function () {
+        var selectAll = 0;
+        var trangthai = "";
+        $("input:checkbox[class=checkbox1]:checked").each(function () {
+            selectAll = 1;
+            trangthai += $(this).attr("data-pid") + ",";
+        });
+        if (selectAll == 0) {
+            alert("Vui lòng chọn 1 tài liệu.");
+        } else {
+            $.ajax({
+                url: '@Url.Action("ChuyenTrangThai", "ThuMucLuuTru")',
+                type: 'post',
+                cache: false,
+                data: {
+                    TRANGTHAI: trangthai
+                },
+                success: function (data) {
+                    $("#chuyentrangthai").html(data);
+                    $("#chuyentrangthai").modal('show');
+                },
+                error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        }
+    });
+    //$(document).on('click', '#THEMTHUMUC', function () {
+    //    CreateThuMuc($(this).attr('data-pid'));
+    //});
+    $(document).on('click', '#THEMTAILIEU', function () {
+        UploadSingle($(this).attr('data-pid'));
+    });
+    //Loa du lieu khi click vao thu muc bat ky
+    $(document).on('click', '.folder', function () {
+        var this1 = $(this);
+        //alert($(this).attr('data-sort'));
+        this1.closest("li").find("ul").remove("ul");
+        var isLoaded = $(this).attr('data-loaded');
+        var id = $(this1).attr('data-pid');
+        if (id == 0) {
+            reloadGrid();
+            reloadTable();
+            $("#URLPath").html("");
+            GetPath(0);
+            $(".webGrid").show();
+            $(".emptydata").hide();
+            $("#THEMTHUMUC").attr("data-pid", "0");
+            $("#UPLOAD_FILE").hide();
+        } else {
+            if (isLoaded == "false") {
+                this1.attr("data-loaded", true);
+
+                $("#bodyItem").html("");
+                $("#footItem").html("");
+                $.ajax({
+                    url: '@Url.Action("GetChild", "ThuMucLuuTru")',
+                    type: "GET",
+                    data: {
+                        pid: $(this1).attr('data-pid'),
+                        sort: $(this1).attr('data-sort')
+                    },
+                    dataType: "json",
+                    success: function (d) {
+                        $("#THUMUC_ID_HIDDEN").val($(this1).attr('data-pid'));
+                        $("#THEMTHUMUC").attr("data-pid", $(this1).attr('data-pid'));
+                        $("#THEMTAILIEU").attr("data-pid", $(this1).attr('data-pid'));
+                        $("#UPLOAD_FILE").show();
+                        $(".THEMTHUMUC").show();
+                        GetPath($(this1).attr('data-pid'));
+                        if (d.length > 0) {
+                            $(".emptydata").hide();
+                            $(".webGrid").show();
+                            var $ul = $("<ul></ul>");
+                            $.each(d, function (i, ele) {
+                                if (ele.IS_THUMUC) {
+                                    var thumuc_trangthai = "";
+                                    if (ele.IS_NEEDREVIEW == '@ThuMucConstant.DADUYET') {
+                                        if (ele.EXPIRE_DATE != null && new Date(ele.EXPIRE_DATE) < new Date()) {
+                                            thumuc_trangthai = "<span class='folder expired1' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + " (Hết hạn lưu trữ)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (ele.IS_PRIVATE) {
+                                            thumuc_trangthai = "<span class='folder private1' title ='" + ele.TENTHUMUC + "(Thư mục cá nhân)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (new Date(ele.EXPIRE_DATEFROM) <= new Date() && new Date() <= new Date(ele.EXPIRE_DATE)) {
+                                            thumuc_trangthai = "<span class='folder unexpired1' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (new Date(ele.EXPIRE_DATEFROM) > new Date()) {
+                                            thumuc_trangthai = "<span class='folder unexpired1' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + " (Chưa được sử dụng)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else {
+                                            thumuc_trangthai = "<span class='folder' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        }
+                                    } else if (ele.IS_NEEDREVIEW == '@ThuMucConstant.CUC_TRAVE' && !ele.IS_PRIVATE) {
+                                        thumuc_trangthai = "<span class='folder unapprove1' title ='" + ele.TENTHUMUC + "(Bị trả về)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Trả về)</span>";
+                                    } else if (ele.IS_PRIVATE) {
+                                        thumuc_trangthai = "<span class='folder private1' title ='" + ele.TENTHUMUC + "(Thư mục cá nhân)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                    } else if (ele.IS_NEEDREVIEW == '@ThuMucConstant.DUTHAO') {
+                                        thumuc_trangthai = "<span class='folder drafts1' title ='" + ele.TENTHUMUC + "(Dự thảo)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Dự thảo)</span>";;
+                                    }
+                                    else {
+                                        thumuc_trangthai = "<span class='folder approve1' title ='" + ele.TENTHUMUC + "(Cần duyệt)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Cần duyệt)</span>";;
+                                    }
+                                    $ul.append(
+                                       $("<li data-fid='F_" + ele.ID + "'></li>").append(
+                                           thumuc_trangthai
+                                       )
+                                   )
+                                }
+                                var date = ele.NGAYTAO;
+                                var ngaytao = "";
+                                if (date != null) {
+                                    var dt = date.split("T");
+                                    var ngay = dt[0].split("-");
+                                    ngaytao = ngay[2] + "/" + ngay[1] + "/" + ngay[0];
+                                }
+                                var thumuc = "";
+                                var tailieu = "";
+                                if (ele.IS_THUMUC == true) {
+                                    var thumuc_trangthai = "";
+                                    var pheduyet = "";
+                                    if (ele.SLTHUMUC > 0 && !ele.IS_PRIVATE && '@SessionManager.GetValue("ISTRUONGDONVI")' == "true") {
+                                        var canduyet = "";
+                                        var trave = "";
+                                        if (ele.CANPHEDUYET > 0 || ele.SL_FILECANDUYET) {
+                                            canduyet = "Cần duyệt:";
+                                            if (ele.CANPHEDUYET > 0) {
+                                                canduyet += "<font style=\"font-weight:bold\">Folder (" + ele.CANPHEDUYET + ")</font>";
+                                            }
+                                            if (ele.SL_FILECANDUYET > 0) {
+                                                canduyet += "<font style=\"font-weight:bold\">File (" + ele.SL_FILECANDUYET + ")</font>";
+                                            }
+                                        }
+                                        if (ele.TRAVE > 0 || ele.SL_FILETRAVE > 0) {
+                                            trave = "Trả về: ";
+                                            if (ele.TRAVE > 0) {
+                                                trave += "<font style='font-weight:bold'>Folder (" + ele.TRAVE + ")</font>";
+                                            }
+                                            if (ele.SL_FILETRAVE) {
+                                                trave += "<font style='font-weight:bold'>File (" + ele.SL_FILETRAVE + ")</font>";
+                                            }
+                                        }
+                                        pheduyet = "<div style='text-align:left;float:left;width:100%' >" + canduyet + trave + "</div>";
+                                    }
+                                    if (ele.IS_NEEDREVIEW == '@ThuMucConstant.DADUYET') {
+                                        if (ele.EXPIRE_DATE != null && new Date(ele.EXPIRE_DATE) < new Date()) {
+                                            thumuc_trangthai = "<span data-sort='0' class='folder expired' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + " (Hết hạn lưu trữ)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (ele.IS_PRIVATE) {
+                                            thumuc_trangthai = "<span data-sort='0' class='folder private' title ='" + ele.TENTHUMUC + "(Thư mục cá nhân)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (new Date(ele.EXPIRE_DATEFROM) <= new Date() && new Date() <= new Date(ele.EXPIRE_DATE)) {
+                                            thumuc_trangthai = "<span data-sort='0' class='folder unexpired' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (new Date(ele.EXPIRE_DATEFROM) > new Date()) {
+                                            thumuc_trangthai = "<span data-sort='0' class='folder unexpired' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + " (Chưa được sử dụng)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (ele.EXPIRE_DATE != null || ele.EXPIRE_DATEFROM != null) {
+                                            if (ele.EXPIRE_DATEFROM != null) {
+                                                thumuc_trangthai = "<span data-sort='0' class='folder unexpired' title='Lưu trữ từ:" + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                            } else {
+                                                thumuc_trangthai = "<span data-sort='0' class='folder unexpired' title='Lưu trữ đến: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                            }
+                                        }
+                                        else {
+                                            thumuc_trangthai = "<span data-sort='0' class='folder item' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        }
+                                    } else if (ele.IS_NEEDREVIEW == '@ThuMucConstant.CUC_TRAVE' && !ele.IS_PRIVATE) {
+                                        thumuc_trangthai = "<span data-sort='0' class='folder unapprove' title ='" + ele.TENTHUMUC + "(Bị trả về)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Trả về)</span>";
+                                    } else if (ele.IS_PRIVATE) {
+                                        thumuc_trangthai = "<span data-sort='0' class='folder private' title ='" + ele.TENTHUMUC + "(Thư mục cá nhân)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                    } else if (ele.IS_NEEDREVIEW == '@ThuMucConstant.DUTHAO') {
+                                        thumuc_trangthai = "<span data-sort='0' class='folder drafts' title ='" + ele.TENTHUMUC + "(Dự thảo)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Dự thảo)</span>";;
+                                    }
+                                    else if (ele.IS_NEEDREVIEW == '@ThuMucConstant.DATRINH') {
+                                        if ('@SessionManager.GetValue("ISTRUONGDONVI")' == "true") {
+                                            thumuc_trangthai = "<span data-sort='0' class='folder approve' title ='" + ele.TENTHUMUC + "(Cần duyệt)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Cần duyệt)</span>";;
+                                        } else {
+                                            thumuc_trangthai = "<span data-sort='0' class='folder approve' title ='" + ele.TENTHUMUC + "(Chờ duyệt)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Chờ duyệt)</span>";;
+                                        }
+                                    }
+                                    else {
+                                        thumuc_trangthai = "<span data-sort='0' class='folder approve' title ='" + ele.TENTHUMUC + "(Cần duyệt)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Cần duyệt)</span>";;
+                                    }
+                                    var share = "";
+                                    if (ele.IS_PRIVATE == true) {
+                                        if (ele.IS_SHARING || ele.IS_SHARING == null) {
+                                            share = "<span data-sort='0' class='share-fileplus' data-file='true' title='Chia sẻ tài liệu với những người khác' data-fid='" + ele.ID + "'></span>";
+                                        } else {
+                                            share = "<span data-sort='0' class='share-file' data-file='true' title='Chia sẻ tài liệu với những người khác' data-fid='" + ele.ID + "'></span>";
+                                        }
+                                    } else {
+                                        share = "Không";
+                                    }
+                                    var folder_detail = "";
+                                    if (ele.SLTHUMUC > 0 && ele.SL_FILE > 0) {
+                                        folder_detail = "Folder: " + ele.SLTHUMUC + " , File: " + ele.SL_FILE + "";
+                                    } else if (ele.SLTHUMUC > 0) {
+                                        folder_detail = "Folder: " + ele.SLTHUMUC;
+                                    }
+                                    else if (ele.SL_FILE > 0) {
+                                        folder_detail = "File: " + ele.SL_FILE;
+                                    }
+                                    else {
+                                        folder_detail = "Thư mục rỗng";
+                                    }
+                                    @*var trangthai = "";
+                                    if (!ele.IS_PRIVATE) {
+                                        if ('@ThuMucConstant.DUTHAO' == ele.IS_NEEDREVIEW) {
+                                            trangthai = "<span style='color:#CCC' class=\"trangthai\" style=\"color:red\" title=\"Chi tiết lịch sử tiếp nhận\" data-id='" + ele.ID + "' onclick='LichSuPheDuyet(" + ele.ID + ")'>Dự thảo</span>";
+                                        }
+                                        if ('@ThuMucConstant.DATRINH' == ele.IS_NEEDREVIEW)
+                                            trangthai = "<span style='color:red' class=\"trangthai\" style=\"color:red\" title=\"Chi tiết lịch sử tiếp nhận\" data-id='" + ele.ID + "'  onclick='LichSuPheDuyet(" + ele.ID + ")'>Chờ duyệt</span>";
+                                        if ('@ThuMucConstant.CUC_TRAVE' == ele.IS_NEEDREVIEW)
+                                            trangthai = "<span style='color:red' class=\"trangthai\" style=\"color:red\" title=\"Chi tiết lịch sử tiếp nhận\" data-id='" + ele.ID + "'  onclick='LichSuPheDuyet(" + ele.ID + ")'>Bị trả về</span>";
+                                        if ('@ThuMucConstant.DADUYET' == ele.IS_NEEDREVIEW)
+                                            trangthai = "<span style='color:green' class=\"trangthai\" style=\"color:red\" title=\"Chi tiết lịch sử tiếp nhận\" data-id='" + ele.ID + "'  onclick='LichSuPheDuyet(" + ele.ID + ")'>Đã duyệt</span>";
+                                    }*@
+                                    thumuc = "<tr class='folder-item'><td data-fid='F_" + ele.ID + "'><div style='width:100%;float:left' class='TENTHUMUC'>" + thumuc_trangthai + "</div>" + pheduyet + "</td><td>" + ele.TENDANGNHAP + "</td><td>" + folder_detail + "</td><td>" + ngaytao + "</td><td>" + share + "</td></tr>";
+                                } else {
+                                    var share = "";
+                                    if (ele.IS_PRIVATE == true) {
+                                        if (ele.IS_SHARING == true || ele.IS_SHARING == null) {
+                                            share = "<span class='share-fileplus' data-file='false' title='Chia sẻ tài liệu với những người khác' data-fid='" + ele.ID + "'></span>";
+                                        } else {
+                                            share = "<span class='share-file' data-file='false' title='Chia sẻ tài liệu với những người khác' data-fid='" + ele.ID + "'></span>";
+                                        }
+                                    } else {
+                                        share = "Không";
+                                    }
+                                    var extension = ele.THUMUCCHA;
+                                    var docx = "";
+                                    if (extension.split('/')[1] == "vnd.openxmlformats-officedocument.wordprocessingml.document" || extension == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || extension == "vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                                        docx = "msword";
+                                    } else if (extension == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+                                        docx = "ms-excel";
+                                    }
+                                    if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DADUYET') {
+                                        tailieu = "<tr class='file-item' ><td data-fid='F_" + ele.ID + "'><span data-sort='0' class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' data-file='true' data-pid='" + ele.ID + "'>" + htmlDecode(ele.TENTHUMUC) + "</span></td><td>" + ele.TENDANGNHAP + "</td><td>&nbsp;</td><td>" + ngaytao + "</td><td>" + share + "</td></tr>";
+                                    } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.TRAVE') {
+                                        tailieu = "<tr class='file-item' ><td data-fid='F_" + ele.ID + "'><span data-sort='0' class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + htmlDecode(ele.TENTHUMUC) + " (Trả về)</span></td><td>" + ele.TENDANGNHAP + "</td><td>&nbsp;</td><td>" + ngaytao + "</td><td>" + share + "</td></tr>";
+                                    } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DUTHAO') {
+                                        tailieu = "<tr class='file-item' ><td data-fid='F_" + ele.ID + "'><span data-sort='0' class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + htmlDecode(ele.TENTHUMUC) + " (Dự thảo)</span></td><td>" + ele.TENDANGNHAP + "</td><td>&nbsp;</td><td>" + ngaytao + "</td><td>" + share + "</td></tr>";
+                                    }
+                                    else {
+                                        tailieu = "<tr class='file-item' ><td data-fid='F_" + ele.ID + "'><span data-sort='0' class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + htmlDecode(ele.TENTHUMUC) + " (Chưa duyệt)</span></td><td>" + ele.TENDANGNHAP + "</td><td>&nbsp;</td><td>" + ngaytao + "</td><td>" + share + "</td></tr>";
+                                    }
+                                }
+                                $("#bodyItem").append(thumuc);
+                                $("#footItem").append(tailieu);
+                            });
+                            if ($("#bodyItem").is(":empty")) {
+                                $("#bodyItem").html("<tr></tr>");
+                            }
+                            $(this1).parent().append($ul);
+                            if (id != 0) {
+                                //$(".webGrid th:first-child").hide();
+                                //$(".webGrid th:last-child").hide();
+                                $(".webGrid td:nth-child(2)").css("width", "20%");
+                                // $(".webGrid td:first-child").css("width", "40%");
+                            } else {
+                                // $(".webGrid th:first-child").show();
+                                // $(".webGrid th:last-child").show();
+                            }
+                            $(this1).toggleClass('expand');
+                            $(this1).closest('li').children('ul').slideDown();
+                        } else {
+                            $(".webGrid").hide();
+                            $(".emptydata").show();
+                        }
+                    },
+                    error: function (xhr, response) {
+                        alert(xhr.responseText);
+                    }
+                });
+
+            } else {
+                $(this1).attr("data-loaded", false);
+                $(this1).removeClass('expand');
+            }
+        }
+    });
+
+    $(document).on('click', '.filearchive', function () {
+        FileDetail($(this).attr("data-pid"), "chitiet");
+        // DownloadFile($(this).attr("data-pid"));
+    });
+    $.contextMenu({
+        selector: '.folder',
+        callback: function (key, options) {
+            if (key == "Edit") {
+                RenameThuMuc(options.$trigger.attr("data-pid"));
+            }
+            if (key == "Trash") {
+                CheckFolderRemove(options.$trigger.attr("data-pid"));
+            }
+            if (key == "plus") {
+                CreateThuMuc(options.$trigger.attr("data-pid"));
+            }
+            if (key == "upload") {
+                UploadFile(options.$trigger.attr("data-pid"));
+            }
+            if (key == "single") {
+                UploadSingle(options.$trigger.attr("data-pid"));
+            }
+            if (key == "share") {
+                ShareFile(options.$trigger.attr("data-pid"), true);
+            }
+            if (key == "NameAsc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByName");
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+            if (key == "NameDesc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByNameDesc");
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+            if (key == "AuthorAsc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByAuthor");
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+            if (key == "AuthorDesc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByAuthorDesc");
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+            if (key == "DateAsc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByDate");
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+            if (key == "DateDesc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByDateDesc");
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+        },
+        items: {
+            "upload": { "name": "Tải nhiều file", "icon": "fa-upload" },
+            "single": { "name": "Tải lên 1 file", "icon": "fa-cloud-upload" },
+            "plus": { "name": "Thêm folder con", "icon": "fa-folder-open-o" },
+            "share": { "name": "Chia sẻ", "icon": "fa-share-alt" },
+            "Edit": { "name": "Cập nhật", "icon": "fa-edit" },
+            "Trash": { "name": "Xóa", "icon": "fa-trash" },
+            "sep1": "---------",
+            "Sort": {
+                "name": "Sắp xếp theo",
+                "items": {
+                    "NameAsc": { "name": "Tên tăng dần" },
+                    "NameDesc": { "name": "Tên giảm dần" },
+                    "AuthorAsc": { "name": "Tác giả tăng dần" },
+                    "AuthorDesc": { "name": "Tác giả giảm dần" },
+                    "DateAsc": { "name": "Ngày tạo tăng dần" },
+                    "DateDesc": { "name": "Ngày tạo giảm dần" }
+                },
+                "icon": "fa-sort"
+            }
+        }
+    });
+    $.contextMenu({
+        selector: '.filearchive',
+        callback: function (key, options) {
+            //var m = "clicked: " + key;
+            if (key == "Edit") {
+                DoiTenFile(options.$trigger.attr("data-pid"));
+            }
+            if (key == "Trash") {
+                CheckFileRemove(options.$trigger.attr("data-pid"));
+            }
+            if (key == "download") {
+                DownloadFile(options.$trigger.attr("data-pid"));
+            }
+            if (key == "Link") {
+                var linkdownload = window.location.href + options.$trigger.attr("data-pid");
+                alert(linkdownload);
+                ReceiverLink(linkdownload);
+            }
+            if (key == "View") {
+                FileDetail(options.$trigger.attr("data-pid"), "chitiet");
+            }
+            if (key == "Modify") {
+                FileDetail(options.$trigger.attr("data-pid"), "chinhsua");
+            }
+            if (key == "Manager") {
+                ManagerVersion(options.$trigger.attr("data-pid"));
+            }
+            if (key == "Share") {
+                ShareFile(options.$trigger.attr("data-pid"), false);
+            }
+            if (key == "NameAsc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByName");
+
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+            if (key == "NameDesc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByNameDesc");
+
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+            if (key == "AuthorAsc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByAuthor");
+
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+            if (key == "AuthorDesc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByAuthorDesc");
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+            if (key == "DateAsc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByDate");
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+            if (key == "DateDesc") {
+                options.$trigger.attr("data-sort", "@ThuMucLuuTruSortModel.SortByDateDesc");
+                SortItem($("#THEMTHUMUC").attr("data-pid"), options.$trigger.attr("data-sort"));
+            }
+        },
+        items: {
+            "download": { "name": "Tải xuống", "icon": "fa-download" },
+            "Edit": { "name": "Đổi tên", "icon": "fa-edit" },
+            "Share": { "name": "Chia sẻ", "icon": "fa-share-alt" },
+            "View": { "name": "Chi tiết", "icon": "fa-eye" },
+            "Modify": { "name": "Kiểm xuất/Kiểm nhập", "icon": "fa-eye" },
+            "Manager": { "name": "Quản lý phiên bản", "icon": "fa-archive" },
+            "Trash": { "name": "Xóa", "icon": "fa-trash" },
+            "sep1": "---------",
+            "Sort": {
+                "name": "Sắp xếp theo",
+                "items": {
+                    "NameAsc": { "name": "Tên tăng dần" },
+                    "NameDesc": { "name": "Tên giảm dần" },
+                    "AuthorAsc": { "name": "Tác giả tăng dần" },
+                    "AuthorDesc": { "name": "Tác giả giảm dần" },
+                    "DateAsc": { "name": "Ngày tạo tăng dần" },
+                    "DateDesc": { "name": "Ngày tạo giảm dần" }
+                },
+                "icon": "fa-sort"
+            }
+        }
+    });
+    var tontai = "1";
+    $("#btnSave").click(function () {
+        if (($("#RENAME").val().trim() == null || $("#RENAME").val().trim() == "") || tontai == true) {
+            $("#RENAME").focus();
+            return false;
+        }
+        $("#frmRenameThuMuc").submit();
+        return true;
+    });
+    //load lại treeview
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadTree", "ThuMucLuuTru")',
+            data: {
+                nam: document.getElementById("selectnam").value
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#treeview").html(data);
+                $("#treeview").append("<div class='ui-resizable-handle ui-resizable-e' style='z-index: 90;'></div>")
+                $("#treeview").append("<div class='ui-resizable-handle ui-resizable-s' style='z-index: 90;'></div>")
+                $("#treeview").append("<div class='ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se' style='z-index: 90; display: block;'></div>")
+
+            }
+        });
+    }
+    function reloadTable() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadTable", "ThuMucLuuTru")',
+            data: {
+                nam: document.getElementById("selectnam").value
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#footItem").html("");
+                $("#bodyItem").html(data);
+                //$(".webGrid td:first-child").css("width", "10px");
+                // $(".webGrid th:first-child").show();
+                // $(".webGrid th:last-child").show();
+                //$(".webGrid td:nth-child(2)").css("width", "50%");
+            }
+        });
+    }
+    function XoaFile(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa tài liệu này?Dữ liệu sẽ không thể phục hồi',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("XoaTaiLieu", "ThuMucLuuTru")',
+                            data: {
+                                TAILIEU: ID
+                            },
+                            cache: false,
+                            dataType: "json",
+                            success: function (data) {
+                                $("#footItem td").each(function () {
+                                    if ($(this).attr("data-fid") == "F_" + ID) {
+                                        $(this).closest("tr").fadeOut("slow");
+                                    }
+                                });
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: data,
+                                });
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function CheckFileRemove(TAILIEU) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("KiemTraXoaTaiLieu", "ThuMucLuuTru")',
+            data: {
+                TAILIEU: TAILIEU
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                if (data == "Co") {
+                    XoaFile(TAILIEU);
+                } else {
+                    $.confirm({
+                        'title': 'Không thể xóa tài liệu này!',
+                        'message': 'Bạn không có quyền xóa tài liệu này.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+    function DownloadFileIndex(ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckkingFile", "ThuMucLuuTru")',
+            data: {
+                ID: ID
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                //alert(data);
+                if (data == "Co") {
+                    location.href = "/Common/DownloadFile?ID=" + ID;
+                } else {
+                    $.confirm({
+                        'title': 'Không tìm thấy tài liệu',
+                        'message': 'Xin lỗi không thể tìm thấy tài liệu mà bạn đang yêu cầu.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-warning',
+                                'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+    function DoiTenFile(ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("RenameFile", "ThuMucLuuTru")',
+            data: {
+                ID: ID
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#RenameFile").html(data);
+                $("#RenameFile").modal('show');
+            }
+        });
+    }
+    function FileDetail(ID, OPTION) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("FileDetail", "ThuMucLuuTru")',
+            data: {
+                TAILIEU: ID,
+                OPTION: OPTION
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#FileDetail").html(data);
+                $("#FileDetail").modal('show');
+                $("#FileDetail").find(".modal-dialog").css("width", "1200px");
+            }
+        });
+    }
+    function ManagerVersion(ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("VersionFile", "ThuMucLuuTru")',
+            data: {
+                TAILIEU: ID
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#VersionFile").html(data);
+                $("#VersionFile").modal('show');
+                $("#VersionFile").find(".modal-dialog").css("width", "1250px");
+            }
+        });
+    }
+    function ReceiverLink(msg) {
+        var success = document.execCommand("copy");
+    }
+    function ShareFile(ID, ISTHUMUC) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SharingFile", "ThuMucLuuTru")',
+            data: {
+                TAILIEU_ID: ID,
+                ISTHUMUC: ISTHUMUC,
+                IS_QUANLY: true
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                if (data.length > 0) {
+                    $("#ShareFile").html(data);
+                    $("#ShareFile").modal('show');
+                    $("#ShareFile").find(".modal-dialog").css("height", "550px");
+                } else {
+                    $.confirm({
+                        'title': 'Không thể chia sẻ tài liệu',
+                        'message': 'Tài liệu mà bạn yêu cầu hiện đang không phải là của cá nhân.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { }
+                            }
+                        }
+                    });
+                }
+            }, error: function (xrt) {
+                alert(xrt.responseText);
+            }
+        });
+    }
+    function htmlDecode(html) {
+        return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function reloadGridSort(sort) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadTree", "ThuMucLuuTru")',
+            data: {
+                nam: document.getElementById("selectnam").value,
+                sort: sort
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#treeview").html(data);
+                $("#treeview").append("<div class='ui-resizable-handle ui-resizable-e' style='z-index: 90;'></div>")
+                $("#treeview").append("<div class='ui-resizable-handle ui-resizable-s' style='z-index: 90;'></div>")
+                $("#treeview").append("<div class='ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se' style='z-index: 90; display: block;'></div>")
+
+            }
+        });
+    }
+    function reloadTableSort(sort) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadTable", "ThuMucLuuTru")',
+            data: {
+                nam: document.getElementById("selectnam").value,
+                sort: sort
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#footItem").html("");
+                $("#bodyItem").html(data);
+            }
+        });
+    }
+    function ShowFormSearch() {
+        $(".SearchCriterial").toggle();
+    }
+    function AdvancedSearch(THUMUC, SOHIEU, TACGIA, TUNGAY, DENNGAY, TAILIEU) {
+        $.ajax({
+            url: '@Url.Action("AdvancedSearchResult", "ThuMucLuuTru")',
+            type: 'POST',
+            cache: false,
+            data: {
+                THUMUC: THUMUC,
+                SOHIEU: SOHIEU,
+                TACGIA: TACGIA,
+                TUNGAY: TUNGAY,
+                DENNGAY: DENNGAY,
+                TAILIEU: TAILIEU
+            },
+            success: function (data) {
+                $("#footItem").html(data);
+                $("#bodyItem").html("");
+                $(".webGrid td:nth-child(2)").css("width", "20%");
+            },
+            error: function (xhr) {
+                notif({
+                    type: 'error',
+                    position: 'bottom',
+                    msg: 'Đã có lỗi xảy ra trong quá trình tìm kiếm!',
+                });
+            }
+        });
+    }
+</script>
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+    #bodyItem td:nth-child(5) {
+        text-align: center !important;
+    }
+
+    .webGrid td:nth-child(2) span, .webGrid td:nth-child(1) span {
+        text-align: left !important;
+    }
+
+    .dropdown-menu a {
+        color: black !important;
+    }
+
+    .right-content {
+        padding: 0 !important;
+    }
+
+    td {
+        vertical-align: middle !important;
+    }
+
+    img:hover {
+        cursor: pointer;
+    }
+
+    .share-file {
+        background: url('/Content/themes/base/images/TM_Share.png');
+        padding: 12px 10px 19px 40px;
+        background-repeat: no-repeat;
+        background-position: 20px 2px;
+        margin: 0 12px 0 2px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+    }
+
+    .share-fileplus {
+        background: url('/Content/themes/base/images/TM_Share_Plus1.png');
+        padding: 12px 10px 19px 40px;
+        background-repeat: no-repeat;
+        background-position: 20px 2px;
+        margin: 0 12px 0 2px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 26px 26px;
+    }
+
+        .share-file:hover, .share-fileplus:hover {
+            cursor: pointer;
+        }
+
+    .TENTHUMUC {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 450px !important;
+        text-overflow: ellipsis;
+    }
+
+    .expired {
+        background: url('/Content/themes/base/images/folder-expired.png');
+        padding: 10px 15px 10px 38px;
+        background-repeat: no-repeat;
+        background-position: 4px 2px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px;
+        margin-left: 5px;
+        color: red;
+    }
+
+    .unexpired {
+        background: url('/Content/themes/base/images/folder_unexpired.png');
+        padding: 10px 15px 10px 38px;
+        background-repeat: no-repeat;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px;
+    }
+
+    /*.private {
+        background: url('/Content/themes/base/images/my_folder.png');
+        padding: 10px 15px 10px 38px;
+        background-repeat: no-repeat;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px;
+        margin-left: 5px;
+        color: #ff6a00;
+    }*/
+
+    .approve {
+        background: url('/Content/themes/base/images/TmFolder_approvel.png');
+        padding: 10px 15px 10px 38px;
+        background-repeat: no-repeat;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px;
+        margin-left: 5px;
+        color: #ff6a00;
+    }
+
+    .unapprove {
+        background: url('/Content/themes/base/images/Tmfolder-cancel.png');
+        padding: 10px 15px 10px 38px;
+        background-repeat: no-repeat;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px;
+        margin-left: 5px;
+        color: #ff6a00;
+    }
+
+    .approve1 {
+        background: url('/Content/themes/base/images/TmFolder_approvel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .unapprove1 {
+        background: url('/Content/themes/base/images/Tmfolder-cancel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .popup-content {
+        width: 97% !important;
+    }
+
+    #browser li {
+        margin-top: 3px;
+    }
+
+    #display {
+        width: 85%;
+        height: 420px;
+        float: left;
+        min-height: 80%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-top: 10px;
+    }
+
+    .AddFolder {
+        cursor: pointer;
+        border-radius: 8px;
+    }
+
+        .AddFolder span {
+        }
+
+    #treeview {
+        float: left;
+        width: 15%;
+        /*overflow: auto;*/
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 420px;
+        margin-top: 10px;
+    }
+
+    #Path li {
+        float: left;
+    }
+
+    .ui-resizable-se {
+        display: none !important;
+    }
+
+    .SearchResult.hot-news-list-2.mgt20 > #URLPath {
+        margin-bottom: 3%;
+    }
+
+    #right ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        padding: 10px 25px;
+        border-radius: 5px;
+    }
+
+    #right li {
+        float: left;
+        margin-right: 10px;
+    }
+
+    #right i {
+        -moz-user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        padding: 6px 12px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    #right li a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    #right li:hover {
+        color: #357ae8;
+        cursor: pointer;
+    }
+
+    #approval {
+        padding: 10px 15px;
+        background: #4479BA;
+        color: #FFF;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        border: solid 1px #20538D;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+        -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    }
+
+        #approval:hover {
+            cursor: pointer;
+        }
+
+    #THEMTHUMUC {
+        /*width: 135px;*/
+        background: #4479BA;
+        color: #FFF;
+        margin-top: -26px;
+        margin-left: -3px;
+    }
+
+    #THEMTAILIEU {
+        /*width: 134px;*/
+        background: #4479BA;
+        color: #FFF;
+        margin-top: -26px;
+        margin-left: -3px;
+    }
+
+        #DUTHAO:hover, #THEMTHUMUC:hover, #THEMTAILIEU:hover, #YEUCAUSHARE:hover, #DANHSACHYEUCAUSHARE:hover, #YEUCAUSHARED:hover {
+            cursor: pointer;
+        }
+
+    #DADUYET {
+        padding: 10px 15px;
+        background: #4479BA;
+        color: #FFF;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        border: solid 1px #20538D;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+        -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    }
+
+        #DADUYET:hover {
+            cursor: pointer;
+        }
+
+
+    #selectnam {
+        -moz-user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        padding: 2px 12px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+        color: black !important;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        /*height: 26px;*/
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .close-modal:hover {
+        cursor: pointer;
+    }
+</style>

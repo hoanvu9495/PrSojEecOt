@@ -1,0 +1,46 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.QuanLyHangModel
+    @Html.DropDownList("KE_ID", Model.lstKe, "[---Lựa chọn kệ---]", new { @style = "", @id = "KE_ID" })
+<script>
+    $(function () {
+        $("#KE_ID").change(function () {
+
+            if ($("#KE_ID").val() != "") {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListMaHang", "QuanLyLuuTru")',
+                    data: {
+                        KEID: $("#KE_ID").val()
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        $("#MAHANG_CHECK").val(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListTenHang", "QuanLyLuuTru")',
+                    data: {
+                        KEID: $("#KE_ID").val()
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        $("#TENHANG_CHECK").val(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+                
+            } else {
+               
+                $("#TENKE_CHECK").val("");
+                $("#MAKE_CHECK").val("");
+            }
+        });
+    });
+</script>

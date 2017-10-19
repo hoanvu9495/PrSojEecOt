@@ -1,0 +1,126 @@
+﻿@using Business.CommonBusiness
+@using Web.Models;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Common;
+@using Web.Areas.HSVanBanDiArea.Models;
+@model VanBanDiCountModel
+@{
+    int active = ViewData["active"] == null ? 0 : ViewData["active"].ToString().ToIntOrZero();
+    int nhomSoID = ViewData["NhomSoID"] == null ? 0 : ViewData["NhomSoID"].ToString().ToIntOrZero();
+    int soID = ViewData["SoID"] == null ? 0 : ViewData["SoID"].ToString().ToIntOrZero();
+    bool isVanThu = ViewData["IsVanThu"] == null ? false : bool.Parse(ViewData["IsVanThu"].ToString());
+    bool isLanhDaoCuc = ViewData["IsLanhDaoCuc"] == null ? false : bool.Parse(ViewData["IsLanhDaoCuc"].ToString());
+}
+<style type="text/css">
+    .active {
+        font-weight: bold;
+    }
+
+    .admin-menu {
+        /*height: 450px;*/
+        /*overflow: scroll;*/
+    }
+
+    .menu-tab {
+        width: calc(100% - 20px);
+        float: left;
+        margin: 0 5px 5px 5px;
+        background: #fff;
+        margin-top: 10px;
+        border-radius: 8px;
+        box-shadow: 0 0 5px 0 rgb(248,140,1);
+    }
+
+        .menu-tab h2 {
+            background: rgb(17,138,203);
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 11px 10px;
+            border-radius: 8px 8px 0 0;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+
+        .menu-tab ul {
+            /*float: left;*/
+        }
+</style>
+<div class="menu-tab">
+    <h2>Quản lý văn bản đi</h2>
+    <ul class="admin-menu">
+        <li class="menu" style="z-index:10">
+            <a href="/HSVanBanDiArea/HSVanBanDi/Index" class="@(active == HsVanBanDiConstant.TYPE_VANBAN_ALL ? "active" :"")">
+                Văn bản đi @(Model.SoLuongTatCaVanBan == 0 ? string.Empty : "(" + Model.SoLuongTatCaVanBan + ")")
+            </a>
+        </li>
+        @if (isVanThu)
+        {
+            <li class="menu" style="z-index:10">
+                <a href="@Url.Action("Index", new { type = HsVanBanDiConstant.TYPE_VANBAN_TOITHEODOI_CHINH })" class="@(active == HsVanBanDiConstant.TYPE_VANBAN_TOITHEODOI_CHINH ? "active" : "")">
+                    @HsVanBanDiConstant.TEXT_VANBAN_TOITHEODOI_CHINH @(Model.SoLuongVanBanToiTheoDoiChinh == 0 ? string.Empty : "(" + Model.SoLuongVanBanToiTheoDoiChinh + ")")
+                </a>
+            </li>
+        }
+        @if (isLanhDaoCuc)
+        {
+            <li class="menu" style="z-index:10">
+                <a href="@Url.Action("Index", new { type = HsVanBanDiConstant.TYPE_VANBAN_CHOPHEDUYET })" class="@(active == HsVanBanDiConstant.TYPE_VANBAN_CHOPHEDUYET ? "active" : "")">
+                    @HsVanBanDiConstant.TEXT_VANBAN_CHOPHEDUYET @(Model.SoLuongVanBanChoPheDuyet == 0 ? string.Empty : "(" + Model.SoLuongVanBanChoPheDuyet + ")")
+                </a>
+            </li>
+        }
+        <li class="menu" style="z-index:10">
+            <a href="@Url.Action("Index", new { type = HsVanBanDiConstant.TYPE_VANBAN_CHOPHATHANH })" class="@(active == HsVanBanDiConstant.TYPE_VANBAN_CHOPHATHANH ? "active" : "")">
+                @HsVanBanDiConstant.TEXT_VANBAN_CHOPHATHANH @(Model.SoLuongVanBanChoPhatHanh == 0 ? string.Empty : "(" + Model.SoLuongVanBanChoPhatHanh + ")")
+            </a>
+        </li>
+    </ul>
+
+</div>
+
+<div class="menu-tab">
+    <h2>văn bản đến - công việc</h2>
+    <ul class="admin-menu">
+        <li class="menu" style="z-index:10">
+            <a href="@Url.Action("Index","HSVanBanDen",new{@area = "HSVanBanDenArea"})">
+                Quản lý Văn bản đến
+            </a>
+        </li>
+        <li class="menu">
+            <a href="@Url.Action("Index", "CongViec", new { @area = "CongViecArea" })">
+                Quản lý Công việc
+            </a>
+        </li>
+    </ul>
+</div>
+@if (Model.ListNhomSoVanBan != null && Model.ListNhomSoVanBan.Count() > 0)
+{
+    <div class="menu-tab">
+        <h2>Nhóm sổ văn bản</h2>
+        <ul class="admin-menu">
+            @foreach (var nhomso in Model.ListNhomSoVanBan)
+            {
+                <li>
+                    <a href="@Url.Action("Index", new { TYPE = HsVanBanDiConstant.TYPE_VANBAN_THEONHOMSO, nhomSoID = nhomso.ID })" class="@((active == HsVanBanDiConstant.TYPE_VANBAN_THEONHOMSO && nhomso.ID == nhomSoID) ? "active" : "")">
+                        @nhomso.NHOMSOVANBAN @(nhomso.SOLUONG == 0 ? "" : "(" + nhomso.SOLUONG + ")")
+                    </a>
+                    @if (nhomso.ListSoVanBan != null && nhomso.ListSoVanBan.Count() > 0)
+                    {
+                        <ul class="admin-menu-child">
+                            @foreach (var so in nhomso.ListSoVanBan)
+                            {
+                                <li>
+                                    <a href="@Url.Action("Index", new { TYPE = HsVanBanDiConstant.TYPE_VANBAN_THEOSO, soID = so.ID })" class="@((active == HsVanBanDiConstant.TYPE_VANBAN_THEOSO && so.ID == soID) ? "active" : "")">
+                                        @so.TENSO @(so.SOLUONG == 0 ? "" : "(" + so.SOLUONG + ")")
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+}

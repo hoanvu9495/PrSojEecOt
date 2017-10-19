@@ -1,0 +1,132 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Web.Areas.DMDonViArea.Models.DMPhongBanEditViewModel
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+</style>
+@using (Ajax.BeginForm("SavePhongBan", "DMDonVi", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmPhongBanCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm mới phòng ban</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr style="height:20px"></tr>
+                    <tr>
+                    <tr>
+                        <td style="width:100px">
+                            <label class="lbl" for="CREATE_PHONGBAN" style=" width: 150px;">Tên phòng ban:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("TENPHONGBAN", "", new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "CREATE_PHONGBAN" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="CREATE_PHONGBAN_ER" style="margin-left: 0px; color: red;">Tên phòng ban đã tồn tại</span>
+                            <span class="lb-Check" id="CREATE_PHONGBAN_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập tên phòng ban </span>
+                        </td>
+
+                    </tr>
+                   
+                    <tr>
+                        <td>
+                            <label class="lbl" for="CREATE_STATUS" style=" width: 150px;">Trạng Thái:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" style="width: 233px;">
+                                @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text = "Có sử dụng", Value = "true" },
+                        new SelectListItem{ Text = "Không sử dụng", Value = "false" }
+                    })
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                @*<input type="button" value="Lưu" id="btnSave"  />*@
+                <button type="button" class="btn btn-danger" id="btnSave">Thêm mới</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+    
+}
+<script type="text/javascript">
+    $(function () {
+        var isExisted = false;
+        $("#CREATE_PHONGBAN").blur(function () {
+            if ($("#CREATE_PHONGBAN").val().trim().length == 0) {
+                $("#CREATE_PHONGBAN_NULL").show();
+            } else {
+                $("#CREATE_PHONGBAN_NULL").hide();
+            }
+        });
+        $("#btnSave").click(function () {
+            if ($("#CREATE_PHONGBAN").val().trim().length == 0) {
+                $("#CREATE_PHONGBAN_NULL").show();
+                $("#CREATE_PHONGBAN").focus();
+                return false;
+            } else {
+                $("#CREATE_PHONGBAN_NULL").hide();
+            }
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("validatePhongBan", "DMDonVi")',
+                data: {
+                    tenphongban: $("#CREATE_PHONGBAN").val()
+                },
+                cache: false,
+                dataType: "html",
+                success: function (data) {
+                    if (data == "existed") {
+                        $("#CREATE_PHONGBAN_ER").show();
+                        isExisted = true;
+                    } else {
+                        $("#CREATE_PHONGBAN_ER").hide();
+                        $("#frmPhongBanCreate").submit();
+                        return true;
+                    }
+                }, error: function () {
+                    alert("co loi");
+                }
+            });
+
+        });
+    });
+    
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Tạo mới phòng ban thành công',
+        });
+        $("#CreatePhongBan").modal("hide");
+        reloadGrid();
+    }
+</script>

@@ -1,0 +1,321 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Web.Areas.DMDonViArea.Models.DonViViewModel
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+</style>
+@using (Ajax.BeginForm("SaveDonVi", "DMDonVi", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmDonViCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Thêm mới đơn vị <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body" id="modal_body" style="height:250px; overflow-x:hidden; overflow-y:hidden">
+        <div style="width:100%; margin:auto;">
+            <div style="overflow-x: hidden;">
+                <table>
+                    <tr style="height: 20px;"></tr>
+                    <tr>
+                        <td style="width:120px">
+                            <label class="lbl" style=" width: 130px;">Mã đơn vị:<span style="color: red;">*</span></label>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBox("MA_DONVI", "", new { @style = "width: 233px;", maxlength = "250", @class = "e-input", @id = "MA_DONVI" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="MA_DONVI_HTML" style="margin-left: 0px; color: red;">Mã đơn vị không được chứa thẻ HTML.</span>
+                            <span class="lb-Check" id="MA_DONVI_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập mã đơn vị </span>
+                            <span class="lb-Check" id="MA_DONVI_ERROR" style="margin-left: 0px; color: red;">Mã đơn vị đã tồn tại</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:120px">
+                            <label class="lbl" style=" width: 130px;">Tên đơn vị:<span style="color: red;">*</span></label>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBox("TEN_DONVI", "", new { @style = "width: 233px;", maxlength = "250", @class = "e-input", @id = "CREATE_DONVI" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="CREATE_DONVI_HTML" style="margin-left: 0px; color: red;">Tên đơn vị không được chứa thẻ HTML.</span>
+                            <span class="lb-Check" id="CREATE_DONVI_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập tên đơn vị </span>
+                            <span class="lb-Check" id="CREATE_DONVI_ERROR" style="margin-left: 0px; color: red;">Tên đơn vị đã tồn tại</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" style=" width: 130px;">Cấp cơ sở:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix width_233">
+                                @Html.DropDownList("CAPCOSO_ID", Model.ListCapCoSo, "[--- Tất cả ---]", new { @class = "width_100", @id = "CREATE_CAPCOSO_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="height:20px">
+                        <td></td>
+                        <td>
+                            <span class="lb-Check" id="CREATE_CAPCOSO_NULL" style="margin-left: 0px; color: red;">Bạn chọn cấp cơ sở </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" style=" width: 130px;">Cơ sở:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix width_233">
+                                @Html.DropDownList("COSO_ID", Model.ListCoSo, "[--- Tất cả ---]", new { @class = "width_100", @id = "CREATE_COSO_ID" })
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr style="height:20px">
+                        <td></td>
+                        <td>
+                            <span class="lb-Check" id="CREATE_COSO_NULL" style="margin-left: 0px; color: red;">Bạn chọn cơ sở </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" style=" width: 130px;">Trạng Thái:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix width_233">
+                                @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text = "Hiệu lực", Value = "true" },
+                        new SelectListItem{ Text = "Không hiệu lực", Value = "false" }
+                    })
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btnSave" style="border-radius: 3px;">
+            Lưu
+        </button>
+        <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+    </div>
+}
+<script type="text/javascript">
+    var isExisted = false;
+    function OnClose() {
+        $("#CreateDonVi").dialog("close");
+    }
+    $("#CREATE_CAPCOSO_ID").change(function () {
+        if ($(this).val() != "") {
+            $.ajax({
+                type: "GET",
+                cache: false,
+                data: { CapCoSoID: $(this).val() },
+                url: '@Url.Action("GetCoSo", "DMDonVi")',
+                success: function (data) {
+                    $("#CREATE_COSO_ID").html(data);
+                }
+            });
+        }
+    })
+    $("#CREATE_DONVI").blur(function () {
+        if ($("#CREATE_DONVI").val().trim() == "" || $("#CREATE_DONVI").val() == null) {
+            $("#CREATE_DONVI_NULL").show();
+
+        } else {
+            $("#CREATE_DONVI_NULL").hide();
+        }
+    });
+    $("#MA_DONVI").blur(function () {
+        if ($("#MA_DONVI").val().trim() == "" || $("#MA_DONVI").val() == null) {
+            $("#MA_DONVI_NULL").show();
+        } else {
+            $("#MA_DONVI_NULL").hide();
+        }
+    });
+    $("#CREATE_CAPCOSO_ID").blur(function () {
+        if ($("#CREATE_CAPCOSO_ID").val() == "" || $("#CREATE_CAPCOSO_ID").val() == null) {
+            $("#CREATE_CAPCOSO_NULL").show();
+
+        } else {
+            $("#CREATE_CAPCOSO_NULL").hide();
+        }
+    });
+    $("#CREATE_COSO_ID").blur(function () {
+        if ($("#CREATE_COSO_ID").val() == "" || $("#CREATE_COSO_ID").val() == null) {
+            $("#CREATE_COSO_NULL").show();
+
+        } else {
+            $("#CREATE_COSO_NULL").hide();
+        }
+    });
+
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: "Tạo mới đơn vị thành công!",
+        });
+        OnCloseLog();
+        reloadGrid();
+    }
+    function OnCloseLog() {
+        $("#create_user").html("");
+        $("#nhan_su_dialog").modal("hide");
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $("#btnSave").click(function () {
+        if ($("#MA_DONVI").val().trim() == "" || $("#MA_DONVI").val() == null) {
+            $("#MA_DONVI").select();
+            $("#MA_DONVI_NULL").show();
+            return false;
+        } else {
+            $("#MA_DONVI_NULL").hide();
+        }
+        if (/<[a-z][\s\S]*>/i.test($("#MA_DONVI").val())) {
+            $("#MA_DONVI").select();
+            $("#MA_DONVI_HTML").show();
+            return false;
+        } else {
+            $("#MA_DONVI_HTML").hide();
+        }
+        if (KiemTraMa($("#MA_DONVI").val().trim())) {
+            $("#MA_DONVI_ERROR").show();
+            $("#MA_DONVI").focus();
+            return false;
+        } else {
+            $("#MA_DONVI_ERROR").hide();
+        }
+        if ($("#CREATE_DONVI").val() == null || $("#CREATE_DONVI").val().trim() == "" || isExisted == true) {
+            $("#CREATE_DONVI").focus();
+            $("#CREATE_DONVI_NULL").show();
+            return false;
+        } else {
+            $("#CREATE_DONVI_NULL").hide();
+        }
+        if (/<[a-z][\s\S]*>/i.test($("#CREATE_DONVI").val())) {
+            $("#CREATE_DONVI").select();
+            $("#CREATE_DONVI_HTML").show();
+            return false;
+
+        } else {
+            $("#CREATE_DONVI_HTML").hide();
+        }
+
+        if ($("#CREATE_CAPCOSO_ID").val() == "" || $("#CREATE_CAPCOSO_ID").val() == null) {
+            $("#CREATE_CAPCOSO_ID").focus();
+            $("#CREATE_CAPCOSO_NULL").show();
+            return false;
+        } else {
+            $("#CREATE_CAPCOSO_NULL").hide();
+        }
+        if ($("#CREATE_COSO_ID").val() == "" || $("#CREATE_COSO_ID").val() == null) {
+            $("#CREATE_COSO_ID").focus();
+            $("#CREATE_COSO_NULL").show();
+            return false;
+        } else {
+            $("#CREATE_COSO_NULL").hide();
+        }
+        @*$.ajax({
+            type: "GET",
+            url: '@Url.Action("validateDonVi", "DMDonVi")',
+            data: {
+                tendonvi: $("#CREATE_DONVI").val(),
+                COSO_ID: $("#CREATE_COSO_ID").val(),
+                CAPCOSO: $("#CREATE_CAPCOSO_ID").val()
+            },
+            cache: false,
+            success: function (data) {
+                if (data == "existed") {
+                    $("#CREATE_DONVI").select();
+                    $("#CREATE_DONVI_ERROR").show();
+                    return false;
+                } else {
+                    $("#CREATE_DONVI_ERROR").hide();
+                    $("#frmDonViCreate").submit();
+                }
+            }, error: function () {
+                return false;
+            }
+        });*@
+        
+        if (KiemTraTen($("#CREATE_DONVI").val().trim())) {
+            $("#CREATE_DONVI_ERROR").show();
+            $("#CREATE_DONVI").focus();
+            return false;
+        } else {
+            $("#CREATE_DONVI_ERROR").hide();
+        }
+        $("#frmDonViCreate").submit();
+        return true;
+    });
+    function KiemTraMa(MADONVI) {
+        var exist = false;
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ValidateMaDonVi", "DMDonVi")',
+            data: {
+                MADONVI: MADONVI,
+                ID: 0
+            },
+            cache: false,
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.length > 0) {
+                    exist = true;
+                } else {
+                    exist = false;
+                }
+            }, error: function (xrt) {
+                //alert("Co Loi");
+            }
+        });
+        return exist;
+    }
+    function KiemTraTen(TENDONVI) {
+        var exist = false;
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("validateDonVi", "DMDonVi")',
+            data: {
+                tendonvi: TENDONVI,
+                COSO_ID: $("#CREATE_COSO_ID").val(),
+                CAPCOSO: $("#CREATE_CAPCOSO_ID").val()
+            },
+            cache: false,
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.length > 0) {
+                    exist = true;
+                } else {
+                    exist = false;
+                }
+            }, error: function (xrt) {
+                //alert(xrt.responseText);
+            }
+        });
+        return exist;
+    }
+</script>

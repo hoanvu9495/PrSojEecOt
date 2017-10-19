@@ -1,0 +1,78 @@
+﻿@model List<Business.CommonBusiness.HscbNhanSuLogBO>
+<table id="tbl_list_qtl" class="webGrid" data-swhgajax="true" data-swhgcontainer="grid" data-swhgcallback="" style="width:99% !important">
+    <thead>
+        <tr class="head">
+            <th scope="col" width="5%">
+                STT
+            </th>
+
+            <th scope="col" width="12%">
+                Người xử lý
+            </th>
+            <th scope="col">
+                Ngày
+            </th>
+            <th scope="col">
+                Nội dung
+            </th>
+            @*<th scope="col">
+                    Trạng thái sau
+                </th>*@
+            <th scope="col">
+                Ghi chú
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (Model.Count > 0 && Model != null)
+            {
+                var dem = 0;
+                var username = string.Empty; ;
+                foreach (var item in Model)
+                {
+                    if (!string.IsNullOrEmpty(item.CANBO))
+                    {
+                        username = item.CANBO;
+                    }
+                    else
+                    {
+                        username = item.USER_NAME;
+                    }
+                    dem++;
+                    <tr>
+                        <td>@dem</td>
+                        <td>
+                            @username @(!string.IsNullOrEmpty(item.ROLE) ? "(" + item.ROLE + ")" : "")
+                        </td>
+                        <td>
+                            @string.Format("{0:dd/MM/yyyy}", item.NGAYTAO)
+                        </td>
+                        <td>
+                            <span style="text-align:left">
+                                @Html.Raw(item.CONTENT_STATUS)
+                            </span>
+                        </td>
+                        @*<td>
+                                @item.TRANGTHAI_SAU
+                            </td>*@
+                        <td width="35%">
+                            <span style="text-align:left; float:left">
+                                @item.GHICHU
+                            </span>
+                        </td>
+
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6">
+                        <span style="color:red">Không tìm thấy</span>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

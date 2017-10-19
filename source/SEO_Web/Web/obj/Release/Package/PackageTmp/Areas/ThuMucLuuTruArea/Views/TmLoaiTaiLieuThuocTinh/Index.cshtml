@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Quản lý thuộc tính tài liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block"style="width:350px">
+            <h1>Quản lý thuộc tính tài liệu</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;width:calc(100% - 450px)">
+        <div id="menu-child">
+            <div class="menu-left">
+
+            </div>
+            <div class="menu-right" style="margin-right:20px">
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" onclick="OnCreate()">Thêm mới thuộc tính</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left" style="height:100%">
+    <div class="menu-left-content block">
+        <ul class="admin-menu">
+            <li class="menu"><a href="@Url.Action("Index", "ThuMucLuuTru")">Quản lý tài liệu</a></li>
+            <li class="menu"><a href="@Url.Action("Index", "TmLoaiTaiLieu")">Quản lý loại tài liệu</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="right-all-page">
+
+    <table style="width: 100%">
+        <tr>
+            <td>
+                <div class="SearchCriterial">
+                    <div class=" panel-default">
+                        <div id="headingOne" class="panel-heading" role="tab">
+                            <h4 class="panel-title">
+                                <a class="" role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Tìm kiếm nâng cao</a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse " style="" role="tabpanel" aria-expanded="false">
+                            @Html.Partial("_LoaiTaiLieuThuocTinhSearch")
+                        </div>
+                    </div>
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="SearchResult">
+                    @Html.Partial("_LoaiTaiLieuThuocTinhSearchResult")
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+<script type="text/javascript">
+    function reloadGrid() {
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadGrid", "TmLoaiTaiLieuThuocTinh")',
+            data: {},
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+</script>

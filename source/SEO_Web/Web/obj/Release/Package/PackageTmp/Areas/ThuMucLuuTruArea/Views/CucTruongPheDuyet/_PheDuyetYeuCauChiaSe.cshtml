@@ -1,0 +1,274 @@
+﻿@{
+    var trinhduyet = ViewData["pheduyet"] == "pheduyet" ? true : false;
+}
+
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@using (Ajax.BeginForm("PheDuyetYeuCauChiaSe", "CucTruongPheDuyet", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "createSuccess"
+}, new { id = "frmPheDuyet" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Chuyển trạng thái yêu cầu chia sẻ tài liệu</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr style="height:15px"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl-title">Trạng thái:</label>
+                        </td>
+                        <td style="margin-left:10%">
+                            @if (ViewData["pheduyet"] == "pheduyet")
+                            {
+                                <span>Phê duyệt yêu cầu</span>
+                                <input type="hidden" value="@YeuCauChiaSeConstant.DADUYET" name="TRANGTHAI2" />
+                                <input type="hidden" value="@ViewData["YEUCAU_ID"]" name="YEUCAU_ID" />
+                            }
+                            else
+                            {
+                                <span>Trả lại yêu cầu</span>
+                                <input type="hidden" value="@YeuCauChiaSeConstant.TRAVE" name="TRANGTHAI2" />
+                                <input type="hidden" value="@ViewData["YEUCAU_ID"]" name="YEUCAU_ID" />
+                            }
+                        </td>
+                    </tr>
+
+                    <tr style="height:15px"></tr>
+
+                    @if (trinhduyet)
+                    {
+                        <tr>
+                            <td>
+                                <label class="lbl-title">Nội dung:<span style="color:red">*</span></label>
+                            </td>
+                            <td>
+                                <textarea id="MOTA" name="MOTA" style="width: 400px; height: 60px; resize: vertical" class="e-input" placeholder="Nhập nội dung phê duyệt."></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                            <span id="NOIDUNG_NULL" style="display:none;color:red">Vui lòng nhập nội dung phê duyệt yêu cầu này</span>
+                                <span id="NOIDUNG_ERROR" style="display:none;color:red">Nội dung phê duyệt không được chứa thẻ HTML</span>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>
+                                <label class="lbl-title">Lý do:<span style="color:red">*</span></label>
+                            </td>
+                            <td>
+                                <textarea id="MOTA" style="width:400px;height:60px;resize:vertical" name="MOTA" class="e-input" placeholder="Nhập lý do trả về."></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <span id="NOIDUNG_NULL" style="display:none;color:red">Vui lòng nhập lý do không phê duyêt yêu cầu này</span>
+                            <span id="NOIDUNG_ERROR" style="display:none;color:red">Lý do không được chứa thẻ HTML</span>
+                            </td>
+                        </tr>                        
+                    }
+
+
+                    @if (trinhduyet)
+                    {
+                        <tr>
+                            <td>
+                                Thời hạn chia sẻ:
+                            </td>
+                            <td>
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch" checked class="onoffswitch-checkbox" id="myonoffswitch">
+                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr class="chiase">
+                            <td>
+                                Chia sẻ:
+                            </td>
+                            <td>
+                                Từ: @Html.TextBox("CHIASE_TU", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "CHIASE_TU" })
+                                Đến: @Html.TextBox("CHIASE_DEN", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "CHIASE_DEN" })
+                            </td>
+                        </tr>
+                        <tr class="chiase">
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td>
+                                <span style="color:red;display:none">Bạn cần nhập thời gian cho chia sẻ này</span>
+                            </td>
+                        </tr>
+
+                    }
+                </table>
+            </div>
+            <div class="modal-footer">
+
+                <input type="submit" value="Xác nhận" id="btnXacNhan" class="btn btn-success">
+                <input type="button" value="Hủy" data-dismiss="modal" class="btn btn-default">
+            </div>
+        </div>
+
+    </div>
+
+}
+<style>
+    .onoffswitch {
+        position: relative;
+        width: 77px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        float: left;
+    }
+
+    .onoffswitch-checkbox {
+        display: none;
+    }
+
+    .onoffswitch-label {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid #999999;
+        border-radius: 29px;
+    }
+
+    .onoffswitch-inner {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+        .onoffswitch-inner:before, .onoffswitch-inner:after {
+            display: block;
+            float: left;
+            width: 50%;
+            height: 25px;
+            padding: 0;
+            line-height: 25px;
+            font-size: 14px;
+            color: white;
+            font-family: Trebuchet, Arial, sans-serif;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .onoffswitch-inner:before {
+            content: "Bật";
+            padding-left: 10px;
+            background-color: #1DB1EB;
+            color: #FFFFFF;
+        }
+
+        .onoffswitch-inner:after {
+            content: "Tắt";
+            padding-right: 10px;
+            background-color: #EEEEEE;
+            color: #999999;
+            text-align: right;
+        }
+
+    .onoffswitch-switch {
+        display: block;
+        width: 18px;
+        margin: 3.5px;
+        background: #FFFFFF;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 48px;
+        border: 2px solid #999999;
+        border-radius: 29px;
+        transition: all 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+        margin-left: 0;
+    }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+        right: 0px;
+    }
+</style>
+<script>
+    function createSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Chuyển trạng thái yêu cầu chia sẻ tài liệu thành công',
+        });
+        $("#TrinhDuyetYeuCau").modal("hide");
+        reloadGrid();
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $("#btnXacNhan").click(function () {
+        if ($("#MOTA").val().trim() == "") {
+            $("#MOTA").focus();
+            $("#NOIDUNG_NULL").show();
+            return false;
+        } else {
+            $("#NOIDUNG_NULL").hide();
+        }
+        if (/<[a-z][\s\S]*>/i.test($("#MOTA").val().trim())) {
+            $("#MOTA").select();
+            $("#NOIDUNG_ERROR").show();
+            return false;
+        } else {
+            $("#NOIDUNG_ERROR").hide();
+        }
+        if ($("#CHIASE_TU").val() != undefined) {
+
+        }
+        return true;
+    });
+    $(function () {
+        $("#myonoffswitch").change(function () {
+            alert($(".onoffswitch-checkbox:checked").length);
+            if ($(".onoffswitch-checkbox:checked").length == 1) {
+                $(".chiase").show();
+            } else {
+                $(".chiase").hide();
+            }
+        });
+        $("#CHIASE_TU").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            onClose: function (selectedDate) {
+                $("#CHIASE_DEN").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#CHIASE_DEN").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            onClose: function (selectedDate) {
+                $("#CHIASE_TU").datepicker("option", "maxDate", selectedDate);
+            }
+
+        });
+    });
+</script>

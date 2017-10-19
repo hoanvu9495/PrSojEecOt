@@ -1,0 +1,548 @@
+﻿.btn-focus:focus
+{
+    box-shadow: 0 0 0 2px white,0 0 0 3px #27AE60;
+}
+
+.create-lbl
+{
+    display: inline-block;
+    width: 180px;
+    font-family: 'Arial','Times New Roman';
+    font-size: 13px;
+    margin-left: 35px;
+}
+
+.create-txt
+{
+    width: 230px;
+    height: 25px;
+    margin-left: -75px;
+}
+
+.lb-Check
+{
+    color: red;
+    display: none;
+    font-size: 11px;
+    margin-left: 5px;
+}
+
+.btnAction
+{
+    padding: 5px 20px;
+    margin-left: 10px;
+}
+/*Table*/
+.td-title
+{
+    width: 200px;
+}
+
+.td-nd
+{
+    width: 200px;
+    font-weight: bold;
+    padding: 7px;
+}
+
+.report-mon
+{
+    float: left;
+    width: 230px;
+    margin-left: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+    .namemonhoc {
+        width: 70px;
+        float: left;
+    }
+    .datamon {
+        width: 150px;
+        float: left;
+        margin-left: 10px;
+        font-weight: bold;
+    }
+table
+{
+    width: 100%;
+}
+
+    table td
+    {
+        margin-left: 5px;
+    }
+
+.btnHelp
+{
+    width: 20px;
+    height: 20px;
+    background: url(/Content/Images/CumThi/help.png) no-repeat;
+}
+/*End control*/
+.nameChk
+{
+    /*width: 30px;*/
+    float: left;
+    text-align: left;
+    width: 110px;
+}
+
+.nameMon
+{
+    /*width: 100px;*/
+    float: left;
+    overflow: hidden;
+    text-align: left;
+}
+
+.thongke
+{
+    width: 170px;
+    float: left;
+    overflow: hidden;
+    text-align: left;
+    /*margin-left: 16px;*/
+}
+
+.groupMon
+{
+    float: left;
+    width: 286px;
+    margin-bottom: 15px;
+}
+
+.b1
+{
+    width: 100%;
+    text-align: left;
+    margin-top: 20px;
+    display: table;
+}
+
+.view
+{
+    width: 380px;
+    float: left;
+    padding-left: 20px;
+}
+
+    .view p
+    {
+        padding-bottom: 15px;
+    }
+
+.command
+{
+    float: left;
+    padding-right: 10px;
+    width: 600px;
+    border-right: 1px solid #808080;
+}
+
+.title-help
+{
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.tbl td
+{
+    padding: 0px 3px 7px 0px;
+}
+
+.rabtn
+{
+    margin-bottom: 0px;
+}
+/*End Bước 1*/
+/*Tab panel*/
+.tab-contents
+{
+    width: 1060px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    margin: auto;
+}
+/* Set the size and font of the tab widget */
+.tabGroup
+{
+    /*font: 10pt arial, verdana;
+    width: 800px;*/
+}
+
+    /* Configure the radio buttons to hide off screen */
+    .tabGroup > input[type="radio"]
+    {
+        position: absolute;
+        /*left:-100px;
+    top:-100px;*/
+        display: none;
+    }
+
+        /* Configure labels to look like tabs */
+        .tabGroup > input[type="radio"] + label
+        {
+            /* inline-block such that the label can be given dimensions */
+            display: inline-block;
+            /* A nice curved border around the tab */
+            border: 1px solid #ddd;
+            border-radius: 5px 5px 0 0;
+            -moz-border-radius: 5px 5px 0 0;
+            -webkit-border-radius: 5px 5px 0 0;
+            /* the bottom border is handled by the tab content div */
+            border-bottom: 0;
+            /* Padding around tab text */
+            padding: 5px 10px;
+            /* Set the background color to default gray (non-selected tab) */
+            background-color: #ddd;
+        }
+
+        /* Focused tabs need to be highlighted as such */
+        .tabGroup > input[type="radio"]:focus + label
+        {
+            border: 1px dashed black;
+        }
+
+        /* Checked tabs must be white with the bottom border removed */
+        .tabGroup > input[type="radio"]:checked + label
+        {
+            background-color: white;
+            /*font-weight: bold;*/
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+        }
+
+    /* The tab content must fill the widgets size and have a nice border */
+    .tabGroup > div
+    {
+        display: none;
+        /*border: 1px solid black;*/
+        background-color: white;
+        padding: 10px 10px;
+        height: 100%;
+        overflow: auto;
+        box-shadow: 0 0 10px #444;
+        -moz-box-shadow: 0 0 10px #444;
+        -webkit-box-shadow: 0 0 10px #444;
+        border-radius: 0 5px 5px 5px;
+        -moz-border-radius: 0 5px 5px 5px;
+        -webkit-border-radius: 0 5px 5px 5px;
+    }
+/* This matchs tabs displaying to thier associated radio inputs */
+.tab1:checked ~ .tab1, .tab2:checked ~ .tab2, .tab3:checked ~ .tab3
+{
+    display: block;
+}
+/*End Tab*/
+.div-criteria
+{
+    padding: 2px;
+    background-color: #E0E0E0;
+    border: 1px solid #C0C0C0;
+    text-align: right;
+}
+
+.grid
+{
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 3px;
+}
+
+.webGrid
+{
+    margin: 0px;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #B4CFC3;
+    text-align: left;
+}
+
+.head
+{
+    background-color: #C1D4E6;
+    font-weight: bold;
+}
+
+.webGrid th, .webGrid td
+{
+    border: 1px solid #C0C0C0;
+    padding: 5px;
+}
+
+.alt
+{
+    background-color: #E4E9F5;
+    color: #000;
+    text-align: left;
+}
+
+.gridHead a:hover
+{
+    text-decoration: underline;
+}
+
+
+.btnEdit
+{
+    background: url('/Content/Images/Edit.png') no-repeat;
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 0 auto;
+}
+
+.btnDelete
+{
+    background: url('/Content/Images/Delete.png') no-repeat;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: 0 auto;
+}
+
+.btnAdd
+{
+    display: block;
+    width: 130px;
+    height: 26px;
+    margin-left: 35px;
+    margin-top: -23px;
+    text-decoration: none;
+    font-weight: 700;
+    color: black !important;
+}
+/*End web gird*/
+/*input[type="button"], input[type="submit"], input[type="reset"], button {
+    background-color: #4d90fe;
+    background-image: -moz-linear-gradient(center top , #4d90fe, #4787ed);
+    border: 1px solid #3079ed;
+    border-radius: 3px;
+    box-sizing: border-box;
+    color: #ffffff;
+    cursor: default;
+    font-weight: 700;
+    margin: 3px;
+    padding: 6px 8px;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+}
+input, button {
+    font-family: Arial;
+    font-size: 12px;
+}
+    button[disabled="disabled"], button:disabled {
+     opacity: 0.55; 
+     cursor: not-allowed;
+    }
+
+input[type="button"]:focus, input[type="submit"]:focus, input[type="reset"]:focus, button:focus,
+input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover, button:hover {
+    background-color: #357ae8;
+    background-image: -moz-linear-gradient(center top , #4d90fe, #357ae8);
+    border: 1px solid #2f5bb7;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    transition: all 0s ease 0s;
+}
+input[type="button"]:active, input[type="submit"]:active, input[type="reset"]:active, button:active {
+    background-color: #357ae8;
+    background-image: -moz-linear-gradient(center top , #4d90fe, #357ae8);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+}
+
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner {
+    border: none;
+}
+.e-btn {
+    background: #1f77c0;
+    text-align: center;
+    color: #fff;
+    text-align: center;
+    padding: 2px 20px;
+    border: 0;
+    border-bottom: 2px solid #0e5a9a;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+}
+    .e-btn:hover {
+        background: #3187ce;
+        border-bottom: 2px solid #16619f;
+    }*/
+
+.up
+{
+    background: url('/Content/Images/CumThi/up.png') no-repeat scroll 0% 0% transparent;
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin: 0px auto;
+}
+
+.down
+{
+    background: url('/Content/Images/CumThi/down.png') no-repeat scroll 0% 0% transparent;
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin: 0px auto;
+}
+/*Table kết quả*/
+.tblKq
+{
+}
+
+table.tblKq tr td
+{
+    padding: 7px 4px;
+}
+/*Delete địa điểm thi*/
+.delete-ddt
+{
+    width: 20px;
+    height: 20px;
+    padding: 1px 9px;
+    /*border: 1px solid #c9b7b3;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;*/
+    background: url('/Content/Images/CumThi/icon-delete.png') center no-repeat;
+}
+/*.delete-ddt :hover{
+    background: url('/Content/Images/CumThi/u184.png') center no-repeat;
+    background-color:#595959;
+}*/
+.ddt
+{
+    width: 450px;
+    float: left;
+}
+
+.chonmon
+{
+    width: 850px;
+    border: 1px black solid;
+    display: table;
+    margin: auto;
+}
+
+.mon
+{
+    width: 400px;
+    float: left;
+}
+
+.itemdd
+{
+    float: left;
+    border-right: 1px black solid;
+    text-align: center;
+    height: 50px;
+}
+
+.itemmon
+{
+    float: left;
+    width: 79px;
+    height: 25px;
+    border-right: 1px black solid;
+    text-align: center;
+}
+
+/*.itemmon.last
+        {
+            border-right: none;
+        }*/
+
+div.itemmon:last-child
+{
+    border-right: none;
+}
+
+.monhoc
+{
+    float: right;
+    width: 400px;
+    height: 50px;
+}
+/*Custom table sort*/
+.connectedSortable tr, .ui-sortable-helper
+{
+    cursor: move;
+}
+
+    .connectedSortable tr:first-child
+    {
+        cursor: default;
+    }
+
+.ui-sortable-placeholder
+{
+    background: yellow;
+}
+
+.div-criteria
+{
+    padding: 2px;
+    background-color: #E0E0E0;
+    border: 1px solid #C0C0C0;
+    text-align: right;
+}
+
+#mytable thead
+{
+    cursor: pointer;
+    background: #c9dff0;
+}
+
+    #mytable thead tr th
+    {
+        font-weight: bold;
+        padding: 12px 30px;
+        padding-left: 42px;
+    }
+
+        #mytable thead tr th span
+        {
+            padding-right: 20px;
+            background-repeat: no-repeat;
+            background-position: 100% 100%;
+        }
+
+        #mytable thead tr th.headerSortUp, #mytable thead tr th.headerSortDown
+        {
+            background: #acc8dd;
+        }
+
+            #mytable thead tr th.headerSortUp span
+            {
+                background-image: url('/Content/Images/arrow-up-tree.png');
+            }
+
+            #mytable thead tr th.headerSortDown span
+            {
+                background-image: url('/Content/Images/arrow-down-tree.png');
+            }
+            /*Disable buttom*/
+            .btnDisable {
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    background-color: #C0C0C0 !important;
+    background-image: none !important;
+}
+                        .btnEnable {
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    background-color: #C0C0C0 !important;
+    background-image: none !important;
+}
+/*--------------*/

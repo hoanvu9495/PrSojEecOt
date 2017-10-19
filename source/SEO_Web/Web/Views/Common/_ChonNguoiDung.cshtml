@@ -1,0 +1,187 @@
+﻿@using Web.Models
+@model TuyChonGuiModel
+<table>
+    @if (!string.IsNullOrEmpty(Model.TIEUDE))
+    {
+        <tr>
+            <td colspan="2">
+                <h3 class="group-tittle mt10" style="margin-bottom:10px">
+                    @Html.Raw(Model.TIEUDE.ToString())
+                </h3>
+            </td>
+        </tr>
+    }
+    @if (Model.IS_MULTI)
+    {
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <div class="checkbox">
+                    <label><input type="checkbox" id="selectAll" value="">Chọn tất cả</label>
+                </div>
+            </td>
+        </tr>
+        if (Model.lstNguoiDung != null)
+        {
+            var lstVaiTro = Model.lstNguoiDung.GroupBy(x => x.DM_VAITRO_ID).Select(o => o.FirstOrDefault()).ToList();
+            foreach (var item in lstVaiTro)
+            {
+                var lstNguoiDung = Model.lstNguoiDung.Where(x => x.DM_VAITRO_ID == item.DM_VAITRO_ID).ToList();
+                foreach (var ele in lstNguoiDung)
+                {
+                    if (!string.IsNullOrEmpty(ele.HOTEN))
+                    {
+                        <tr>
+                            @if (lstNguoiDung.IndexOf(ele) == 0)
+                            {
+                                <td style="width:100px"> @ele.VAITRO </td>
+                            }
+                            else
+                            {
+                                <td style="width:100px">&nbsp; </td>
+                            }
+
+                            <td>
+                                @if (lstNguoiDung.Count == 1)
+                                {
+                                    <div class="checkbox">
+                                        <label><input data-id="@ele.DM_NGUOIDUNG_ID" name="NGUOIDUNGROLE" class="checkbox1" type="checkbox" checked value="@ele.DM_NGUOIDUNG_ID">@ele.HOTEN</label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            @if (ele.SELECTED)
+                                            {
+                                                <input name="NGUOIDUNGROLE" data-id="@ele.DM_NGUOIDUNG_ID" checked class="checkbox1" type="checkbox" value="@ele.DM_NGUOIDUNG_ID">
+                                            }
+                                            else
+                                            {
+                                                <input name="NGUOIDUNGROLE" data-id="@ele.DM_NGUOIDUNG_ID" class="checkbox1" type="checkbox" value="@ele.DM_NGUOIDUNG_ID">
+                                            }
+                                            @ele.HOTEN
+                                        </label>
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                }
+                if (lstNguoiDung.Count > 0 && lstVaiTro.IndexOf(item) != lstVaiTro.Count - 1)
+                {
+                    <tr>
+                        <td colspan="2"><hr class="style-three" /></td>
+                    </tr>
+                }
+            }
+        }
+    }
+    else
+    {
+        if (Model.lstNguoiDung != null)
+        {
+            var lstVaiTro = Model.lstNguoiDung.GroupBy(x => x.DM_VAITRO_ID).Select(o => o.FirstOrDefault()).ToList();
+            foreach (var item in lstVaiTro)
+            {
+                var lstNguoiDung = Model.lstNguoiDung.Where(x => x.DM_VAITRO_ID == item.DM_VAITRO_ID).ToList();
+                foreach (var ele in lstNguoiDung)
+                {
+                    <tr>
+                        @if (lstNguoiDung.IndexOf(ele) == 0)
+                        {
+                            <td style="width:100px"> @ele.VAITRO </td>
+                        }
+                        else
+                        {
+                            <td style="width:100px">&nbsp; </td>
+                        }
+                        <td>
+                            <div class="radio">
+                                <label>
+                                    @if (ele.SELECTED)
+                                    {
+                                        <input checked="checked" data-id="@ele.DM_NGUOIDUNG_ID" type="radio" name="NGUOIDUNGROLE" value="@ele.DM_NGUOIDUNG_ID">@ele.HOTEN
+                                    }
+                                    else
+                                    {
+                                        <input data-id="@ele.DM_NGUOIDUNG_ID" type="radio" name="NGUOIDUNGROLE" value="@ele.DM_NGUOIDUNG_ID">@ele.HOTEN
+                                    }
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                if (lstNguoiDung.Count > 0 && lstVaiTro.IndexOf(item) != lstVaiTro.Count - 1)
+                {
+                    <tr>
+                        <td colspan="2"><hr class="style-three" /></td>
+                    </tr>
+                }
+            }
+        }
+        @*foreach (var ele in Model.lstNguoiDung)
+        {
+            <tr>
+                <td>
+                    <div class="radio">
+                        <label><input type="radio" name="optradio" value="@ele.DM_NGUOIDUNG_ID">@ele.HOTEN</label>
+                    </div>
+                </td>
+            </tr>
+        }*@
+    }
+</table>
+<input type="hidden" id="DS_LANHDAO_HIDDEN" name="DS_LANHDAO_HIDDEN" />
+<style>
+    hr.style-three {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        border-style: none none dashed;
+        border-width: 0 0 1px;
+    }
+
+    .radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+        margin-right: 10px !important;
+        margin-left: 0px !important;
+    }
+</style>
+<script>
+    $(function () {
+        $('#selectAll').click(function (event) {
+            if (this.checked) {
+                var str = "";
+                $('.checkbox1').each(function () {
+                    this.checked = true;
+                    str += $(this).val() + ",";
+                });
+                $("#DS_LANHDAO_HIDDEN").val(str);
+            } else {
+                $('.checkbox1').each(function () {
+                    this.checked = false;
+                });
+                $("#DS_LANHDAO_HIDDEN").val("");
+            }
+        });
+        $("input[name='NGUOIDUNGROLE']").click(function () {
+            var totalRows = $("#CHONNGUOIDUNG td :checkbox").length;
+            var checked = $("#CHONNGUOIDUNG td :checkbox:checked").length;
+            if (checked == totalRows) {
+                $("#CHONNGUOIDUNG").find("input:checkbox").each(function () {
+                    this.checked = true;
+                });
+            }
+            else {
+                $("#selectAll").removeAttr("checked");
+            }
+            var str = "";
+            $("input[name='NGUOIDUNGROLE']:checked").each(function () {
+                str += $(this).val() + ",";
+            });
+            $("#DS_LANHDAO_HIDDEN").val(str);
+        });
+    });
+</script>

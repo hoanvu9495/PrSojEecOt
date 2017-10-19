@@ -1,0 +1,159 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Model.eAita.DM_DANTOC
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #EDIT_ID {
+        display: none;
+    }
+</style>
+@using (Ajax.BeginForm("SaveDanToc", "DMDanToc", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmDanTocEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Chỉnh sửa dân tộc</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr style="height: 20px;"></tr>
+
+                    @Html.TextBox("ID", Model.ID, new { @style = "width: 233px;", maxlength = "50", @class = "e-input", @id = "EDIT_ID", @readonly = "readonly" })
+
+
+                    <tr>
+                        <td style="width:100px">
+                            <label class="lbl" style=" width: 120px;">Tên dân tộc:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("TEN_DAN_TOC", Model.TEN_DAN_TOC, new { @style = "width: 233px;", maxlength = "50", @class = "e-input", @id = "EDIT_DANTOC" })
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="EDIT_DANTOC_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập tên dân tộc </span>
+                            <span class="lb-Check" id="EDIT_DANTOC_EXIST" style="margin-left: 0px; color: red;">Tên dân tộc đã tồn tại</span>
+                            <span class="lb-Check" id="EDIT_DANTOC_ERROR" style="margin-left: 0px; color: red;">Tên dân tộc không được chứa thẻ HTML</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" style=" width: 120px;">Trạng Thái:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" style="width: 233px;">
+                                @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text = "Có sử dụng", Value = "1" },
+                        new SelectListItem{ Text = "Không sử dụng", Value = "0" }
+                    })
+                            </div>
+                        </td>
+                    </tr>
+
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnSave">Cập nhật</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+}
+
+<script type="text/javascript">
+
+    $("#EDIT_DANTOC").focusout(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#EDIT_DANTOC_NULL").show();
+        } else {
+            $("#EDIT_DANTOC_NULL").hide();
+        }
+    });
+
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function updateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Cập nhật dân tộc thành công!',
+        });
+        $("#PrepareDanToc").modal("hide");
+        reloadGrid();
+    }
+    function OnClose() {
+        $("#PrepareDanToc").dialog("close");
+    }
+    $(document).ready(function () {
+        var tontai = false;
+        var cur_dantoc = $("#EDIT_DANTOC").val();
+        $("#btnSave").click(function () {
+            if ($("#EDIT_DANTOC").val().trim() == null || $("#EDIT_DANTOC").val().trim() == "") {
+                $("#EDIT_DANTOC_NULL").show();
+                $("#EDIT_DANTOC").focus();
+                $("#EDIT_DANTOC_EXIST").hide();
+                return false;
+            } else {
+                $("#EDIT_DANTOC_NULL").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#EDIT_DANTOC").val())) {
+                $("#EDIT_DANTOC").select();
+                $("#EDIT_DANTOC_ERROR").show();
+                $("#EDIT_DANTOC_EXIST").hide();
+                return false;
+            } else {
+                $("#EDIT_DANTOC_ERROR").hide();
+            }
+            var dantoc = $("#EDIT_DANTOC").val();
+            if (cur_dantoc.toLowerCase() != dantoc.toLowerCase()) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("validateDanToc", "DMDanToc")',
+                    data: {
+                        ten_dan_toc: dantoc
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        if (data == "existed") {
+                            $("#EDIT_DANTOC_EXIST").show();
+                            return false;
+                        } else {
+                            $("#EDIT_DANTOC_EXIST").hide();
+                            $("#frmDanTocEdit").submit();
+                            return true;
+                        }
+                    }, error: function () {
+                        alert("co loi");
+                    }
+                });
+            } else {
+                $("#EDIT_DANTOC_EXIST").hide();
+                $("#frmDanTocEdit").submit();
+                return true;
+            }
+        });
+
+    });
+</script>

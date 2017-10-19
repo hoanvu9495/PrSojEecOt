@@ -1,0 +1,134 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.DBTool;
+@using Web.Common;
+@using Business.Business;
+@using Web.Models;
+@model Web.Models.ChonNguoiDungModel
+
+@Html.AntiForgeryToken()
+@{
+    List<COSO> ListCoSo = new List<COSO>();
+    ListCoSo = (List<COSO>)SessionManager.GetValue("ListCoSo");
+
+    List<DM_DONVI> ListDonVi = new List<DM_DONVI>();
+    ListDonVi = (List<DM_DONVI>)SessionManager.GetValue("ListDonVi");
+
+    if (Model.ListDonViSearch.Count > 0)
+    {
+        ListDonVi = Model.ListDonViSearch;
+    }
+}
+
+<div class="wfm">
+
+    <ul class="tree_ul">
+
+        @foreach (var coso in ListCoSo)
+        {
+            <li class="tree_li">
+                <div class="tree_div">
+                    <img alt="" class="pop_expand" src="/Content/Images/Minus.png" />
+                    <img alt="" class="pop_collapse" src="/Content/Images/Plus.png" />
+                </div>
+                <div class="tree_div">
+                    <input type="checkbox" id="check_all_donvi_@Model.INDEX"/>
+                </div>
+                <div class="tree_div root_tree">
+                    <a href="javascript:void(0)" class="parent_check_box_@Model.INDEX">
+                        <label for="check_all_donvi_@Model.INDEX">@coso.TENCOSO</label>
+                    </a>
+                </div>
+                <ul class="tree_ul">
+                    @foreach (var donvi in ListDonVi)
+                    {
+                        int tmp_check = Array.IndexOf(Model.IDS,donvi.ID.ToString());
+                        if (donvi.COSO_ID == coso.COSO_ID)
+                        {
+                            <li class="tree_li">
+                                <div class="tree_div">
+                                </div>
+                                <div class="tree_div" style="padding-left:16px">
+                                    <input @(tmp_check > -1 ? "checked" : "") class="checkbox_donvi" type="checkbox" value="@donvi.ID" id="checkbox_donvi_@donvi.ID'_'@Model.INDEX"/>
+                                </div>
+                                <div class="tree_div root_tree">
+                                    <a href="javascript:void(0)" class="parent_check_box_@Model.INDEX">
+                                        <label id="label_donvi_@donvi.ID" for="checkbox_donvi_@donvi.ID'_'@Model.INDEX">
+                                            @donvi.TEN_DONVI
+                                        </label>
+                                    </a>
+                                </div>
+                            </li>
+                        }
+                    }
+                </ul>
+            </li>
+        }
+
+    </ul>
+</div>
+
+<script type="text/javascript" language="javascript">
+    $(".pop_expand").click(function () {
+        $(this).toggle();
+        $(this).next().toggle();
+        $(this).parent().parent().children().last().toggle();
+    });
+    $(".pop_collapse").click(function () {
+        $(this).toggle();
+        $(this).prev().toggle();
+        $(this).parent().parent().children().last().toggle();
+    });
+    $('#check_all_donvi_@Model.INDEX').on('change', function () {
+        if ($(this).is(':checked')) {
+            $('#donvi_dialog_@Model.INDEX').find('input.checkbox_donvi').prop('checked', true);
+        } else {
+            $('#donvi_dialog_@Model.INDEX').find('input.checkbox_donvi').prop('checked', false);
+        }
+    });
+
+    $("#btnSave_choose_donvi_ids_" + '@Model.INDEX').click(function () {
+        var textValue = "";
+        var idsValue = "";
+        var chuc_vu = "";
+        $("#donvi_dialog_" + '@Model.INDEX' + " .checkbox_donvi").each(function () {
+            if (this.checked) {
+                textValue += $("#label_donvi_" + $(this).val()).html().trim() + ", ";
+                idsValue += $(this).val() + ",";
+            }
+        });
+        textValue = textValue.substr(0, textValue.length - 2);
+        idsValue = idsValue.substr(0, idsValue.length - 1);
+        if ($("#" + '@Model.TEXT_ID').attr("type") == "text") {
+            $("#" + '@Model.TEXT_ID').val(textValue);
+        } else {
+            $("#" + '@Model.TEXT_ID').html(textValue);
+        }
+
+        if ($("#" + '@Model.SHOW_CHUC_VU_ID').length > 0) {
+            if ($("#" + '@Model.SHOW_CHUC_VU_ID').attr("type") == "text") {
+                $("#" + '@Model.SHOW_CHUC_VU_ID').val(chuc_vu);
+            } else {
+                $("#" + '@Model.SHOW_CHUC_VU_ID').html(chuc_vu);
+            }
+        }
+        $("#" + '@Model.VALUE_ID').val(idsValue);
+
+        var call_back_function = '@Model.CALLBACK_FUNCTION';
+        if (call_back_function.length > 0) {
+            var cb_fn = window[call_back_function];
+            cb_fn();
+        }
+        $("#donvi_dialog_" + '@Model.INDEX').modal("hide");
+
+    });
+
+    $(".label_item_" + '@Model.INDEX').click(function () {
+        if ($(this).parent().parent().find("input").attr("checked") == "checked") {
+            $(this).parent().parent().find("input").attr("checked", false);
+        } else {
+            $(this).parent().parent().find("input").attr("checked", true);
+        }
+    });
+</script>

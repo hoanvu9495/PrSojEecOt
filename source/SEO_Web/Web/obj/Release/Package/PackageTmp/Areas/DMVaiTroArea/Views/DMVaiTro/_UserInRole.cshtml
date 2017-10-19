@@ -1,0 +1,61 @@
+﻿@using Web.Areas.DMVaiTroArea.Models
+@model ChucNangTrangChuViewModel
+@Html.AntiForgeryToken()
+@using (Ajax.BeginForm("SetChucNangTrangChu", "DMVaiTro", new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                OnFailure = "configChucNangTrangChuFailure",
+                OnSuccess = "configChucNangTrangChuSuccess",
+            }, new { id = "frmSaveChucNangTrangChu" }))
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Người dùng thuộc vai trò <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body" id="modal_body" style=" overflow-x:hidden; overflow-y:hidden;">
+        <div style="width:100%; margin:auto;">
+            <div style="overflow-x: hidden;">
+                <div class="box-border">
+                    @*<h3 class="group-tittle1 mt10">Danh sách người dùng</h3>*@
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Stt</th>
+                                <th>Họ tên</th>
+                                <th>Tên đăng nhập</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.ListUserIDByRoleID != null && Model.ListUserIDByRoleID.Count > 0)
+                            {
+                                int idx = 1;
+                                foreach (var tt in Model.ListUserIDByRoleID)
+                                {
+                                    <tr>
+                                        <td>@idx</td>
+                                        <td>@tt.HOTEN</td>
+                                        <td>@tt.TENDANGNHAP</td>
+                                    </tr>
+                                    idx = idx + 1;
+                                }
+                            }
+                        </tbody>                        
+                    </table>
+                    <div class="clear-both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+    </div>
+}
+<script>
+    function OnCloseConfig() {
+        $("#SetChucNangTrangChuVaiTro").dialog("close");
+    }
+    function OnCloseLog() {
+        $("#create_user").html("");
+        $("#nhan_su_dialog").modal("hide");
+    }
+</script>

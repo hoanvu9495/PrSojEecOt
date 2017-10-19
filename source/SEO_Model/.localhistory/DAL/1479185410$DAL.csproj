@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D7321540-B8A4-48DB-B47B-8779AF55EFC5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DAL</RootNamespace>
+    <AssemblyName>DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\DLLOUTPUT\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dll Out\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MiniProfiler">
+      <HintPath>..\packages\MiniProfiler.3.1.1.140\lib\net40\MiniProfiler.dll</HintPath>
+    </Reference>
+    <Reference Include="MiniProfiler.EntityFramework">
+      <HintPath>..\packages\MiniProfiler.EF5.3.0.11\lib\net40\MiniProfiler.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLLOUTPUT\Model.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Context.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\BhBaoHiemXaHoiRepository.cs" />
+    <Compile Include="Repository\BhBaoHiemYTeRepository.cs" />
+    <Compile Include="Repository\BhBenhVienRepository.cs" />
+    <Compile Include="Repository\BhSoBaoHiemRepository.cs" />
+    <Compile Include="Repository\DmBacLuongVienChucRepository.cs" />
+    <Compile Include="Repository\DmPhuCapRepository.cs" />
+    <Compile Include="Repository\HscbHopDongLamViecRepository.cs" />
+    <Compile Include="Repository\HscbHopDongLD68Repository.cs" />
+    <Compile Include="Repository\HscvVanbandiDonvinhanTheodoiRepository.cs" />
+    <Compile Include="Repository\HtqtDoanRaCanBoRepository.cs" />
+    <Compile Include="Repository\HtqtQuocGiaRepository.cs" />
+    <Compile Include="Repository\LanhDaoNhanRepository.cs" />
+    <Compile Include="Repository\QLEmailRepository.cs" />
+    <Compile Include="Repository\QlMailTemplateRepository.cs" />
+    <Compile Include="Repository\QlPhuCapHeSoRepository.cs" />
+    <Compile Include="Repository\QlThongTinPhuCapRepository.cs" />
+    <Compile Include="Repository\SkDangKySangKienRepository.cs" />
+    <Compile Include="Repository\SkDongSangKienRepository.cs" />
+    <Compile Include="Repository\SkLinhVucRepository.cs" />
+    <Compile Include="Repository\SkTrinhLanhDaoRepository.cs" />
+    <Compile Include="Repository\TaiLieuDungLuongLuuTruRepository.cs" />
+    <Compile Include="Repository\TDKTCaNhanDangKyRepository.cs" />
+    <Compile Include="Repository\TDKTPhongTraoThiDuaRepository.cs" />
+    <Compile Include="Repository\DmChuyenNganhDaoTaoRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\HscvVanBanLienQuanRepository.cs" />
+    <Compile Include="Repository\DtnsDauThauRepository.cs" />
+    <Compile Include="Repository\DtnsDuAnRepository.cs" />
+    <Compile Include="Repository\DtnsTinhTrangDuAnRepository.cs" />
+    <Compile Include="Repository\HscvCongviecDonvithamgiaxulyRepository.cs" />
+    <Compile Include="Repository\HscvCongviecDonvitheodoiRepository.cs" />
+    <Compile Include="Repository\HscvCongviecDonvixulychinhRepository.cs" />
+    <Compile Include="Repository\HscvVanbandiCosonhanTronghethongRepository.cs" />
+    <Compile Include="Repository\LuuTruHangRepository.cs" />
+    <Compile Include="Repository\LuuTruKeRepository.cs" />
+    <Compile Include="Repository\LuuTruPhongRepository.cs" />
+    <Compile Include="Repository\LuuTruTangRepository.cs" />
+    <Compile Include="Repository\LuuTruToaNhaRepository.cs" />
+    <Compile Include="Repository\NguoiDungVaiTroRepository.cs" />
+    <Compile Include="Repository\QLDangPhiRepository.cs" />
+    <Compile Include="Repository\QLDoanPhiRepository.cs" />
+    <Compile Include="Repository\QuanLyBieuMauLinhVucRepository.cs" />
+    <Compile Include="Repository\QuanLyBieuMauLoaiRepository.cs" />
+    <Compile Include="Repository\QuanLyBieuMauRepository.cs" />
+    <Compile Include="Repository\SysCongviecHasChucnangRepository.cs" />
+    <Compile Include="Repository\SysCongviecMapChucnangRepository.cs" />
+    <Compile Include="Repository\TaiLieuChuaSoHoaRepository.cs" />
+    <Compile Include="Repository\TaiLieuLichSuChoMuonRepository.cs" />
+    <Compile Include="Repository\TaiLieuTrangThaiSuDungRepository.cs" />
+    <Compile Include="Repository\TdktDanhHieuCaNhanConditionRepository.cs" />
+    <Compile Include="Repository\DmCapCoSoRepository.cs" />
+    <Compile Include="Repository\DTPLDeCuongLichSuRepository.cs" />
+    <Compile Include="Repository\DTPLDeCuongRepository.cs" />
+    <Compile Include="Repository\DTPLDonViSoanThaoChiTietRepository.cs" />
+    <Compile Include="Repository\DTPLDonViSoanThaoRepository.cs" />
+    <Compile Include="Repository\DTPLFileHistoryRepository.cs" />
+    <Compile Include="Repository\DTPLGuiThamDinhRepository.cs" />
+    <Compile Include="Repository\DTPLSoanThaoRepository.cs" />
+    <Compile Include="Repository\DTPLXinYKienRepository.cs" />
+    <Compile Include="Repository\DTPLYKienDanhGiaRepository.cs" />
+    <Compile Include="Repository\PhChuyenDoiTrangThaiRepository.cs" />
+    <Compile Include="Repository\PhDangKyPhongHopRepository.cs" />
+    <Compile Include="Repository\PhThietBiDangKyRepository.cs" />
+    <Compile Include="Repository\PhThietBiRepository.cs" />
+    <Compile Include="Repository\PhThongTinPhongHopRepository.cs" />
+    <Compile Include="Repository\QLCamTinhDangRepository.cs" />
+    <Compile Include="Repository\QLChiBoRepository.cs" />
+    <Compile Include="Repository\QLChiDoanRepository.cs" />
+    <Compile Include="Repository\QLCongDoanRepository.cs" />
+    <Compile Include="Repository\QLDangVienRepository.cs" />
+    <Compile Include="Repository\QLDoanVienRepository.cs" />
+    <Compile Include="Repository\QLHoatDongDangVienRepository.cs" />
+    <Compile Include="Repository\QLHoatDongDoanVienRepository.cs" />
+    <Compile Include="Repository\QlxDieuXeRepository.cs" />
+    <Compile Include="Repository\SysChucnangMacdinhRepository.cs" />
+    <Compile Include="Repository\ThietLapTienKhoanRepository.cs" />
+    <Compile Include="Repository\ThongTinLuongRepository.cs" />
+    <Compile Include="Repository\TmDanhMucThongTinRepository.cs" />
+    <Compile Include="Repository\TmDanhMucTrinhCucChiTietRepository.cs" />
+    <Compile Include="Repository\TmDanhMucTrinhCucRepository.cs" />
+    <Compile Include="Repository\TmThongKeDanhMucLogRepository.cs" />
+    <Compile Include="Repository\TmThongKeDanhMucRepository.cs" />
+    <Compile Include="Repository\TmThuMucChuaSoHoaRepository.cs" />
+    <Compile Include="Repository\TransactionSmsRepository.cs" />
+    <Compile Include="Repository\ActionAuditRepository.cs" />
+    <Compile Include="Repository\CauhinhHethongRepository.cs" />
+    <Compile Include="Repository\ChatGroupRepository.cs" />
+    <Compile Include="Repository\ChatGroupUserRepository.cs" />
+    <Compile Include="Repository\ChatNoidungRepository.cs" />
+    <Compile Include="Repository\ChBuocThaoTacRepository.cs" />
+    <Compile Include="Repository\CongViecNguoithamgiaxylyRepository.cs" />
+    <Compile Include="Repository\CongViecNguoitheodoiRepository.cs" />
+    <Compile Include="Repository\CongViecNguoixylychinhRepository.cs" />
+    <Compile Include="Repository\CongViecRepository.cs" />
+    <Compile Include="Repository\CosoRepository.cs" />
+    <Compile Include="Repository\CTLichCongTacNguoiDungRepository.cs" />
+    <Compile Include="Repository\CTLichCongTacRepository.cs" />
+    <Compile Include="Repository\DmBacLuongRepository.cs" />
+    <Compile Include="Repository\DmLyLuanChinhTriRepository.cs" />
+    <Compile Include="Repository\DmNgoaiNguRepository.cs" />
+    <Compile Include="Repository\DmQuanLyNhaNuocRepository.cs" />
+    <Compile Include="Repository\DmTinHocRepository.cs" />
+    <Compile Include="Repository\DmVanBangChucChiRepository.cs" />
+    <Compile Include="Repository\DoanRaThanhVienRepository.cs" />
+    <Compile Include="Repository\DoanVaoDoanRaRepository.cs" />
+    <Compile Include="Repository\DoanVaoRepository.cs" />
+    <Compile Include="Repository\DoanVao_KhachThamDuRepository.cs" />
+    <Compile Include="Repository\DoanVao_ThanhPhanTiepRepository.cs" />
+    <Compile Include="Repository\DtnsDuToanRepository.cs" />
+    <Compile Include="Repository\DtnsGiaiNganRepository.cs" />
+    <Compile Include="Repository\DtnsQuyetToanRepository.cs" />
+    <Compile Include="Repository\HscbFilesRepository.cs" />
+    <Compile Include="Repository\HscbNhanSuLogRepository.cs" />
+    <Compile Include="Repository\HscvCongviecNoidungtraodoiRepository.cs" />
+    <Compile Include="Repository\HscvCongviecXinluihanRepository.cs" />
+    <Compile Include="Repository\HscvVanbandiCanhanNhanvbRepository.cs" />
+    <Compile Include="Repository\HscvVanbandiDonvinhanNgoaicoquanRepository.cs" />
+    <Compile Include="Repository\HscvVanbandiDonvinhanTrongcoquanRepository.cs" />
+    <Compile Include="Repository\HtqtDoanRaThanhVienRepository.cs" />
+    <Compile Include="Repository\Htqt_ChuongTrinhDuAnRepository.cs" />
+    <Compile Include="Repository\Htqt_ChuongTrinhQuocGiaRepository.cs" />
+    <Compile Include="Repository\Htqt_DonViTaiTroRepository.cs" />
+    <Compile Include="Repository\Htqt_DonViToChucRepository.cs" />
+    <Compile Include="Repository\Htqt_HoChieuRepository.cs" />
+    <Compile Include="Repository\Htqt_HoiNghiHoiThaoRepository.cs" />
+    <Compile Include="Repository\Htqt_QuocGiaToChucRepository.cs" />
+    <Compile Include="Repository\MucDichDoanRaRepository.cs" />
+    <Compile Include="Repository\NltthChuyenvienTrinhCuctruongRepository.cs" />
+    <Compile Include="Repository\NltthLichsuNangluongRepository.cs" />
+    <Compile Include="Repository\NLTXLichSuToTrinhRepository.cs" />
+    <Compile Include="Repository\QlxHangxeRepository.cs" />
+    <Compile Include="Repository\QlxPhieuDangKyRepository.cs" />
+    <Compile Include="Repository\QlxXeRepository.cs" />
+    <Compile Include="Repository\SysCauhinhHanghienthiRepository.cs" />
+    <Compile Include="Repository\SysCauhinhhienthiRepository.cs" />
+    <Compile Include="Repository\SysChucnangtrangchuVaitroRepository.cs" />
+    <Compile Include="Repository\TaiLieuLichSuPheDuyetRepository.cs" />
+    <Compile Include="Repository\TdktDanhhieucanhanRepository.cs" />
+    <Compile Include="Repository\TdktDanhhieutaptheRepository.cs" />
+    <Compile Include="Repository\TdktDieukiendanhhieucanhanRepository.cs" />
+    <Compile Include="Repository\TMChinhSachQLTLRepository.cs" />
+    <Compile Include="Repository\TmChuyenTiepYeuCauRepository.cs" />
+    <Compile Include="Repository\TmGiaHanLichSuRepository.cs" />
+    <Compile Include="Repository\TMManagerVersionRepository.cs" />
+    <Compile Include="Repository\TmLichSuKiemXuatRepository.cs" />
+    <Compile Include="Repository\NLTXKeHoachNangLuongChiTietRepository.cs" />
+    <Compile Include="Repository\TmSharingFileRepository.cs" />
+    <Compile Include="Repository\TmTaiLieuThuocTinhRepository.cs" />
+    <Compile Include="Repository\TmLoaiTaiLieuThuocTinhRepository.cs" />
+    <Compile Include="Repository\TmLoaiVanBanRepository.cs" />
+    <Compile Include="Repository\DMCoSoDaoTaoRepository.cs" />
+    <Compile Include="Repository\DMHinhThucDaoTaoRepository.cs" />
+    <Compile Include="Repository\DMLoaiDaoTaoRepository.cs" />
+    <Compile Include="Repository\DmNgachVienChucRepository.cs" />
+    <Compile Include="Repository\DMNguonKinhPhiRepository.cs" />
+    <Compile Include="Repository\DTChungChiRepository.cs" />
+    <Compile Include="Repository\DTDMDaoTaoNguoiDungRepository.cs" />
+    <Compile Include="Repository\DTKeHoachDaoTaoRepository.cs" />
+    <Compile Include="Repository\DTLichSuDuyetRepository.cs" />
+    <Compile Include="Repository\DTNhanXetKQDTRepository.cs" />
+    <Compile Include="Repository\HscbBietPhaiCanBoRepository.cs" />
+    <Compile Include="Repository\HscbBoNhiemCanBoRepository.cs" />
+    <Compile Include="Repository\HscbBoNhiemLaiCongChucRepository.cs" />
+    <Compile Include="Repository\HscbCanBoNghiHuuRepository.cs" />
+    <Compile Include="Repository\HscbChuyenNgachRepository.cs" />
+    <Compile Include="Repository\HscbChuyenNgachRespository.cs" />
+    <Compile Include="Repository\HscbDanhGiaCanBoReposytory.cs" />
+    <Compile Include="Repository\HscbDanhSachNghiHuuRepository.cs" />
+    <Compile Include="Repository\HscbDieuChuyenCongChucRepository.cs" />
+    <Compile Include="Repository\HscbLanhDaoDanhGiaRepository.cs" />
+    <Compile Include="Repository\HscbNangNgachCongChucRepository.cs" />
+    <Compile Include="Repository\HscbNoiDungDanhGiaRepository.cs" />
+    <Compile Include="Repository\HscbThoiViecRepository.cs" />
+    <Compile Include="Repository\HscbTuChucMienNhiemRepository.cs" />
+    <Compile Include="Repository\HscvVanbandenDonviphoihopRepository.cs" />
+    <Compile Include="Repository\HscvVanbandenNguoixulyRepository.cs" />
+    <Compile Include="Repository\HscvVanbandenPhongbanxulyRepository.cs" />
+    <Compile Include="Repository\NltthDonxinNangluongRepository.cs" />
+    <Compile Include="Repository\QLBaoHiemPhuLucRepository.cs" />
+    <Compile Include="Repository\NLTXLichSuNangLuongRepository.cs" />
+    <Compile Include="Repository\NLTXCVPTrinhCucTruongRepository.cs" />
+    <Compile Include="Repository\NLTXChuyenVienThamDinhChiTietRepository.cs" />
+    <Compile Include="Repository\NLTXChuyenVienThamDinhRepository.cs" />
+    <Compile Include="Repository\NLTXGuiChuyenVienRepository.cs" />
+    <Compile Include="Repository\NLTXGuiChanhVanPhongRepository.cs" />
+    <Compile Include="Repository\NLTXTrinhCucTruongChiTietRepository.cs" />
+    <Compile Include="Repository\NLTXTrinhCucTruongRepository.cs" />
+    <Compile Include="Repository\NLTXDonXinNangLuongRepository.cs" />
+    <Compile Include="Repository\NLTXNhanXetNangLuongRepository.cs" />
+    <Compile Include="Repository\NLTXThongBaoKHNLCanBoRepository.cs" />
+    <Compile Include="Repository\NLTXKeHoachNangLuongRepository.cs" />
+    <Compile Include="Repository\TmGiaHanTaiLieuRepository.cs" />
+    <Compile Include="Repository\DmChucnangRepository.cs" />
+    <Compile Include="Repository\DmChucVuRepository.cs" />
+    <Compile Include="Repository\DmDanTocRepository.cs" />
+    <Compile Include="Repository\DmDonviRepository.cs" />
+    <Compile Include="Repository\DmLoaiHopDongRepository.cs" />
+    <Compile Include="Repository\DmMoiQuanHeRepository.cs" />
+    <Compile Include="Repository\DmNgachCongChucRepository.cs" />
+    <Compile Include="Repository\DmNgheNghiepRepository.cs" />
+    <Compile Include="Repository\DmNguoidungRepository.cs" />
+    <Compile Include="Repository\DmPhongbanRepository.cs" />
+    <Compile Include="Repository\DmThaotacRepository.cs" />
+    <Compile Include="Repository\DmTonGiaoRepository.cs" />
+    <Compile Include="Repository\DmTrinhdoChuyenmonRepository.cs" />
+    <Compile Include="Repository\DmVaitroRepository.cs" />
+    <Compile Include="Repository\EntitiesRepository.cs" />
+    <Compile Include="Repository\GenericRepository.cs" />
+    <Compile Include="Repository\HosocanboRepository.cs" />
+    <Compile Include="Repository\HscbCccvTapsuRepository.cs" />
+    <Compile Include="Repository\HscbCCVCTapSuRepository.cs" />
+    <Compile Include="Repository\HscbCongChucVienChucRepository.cs" />
+    <Compile Include="Repository\HscbDanhGiaTapSuRepository.cs" />
+    <Compile Include="Repository\HscbNguoiDungCanBoRepository.cs" />
+    <Compile Include="Repository\HscbQuanHeGiaDinhRepository.cs" />
+    <Compile Include="Repository\HscbQuaTrinhCongTacRepository.cs" />
+    <Compile Include="Repository\HscbQuaTrinhLuongRepository.cs" />
+    <Compile Include="Repository\HscbTruongDaoTaoRepository.cs" />
+    <Compile Include="Repository\HscvBaocaoCvRepository.cs" />
+    <Compile Include="Repository\HscvCapnhattiendoCvRepository.cs" />
+    <Compile Include="Repository\HscvCongviecRepository.cs" />
+    <Compile Include="Repository\HscvDokhanRepository.cs" />
+    <Compile Include="Repository\HscvDomatRepository.cs" />
+    <Compile Include="Repository\HscvDonvibanhanhRepository.cs" />
+    <Compile Include="Repository\HscvDonviphoihopRepository.cs" />
+    <Compile Include="Repository\HscvDouutienCvRepository.cs" />
+    <Compile Include="Repository\HscvFileuploadRepository.cs" />
+    <Compile Include="Repository\HscvHosoRepository.cs" />
+    <Compile Include="Repository\HscvLinhvucvanbanRepository.cs" />
+    <Compile Include="Repository\HscvLoaihosoRepository.cs" />
+    <Compile Include="Repository\HscvLoaivanbanRepository.cs" />
+    <Compile Include="Repository\HscvMucdoquantrongRepository.cs" />
+    <Compile Include="Repository\HscvNguoiphoihopRepository.cs" />
+    <Compile Include="Repository\HscvNhomsovanbanRepository.cs" />
+    <Compile Include="Repository\HscvPhieuguitravbRepository.cs" />
+    <Compile Include="Repository\HscvPhongbanphoihopRepository.cs" />
+    <Compile Include="Repository\HscvSovanbanRepository.cs" />
+    <Compile Include="Repository\HscvTiepnhanvanbandenRepository.cs" />
+    <Compile Include="Repository\HscvTrangthaiCvRepository.cs" />
+    <Compile Include="Repository\HscvVanbandenRepository.cs" />
+    <Compile Include="Repository\HscvVanbandiNguoikyRepository.cs" />
+    <Compile Include="Repository\HscvVanbandiRepository.cs" />
+    <Compile Include="Repository\HscvVanbandiYkienchidaoRepository.cs" />
+    <Compile Include="Repository\HscvVanbannoiboRepository.cs" />
+    <Compile Include="Repository\HuyenRepository.cs" />
+    <Compile Include="Repository\LichSuPheDuyetRepository.cs" />
+    <Compile Include="Repository\NguoidungChucnangRepository.cs" />
+    <Compile Include="Repository\NguoidungThaotacRepository.cs" />
+    <Compile Include="Repository\NpChiTietRepository.cs" />
+    <Compile Include="Repository\NpDonXinNghiRepository.cs" />
+    <Compile Include="Repository\NpLichSuCapCoQuanRepository.cs" />
+    <Compile Include="Repository\NpLichSuCapDonViRepository.cs" />
+    <Compile Include="Repository\NpNgayNghiPhepNamRepository.cs" />
+    <Compile Include="Repository\SysCauhinhtrangchuRepository.cs" />
+    <Compile Include="Repository\SysChucnangtrangchuRepository.cs" />
+    <Compile Include="Repository\SysEntityMarkRepository.cs" />
+    <Compile Include="Repository\SysTinnhanRepository.cs" />
+    <Compile Include="Repository\TailieudinhkemRepository.cs" />
+    <Compile Include="Repository\ThuMucLichSuPheDuyetRepository.cs" />
+    <Compile Include="Repository\ThuMucLuuTruRepository.cs" />
+    <Compile Include="Repository\TinhRepository.cs" />
+    <Compile Include="Repository\TmYeuCauChiaSeChiTietRepository.cs" />
+    <Compile Include="Repository\TmYeuCauChiaSeLichSuRepository.cs" />
+    <Compile Include="Repository\TmYeuCauChiaSeRepository.cs" />
+    <Compile Include="Repository\TsLichSuSuDungRepository.cs" />
+    <Compile Include="Repository\TsNguonPhatSinhRepository.cs" />
+    <Compile Include="Repository\TSNhomTaiSanRepository.cs" />
+    <Compile Include="Repository\TsTaiSanRepository.cs" />
+    <Compile Include="Repository\TsThanhLyTaiSanRepository.cs" />
+    <Compile Include="Repository\TsTrangThaiTaiSanRepository.cs" />
+    <Compile Include="Repository\VaitroChucnangRepository.cs" />
+    <Compile Include="Repository\VaitroThaotacRepository.cs" />
+    <Compile Include="Repository\VmChiTietDonVangMatRepository.cs" />
+    <Compile Include="Repository\VmDonXinVangMatRepository.cs" />
+    <Compile Include="Repository\VmTrinhLanhDaoCoQuanRepository.cs" />
+    <Compile Include="Repository\VmTrinhLanhDaoDonViRepository.cs" />
+    <Compile Include="Repository\VPLoiViPhamRepository.cs" />
+    <Compile Include="Repository\VPViPhamRepository.cs" />
+    <Compile Include="Repository\WfBuocchuyentrangthaiRepository.cs" />
+    <Compile Include="Repository\WfEntityRelationRepository.cs" />
+    <Compile Include="Repository\WfLichsuchuyendoitrangthaiRepository.cs" />
+    <Compile Include="Repository\WfLoainoidungRepository.cs" />
+    <Compile Include="Repository\WfNhomquytrinhRepository.cs" />
+    <Compile Include="Repository\WfQuytrinhRepository.cs" />
+    <Compile Include="Repository\WfStepvaitroRepository.cs" />
+    <Compile Include="Repository\WfTrangthaiRepository.cs" />
+    <Compile Include="Repository\XaRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

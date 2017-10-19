@@ -1,0 +1,311 @@
+﻿@using Web.Models;
+@using Web.Common;
+@using Web.FwCore;
+@using Business.CommonBusiness;
+@using Web.Areas.CongViecArea.Models;
+@model CongViecIndexViewModel
+@{
+    var currentUser = (UserInfoBO)SessionManager.GetUserInfo();
+}
+<link href="~/Content/Custom/css/congviec/congviec.css" rel="stylesheet" />
+<style type="text/css">
+    .ms-choice {
+        /*background: none;*/
+    }
+        .ms-choice > span {
+            top: 5px;
+            left: 0;
+            width: 100%;
+            padding: 0;
+        }
+
+            .ms-choice > span.placeholder {
+                color: #000;
+            }
+
+    .ms-drop {
+        left: 0;
+        border-radius: 0;
+    }
+
+        .ms-drop input[type=checkbox] {
+            vertical-align: unset;
+            margin: 0 5px 4px 0;
+        }
+
+        .ms-drop input[type=radio] {
+            margin: 0 5px 0 0;
+        }
+
+    .e-input {
+        height: 30px !important;
+    }
+
+    #searchPanel {
+        width: 100%;
+        display: none;
+    }
+
+    #block--search-form-container {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    #btnSearchCongViec, #btnCloseSearchCongViec {
+        background-color: #336699;
+        /*height: 25px;*/
+        border: none;
+        width: 100px;
+        color: white;
+    }
+
+    #QUERY_TUKHOA {
+        width: 92%;
+    }
+
+    #QUERY_NGAYBATDAU_FROM, #QUERY_NGAYBATDAU_TO,
+    #QUERY_NGAYKETTHUC_FROM, #QUERY_NGAYKETTHUC_TO, #QUERY_NGUOI_XLC {
+        width: 233px;
+    }
+
+    #markitem_panel, #panel--douutien-search, #panel--trangthai-search, #QUERY_NGUOI_XLC {
+        width: 233px;
+        margin: 0 0 0 10px;
+    }
+
+    #button--chon-nguoi-xuly {
+        text-decoration: none;
+    }
+</style>
+<div id="searchPanel">
+    <h3 class="group-tittle">
+        Tìm kiếm Công việc
+    </h3>
+    <div id="block--search-form-container">
+        @Html.AntiForgeryToken()
+        @using (Ajax.BeginForm("FindCongViec", new { type = ViewBag.Active}, new AjaxOptions()
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            UpdateTargetId = "grid",
+        }, new { id = "frmSearch" }))
+        {
+            <div class="width-100">
+                <table class="width-100">
+                    <tr class="height-20"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl-search" for="QUERY_TUKHOA">
+                                Từ khóa tìm kiếm:
+                            </label>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBox("QUERY_TUKHOA", string.Empty, new { @class = "e-input mf10", @placeholder = "Từ khóa tìm kiếm" })
+                        </td>
+                    </tr>
+                    <tr class="height-10"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl-search" for="QUERY_NGAYBATDAU_FROM">
+                                Ngày bắt đầu:
+                            </label>
+                        </td>
+                        <td>
+                            @Html.TextBox("QUERY_NGAYBATDAU_FROM", "", new { @placeholder = "Từ ngày", @class = "e-input mf10 vbdi_datepicker" })
+                        </td>
+                        <td></td>
+                        <td>
+                            @Html.TextBox("QUERY_NGAYBATDAU_TO", "", new { @placeholder = "Đến ngày", @class = "e-input mf10 vbdi_datepicker" })
+                        </td>
+                    </tr>
+                    <tr class="height-10"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl-search" for="QUERY_NGAYKETTHUC_FROM">
+                                Ngày kết thúc:
+                            </label>
+                        </td>
+                        <td>
+                            @Html.TextBox("QUERY_NGAYKETTHUC_FROM", "", new { @placeholder = "Từ ngày", @class = "e-input mf10 vbdi_datepicker" })
+                        </td>
+                        <td></td>
+                        <td>
+                            @Html.TextBox("QUERY_NGAYKETTHUC_TO", "", new { @placeholder = "Đến ngày", @class = "e-input mf10 vbdi_datepicker" })
+                        </td>
+                    </tr>
+                    <tr class="height-10"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl-search" for="QUERY_DOUUTIEN">Độ ưu tiên:</label>
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix" id="panel--douutien-search">
+                                @Html.DropDownList("QUERY_DOUUTIEN", Model.ListDoUuTien, new { @class = "create-phanloai width-100", @multiple = "multiple" })
+                            </div>
+                        </td>
+                        <td>
+                            <label class="lbl-search" for="QUERY_TRANGTHAI">
+                                Trạng thái:
+                            </label>
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix" id="panel--trangthai-search">
+                                @Html.DropDownList("QUERY_TRANGTHAI", Model.ListTrangThai, new { @class = "create-phanloai width-100", @multiple = "multiple" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="height-10"></tr>
+                    <tr>
+                        @if (Model.SearchStaffMode != CongViecConstant.SEARCH_NO_STAFF)
+                        {
+                            <td>
+                                <label class="lbl-search">Người xử lý chính:</label>
+                            </td>
+                            <td>
+                                <input type="text" id="QUERY_NGUOI_XLC" class="e-input" name="QUERY_NGUOI_XLC" />
+                                <input type="hidden" id="QUERY_NGUOI_XLC_ID" name="QUERY_NGUOI_XLC_ID" />
+                                &nbsp;
+                                <a href="javascript:void(0)" id="button--chon-nguoi-xuly">Chọn</a> |
+                                <a href="javascript:XoaNguoiXuLyChinh()" id="button--xoa-nguoi-xuly">Xóa</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td colspan="2"></td>
+                        }
+                        <td>
+                            <label class="lbl-search" for="list_mark_item">Đánh dấu:</label>
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix" id="markitem_panel">
+                                <select multiple="multiple" name="list_mark_item" id="list_mark_item">
+                                    <option value="@LOAITAILIEU.CONS_READ">Đã đọc</option>
+                                    <option value="@LOAITAILIEU.CONS_UNREAD">Chưa đọc</option>
+                                    <option value="@LOAITAILIEU.CONS_FAVORITE">Có gắn dấu sao</option>
+                                    <option value="@LOAITAILIEU.CONS_UNFAVORITE">Không gắn dấu sao</option>
+                                    <option value="@LOAITAILIEU.CONS_IMPORTANT">Quan trọng</option>
+                                    <option value="@LOAITAILIEU.CONS_UNIMPORTANT">Không quan trọng</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="height-10"></tr>
+                </table>
+            </div>
+            <div style="margin-left:30%;">
+                <input type="hidden" value="" name="LST_LOAIVANBAN_ID" id="LST_LOAIVANBAN_ID" />
+                <input type="hidden" value="" name="LST_SOVANBAN_ID" id="LST_SOVANBAN_ID" />
+                <input type="hidden" value="" name="mark_item" id="mark_item" />
+                <input type="hidden" id="reload" name="reload" value="0" />
+                <input type="submit" value="Tìm kiếm" id="btnSearchCongViec" />
+                <input type="button" value="Đóng" class="vbdi_search" id="btnCloseSearchCongViec" />
+            </div>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".vbdi_datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-50:+20",
+            showWeek: false,
+            weekHeader: "Tuần",
+            language: 'vi'
+        });
+        $('#QUERY_TRANGTHAI').multipleSelect({
+            filter: true,
+            multiple: true,
+            placeholder: "[--- Chọn trạng thái ---]"
+        });
+        $('#QUERY_DOUUTIEN').multipleSelect({
+            filter: true,
+            multiple: true,
+            placeholder: "[--- Chọn độ ưu tiên ---]"
+        })
+        $("#LOAIVANBAN_ID").multipleSelect({
+            single: false,
+            filter: true,
+            placeholder: "[--- Chọn Loại văn bản ---]"
+        });
+        $("#SOVANBAN_ID").multipleSelect({
+            single: false,
+            filter: true,
+            placeholder: "[--- Chọn sổ văn bản ---]"
+        });
+        $("#list_mark_item").multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "[--- Hình thức đánh dấu ---]"
+        });
+        $(".vbdi_search").click(function () {
+            $("#searchPanel").toggle();
+        });
+    });
+
+    //$("#btnSearchCongViec").click(function () {
+    //    //$("#LST_LOAIVANBAN_ID").val($("#LOAIVANBAN_ID").multipleSelect("getSelects"));
+    //    //$("#LST_SOVANBAN_ID").val($("#SOVANBAN_ID").multipleSelect("getSelects"));
+    //    $("#txtQuickSearch").val($("#keyword").val());
+    //    $("#mark_item").val($("#list_mark_item").multipleSelect("getSelects"));
+    //    $("#reload").val("0");
+    //    $("#frmSearh").submit();
+    //});
+    //function failure() {
+    //}
+    function searchSuccess() {
+        //if (_ShowImportant == 1) {
+        //    $(".webGrid thead tr th").eq(2).show();
+        //    $(".webGrid tbody tr").each(function () {
+        //        $(this).find("td").eq(2).show();
+        //    });
+        //}
+        //else {
+        //    $(".webGrid thead tr th").eq(2).hide();
+        //    $(".webGrid tbody tr").each(function () {
+        //        $(this).find("td").eq(2).hide();
+        //    });
+        //}
+        //if (_ShowFavorite == 1) {
+        //    $(".webGrid thead tr th").eq(1).show();
+        //    $(".webGrid tbody tr").each(function () {
+        //        $(this).find("td").eq(1).show();
+        //    });
+        //}
+        //else {
+        //    $(".webGrid thead tr th").eq(1).hide();
+        //    $(".webGrid tbody tr").each(function () {
+        //        $(this).find("td").eq(1).hide();
+        //    });
+        //}
+    }
+    function ValidateNguoiXuLyChinh() {
+        if (validate_element($("#QUERY_NGUOI_XLC"), $("#NGUOIXULYCHINH_ID_NULL"), "", "", "0") == 0) {
+            $("#QUERY_NGUOI_XLC").focus();
+        }
+    }
+    function XoaNguoiXuLyChinh() {
+        var hasValue = $('#QUERY_NGUOI_XLC').val().trim().length > 0;
+        if (hasValue) {
+            $('#QUERY_NGUOI_XLC').val('');
+            $('#QUERY_NGUOI_XLC_ID').val('');
+        }
+    }
+</script>
+@{
+    //TẠO MODEL CHỌN NGƯỜI XỬ LÝ CHÍNH
+    ChonNguoiDungModel NGUOIXULYCHINH = new ChonNguoiDungModel();
+    NGUOIXULYCHINH.COSO_ID = currentUser.CoSoID.Value;
+    NGUOIXULYCHINH.DONVI_ID = Model.SearchStaffMode == CongViecConstant.SEARCH_ALL_STAFF ? 0 : currentUser.DonViID;
+    NGUOIXULYCHINH.PHONGBAN_ID = 0;
+    NGUOIXULYCHINH.TEXT_ID = "QUERY_NGUOI_XLC";
+    NGUOIXULYCHINH.VALUE_ID = "QUERY_NGUOI_XLC_ID";
+    NGUOIXULYCHINH.ID_CLICK = "button--chon-nguoi-xuly";
+    NGUOIXULYCHINH.IS_MULTICHOICE = 1;
+    NGUOIXULYCHINH.INDEX = 2;
+    NGUOIXULYCHINH.TITLE = "Chọn người xử lý chính";
+    NGUOIXULYCHINH.SHOW_CHUC_VU_ID = "1";
+    NGUOIXULYCHINH.CALLBACK_FUNCTION = "ValidateNguoiXuLyChinh";
+}
+@{Html.RenderPartial("../Common/_ChooseUserV1", NGUOIXULYCHINH);}

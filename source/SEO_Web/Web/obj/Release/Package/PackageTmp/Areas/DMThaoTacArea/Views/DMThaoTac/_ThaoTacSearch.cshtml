@@ -1,0 +1,127 @@
+﻿@using Web.Common
+@model Web.Areas.DMThaoTacArea.Models.DMThaoTacIndexViewModel
+           <style type="text/css">
+               .SearchCriterial {
+                   margin: 0px;
+               }
+
+               .SearchResult {
+                   margin: 0px;
+                   padding: 0px;
+               }
+           </style>
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindThaoTac", "DMThaoTac", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearh" }))
+    {
+
+        <h3 class="group-tittle mt10"><a href="javascript:void(0)" id="showSearch" style="color: #35498e">Tìm kiếm thao tác</a></h3>
+        <table style="margin:0 auto; width:75%; display:none" id="contentSearch">
+            <tr class="height_20"></tr>
+            <tr>
+                <td class="width_120">
+                    <label>Chức năng cấp 1:</label>
+                </td>
+                <td class="width_233">
+                    <div class="input-field4 clearfix fix-width">
+                        @Html.DropDownList("CHUCNANGCAP1", @Model.ListChucNangCap1, "[--- Tất cả ---]", new { @class = "width_100", @style = "padding-right:30px" })
+                    </div>
+                </td>
+                <td class="width_100px"></td>
+                <td class="width_120">
+                    <label>Chức năng cấp 2:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix fix-width">
+                        @Html.DropDownList("CHUCNANGCAP2", @Model.ListChucNangCap2, "[--- Tất cả ---]", new { @class = "width_100 ", @style = "padding-right:30px" })
+                    </div>
+                </td>
+            </tr>
+            <tr class="height_20"></tr>
+            <tr>
+                <td class="width_120">
+                    <label>Tên thao tác:</label>
+                </td>
+                <td>
+                    &nbsp;@Html.TextBox("TENTHAOTAC", "", new { maxlength = "200", @class = "e-input", @style = "width:220px" })
+                </td>
+                <td class="width_100px"></td>
+                <td class="width_120" colspan="2"></td>
+            </tr>
+            <tr style="height:20px"></tr>
+            <tr>
+                <td colspan="4">
+                    <div class="margin-top-10" style="margin-left:50%;">
+                        <button type="button" onclick="Search()" class="btn btn-primary">Tìm kiếm</button>
+                        <button type="button" onclick="CloseSearch()" class="btn btn-default">Đóng</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#CHUCNANGCAP1").val("@ViewData["CURRENTCHUCNANGCAP1"]");
+        $("#CHUCNANGCAP2").val("@ViewData["CURRENTCHUCNANGCAP2"]");
+        $("#TENTHAOTAC").val("@ViewData["TENTHAOTAC"]");
+        $("#showSearch").click(function () {
+            if ($("#contentSearch").is(':hidden')) {
+                $("#contentSearch").fadeIn();
+            } else {
+                $("#contentSearch").fadeOut();
+            }
+
+        });
+        $("#TENTHAOTAC").change(function () {
+            $("#Keyword").val($(this).val());
+        });
+        document.onkeydown = function () {
+            if (window.event.keyCode == '13') {
+                Search();
+            }
+        }
+    });
+    function Search() {
+        $("#frmSearh").submit();
+    }
+    function CloseSearch() {
+        $("#contentSearch").fadeOut();
+    }
+
+    $("#CHUCNANGCAP1").change(function () {
+        if ($("#CHUCNANGCAP1").val() > 0) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("FindData","DMThaoTac")',
+                cache: false,
+                data: { CHUCNANGCHA: $("#CHUCNANGCAP1").val() },
+                success: function (data) {
+                    var items = "";
+                    items += "<option value='-1'>[--- Tất cả ---]</option>";
+                    $.each(data, function (i, type) {
+                        items += "<option value='" + type.DM_CHUCNANG_ID + "'>" + type.TEN_CHUCNANG + "</option>";
+                    });
+                    $("#CHUCNANGCAP2").html(items);
+
+                },
+                error: function (data) {
+                    alert("Không có chức năng cấp 2 nào.");
+                }
+            });
+        } else {
+            $("#CHUCNANGCAP2").html("<option value='-1'>[--- Tất cả ---]</option>");
+        }
+    });
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+        $("#DMTHAOTAC_1").val("");
+        $("#DMTHAOTAC_2").val("");
+        $("#TEN_THAOTAC").val("");
+
+    }
+</script>

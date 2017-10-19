@@ -1,0 +1,73 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@{
+    List<WF_TRANGTHAI> lstSteps = new List<WF_TRANGTHAI>();
+    lstSteps = (List<WF_TRANGTHAI>)SessionManager.GetValue("ListBuocChuyenTrangThai");
+    string SearchType = "Index";
+    if (ViewData["SearchType"] != null)
+    {
+        SearchType = ViewData["SearchType"].ToString();
+    }
+}
+<div id="menu-middle-left" class="left-all-page">
+
+
+    <div id="block-search-form">
+        <div id="search-form">
+            <input type="text" id="txtQuickSearch" name="txtQuickSearch" value="" placeholder="Tìm kiếm theo trích yếu văn bản" style="width:82%">
+            <input type="button" id="btnQuickSearch" name="btnQuickSearch" value="search">
+        </div>
+    </div>
+    <div id="menu-left-content-scroll" class="menu-left-content block">
+        <ul class="admin-menu">
+            <li style="z-index: 10" class="menu">
+                <a href="/VanBanDenArea/VanBanDen/Index" class="@(ViewBag.active.ToString() == "o-1" ? "admin-menu-active" : "")">Danh sách văn bản đến</a>
+            </li>
+            <li style="z-index: 10" class="menu">
+                <a href="/VanBanDenArea/VanBanDen/Index/1" class="@(ViewBag.active.ToString() == "o-1" ? "admin-menu-active" : "")">Danh sách văn bản đến nội bộ</a>
+            </li>
+            <li style="z-index:10" class="menu">
+                <a href="/VanBanDenArea/VanBanDen/Index/2" class="@(ViewBag.active.ToString() == "o-1" ? "admin-menu-active" : "")">Danh sách văn bản đến cùng hệ thống</a>
+            </li>
+            <li class="menu has-child">
+                <a href="javascript:void(0)">Văn bản đến đang xử lý</a>
+                <ul class="admin-menu-child">
+                    @if (lstSteps != null && lstSteps.Count > 0)
+                    {
+                        foreach (var item in lstSteps)
+                        {
+                            <li>
+                                <a href="/VanBanDenArea/VanBanDen/DanhSachVanBan/@item.ID" class="@(ViewBag.active.ToString() == item.ID.ToString() ? "admin-menu-active" : "")">Văn bản đến @item.TENTRANGTHAI</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </li>
+            <li style="z-index:10" class="menu">
+                <a href="/VanBanDenArea/VanBanDen/ListDelete" class="@(ViewBag.active.ToString() == "o-2" ? "admin-menu-active" : "")">Danh sách văn bản đã xóa</a>
+            </li>
+            <li style="z-index:10" class="menu">
+                <a href="/VanBanDenArea/SoVanBanDen/Index">Danh sách sổ văn bản đến</a>
+            </li>
+            <li style="z-index:10" class="menu">
+                <a href="/hsvanbandiarea/hsvanbandi/index">Quản lý văn bản đi</a>
+            </li>
+            <li style="z-index:10" class="menu">
+                <a href="/CongViecArea/CongViec/Index">Quản lý Công việc</a>
+            </li>
+            <li class="menu has-child">
+                <a href="javascript:void(0)">Cấu hình</a>
+                <ul class="admin-menu-child">
+                    <li class="">
+                        <a href="/WorkFlowArea/WorkFlow/ChonLuongXuLy">Chọn luồng xử lý cho văn bản đi/đến</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+   
+</script>

@@ -1,0 +1,44 @@
+﻿<style>
+    .txt {
+        width: 250px;
+    }
+
+    .btn {
+        height: 30px;
+        background: #0099CC;
+        font-weight: bold;
+        color: white;
+        border: none;
+    }
+</style>
+
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindNhomSoVanBan", "HscvNhomSoVanBan", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearch" }))
+    {
+        
+        <div style="text-align:center;margin-top:20px">
+            <label class="lblDiemThi" style="margin-left:130px;width:80px">Tên nhóm sổ văn bản:</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.TextBox("NHOMSOVANBAN", "", new { @style = "width:200px", @class = "e-input" })
+            <br />
+            <br />
+            <input type="submit" id="btnSearch" value="Tìm Kiếm" style="background-color:#336699;font-weight:bold;height:35px;border:none;width:100px;color:white" />
+        </div>
+    }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#NHOMSOVANBAN").val(@ViewData["NhomSoVanBan"]);
+    });
+    function failure(xhr, response) {
+        CommonJS.alert(xhr.responseText);
+        $("#NHOMSOVANBAN").val("");
+    }
+</script>

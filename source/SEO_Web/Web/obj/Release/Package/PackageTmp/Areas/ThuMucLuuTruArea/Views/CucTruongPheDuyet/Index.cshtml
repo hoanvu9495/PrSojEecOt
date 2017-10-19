@@ -1,0 +1,919 @@
+﻿@{
+    ViewBag.Title = "Phê duyệt tài liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Web.Areas.ThuMucLuuTruArea.Models.ThuMucLuuTruModel
+@using Web.Areas.ThuMucLuuTruArea.Models;
+<link href="~/Content/themes/base/treeview/jquery.treeview.css" rel="stylesheet" />
+<script src="~/Scripts/treeview/jquery.cookie.js"></script>
+<script src="~/Scripts/treeview/jquery.treeview.js"></script>
+<link href="~/Content/themes/base/treeview/screen.css" rel="stylesheet" />
+@*<script src="~/Scripts/js/jquery.nu-context-menu.js"></script>*@
+@*<link href="~/Content/Custom/Font/contextMenu.css" rel="stylesheet" />*@
+<script src="~/Scripts/ContextMenu/jquery.contextMenu.js"></script>
+<link href="~/Content/Custom/Font/jquery.contextMenu.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+<script type="text/javascript" src="/Scripts/multiple-select.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#DONVI_ID").multipleSelect({
+            multiple: true,
+            filter: true,
+        });
+        $("#treeview").resizable({
+        });
+        $("#treeview").on("resize", function () {
+            var wRight = 100 - $("#treeview").width() / 10;
+            if ($("#treeview").width() / 10 > 50) {
+                wRight = $("#treeview").width() / 10 - 50 + wRight;
+            }
+            $("#treeview").css("width", $("#treeview").width() / 10 + "%");
+            document.getElementById("treeview").style.maxWidth = "50%";
+            document.getElementById("treeview").style.minWidth = "10%";
+            document.getElementById("treeview").style.minHeight = "100px";
+            document.getElementById("treeview").style.maxHeight = "400px";
+            $("#display").css("width", wRight + "%");
+        });
+        $('#selectAll').click(function (event) { //on click
+            if (this.checked) { //Kiểm tra trạng thái đã chọn checkbox có id là selectall hay chưa
+                $('.checkbox1').each(function () { //lặp qua từng checkboxcheckbox
+                    this.checked = true; //chọn tất cả checkbox có class là: "checkbox1"
+                });
+            } else {
+                $('.checkbox1').each(function () { //lặp qua từng checkboxcheckbox
+                    this.checked = false; //deselect all checkboxes with class "checkbox1"
+                });
+            }
+        });
+        //$("#TimKiemNangCao").click(function () {
+        //    $("#panel").slideToggle("slow")
+        //});
+        $("#selectnam").change(function () {
+            reloadGrid();
+            reloadTable();
+        });
+    });
+</script>
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+    .share-file {
+        background: url('/Content/themes/base/images/TM_Share.png');
+        padding: 12px 10px 19px 40px;
+        background-repeat: no-repeat;
+        background-position: 20px 2px;
+        margin: 0 12px 0 2px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+    }
+
+    .share-fileplus {
+        background: url('/Content/themes/base/images/TM_Share_Plus1.png');
+        padding: 12px 10px 19px 40px;
+        background-repeat: no-repeat;
+        background-position: 20px 2px;
+        margin: 0 12px 0 2px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 26px 26px;
+    }
+
+        .share-file:hover, .share-fileplus:hover {
+            cursor: pointer;
+        }
+
+    .AddFolder {
+        cursor: pointer;
+        border-radius: 8px;
+    }
+
+    .ms-drop ul input[type="checkbox"] {
+        margin: 0 6px 0 !important;
+    }
+
+    .SearchResult tr td {
+        vertical-align: middle !important;
+    }
+
+    .SearchResult.hot-news-list-2.mgt20 > #URLPath {
+        margin-bottom: 3%;
+    }
+
+    #Path li {
+        float: left;
+    }
+
+    #TimKiemNangCao:hover {
+        cursor: pointer;
+    }
+
+    .AddFolder span {
+    }
+
+    .folder-content {
+        float: left;
+        width: 100%;
+    }
+
+    #treeview {
+        float: left;
+        width: 15%;
+        overflow: auto;
+        height: 400px;
+        overflow-x: hidden;
+    }
+
+    .ui-resizable-se {
+        display: none !important;
+    }
+
+    #display {
+        width: 85%;
+        height: 400px;
+        overflow: auto;
+        float: left;
+        min-height: 80%;
+    }
+
+    #right ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        padding: 10px 25px;
+        border-radius: 5px;
+    }
+
+    #right li {
+        float: left;
+        margin-right: 10px;
+    }
+
+        #right li a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        #right li:hover {
+            color: #357ae8;
+            cursor: pointer;
+        }
+
+    #approval:hover {
+        cursor: pointer;
+    }
+
+    #TimKiem {
+        padding: 10px 15px;
+        background: #4479BA;
+        color: #FFF;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        border: solid 1px #20538D;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+        -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    #LocKetQua {
+        padding: 10px 15px;
+        background: #4479BA;
+        color: #FFF;
+        border: solid 1px #20538D;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+        -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    }
+
+        #TimKiem:hover, #LocKetQua:hover {
+            cursor: pointer;
+        }
+
+
+
+    #disApproval:hover, #DanhSach:hover {
+        cursor: pointer;
+    }
+
+    #head-content {
+        margin-bottom: 20px;
+    }
+
+    #panel {
+        margin: 21px 20px 10px 20px;
+        display: none;
+    }
+
+    .NghiepVu {
+        float: right;
+        margin-left: 2%;
+        margin-right: 20px;
+    }
+
+    #selectnam {
+        -moz-user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        padding: 2px 12px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+        color: black !important;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+        color: #555;
+        display: block;
+        font-size: 14px;
+        /*height: 20px;*/
+        line-height: 1.42857;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    }
+
+    #panel td:nth-child(2) {
+        margin-left: 10px;
+    }
+
+    #panel table {
+        width: 38%;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page" style="width:300px">
+        <div id="smart-dms" class="block">
+            <h1>Phê duyệt tài liệu</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;width:calc(100% - 300px)">
+        <div id="menu-child">
+            <div class="menu-left">
+                @if (Model.listNam.Count > 0)
+                {
+
+                    <select id="selectnam">
+                        @foreach (var a in Model.listNam)
+                        {
+                            if (DateTime.Now.Year == a)
+                            {
+                                <option selected="selected" value="@a">@a</option>
+                            }
+                            else
+                            {
+                                <option value="@a">@a</option>
+                            }
+                        }
+                    </select>
+                }
+                &nbsp;
+            </div>
+            <div class="menu-right" style="margin-right:20px">
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" id="approval">Phê duyệt tài liệu</button>
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" id="disApproval">Trả về đơn vị</button>
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" id="DanhSach">Yêu cầu chia sẻ thông tin(@Model.CountYeuCau)</button>
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" id="GiaHan" onclick="location.href = '@Url.Action("DanhSachThuMucGiaHan", "CucTruongPheDuyet")'">Gia hạn tài liệu(@Model.XuLy)</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div id="headingOne" class="panel-heading" style="margin-top:54px" role="tab">
+        <h4 class="panel-title">
+            <a class="" role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Tìm kiếm nâng cao</a>
+        </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse" style="" role="tabpanel" aria-expanded="false">
+
+        <div class="SearchCriterial" style="margin-left:30px;margin-bottom:10px;width:50%">
+            <table>
+                <tr>
+                    <td style="width:100px">Tên thư mục</td>
+                    <td colspan="2">
+                        <input type="text" id="Folder_Name" class="form-control" style="width:100%" placeholder="Nhập tên thư mục cần tìm kiếm" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>Trạng thái:</td>
+                    <td style="width: 40px">
+                        <div style="width:100px;float:left">
+                            <label class="checkbox-inline"><input type="checkbox" value="@ThuMucConstant.DATRINH" name="status" style="margin-top:1px" />Chờ duyệt</label>
+
+                        </div>
+                        <div style="width:100px;float:left">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" value="@ThuMucConstant.DADUYET" name="status" style="margin-top:1px" />Đã duyệt
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>Đơn vị</td>
+                    <td colspan="2">
+                        <div class="input-field4 clearfix fix-width">
+                            @Html.DropDownList("ID", @Model.lstDonvi, new { @style = "width: 233px", @id = "DONVI_ID", @multiple = "multiple" })
+                        </div>
+                        <input type="hidden" value="" name="DONVI_ID_HIDDEN" id="DONVI_ID_HIDDEN" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <a id="LocKetQua" title="Tìm kiếm">
+                            Tìm Kiếm
+                        </a>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        @*</div>*@
+    </div>
+</div>
+<div class="right-all-page" oncontextmenu="return false;" style="border-left:1px solid #cccccc; background:#fff;width:100%;margin-top:-20px">
+    <div class="right-content clearfix">
+        @*<div class="SearchResult ">*@
+        <div id="URLPath">
+
+        </div>
+        <div class="folder-content">
+            <div id="treeview">
+
+                @Html.Partial("_ThuMucAll")
+                <span class="noresulttree" style="color:red;display:none">Không tìm thấy bản ghi nào phù hợp</span>
+            </div>
+            <div id="display">
+                <form>
+                    <table class="webGrid">
+                        <thead>
+                            <tr class="head">
+                                @* <th style="width:10px"><input type="checkbox" id="selectAll" title="Lựa chọn tất cả" /></th>*@
+                                <th>Thư mục</th>
+                                <th>Đơn vị</th>
+                                @*<th>Người trình</th>*@
+                                <th>Số thư mục con</th>
+                                <th>Ngày tạo</th>
+                                <th>Chia sẻ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyItem">@Html.Partial("_ThuMucTable")</tbody>
+                        <tfoot id="footItem"></tfoot>
+                    </table>
+                </form>
+                <span class="emptydata">Thư mục lưu trữ rỗng</span>
+                <span class="noresulttbl" style="color:red;display:none">Không tìm thấy bản ghi nào phù hợp</span>
+            </div>
+        </div>
+        @*</div>*@
+        <div style="clear:both"></div>
+    </div>
+</div>
+<div id="RenameThuMuc" title="Đổi tên thư mục"></div>
+<div id="CreateThuMuc" title="Thêm mới thư mục"></div>
+<input type="hidden" id="THEMTHUMUC" value="0" />
+
+@*<div id="lichsutiepnhan" title="Lịch sử phê duyệt"></div>*@
+
+<div class="modal fade" id="ShareFile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="lichsutiepnhan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<script type="text/javascript">
+    function initialVulue() {
+        $("#DONVI_ID_HIDDEN").val($("#DONVI_ID").multipleSelect("getSelects"));
+    }
+    function LoadDataByID(ParentID) {
+        $(".folder").each(function () {//data-loaded
+            if ($(this).attr("data-pid") == ParentID && $(this).attr("data-loaded") != undefined) {
+                $(this).click();
+                return false;
+            }
+        });
+    }
+    $(function () {
+        var ThuMucClick = "1";
+        $(".AddFolder").click(function () {
+            CreateThuMuc(0);
+        });
+
+        $(document).on('click', '#approval', function () {
+            var thumuc = "";
+            //if($('#selectAll').is("checked") == true){
+            //    selectAll = 1;
+            //}
+            var selectAll = 0;
+            $("input:checkbox[class=checkbox1]:checked").each(function () {
+                selectAll++;
+                thumuc += $(this).val() + ",";
+            });
+            if ($('#selectAll').is("checked") == true) {
+                selectAll = selectAll - 1;
+            }
+            //alert($('#selectAll').is("checked"));
+            if (selectAll < 1) {
+                alert("Vui lòng chọn 1 tài liệu.");
+            } else {
+                Comment("pheduyet", thumuc);
+            }
+        });
+        $('#Folder_Name').keyup(function (e) {
+            if (e.keyCode == 13) {
+                $("#LocKetQua").click();
+            }
+        });
+        $("#LocKetQua").click(function () {
+            initialVulue();
+            var s = "";
+            $("input:checkbox[name=status]:checked").each(function () {
+                s += $(this).val() + ",";
+            });
+            var dv_ID = $("#DONVI_ID").val() != "" ? $("#DONVI_ID").val() : "";
+            var pb_ID = $("#DM_PHONGBAN_ID").val() != "" ? $("#DM_PHONGBAN_ID").val() : "";
+            var tenthumuc = $("#Folder_Name").val().trim() != "" ? $("#Folder_Name").val().trim() : "";
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("FindDataByTrangThai", "CucTruongPheDuyet")',
+                data: {
+                    trangthai: s,
+                    nam: document.getElementById("selectnam").value,
+                    donvi: $("#DONVI_ID_HIDDEN").val(),
+                    phongban: pb_ID,
+                    tenthumuc: tenthumuc
+
+                },
+                cache: false,
+                dataType: "html",
+                success: function (d) {
+                    FindDataTree();
+                    FindData();
+                }, error: function (xhr) {
+                    alert("Đã có lỗi xảy ra.Vui lòng thử lại sau");
+                }
+            });
+        });
+        $(document).on('click', '.share-file', function () {
+            ShareFile($(this).attr('data-fid'), $(this).attr('data-file'));
+        });
+        $(document).on('click', '.share-fileplus', function () {
+            ShareFile($(this).attr('data-fid'), $(this).attr('data-file'));
+        });
+        $(document).on('click', '#DanhSach', function () {
+            location.href = '@Url.Action("DanhSachYeuCauChiaSe", "CucTruongPheDuyet")';
+        });
+        $(document).on('click', '#disApproval', function () {
+            var thumuc = "";
+            var selectAll = 0;
+            $("input:checkbox[class=checkbox1]:checked").each(function () {
+                selectAll++;
+                thumuc += $(this).val() + ",";
+            });
+
+            if ($('#selectAll').is("checked") == true) {
+                selectAll = selectAll - 1;
+            }
+            if (selectAll < 1) {
+                alert("Vui lòng chọn 1 tài liệu.");
+            } else {
+                Comment("trave", thumuc);
+            }
+
+
+        });
+    });
+    function Comment(approval, thumuc) {
+        $.ajax({
+            url: '@Url.Action("CommentThuMuc", "CucTruongPheDuyet")',
+            type: 'post',
+            cache: false,
+            data: {
+                approval: approval,
+                thumuc: thumuc
+            },
+            success: function (data) {
+                $("#ApprovalComment").html(data);
+                $("#ApprovalComment").modal('show');
+                $("#ApprovalComment").find(".modal-dialog").css("width", "600px");
+                // $("#ApprovalComment").find(".modal-dialog").css("height", "auto");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function GetPath(pid) {
+        $.ajax({
+            url: '@Url.Action("GetURLBar", "ThuMucLuuTru")',
+            type: 'GET',
+
+            data: {
+                pID: pid
+            },
+            dataType: "json",
+            success: function (d) {
+                $("#URLPath").html("");
+
+                var $ul = $("<ul id='Path' ></ul>");
+                $ul.append($("<li data-fid='F_0'></li>").append(
+                                   "<span class='folder' data-loaded='false' data-pid='0'><i class=\"fa fa-folder-open-o\"></i>Gốc<i class=\"fa fa-chevron-right\"></i></span>"
+                                   )
+                                        )
+                if (d.length > 1) {
+                    for (var i = d.length - 1; i >= 0; i--) {
+                        if (i == 0) {
+                            $ul.append(
+                                   $("<li data-fid='F_" + d[i].ID + "'></li>").append(
+                                   "<span class='folder' data-loaded='false' data-pid='" + d[i].ID + "'><i class=\"fa fa-folder-open-o\"></i>" + d[i].TENTHUMUC + "</span>"
+                                   )
+                                        )
+                        } else {
+                            $ul.append(
+                                   $("<li data-fid='F_" + d[i].ID + "'></li>").append(
+                                   "<span class='folder' data-loaded='false' data-pid='" + d[i].ID + "'><i class=\"fa fa-folder-open-o\"></i>" + d[i].TENTHUMUC + "<i class=\"fa fa-chevron-right\"></i></span>"
+                                   )
+                                        )
+                        }
+                    }
+                } else if (d[0] != null) {
+                    $ul.append(
+                               $("<li data-fid='F_" + d[0].ID + "'></li>").append(
+                              "<i class=\"fa fa-folder-open-o\"></i><span class='folder' data-loaded='false' data-pid='" + d[0].ID + "'>" + d[0].TENTHUMUC + "</span>"
+                               )
+                                    )
+
+                } else {
+                    $ul.append("");
+                }
+                $("#URLPath").append($ul);
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    var isRun = "1";
+    //Tai file ve
+    $(document).on('click', '.filearchive', function () {
+        var ID = $(this).attr("data-pid");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckkingFile", "ThuMucLuuTru")',
+            data: {
+                ID: ID
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                if (data == "Co") {
+                    location.href = "./DownloadFile?ID=" + ID;
+                } else {
+                    $.confirm({
+                        'title': 'Không tìm thấy tài liệu',
+                        'message': 'Xin lỗi không thể tìm thấy tài liệu mà bạn đang yêu cầu.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+    $(document).on('click', '.folder', function () {
+        var this1 = $(this);
+        this1.closest("li").find("ul").remove("ul");
+        var isLoaded = $(this).attr('data-loaded');
+        id = $(this1).attr('data-pid');
+        if (id == 0) {
+            $(".webGrid").show();
+            reloadGrid();
+            reloadTable();
+            $("#URLPath").html("");
+            $("#THEMTHUMUC").val("0");
+            $(".emptydata").hide();
+        } else {
+            if (isLoaded == "false") {
+                $("#THEMTHUMUC").val(id);
+                this1.attr("data-loaded", true);
+                $("#bodyItem").html("");
+                $("#footItem").html("");
+                $.ajax({
+                    url: '@Url.Action("GetChild", "CucTruongPheDuyet")',
+                    type: "GET",
+                    data: { pid: $(this1).attr('data-pid') },
+                    dataType: "json",
+                    success: function (d) {
+                        GetPath($(this1).attr('data-pid'));
+                        if (d.length > 0) {
+                            $(".emptydata").hide();
+                            $(".webGrid").show();
+                            var $ul = $("<ul></ul>");
+                            $.each(d, function (i, ele) {
+                                if (ele.IS_THUMUC) {
+                                    var thumuc_trangthai = "";
+                                    if (ele.IS_NEEDREVIEW == '@ThuMucConstant.DADUYET') {
+                                        if (ele.EXPIRE_DATE != null && new Date(ele.EXPIRE_DATE) < new Date()) {
+                                            thumuc_trangthai = "<span class='folder expired1' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + " (Hết hạn lưu trữ)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (ele.IS_PRIVATE) {
+                                            thumuc_trangthai = "<span class='folder private1' title ='" + ele.TENTHUMUC + "(Thư mục cá nhân)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (new Date(ele.EXPIRE_DATEFROM) <= new Date() && new Date() <= new Date(ele.EXPIRE_DATE)) {
+                                            thumuc_trangthai = "<span class='folder unexpired1' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (new Date(ele.EXPIRE_DATEFROM) > new Date()) {
+                                            thumuc_trangthai = "<span class='folder unexpired1' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + " (Chưa được sử dụng)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else {
+                                            thumuc_trangthai = "<span class='folder' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        }
+                                    } else if (ele.IS_NEEDREVIEW == '@ThuMucConstant.CUC_TRAVE' && !ele.IS_PRIVATE) {
+                                        thumuc_trangthai = "<span class='folder unapprove1' title ='" + ele.TENTHUMUC + "(Bị trả về)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Trả về)</span>";
+                                    } else if (ele.IS_PRIVATE) {
+                                        thumuc_trangthai = "<span class='folder private1' title ='" + ele.TENTHUMUC + "(Thư mục cá nhân)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                    } else if (ele.IS_NEEDREVIEW == '@ThuMucConstant.DUTHAO') {
+                                        thumuc_trangthai = "<span class='folder drafts1' title ='" + ele.TENTHUMUC + "(Dự thảo)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Dự thảo)</span>";;
+                                    }
+                                    else {
+                                        thumuc_trangthai = "<span class='folder approve1' title ='" + ele.TENTHUMUC + "(Cần duyệt)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Cần duyệt)</span>";;
+                                    }
+                                    $ul.append(
+                                       $("<li data-fid='F_" + ele.ID + "'></li>").append(
+                                           thumuc_trangthai
+                                       )
+                                   )
+                                }
+                                var date = ele.NGAYTRINH;
+                                var dt = date.split("T");
+                                var ngay = dt[0].split("-");
+                                var ngaytao = ngay[2] + "/" + ngay[1] + "/" + ngay[0];
+                                var trangthai = "";
+                                var tenphong = "";
+                                //if (ele.TENPHONG == null) {
+                                //    tenphong = "";
+                                //} else {
+                                //    tenphong = ele.TENPHONG
+                                //}
+                                switch (ele.IS_NEEDREVIEW) {
+                                    case '@ThuMucConstant.DUTHAO.ToString()':
+                                        trangthai = "<span style='color:#CCC'>Dự thảo</span>";
+                                        break;
+                                    case '@ThuMucConstant.DATRINH':
+                                        trangthai = "<span style='color:red'>Chờ duyệt</span>";
+                                        break;
+                                    case '@ThuMucConstant.CUC_TRAVE':
+                                        trangthai = "<span style='color:red'>Cục trả về</span>";
+                                        break;
+                                    case '@ThuMucConstant.DADUYET':
+                                        trangthai = "<span style='color:green'>Đã duyệt</span>";
+                                        break;
+                                }
+                                var thumuc = "";
+                                var tailieu = "";
+                                if (ele.IS_THUMUC == true) {
+                                    var thumuc_trangthai = "";
+                                    if (ele.IS_NEEDREVIEW == '@ThuMucConstant.DADUYET') {
+                                        if (ele.EXPIRE_DATE != null && new Date(ele.EXPIRE_DATE) < new Date()) {
+                                            thumuc_trangthai = "<span class='folder expired' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + " (Hết hạn lưu trữ)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (new Date(ele.EXPIRE_DATEFROM) <= new Date() && new Date() <= new Date(ele.EXPIRE_DATE)) {
+                                            thumuc_trangthai = "<span class='folder unexpired' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (new Date(ele.EXPIRE_DATEFROM) > new Date()) {
+                                            thumuc_trangthai = "<span class='folder unexpired' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + " (Chưa được sử dụng)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        } else if (ele.EXPIRE_DATE != null || ele.EXPIRE_DATEFROM != null) {
+                                            if (ele.EXPIRE_DATEFROM != null) {
+                                                thumuc_trangthai = "<span class='folder unexpired' title='Lưu trữ từ:" + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                            } else {
+                                                thumuc_trangthai = "<span class='folder unexpired' title='Lưu trữ đến: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                            }
+                                        }
+                                        else {
+                                            thumuc_trangthai = "<span class='folder item' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        }
+                                    } else if (ele.IS_NEEDREVIEW == '@ThuMucConstant.CUC_TRAVE' && !ele.IS_PRIVATE) {
+                                        thumuc_trangthai = "<span class='folder unapprove' title ='" + ele.TENTHUMUC + "(Bị trả về)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Trả về)</span>";
+                                    }
+                                    else if (ele.IS_NEEDREVIEW == '@ThuMucConstant.DATRINH') {
+
+                                        thumuc_trangthai = "<span class='folder approve' title ='" + ele.TENTHUMUC + "(Chờ duyệt)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Chờ duyệt)</span>";;
+
+                                    }
+                                    else {
+                                        thumuc_trangthai = "<span class='folder approve' title ='" + ele.TENTHUMUC + "(Cần duyệt)' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Cần duyệt)</span>";;
+                                    }
+                                    var share = "";
+                                    // if (ele.IS_PRIVATE == true) {
+                                    if (ele.IS_SHARING == true || ele.IS_SHARING == null) {
+                                        share = "<span class='share-fileplus' data-file='true' title='Chia sẻ tài liệu với những người khác' data-fid='" + ele.ID + "'></span>";
+                                    } else {
+                                        share = "<span class='share-file' data-file='true' title='Chia sẻ tài liệu với những người khác' data-fid='" + ele.ID + "'></span>";
+                                    }
+                                    //} else {
+                                    //    share = "Không";
+                                    //}
+
+                                    thumuc = "<tr><td data-fid='F_" + ele.ID + "'>" + thumuc_trangthai + "</td>" + "<td>" + ele.TENDONVI + "</td>" +
+                                "<td>Có " + ele.SLTHUMUC + " thư mục</td><td>" + ngaytao + "</td><td>" + share + "</td>";
+                                } else {
+                                    //    var extension = ele.THUMUCCHA;
+                                    //    var docx = "";
+                                    //    if (extension == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                                    //        docx = "docx";
+                                    //    } else if (extension == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+                                    //        docx = "ms-excel";
+                                    //    }
+                                    //    //tailieu = "<tr id='file-item' ><td data-fid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] +" "+ docx + " " + extension.split('.')[1] + " filearchive' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span></td><td>&nbsp;</td><td>" + ngaytao + "</td><td>Không</td></tr>";
+                                    //    tailieu = "<tr><td data-fid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' title='Nhấp chuột trái vào đây để tải tài liệu' data-file='true'  data-pid='" + ele.ID + "'>" + ele.TENTHUMUC +
+                                    //"</span></td>" + "<td>" + ele.TENDONVI + "</td><td>" + ele.NGUOITRINH + "</td>" +
+                                    //"<td></td><td>" + ngaytao + "</td>";
+                                    var share = "";
+                                    if (ele.IS_SHARING == true || ele.IS_SHARING == null) {
+                                        share = "<span class='share-fileplus' data-file='false' title='Chia sẻ tài liệu với những người khác' data-fid='" + ele.ID + "'></span>";
+                                    } else {
+                                        share = "<span class='share-file' data-file='false' title='Chia sẻ tài liệu với những người khác' data-fid='" + ele.ID + "'></span>";
+                                    }
+                                    var extension = ele.THUMUCCHA;
+                                    var docx = "";
+                                    if (extension.split('/')[1] == "vnd.openxmlformats-officedocument.wordprocessingml.document" || extension == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || extension == "vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                                        docx = "msword";
+                                    } else if (extension == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+                                        docx = "ms-excel";
+                                    }
+                                    if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DADUYET') {
+                                        tailieu = "<tr class='file-item' ><td data-fid='F_" + ele.ID + "'><span data-sort='0' class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' data-file='true' data-pid='" + ele.ID + "'>" + htmlDecode(ele.TENTHUMUC) + "</span></td><td>" + ele.TENDANGNHAP + "</td><td>&nbsp;</td><td>" + ngaytao + "</td><td>" + share + "</td></tr>";
+                                    } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.TRAVE') {
+                                        tailieu = "<tr class='file-item' ><td data-fid='F_" + ele.ID + "'><span data-sort='0' class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + htmlDecode(ele.TENTHUMUC) + " (Trả về)</span></td><td>" + ele.TENDANGNHAP + "</td><td>&nbsp;</td><td>" + ngaytao + "</td><td>" + share + "</td></tr>";
+                                    } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DUTHAO') {
+                                        tailieu = "<tr class='file-item' ><td data-fid='F_" + ele.ID + "'><span data-sort='0' class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + htmlDecode(ele.TENTHUMUC) + " (Dự thảo)</span></td><td>" + ele.TENDANGNHAP + "</td><td>&nbsp;</td><td>" + ngaytao + "</td><td>" + share + "</td></tr>";
+                                    }
+                                    else {
+                                        tailieu = "<tr class='file-item' ><td data-fid='F_" + ele.ID + "'><span data-sort='0' class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + htmlDecode(ele.TENTHUMUC) + " (Chưa duyệt)</span></td><td>" + ele.TENDANGNHAP + "</td><td>&nbsp;</td><td>" + ngaytao + "</td><td>" + share + "</td></tr>";
+                                    }
+                                }
+                                if (thumuc == "") {
+                                    $("#bodyItem").append(tailieu);
+                                } else {
+                                    $("#bodyItem").append(thumuc);
+                                    $("#footItem").append(tailieu);
+                                }
+
+                            });
+
+                            $(this1).parent().append($ul);
+                            //$(this1).addClass('collapse');
+                            //$(".webGrid th:first-child").hide();
+                            //$(".webGrid th:last-child").hide();
+                            //$(".webGrid th:first-child").css("width", "25%");
+                            $(this1).toggleClass('expand');
+                            $(this1).closest('li').children('ul').slideDown();
+                        } else {
+                            $(".webGrid").hide();
+                            $(".emptydata").show();
+                        }
+                    },
+                    error: function (xhr, response) {
+                        alert(xhr.responseText);
+                    }
+                });
+
+            } else {
+                $(this1).attr("data-loaded", false);
+                $(this1).removeClass('expand');
+            }
+        }
+    });
+    var tontai = "1";
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadTree", "CucTruongPheDuyet")',
+            data: {
+                nam: document.getElementById("selectnam").value
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#browser").html(data);
+                //alert(data);
+            }
+        });
+    }
+    function reloadTable() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadTable", "CucTruongPheDuyet")',
+            data: {
+                nam: document.getElementById("selectnam").value
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                //alert(Ten_DanToc);
+                $(".webGrid th:first-child").show();
+                $(".webGrid th:last-child").show();
+                $(".webGrid th:first-child").css("width", "10px");
+                $("#bodyItem").html(data);
+                //alert(data);
+            }
+        });
+    }
+    function FindData() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("FindData", "CucTruongPheDuyet")',
+            data: {
+
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                //alert(Ten_DanToc);
+                $(".webGrid th:first-child").show();
+                $(".webGrid th:last-child").show();
+                $(".webGrid th:first-child").css("width", "10px");
+                $("#bodyItem").html(data);
+                //alert(data);
+            }
+        });
+    }
+    function FindDataTree() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("FindDataTree", "CucTruongPheDuyet")',
+            data: {
+
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#browser").html(data);
+                //alert(data);
+            }
+        });
+    }
+    function ShareFile(ID, ISTHUMUC) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SharingFile", "CucTruongPheDuyet")',
+            data: {
+                TAILIEU_ID: ID,
+                ISTHUMUC: ISTHUMUC,
+                IS_QUANLY: true
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                if (data.length > 0) {
+                    $("#ShareFile").html(data);
+                    $("#ShareFile").modal('show');
+                    $("#ShareFile").find(".modal-dialog").css("height", "550px");
+                } else {
+                    $.confirm({
+                        'title': 'Không thể chia sẻ tài liệu',
+                        'message': 'Tài liệu mà bạn yêu cầu hiện đang không phải là của cá nhân.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { }
+                            }
+                        }
+                    });
+                }
+            }, error: function (xrt) {
+                alert(xrt.responseText);
+            }
+        });
+    }
+    function htmlDecode(html) {
+        return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+</script>

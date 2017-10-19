@@ -1,0 +1,28 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Business.CommonBusiness;
+@{
+    List<ThuMucLuuTruBO> lstThuMuc = new List<ThuMucLuuTruBO>();
+    lstThuMuc = (List<ThuMucLuuTruBO>)SessionManager.GetValue("ThuMucTable");
+}
+@{
+    if (lstThuMuc != null && lstThuMuc.Count > 0)
+    {
+        foreach (var i in lstThuMuc)
+        {
+            <tr>
+                <td><input type="checkbox" class="checkbox1" value="@i.ID" /></td>
+                <td data-pid="@("F_"+i.ID)">
+                    <span class='folder item' data-loaded='false' data-pid="@i.ID">
+                        @i.TENTHUMUC
+                    </span>
+                </td>
+                <td>Có @i.SLTHUMUC thư mục</td>
+                <td>@String.Format("{0:dd/M/yyyy}", @i.NGAYTAO)</td>
+                <td>Không</td>
+            </tr>
+        }
+
+    }
+}

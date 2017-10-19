@@ -1,0 +1,416 @@
+﻿@using Web.Common;
+@using Web.FwCore;
+@using Web.Areas.HSVanBanDiArea.Models;
+@{
+    //var demo = Ajax.BeginForm("", "", new AjaxOptions() { }).ToString();
+    var dataSearch = SessionManager.GetValue("FormSearchData") as DataFormSearchModel;
+}
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+
+<style type="text/css">
+    .form-control {
+        padding-left: 10px;
+    }
+
+    .lable-txt {
+        padding-left: 10px;
+    }
+
+    .ms-drop {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+        width: 100%;
+    }
+
+    .ms-parent {
+        width: 100%;
+    }
+
+    .ms-choice > span {
+        width: 100%;
+    }
+
+    .width-col {
+        width: 25%;
+    }
+
+    .width-100 {
+        width: 100%;
+    }
+
+    .txt-right {
+        text-align: right;
+    }
+
+    .height-15 {
+        height: 15px;
+    }
+</style>
+<div id="collapseSearch" class="panel-collapse collapse" aria-expanded="false" role="tabpanel" style="">
+
+
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("AdvancedSearchVanBanDi", "HSVanBanDi", new { type = Model.Type, nhomSoID = Model.NhomSoID, soID = Model.SoID },
+            new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            OnFailure = "failure",
+            OnSuccess = "searchSuccess",
+            UpdateTargetId = "grid",
+        }, new { id = "frmSearch" }))
+    {
+        @*@Html.Hidden("TYPE_VANBAN", Model.Type);*@
+        <center>
+            <table style=" width:80%;">
+                <tr>
+                    <td width="160px">
+
+                        <label class="lable-txt">Từ khóa</label>
+
+                    </td>
+                    <td colspan="3">
+                        <input type="text" name="QUERY_TUKHOA" id="QUERY_TUKHOA" class="form-control mf10 width-100" style="width:100%" placeholder="Từ khóa tìm kiếm" />
+                    </td>
+                </tr>
+
+                <tr class="height-15"></tr>
+                <tr>
+                    @*<td width="160px">
+
+                            <label class="lable-txt">Nhóm sổ văn bản</label>
+
+                        </td>*@
+                    @*<td>
+                            <div class="input-field4 clearfix" id="block--select-NHOMSOVANBAN_ID">
+                                @Html.DropDownList("QUERY_NHOMSOVANBAN_ID", Model.ListNhomSoVanBan, "Chọn nhóm sổ văn bản", new { @class = "create-phanloai width-100" })
+                            </div>
+                        </td>*@
+                    <td width="160px">
+
+                        <label class="lable-txt">Sổ văn bản</label>
+
+                    </td>
+                    <td>
+                        <div class="input-field4 clearfix" id="block--select-SOVANBAN_ID">
+                            @Html.DropDownList("QUERY_SOVANBAN_ID", dataSearch.DSSoVanBan, new { @class = "create-phanloai width-100", @style = "width:100%", @multiple = "multiple" })
+
+
+                        </div>
+                    </td>
+                    @*<td width="160px">
+
+                            <label class="lable-txt">Trạng thái</label>
+
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix" id="block--select-TRANGTHAI">
+                                @Html.DropDownList("QUERY_TRANGTHAI", dataSearch.DSTrangThaiVanBan, new { @multiple = "multiple" })
+                            </div>
+
+                        </td>*@
+                    <td width="160px">
+
+                        <label class="lable-txt">Đánh dấu</label>
+
+                    </td>
+                    <td>
+                        @*<div class="input-field clearfix mf10 float-left">
+                            <div class="input-field4 clearfix" id="markitem_panel">*@
+                        @Html.DropDownList("QUERY_MARK", dataSearch.DSTrangThaiDanhDau, new { @multiple = "multiple", @style = "width:100%", @class = "width-100" })
+
+                        @*</div>
+                            </div>*@
+                    </td>
+                </tr>
+                <tr class="height-15"></tr>
+                <tr>
+                    <td width="160px">
+
+                        <label class="lable-txt">Loại văn bản</label>
+
+                    </td>
+                    <td>
+                        <div class="input-field4 clearfix" id="block--LOAIVANBAN_ID">
+                            @Html.DropDownList("QUERY_LOAIVANBAN_ID", dataSearch.DSLoaiVanBan, new { @multiple = "multiple", @style = "width:100%" })
+                        </div>
+                    </td>
+
+                    <td>
+
+                        <label class="lable-txt"> Văn bản liên quan</label>
+
+                    </td>
+                    <td>
+                        <input type="text"  name="QUERY_VANBANLIENQUAN" id="QUERY_VANBANLIENQUAN" placeholder="Số hiệu/Trích yếu" class="form-control mf10 width-100" />
+                    </td>
+                </tr>
+                <tr class="height-15"></tr>
+                <tr>
+                    <td width="160px">
+
+                        <label class="lable-txt "> Ngày ban hành</label>
+
+                    </td>
+                    <td>
+                        <input type="text"  class="form-control mf10 vbdi_datepicker" name="QUERY_NGAYBANHANH_FROM" id="QUERY_NGAYBANHANH_FROM" placeholder="Từ ngày" />
+                    </td>
+                    <td></td>
+                    <td>
+                        <input type="text"  name="QUERY_NGAYBANHANH_TO" id="QUERY_NGAYBANHANH_TO" placeholder="Đến ngày" class="form-control mf10 vbdi_datepicker" />
+                    </td>
+                </tr>
+                <tr class="height-15"></tr>
+                <tr>
+                    <td width="160px">
+
+                        <label class="lable-txt">Ngày ký</label>
+
+                    </td>
+                    <td>
+                        <input type="text"  name="QUERY_NGAYKY_FROM" id="QUERY_NGAYKY_FROM" placeholder="Từ ngày" class="form-control mf10 vbdi_datepicker" />
+                    </td>
+                    <td></td>
+                    <td>
+                        <input type="text"  name="QUERY_NGAYKY_TO" id="QUERY_NGAYKY_TO" placeholder="Đến ngày" class="form-control mf10 vbdi_datepicker" />
+                    </td>
+                </tr>
+                <tr style="height:10px;"></tr>
+
+                <tr>
+                    <td></td>
+                    <td colspan="2" align="center">
+
+                        <button id="btnSearchVanBanDi" type="submit" class="btn btn-labeled btn-primary">
+                            <span class="btn-label">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </span>
+                            Tìm kiếm
+                        </button>
+
+                        <a aria-expanded="false" href="#collapseSearch" data-toggle="collapse" role="button" class="btn btn-labeled btn-danger">
+                            <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>
+                            Đóng
+                        </a>
+                    </td>
+                </tr>
+                <tr style="height:10px;"></tr>
+
+            </table>
+        </center>
+
+    }
+
+</div>
+
+
+<script type="text/javascript">
+    var isFullScreen = false;
+
+
+    //$('.vbdi_search_grid').click(function () {
+    //    var gridFilter = $('#grid .webGrid #row--grid-filter');
+    //    var leftMenu = $('#main-page #menu-middle-left');
+    //    var searchPanel = $('#searchPanel');
+
+    //    if (isFullScreen) {
+    //        gridFilter.hide();
+    //        leftMenu.show();
+    //        leftMenu.next('.right-all-page').css('width', '100%').css('width', '-=245px');
+    //        isFullScreen = false;
+    //        inheritSearchCriteria(false)
+    //    } else {
+    //        leftMenu.hide();
+    //        leftMenu.next('.right-all-page').css('width', '100%');
+    //        searchPanel.find('#frmSearch').css({ 'width': '70%', 'margin': '0 15%' });
+    //        searchPanel.find('#frmSearch').children('table').css('margin', '0 auto');
+    //        if (searchPanel.is(':hidden')) {
+    //            gridFilter.show();
+    //            inheritSearchCriteria(true)
+    //        }
+    //        isFullScreen = true;
+    //    }
+    //});
+
+
+
+
+
+
+    function failure() {
+    }
+    function searchSuccess(rs) {
+
+        $('#countTotal').html("(" + rs.Count + ")");
+        for (var i = 0; i < rs.ListItem.length; i++) {
+            if (rs.ListItem[i].NGAYBANHANH != null) {
+                var str = rs.ListItem[i].NGAYBANHANH;
+                rs.ListItem[i].NGAYBANHANH = ConvertToDateISO(str);
+            }
+        };
+        currentPage = 1;
+        LoadData(rs.ListItem);
+        GenPaging(1, rs.TotalPage, "paging1", GetDataPage);
+    }
+
+
+
+    function pageFunctionSearch() {
+        function inheritSearchCriteria(isSearchInGrid) {
+            var criteriaBanHanhStart = "";
+            var criteriaBanHanhEnd = "";
+
+            var criteriaTrangThaiXuLy = "";
+            if (isSearchInGrid === true) {
+                //==>"NGÀY BAN HÀNH"
+                criteriaBanHanhStart = $('#QUERY_NGAYBANHANH_FROM').val().trim();
+                criteriaBanHanhEnd = $('#QUERY_NGAYBANHANH_TO').val().trim();
+
+                $('#QUERY_BANHANH_FROM').val(criteriaBanHanhStart);
+                $('#QUERY_BANHANH_TO').val(criteriaBanHanhEnd);
+            } else {
+                //==>"NGÀY BAN HÀNH"
+                criteriaBanHanhStart = $('#QUERY_BANHANH_FROM').val().trim();
+                criteriaBanHanhEnd = $('#QUERY_BANHANH_TO').val().trim();
+
+                $('#QUERY_NGAYBANHANH_FROM').val(criteriaBanHanhStart);
+                $('#QUERY_NGAYBANHANH_TO').val(criteriaBanHanhEnd);
+
+                //==> "TRẠNG THÁI XỬ LÝ"
+                criteriaTrangThaiXuLy = $("#QUERY_TRANGTHAI_XULY").val().trim();
+                $('#QUERY_TRANGTHAI').val(criteriaTrangThaiXuLy);
+                $('#QUERY_TRANGTHAI').multipleSelect('refresh');
+            }
+        }
+
+
+        $(".vbdi_datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true, yearRange: "-50:+20",
+            showWeek: false, weekHeader: "Tuần",
+            language: 'vi',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            onSelect: function (date) {
+
+            }
+        });
+
+        $('#QUERY_NHOMSOVANBAN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            onClick: function (item) {
+                @*var selectValue = parseInt(item.value);
+                if (!isNaN(selectValue) && parseInt(selectValue) > 0) {
+                    $.ajax({
+                        url: "@Url.Action("GetListSoVanBanByNhomSo")",
+                        dataType: 'text',
+                    type: 'POST',
+                    data: { id: selectValue },
+                    success: function (data) {
+                        $('#QUERY_SOVANBAN_ID').html(data);
+                        //multiSelectSetting('#QUERY_SOVANBAN_ID');
+                        $('#QUERY_SOVANBAN_ID').multipleSelect('refresh');
+                    },
+                    error: function (data) {
+                        //$('#table--save-notebook #SOVANBAN_ID').html("<option value=''>[--- Chọn sổ văn bản ---]</option>");
+                        $('#QUERY_SOVANBAN_ID').multipleSelect('refresh');
+                    }
+                });
+            } else {
+               $('#QUERY_SOVANBAN_ID').html("<option value=''>[--- Chọn sổ văn bản ---]</option>");
+        $('#QUERY_SOVANBAN_ID').multipleSelect('refresh');
+    }*@
+
+            }
+        });
+
+
+
+        function multiSelectSetting(cssID) {
+            $(cssID).multipleSelect({
+                multiple: true,
+                filter: true,
+            });
+        }
+
+        $("#QUERY_LOAIVANBAN_ID").multipleSelect({
+            single: false,
+            filter: true,
+            placeholder: "Chọn Loại văn bản",
+            position: 'top'
+        });
+
+        $('#QUERY_MARK').multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "Trạng thái đánh dấu",
+            position: 'top'
+        });
+
+        $('#QUERY_TRANGTHAI').multipleSelect({
+            multiple: true,
+            filter: true,
+            position: 'top',
+            placeholder: "Trạng thái xử lý"
+        });
+
+        $('#QUERY_NHOMSOVANBAN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn nhóm sổ văn bản"
+
+        });
+        $('#QUERY_SOVANBAN_ID').multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "Chọn sổ văn bản"
+
+        });
+
+        $('#QUERY_NHOMSOVANBAN_ID').change(function () {
+            if ($('#QUERY_NHOMSOVANBAN_ID').val().trim().length > 0) {
+                var selectValue = parseInt($('#QUERY_NHOMSOVANBAN_ID').val());
+                if (!isNaN(selectValue) && selectValue > 0) {
+                    $.ajax({
+                        url: "@Url.Action("GetListSoVanBanByNhomSo")",
+                        dataType: 'json',
+                        type: 'POST',
+                        async: false,
+                        data: { id: selectValue },
+                        success: function (data) {
+                            var str = "";
+                            for (var i = 0; i < data.length; i++) {
+                                str += "<option value='" + data[i].Value + "'>" + data[i].Text + "</option>";
+                            }
+                            $('#QUERY_SOVANBAN_ID').html(str);
+                            //multiSelectSetting('#QUERY_SOVANBAN_ID');
+                            $('#QUERY_SOVANBAN_ID').multipleSelect('refresh');
+                        },
+                        error: function (data) {
+                            //$('#table--save-notebook #SOVANBAN_ID').html("<option value=''>[--- Chọn sổ văn bản ---]</option>");
+                            $('#QUERY_SOVANBAN_ID').multipleSelect('refresh');
+                        }
+                    });
+                } else {
+                    //$('#QUERY_SOVANBAN_ID').html("<option value=''>[--- Chọn sổ văn bản ---]</option>");
+                    $('#QUERY_SOVANBAN_ID').multipleSelect('refresh');
+                }
+            } else {
+                $('#QUERY_SOVANBAN_ID').html("");
+                $('#QUERY_SOVANBAN_ID').multipleSelect('refresh');
+            }
+
+
+        });
+    }
+    loadScript("Scripts/jquery.unobtrusive-ajax.min.js", function () {
+        loadScript("Scripts/multiple-select.js", pageFunctionSearch);
+    });
+</script>

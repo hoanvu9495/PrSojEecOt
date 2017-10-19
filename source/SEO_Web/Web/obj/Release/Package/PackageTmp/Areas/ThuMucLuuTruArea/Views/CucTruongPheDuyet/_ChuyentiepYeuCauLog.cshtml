@@ -1,0 +1,70 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeTaiLieuModel
+@using Web.Areas.ThuMucLuuTruArea.Models
+@{
+    List<TmChuyenTiepYeuCauBO> lstLichSu = Model.lstChuyenTiep;
+    var grid = new WebGrid(lstLichSu,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+}
+@{
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Lịch sử yêu cầu chia sẻ</h4>
+            </div>
+            <div class="modal-body">
+                @if (lstLichSu.Count > 0)
+                {
+                    @grid.GetHtml(
+                tableStyle: "webGrid tblLog",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column("TENNGUOIGUI", "Người thực hiện"),
+                grid.Column("NGAYGUI", "Ngày gửi", format: (item) => new MvcHtmlString(string.Format("{0:dd/MM/yyyy}", item.NGAYGUI))),
+                grid.Column("TIEUDE", "Tiêu đề", format: (item) => new MvcHtmlString(string.Format("<span title = '"+item.TIEUDE+"'>"+item.TIEUDE+"</span>"))),
+                               grid.Column("NOIDUNG", "Nội dung", format: (item) => new MvcHtmlString(string.Format("<span title = '" + item.NOIDUNG + "'>" + item.NOIDUNG + "</span>"))),
+                grid.Column("THOIGIAN_TU", "Chia sẻ từ", format: (item) => new MvcHtmlString(item.THOIGIAN_TU != null ? string.Format("{0:dd/MM/yyyy}", item.THOIGIAN_TU) : "")),
+                grid.Column("THOIGIAN_DEN", "Chia sẻ đến", format: (item) => new MvcHtmlString(item.THOIGIAN_DEN != null ? string.Format("{0:dd/MM/yyyy}", item.THOIGIAN_DEN) : "Vô hạn"))
+                 )
+    )
+                }
+                else
+                {
+                    <span>
+                        Không tìm thấy lịch sử xin chia sẻ của yêu cầu này
+                    </span>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+
+}
+<style>
+    .tblLog td:nth-child(4) span, .tblLog td:nth-child(5) span {
+        overflow: hidden;
+        text-align: left !important;
+        border: none !important;
+        display: inline-block;
+        white-space: nowrap;
+        width: 300px !important;
+        text-overflow: ellipsis;
+    }
+</style>

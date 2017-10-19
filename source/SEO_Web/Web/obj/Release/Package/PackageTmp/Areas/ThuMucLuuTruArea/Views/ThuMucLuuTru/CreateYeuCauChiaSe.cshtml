@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "CreateYeuCauChiaSe";
+}
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeModel
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@using Business.CommonBusiness;
+<div id="menu-toolbar">
+    <div class="left-all-page" style="width:300px">
+        <div id="smart-dms" class="block">
+            <h1>Yêu cầu chia sẻ tài liệu</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border: 0px; background: none; width: calc(100% - 300px)">
+        <div id="menu-child">
+            <div class="menu-left">
+            </div>
+            <div class="menu-right" style="">
+                <button style="margin-bottom: 10px" type="button" onclick="location.href = '@Url.Action("Index", "ThuMucLuuTru" )'" class="b_btn b_btn-default vbdi_search">Quản lý tài liệu</button>
+                @*<button style="margin-bottom: 10px" type="button" onclick="location.href = '@Url.Action(" danhsachyeucauduocchiase", "ThuMucLuuTru" )'" class="b_btn b_btn-default vbdi_search">Xử lý yêu cầu chia sẻ</button>
+                    <button style="margin-bottom: 10px; " type="button" onclick="location.href = '@Url.Action(" danhsachyeucauchiase", "ThuMucLuuTru" )'" class="b_btn b_btn-default vbdi_search">Danh sách yêu cầu chia sẻ</button>*@
+                <div class="btn-group" role="group" style="margin-bottom: 10px;">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Yêu cầu chia sẻ
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("Index", "YeuCauChiaSe")">Yêu cầu chia sẻ</a></li>
+                        <li><a href="@Url.Action("YeuCauCanChiaSe", "YeuCauChiaSe")">Xử lý yêu cầu chia sẻ (@Model.XuLy)</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group" role="group" style="margin-bottom: 10px;margin-right:20px">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chia sẻ tài liệu
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("DanhSachTaiLieuDaChiaSe", "ThuMucLuuTru")">Đang chia sẻ</a></li>
+                        <li><a href="@Url.Action("DanhSachTaiLieuDuocChiaSe", "ThuMucLuuTru")">Được chia sẻ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right-all-page" oncontextmenu="return false;" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+    <div class="right-content clearfix" style="margin-top:20px">
+        <div class="SearchResult">
+            <div class="folder-content" style="margin-top:-30px">
+                <div id="display">
+                    <div>
+                        <div style="float:left">
+                             @Html.DropDownList("NAM", Model.ListNam, "[---Lựa chọn năm lưu trữ---]", new { @style = "width: 100px", @id = "NAM" })
+                        </div>
+                        <div class="input-field4 clearfix fix-width" style="float:right">
+                            @Html.DropDownList("DONVI_ID", Model.ListDonVi, "[---Lựa chọn đơn vị---]", new { @style = "", @id = "DONVI_ID" })
+                        </div>
+                    </div>
+                    <br />
+                    <div id="URLPath" style="margin-top:24px"></div>
+                    @Html.Partial("_YeuCauChiaSe")
+                    <span class="emptydata">Thư mục lưu trữ rỗng</span>
+                </div>
+                <div id="treeview">
+                    <h3 class="group-tittle mt10" style="margin-top:30px ;margin-bottom:22px">Các tài liệu đã được lựa chọn</h3>
+                    <table class="YeuCau" style="display:none">
+                        <tr>
+                            <td>Lý do yêu cầu:<span style="color:red">*</span></td>
+                            <td>
+                                <textarea class="e-input" style="width:400px;height:60px" name="LYDO" id="LYDO" maxlength="500" placeholder="Nhập lý do cho yêu cầu chia sẻ này"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <span style="color:red;display:none" id="LYDO_NULL">Bạn chưa nhập lý do cho yêu cầu chia sẻ này</span>
+                                <span style="color:red;display:none" id="LYDO_ERROR">Lý do không được chứa thẻ HTML</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="webGrid tblFixed">
+                        <thead>
+                            <tr class="head">
+                                <th>
+                                    Tên tài liệu - thư mục
+                                </th>
+                                <th>
+                                    Ghi chú
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="SelectedItem"></tbody>
+
+                    </table>
+                    <div style="margin-top:30px;display:none" class="YeuCau">
+                        <input type="hidden" name="TRANGTHAI" id="TRANGTHAI" value="@YeuCauChiaSeConstant.DUTHAO" />
+                        <input type="hidden" name="COMMENT" id="COMMENT" value="" />
+                        <input type="button" value="Gửi Cục trưởng" id="btnSendMan" class="btn btn-success" />
+                        <input type="submit" value="Lưu lại" id="btnSave" class="btn btn-default" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+</div>
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+</style>

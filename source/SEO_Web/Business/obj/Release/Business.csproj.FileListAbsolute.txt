@@ -1,0 +1,159 @@
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\Business.dll.config
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\Business.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\Business.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\BarcodeLib.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\Ciloci.Flee.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\DAL.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\EntityFramework.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\EntityFramework.Extended.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\Ionic.Zip.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\log4net.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\Model.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\NativeExcel.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\NPOI.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\NPOI.OOXML.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\NPOI.OpenXml4Net.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\NPOI.OpenXmlFormats.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\Oracle.DataAccess.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\MiniProfiler.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\MiniProfiler.EntityFramework.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\DAL.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\EntityFramework.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\Model.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\MiniProfiler.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\MiniProfiler.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Release\MiniProfiler.EntityFramework.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\obj\Release\Business.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\obj\Release\Business.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\obj\Release\Business.pdb
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\Business.dll.config
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\Business.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\Business.pdb
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\BarcodeLib.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\Ciloci.Flee.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\DAL.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\EntityFramework.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\EntityFramework.Extended.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\EntityFramework.SqlServer.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\Ionic.Zip.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\log4net.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\Model.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\NativeExcel.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\NPOI.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\NPOI.OOXML.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\NPOI.OpenXml4Net.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\NPOI.OpenXmlFormats.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\MiniProfiler.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\MiniProfiler.EntityFramework.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\DAL.pdb
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\EntityFramework.xml
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\EntityFramework.SqlServer.xml
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\Model.pdb
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\MiniProfiler.pdb
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\MiniProfiler.xml
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\bin\Release\MiniProfiler.EntityFramework.pdb
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\obj\Release\Business.csprojResolveAssemblyReference.cache
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\obj\Release\Business.dll
+D:\QLDH_eAita\trunk\04.SourceCode\eAita_Web\Business\obj\Release\Business.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\Business.dll.config
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\Business.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\Business.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\AE.Net.Mail.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\BarcodeLib.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\Ciloci.Flee.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\DAL.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\EntityFramework.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\EntityFramework.Extended.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\EntityFramework.SqlServer.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\Ionic.Zip.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\log4net.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\Model.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\NativeExcel.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\NPOI.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\NPOI.OOXML.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\NPOI.OpenXml4Net.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\NPOI.OpenXmlFormats.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\MiniProfiler.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\MiniProfiler.EntityFramework.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\AE.Net.Mail.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\DAL.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\EntityFramework.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\EntityFramework.SqlServer.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\Model.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\MiniProfiler.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\MiniProfiler.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\bin\Release\MiniProfiler.EntityFramework.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\obj\Release\Business.csprojResolveAssemblyReference.cache
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\obj\Release\Business.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Business\obj\Release\Business.pdb
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\Business.dll.config
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\Business.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\Business.pdb
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\AE.Net.Mail.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\BarcodeLib.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\Ciloci.Flee.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\DAL.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\EntityFramework.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\EntityFramework.Extended.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\EntityFramework.SqlServer.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\Ionic.Zip.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\log4net.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\Model.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\NativeExcel.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\NPOI.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\NPOI.OOXML.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\NPOI.OpenXml4Net.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\NPOI.OpenXmlFormats.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\PagedList.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\PagedList.Mvc.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\MiniProfiler.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\MiniProfiler.EntityFramework.dll
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\AE.Net.Mail.pdb
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\DAL.pdb
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\EntityFramework.xml
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\EntityFramework.SqlServer.xml
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\Model.pdb
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\PagedList.xml
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\PagedList.Mvc.xml
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\MiniProfiler.pdb
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\MiniProfiler.xml
+F:\qldh_vnio24-06\eAita_Web\Business\bin\Release\MiniProfiler.EntityFramework.pdb
+F:\qldh_vnio24-06\eAita_Web\Business\obj\Release\Business.csprojResolveAssemblyReference.cache
+F:\qldh_vnio24-06\eAita_Web\Business\obj\Release\Business.dll
+F:\qldh_vnio24-06\eAita_Web\Business\obj\Release\Business.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\Business.dll.config
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\Business.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\Business.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\AE.Net.Mail.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\BarcodeLib.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\Ciloci.Flee.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\DAL.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\EntityFramework.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\EntityFramework.Extended.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\EntityFramework.SqlServer.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\Ionic.Zip.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\log4net.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\Model.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\NativeExcel.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\NPOI.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\NPOI.OOXML.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\NPOI.OpenXml4Net.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\NPOI.OpenXmlFormats.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\PagedList.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\PagedList.Mvc.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\System.Web.Mvc.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\MiniProfiler.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\MiniProfiler.EntityFramework.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\AE.Net.Mail.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\DAL.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\EntityFramework.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\EntityFramework.SqlServer.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\Model.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\PagedList.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\PagedList.Mvc.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\MiniProfiler.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\MiniProfiler.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\bin\Release\MiniProfiler.EntityFramework.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\obj\Release\Business.csprojResolveAssemblyReference.cache
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\obj\Release\Business.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\obj\Release\Business.pdb

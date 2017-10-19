@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Quản lý tòa nhà lưu trữ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .menu-left-content {
+        height: 494px;
+        overflow-y: auto;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" >
+            <h1>Quản lý tòa nhà</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;margin-right:50px" type="button" onclick="OnCreate()" class="b_btn b_btn-default vbdi_search">Thêm mới tòa nhà</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="left-all-page" id="menu-middle-left" style="height:100%">
+    <div id="block-search-form">
+
+        @using (Ajax.BeginForm("FindToaNha", "QuanLyLuuTru", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "search-form" }))
+        {
+            <input type="text" placeholder="Nhập tên tòa nhà" value="" name="ToaNha" id="" />
+            <input type="submit" value="search" name="" id="" />
+        }
+    </div>
+    <div class="menu-left-content block">
+        <ul class="admin-menu">
+            <li class="menu"><a href="@Url.Action("Index", "QuanLyLuuTru")">Danh sách tòa nhà</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyTangLuuTru", "QuanLyLuuTru")">Danh sách tầng lưu trữ</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyPhongLuuTru", "QuanLyLuuTru")">Danh sách phòng lưu trữ</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyKeLuuTru", "QuanLyLuuTru")">Danh sách kệ lưu trữ</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyHangLuuTru", "QuanLyLuuTru")">Danh sách hàng lưu trữ</a></li>
+        </ul>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div class="SearchResult">
+                    @Html.Partial("_DanhSachToaNha")
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<script type="text/javascript">
+    function reloadGrid() {
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadToaNha", "QuanLyLuuTru")',
+            data: {
+                
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                //alert(Ten_DanToc);
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+</script>

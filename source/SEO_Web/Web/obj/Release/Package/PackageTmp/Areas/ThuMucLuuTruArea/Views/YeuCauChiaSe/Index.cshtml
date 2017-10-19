@@ -1,0 +1,234 @@
+﻿@{
+    ViewBag.Title = "Danh sách yêu cầu chia sẻ thông tin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using Model.eAita;
+<div id="menu-toolbar">
+    <div class="left-all-page" style="">
+        <div id="smart-dms" class="block">
+            <h1 style="text-align:left !important">Yêu cầu chia sẻ</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border: 0px; background: none; width: calc(100% - 350px)">
+        <div id="menu-child">
+            <div class="menu-left">
+            </div>
+            <div class="menu-right" style="">
+                <button style="margin-bottom: 10px;margin-right:50px" type="button" onclick="location.href='@Url.Action("CreateYeuCauChiaSe")'" class="b_btn b_btn-default vbdi_search">Thêm mới yêu cầu chia sẻ</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left" style="height:100%">
+    <div id="block-search-form">
+        @using (Ajax.BeginForm("FindYeuCauChiaSe", "YeuCauChiaSe", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "search-form" }))
+        {
+            <input type="text" placeholder="Lý do yêu cầu chia sẻ..." value="" name="LYDO" id="LYDO" />
+            <input type="submit" value="search" name="" id="btnFind" />
+        }
+    </div>
+    <div class="menu-left-content block" style="height:100%">
+        <ul class="admin-menu">
+            <li class="menu"><a href="@Url.Action("Index", "ThuMucLuuTru")">Quản lý tài liệu</a></li>
+            <li class="menu"><a href="@Url.Action("DanhSachTaiLieuDaChiaSe", "ThuMucLuuTru")">Đang chia sẻ</a></li>
+            <li class="menu"><a href="@Url.Action("DanhSachTaiLieuDuocChiaSe", "ThuMucLuuTru")">Được chia sẻ</a></li>
+            <li class="menu"><a href="@Url.Action("YeuCauCanChiaSe", "YeuCauChiaSe")">Xử lý yêu cầu chia sẻ</a></li>
+            <li class="menu"><a href="@Url.Action("Index", "YeuCauChiaSe")">Yêu cầu chia sẻ</a></li>
+            <li class="menu"><a href="@Url.Action("Index", "DanhMucThongTin")">Danh mục thông tin tài liệu</a></li>
+        </ul>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <div class="right-content clearfix">
+        <div class="SearchResult ">
+            @Html.Partial("_YeuCauChiaSeSearchResult")
+        </div>
+    </div>
+</div>
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+    .btnAdd {
+        display: block;
+        width: 225px;
+        /*height: 26px;*/
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/1460042887_arrow-return-180.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    button:hover {
+        cursor: pointer;
+    }
+
+    .webGrid td:nth-child(2), .webGrid td:nth-child(3) {
+        text-align: left !important;
+    }
+
+        .webGrid td:nth-child(2) a, .webGrid td:nth-child(3) span {
+            overflow: hidden;
+            display: inline-block;
+            white-space: nowrap;
+            width: 300px !important;
+            text-overflow: ellipsis;
+        }
+</style>
+<script>
+    function ThemMoi() {
+        location.href = '@Url.Action("YeuCauChiaSe", "ThuMucLuuTru")';
+    }
+    function ShowLog(YEUCAU_ID) {
+        $.ajax({
+            url: '@Url.Action("ShowYeuCauLog", "ThuMucLuuTru")',
+            type: 'POST',
+            cache: false,
+            data: {
+                YEUCAU_ID: YEUCAU_ID
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#YeuCauChiaSeLog").html(data);
+                    $("#YeuCauChiaSeLog").modal("show");
+
+                } else {
+                    $.confirm({
+                        'title': 'Có lỗi xảy ra',
+                        'message': 'Không tìm thấy lịch sử của yêu cầu chia sẻ bạn đang tìm',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    @*function TrinhDuyetYeuCau(ID) {
+        $.ajax({
+            url: '@Url.Action("CreateYeuCauChiaSe", "ThuMucLuuTru")',
+            type: 'POST',
+            cache: false,
+            data: {
+                ID: ID,
+                LYDO: ""
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#TrinhDuyetYeuCau").html(data);
+                    $("#TrinhDuyetYeuCau").modal("show");
+                } else {
+                    $.confirm({
+                        'title': 'Có lỗi xảy ra',
+                        'message': 'Yêu cầu chia sẻ này không tồn tại hoặc bạn không có quyền truy xuất yêu cầu này!',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }*@
+
+    $(document).on("click", ".btnDelete", function () {
+        var this1 = $(this);
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc mình muốn xóa yêu cầu chia sẻ này?\n Dữ liệu sẽ không thể khôi phục',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveYeuCauChiaSe", "ThuMucLuuTru")',
+                            type: 'POST',
+                            cache: false,
+                            data: { ID: $(this1).attr("data-id") },
+                            success: function (data) {
+                                if (data.trim().length > 0) {
+                                    notif({
+                                        type: 'success',
+                                        position: 'bottom',
+                                        msg: 'Xóa yêu cầu chia sẻ thành công!',
+                                    });
+                                    //reloadGrid();
+                                    $(this1).closest("tr").remove();
+                                } else {
+                                    notif({
+                                        type: 'success',
+                                        position: 'bottom',
+                                        msg: 'Có lỗi xảy ra trong quá trình xóa.Mời thử lại sau!',
+                                    });
+                                }
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    });
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadGrid", "YeuCauChiaSe")',
+            data: {
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+</script>

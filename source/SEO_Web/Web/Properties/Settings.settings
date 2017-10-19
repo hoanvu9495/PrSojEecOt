@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Web.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Web_WebReference_WSBulkSms" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://125.235.4.202:8985/WS</Value>
+    </Setting>
+    <Setting Name="LOAIVANBAN" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1:Văn bản đi, 2:Văn bản đến, 3:Văn bản dự thảo</Value>
+    </Setting>
+    <Setting Name="LOAIHOSO" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1:HS Văn bản đi, 2:HS Văn bản đến, 3:HS Văn bản dự thảo</Value>
+    </Setting>
+    <Setting Name="MAP" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1:1, 1:2, 2:1</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

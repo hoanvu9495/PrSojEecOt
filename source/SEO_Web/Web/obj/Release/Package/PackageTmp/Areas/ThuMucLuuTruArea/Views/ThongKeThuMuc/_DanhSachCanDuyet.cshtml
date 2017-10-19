@@ -1,0 +1,352 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Business.CommonBusiness;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@model Web.Areas.ThuMucLuuTruArea.Models.ThongKeThuMucModel
+<link href="~/Content/themes/base/treeview/screen.css" rel="stylesheet" />
+<link href="~/Content/themes/base/treeview/jquery.treeview.css" rel="stylesheet" />
+<script src="~/Scripts/treeview/jquery.cookie.js"></script>
+<link href="~/Content/Custom/Font/contextMenu.css" rel="stylesheet" />
+<style>
+    .webGrid td:nth-child(2) span, .webGrid td:nth-child(1) span {
+        text-align: left !important;
+    }
+
+    td {
+        vertical-align: middle !important;
+    }
+
+    img:hover {
+        cursor: pointer;
+    }
+
+    .share-file {
+        background: url('/Content/themes/base/images/TM_Share.png');
+        padding: 12px 10px 19px 40px;
+        background-repeat: no-repeat;
+        background-position: 20px 2px;
+        margin: 0 12px 0 2px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+    }
+
+
+
+        .share-file:hover {
+            cursor: pointer;
+        }
+
+    .TENTHUMUC {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 450px !important;
+        text-overflow: ellipsis;
+    }
+
+    .expired {
+        background: url('/Content/themes/base/images/folder-expired.png');
+        padding: 10px 15px 10px 38px;
+        background-repeat: no-repeat;
+        background-position: 4px 2px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px;
+        margin-left: 5px;
+        color: red;
+    }
+
+    .unexpired {
+        background: url('/Content/themes/base/images/folder_unexpired.png');
+        padding: 10px 15px 10px 38px;
+        background-repeat: no-repeat;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px;
+    }
+
+
+
+    .approve {
+        background: url('/Content/themes/base/images/TmFolder_approvel.png');
+        padding: 10px 15px 10px 38px;
+        background-repeat: no-repeat;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px;
+        margin-left: 5px;
+        color: #ff6a00;
+    }
+
+    .unapprove {
+        background: url('/Content/themes/base/images/Tmfolder-cancel.png');
+        padding: 10px 15px 10px 38px;
+        background-repeat: no-repeat;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px;
+        margin-left: 5px;
+        color: #ff6a00;
+    }
+
+    .approve1 {
+        background: url('/Content/themes/base/images/TmFolder_approvel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .unapprove1 {
+        background: url('/Content/themes/base/images/Tmfolder-cancel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .popup-content {
+        width: 97% !important;
+    }
+
+
+
+    #display {
+        width: 85%;
+        height: 440px;
+        float: left;
+        min-height: 80%;
+        overflow-y: auto;
+        overflow-x: auto;
+        margin-top: 10px;
+    }
+
+
+
+
+
+    .SearchResult.hot-news-list-2.mgt20 > #URLPath {
+        margin-bottom: 3%;
+    }
+
+
+
+    #right ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        padding: 10px 25px;
+        border-radius: 5px;
+    }
+
+    #right li {
+        float: left;
+        margin-right: 10px;
+    }
+
+    #right i {
+        -moz-user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        padding: 6px 12px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+
+
+
+    #DADUYET {
+        padding: 10px 15px;
+        background: #4479BA;
+        color: #FFF;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        border: solid 1px #20538D;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+        -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    }
+
+        #DADUYET:hover {
+            cursor: pointer;
+        }
+
+
+
+    .close-modal:hover {
+        cursor: pointer;
+    }
+</style>
+@{
+    List<ThuMucLuuTruBO> lstThuMuc = new List<ThuMucLuuTruBO>();
+    UserInfoBO user = (UserInfoBO)SessionManager.GetUserInfo();
+    lstThuMuc = Model.lstThuMuc;
+    lstThuMuc = lstThuMuc.OrderBy(x => x.TENTHUMUC).ToList();
+}
+<table class="webGrid">
+    <thead>
+        <tr class="head">
+            <th><input type="checkbox" id="selectAll" title="Lựa chọn tất cả" /></th>
+            <th>
+                Thư mục
+            </th>
+            <th>
+                Người tạo
+            </th>
+
+            <th>
+                Ngày cập nhật
+            </th>
+
+            <th>
+                Trạng thái
+            </th>
+        </tr>
+    </thead>
+    <tbody id="bodyItem">
+        @if (lstThuMuc != null && lstThuMuc.Count > 0)
+        {
+            foreach (var i in lstThuMuc)
+            {
+                <tr>
+
+                    <td data-fid="@("F_"+i.ID)" style="width:450px">
+                        <div style="width:100%;float:left" class="TENTHUMUC">
+                            @if (i.EXPIRE_DATEFROM.HasValue && i.EXPIRE_DATE.HasValue && !i.IS_PRIVATE.Value)
+                            {
+                                if (i.EXPIRE_DATE.HasValue && i.EXPIRE_DATE.Value < DateTime.Now)
+                                {
+                                    <span class="folder expired" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE) (Hết hạn lưu trữ)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                                }
+                                else if (i.IS_PRIVATE.Value)
+                                {
+                                    <span class="folder private" title="@i.TENTHUMUC (Thư mục cá nhân)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                                }
+                                else if (DateTime.Now >= i.EXPIRE_DATEFROM && DateTime.Now <= i.EXPIRE_DATE)
+                                {
+                                    <span class="folder unexpired" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                                }
+                                else if (DateTime.Now < i.EXPIRE_DATEFROM.Value)
+                                {
+                                    <span class="folder unexpired" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE) (Chưa được sử dụng)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                                }
+                                else
+                                {
+                                    <span class="folder item" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="folder item" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                        </div>
+                        @if (SessionManager.GetValue("ISTRUONGDONVI") == "true" && i.IS_NEEDREVIEW == ThuMucConstant.DADUYET)
+                        {
+                            <div style="text-align:left;float:left;width:100%">
+                                @if (i.CANPHEDUYET > 0 || i.SL_FILECANDUYET > 0)
+                                {
+                                <font>
+                                    Cần duyệt:
+                                    @if (i.CANPHEDUYET > 0)
+                                        {
+                                        <font style="font-weight:bold">Folder (@i.CANPHEDUYET.Value)</font>
+                                        }
+                                    @if (i.SL_FILECANDUYET > 0)
+                                        {
+                                        <span>
+                                            <font style="font-weight:bold">
+                                                File (@i.SL_FILECANDUYET)
+                                            </font>
+                                        </span>
+
+                                        }
+                                </font>
+                                }
+                                @if (i.TRAVE > 0 || i.SL_FILETRAVE > 0)
+                                {
+                                <font>
+                                    Trả về:
+                                    @if (i.TRAVE > 0)
+                                        {
+                                        <font style="font-weight:bold">Folder (@i.TRAVE)</font>
+                                        }
+                                    @if (i.SL_FILETRAVE > 0)
+                                        {
+                                        <font style="font-weight:bold">, File (@i.SL_FILETRAVE)</font>
+                                        }
+
+
+                                </font>
+                                }
+                            </div>
+                        }
+                    </td>
+                    <td>@i.TENDANGNHAP</td>
+                    <td>@String.Format("{0:dd/M/yyyy}", @i.NGAYTAO)</td>
+
+                    <td>
+                        @switch (i.IS_NEEDREVIEW)
+                        {
+                            case ThuMucConstant.DUTHAO:
+                                <span class="trangthai" style='color:#CCC'>
+                                    Dự thảo
+                                </span>;
+                                break;
+                            case ThuMucConstant.DATRINH:
+                            <span class="trangthai" style='color:#4cff00'>
+                                Chờ duyệt
+                            </span>;
+                            break;
+
+                            case ThuMucConstant.CUC_TRAVE:
+                            <span class="trangthai" style='color:red'>
+                                Cục trả về
+                            </span>;
+                            break;
+                            case ThuMucConstant.DADUYET:
+                            <span class="trangthai" style='color:green'>
+                                Đã duyệt
+                            </span>;
+                            break;
+                        }
+
+                    </td>
+                </tr>
+            }
+
+        }
+    </tbody>
+
+</table>

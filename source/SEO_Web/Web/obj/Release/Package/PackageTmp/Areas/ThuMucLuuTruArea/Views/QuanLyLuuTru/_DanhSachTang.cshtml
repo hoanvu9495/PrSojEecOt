@@ -1,0 +1,60 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.QuanLyPhongModel
+@Html.DropDownList("TANG_ID", Model.lstTang, "[---Lựa chọn tầng---]", new { @style = "", @id = "TANG_ID" })
+<script>
+    $(function () {
+        $("#TANG_ID").change(function () {
+
+            if ($("#TANG_ID").val() != "") {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListMaPhong", "QuanLyLuuTru")',
+                    data: {
+                        TANGID: $("#TANG_ID").val()
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        $("#MAPHONG_CHECK").val(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListTenPhong", "QuanLyLuuTru")',
+                    data: {
+                        TANGID: $("#TANG_ID").val()
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        $("#TENPHONG_CHECK").val(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("LoadPhongByTang", "QuanLyLuuTru")',
+                    data: {
+                        TANG: $("#TANG_ID").val()
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        $("#PHONGLUUTRU").html(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            } else {
+                $("#PHONGLUUTRU").html("");
+                $("#MAPHONG_CHECK").val("");
+                $("#TENPHONG_CHECK").val("");
+            }
+        });
+    });
+</script>

@@ -1,0 +1,68 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@{
+    List<TmGiaHanThuMucBO> lstGiaHan = new List<TmGiaHanThuMucBO>();
+    if (ViewData["Search"] == "0")
+    {
+        lstGiaHan = (List<TmGiaHanThuMucBO>)SessionManager.GetValue("ListGiaHan");
+    }
+    else
+    {
+        lstGiaHan = (List<TmGiaHanThuMucBO>)SessionManager.GetValue("ListGiaHanSearch");
+    }
+    var grid = new WebGrid(lstGiaHan,
+                             rowsPerPage: 10,
+                             canPage: true,
+                             canSort: false,
+                             ajaxUpdateContainerId: "grid",
+                              selectionFieldName: "selectedRow"
+                             );
+    if (lstGiaHan.Count > 0)
+    {
+        <div id="grid">
+            <div id="HeaderGrid">
+                <div style="margin:20px 0px 10px 10px;">
+                    <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">@(lstGiaHan == null ? "0" : lstGiaHan.Count.ToString()) &nbsp; kết quả</label>
+
+                </div>
+            </div>
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+
+                grid.Column("TENTHUMUC", "Tên thư mục", format: (item) => new MvcHtmlString(string.Format("<a href='javascript:void(0)' onclick='XacNhanGiaHan(" + item.FOLDER_ID + ")' title='Nhấp chuột trái vào đây để gia hạn/ không gia hạn thư mục'>" + item.TENTHUMUC + "</a>"))),
+                        grid.Column("DUONGDAN", "Đường dẫn"),
+            //grid.Column("TENDONVI", "Tên đơn vị"),
+                                        grid.Column("HANCU", "Hạn cũ", format: (item) => string.Format("{0:dd-MM-yyyy}", item.HANCU)),
+                                        grid.Column("NGAYGIAHAN", "Hạn mới", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYGIAHAN)),
+
+                            grid.Column("NGUOIGUI", "Người trình"),
+                                    grid.Column("TRANGTHAI", "Trạng thái", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == GiaHanTaiLieuModel.GIAHAN ? "<span style='color:red'>Chờ duyệt</span>" : item.TRANGTHAI == GiaHanTaiLieuModel.KHONGDUYET ? "<span style='color:blue'>Trả lại</span>" : item.TRANGTHAI == GiaHanTaiLieuModel.DUYET ? "<span style='color:green'>Đã duyệt</span>" : "Không rõ")))
+                 )
+    )
+        </div>
+    }
+    else
+    {
+        <div id="grid">
+            <div id="Empty" style="color: red;">
+                Không có thư mục nào cần gia hạn
+            </div>
+        </div>
+    }
+}
+
+<style>
+    .webGrid td:nth-child(2), .webGrid td:nth-child() {
+        text-align: left !important;
+    }
+</style>

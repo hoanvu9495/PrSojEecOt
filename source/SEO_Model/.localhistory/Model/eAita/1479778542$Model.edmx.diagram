@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="762760ba80534f5a807b5560bc142f3d" Name="Diagram1" ZoomLevel="22">
+        <EntityTypeShape EntityType="Model.eAita.ACTION_AUDIT" Width="1.5" PointX="10.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.BH_BAOHIEMXAHOI" Width="1.5" PointX="12.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.BH_BAOHIEMYTE" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.BH_BENHVIEN" Width="1.5" PointX="2.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.BH_LOAIBAOHIEM" Width="1.5" PointX="5.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.BH_SOBAOHIEM" Width="1.5" PointX="12.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.CAUHINH_HETHONG" Width="1.5" PointX="4.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.CH_BUOC_THAO_TAC" Width="1.5" PointX="7.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.CHAT_GROUP" Width="1.5" PointX="3" PointY="165.75" />
+        <EntityTypeShape EntityType="Model.eAita.CHAT_GROUP_USER" Width="1.5" PointX="5.25" PointY="132" />
+        <EntityTypeShape EntityType="Model.eAita.CHAT_NOIDUNG" Width="1.5" PointX="11.25" PointY="127" />
+        <EntityTypeShape EntityType="Model.eAita.COSO" Width="1.5" PointX="4.5" PointY="57.875" />
+        <EntityTypeShape EntityType="Model.eAita.CT_PHEDUYETLICHCONGTAC" Width="1.5" PointX="5.25" PointY="114.875" />
+        <EntityTypeShape EntityType="Model.eAita.CTLICHCONGTAC" Width="1.5" PointX="3" PointY="113.875" />
+        <EntityTypeShape EntityType="Model.eAita.CTLICHCONGTAC_NGUOIDUNG" Width="1.5" PointX="5.25" PointY="101.125" />
+        <EntityTypeShape EntityType="Model.eAita.DM_BACLUONG" Width="1.5" PointX="6.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_BACLUONG_VIENCHUC" Width="1.5" PointX="12.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_CAPCOSO" Width="1.5" PointX="8.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_CHUCNANG" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_CHUCVU" Width="1.5" PointX="10.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_CHUCVUDANG" Width="1.5" PointX="12.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_CHUYENNGANH_DAOTAO" Width="1.5" PointX="14.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_COSODAOTAO" Width="1.5" PointX="1.5" PointY="52.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_DANTOC" Width="1.5" PointX="14.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_DONVI" Width="1.5" PointX="6.75" PointY="58.5" />
+        <EntityTypeShape EntityType="Model.eAita.DM_HINHTHUCDAOTAO" Width="1.5" PointX="1.5" PointY="49.5" />
+        <EntityTypeShape EntityType="Model.eAita.DM_LOAI_BANGLUONG" Width="1.5" PointX="14.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_LOAI_HOPDONG" Width="1.5" PointX="14.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_LOAIDAOTAO" Width="1.5" PointX="1.5" PointY="46.375" />
+        <EntityTypeShape EntityType="Model.eAita.DM_LYLUAN_CHINHTRI" Width="1.5" PointX="16.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_MOI_QUAN_HE" Width="1.5" PointX="0.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_NGACH_CANBO" Width="1.5" PointX="2.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_NGACH_CONGCHUC" Width="1.5" PointX="16.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_NGACH_VIENCHUC" Width="1.5" PointX="16.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_NGHE_NGHIEP" Width="1.5" PointX="8.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_NGOAI_NGU" Width="1.5" PointX="10.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_NGUOIDUNG" Width="1.5" PointX="0.75" PointY="85.25" />
+        <EntityTypeShape EntityType="Model.eAita.DM_NGUONKINHPHI" Width="1.5" PointX="1.5" PointY="42.875" />
+        <EntityTypeShape EntityType="Model.eAita.DM_PHONGBAN" Width="1.5" PointX="6.75" PointY="66.5" />
+        <EntityTypeShape EntityType="Model.eAita.DM_PHUCAP" Width="1.5" PointX="16.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_QUANLY_NHANUOC" Width="1.5" PointX="12.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_THAOTAC" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="Model.eAita.DM_TIN_HOC" Width="1.5" PointX="14.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_TONGIAO" Width="1.5" PointX="16.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_TRINHDO_CHUYENMON" Width="1.5" PointX="4.75" PointY="19.75" />
+        <EntityTypeShape EntityType="Model.eAita.DM_VAITRO" Width="1.5" PointX="0.75" PointY="6" />
+        <EntityTypeShape EntityType="Model.eAita.DM_VANBANG_CHUNGCHI" Width="1.5" PointX="18.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.DT_CHUNGCHI" Width="1.5" PointX="6" PointY="50.125" />
+        <EntityTypeShape EntityType="Model.eAita.DT_KEHOACHDAOTAO" Width="1.5" PointX="3.75" PointY="47" />
+        <EntityTypeShape EntityType="Model.eAita.DT_KEHOACHDAOTAO_USER" Width="1.5" PointX="6" PointY="87.75" />
+        <EntityTypeShape EntityType="Model.eAita.DT_LICHSUPHEDUYET" Width="1.5" PointX="3" PointY="103.875" />
+        <EntityTypeShape EntityType="Model.eAita.DT_NHANXETKQDT" Width="1.5" PointX="6" PointY="45.875" />
+        <EntityTypeShape EntityType="Model.eAita.DTNS_DAU_THAU" Width="1.5" PointX="18.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTNS_DU_AN" Width="1.5" PointX="18.75" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTNS_DUTOAN" Width="1.5" PointX="18.75" PointY="16.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTNS_GIAINGAN" Width="1.5" PointX="18.75" PointY="21.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTNS_QUYETTOAN" Width="1.5" PointX="20.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTNS_TINHTRANG_DUAN" Width="1.5" PointX="0.75" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTPL_DECUONG" Width="1.5" PointX="20.75" PointY="7.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTPL_DECUONG_LICHSU" Width="1.5" PointX="6.75" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTPL_DONVISOANTHAO" Width="1.5" PointX="8.75" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTPL_DONVISOANTHAO_CHITIET" Width="1.5" PointX="20.75" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTPL_FILE_HISTORY" Width="1.5" PointX="10.75" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTPL_GUITHAMDINH" Width="1.5" PointX="20.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTPL_SOANTHAO" Width="1.5" PointX="12.75" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTPL_XINYKIEN" Width="1.5" PointX="14.75" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.eAita.DTPL_YKIEN_DANHGIA" Width="1.5" PointX="20.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.eAita.HOSOCANBO" Width="1.5" PointX="20.75" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_BIETPHAI_CANBO" Width="1.5" PointX="2.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_BONHIEM_CANBO" Width="1.5" PointX="22.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_BONHIEMLAI_CONGCHUC" Width="1.5" PointX="22.75" PointY="7.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_CANBO_NGHIHUU" Width="1.5" PointX="22.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_CCCV_TAPSU" Width="1.5" PointX="22.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_CHUYENNGACH_CONGCHUC" Width="1.5" PointX="20.75" PointY="25.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_CONGCHUC_VIENCHUC" Width="1.5" PointX="22.75" PointY="25.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_DANHGIA_CANBO" Width="1.5" PointX="24.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_DANHGIA_TAPSU" Width="1.5" PointX="4.75" PointY="26.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_DANHSACH_NGHIHUU" Width="1.5" PointX="6.75" PointY="26.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_DIEUCHUYEN_CONGCHUC" Width="1.5" PointX="24.75" PointY="9.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_FILES" Width="1.5" PointX="8.75" PointY="26.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_HOPDONG_LAMVIEC" Width="1.5" PointX="10.75" PointY="26.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_HOPDONG_LD_68" Width="1.5" PointX="12.75" PointY="26.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_LANHDAO_DANHGIA" Width="1.5" PointX="14.75" PointY="26.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_LOAI_QUYETDINH" Width="1.5" PointX="24.75" PointY="17.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_NANGNGACH_CONGCHUC" Width="1.5" PointX="16.75" PointY="26.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_NGUOIDUNG_CANBO" Width="1.5" PointX="24.75" PointY="21.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_NHAN_SU_LOG" Width="1.5" PointX="24.75" PointY="24.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_NOIDUNG_DANHGIA" Width="1.5" PointX="26.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_NOILUU_HD" Width="1.5" PointX="26.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_QUANHE_GIADINH" Width="1.5" PointX="26.75" PointY="9.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_QUATRINH_CONGTAC" Width="1.5" PointX="26.75" PointY="15.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_QUATRINH_LUONG" Width="1.5" PointX="26.75" PointY="20.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_THOIVIEC" Width="1.5" PointX="26.75" PointY="25.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_TRUONGDAOTAO" Width="1.5" PointX="28.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_TUCHUC_MIENNHIEM" Width="1.5" PointX="28.75" PointY="7.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_VERSION_HISTORY" Width="1.5" PointX="28.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCB_VERSION_HOSO" Width="1.5" PointX="28.75" PointY="16.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_BAOCAO_CV" Width="1.5" PointX="15.75" PointY="98.375" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_CAPNHATTIENDO_CV" Width="1.5" PointX="15.75" PointY="132.875" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_CONGVIEC" Width="1.5" PointX="13.5" PointY="105.625" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_CONGVIEC_DONVITHAMGIAXULY" Width="1.5" PointX="6.75" PointY="31.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_CONGVIEC_DONVITHEODOI" Width="1.5" PointX="24.75" PointY="31.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_CONGVIEC_DONVIXULYCHINH" Width="1.5" PointX="30.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_CONGVIEC_NGUOITHAMGIAXULY" Width="1.5" PointX="15.75" PointY="105.125" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_CONGVIEC_NGUOITHEODOI" Width="1.5" PointX="21.75" PointY="100.125" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_CONGVIEC_NGUOIXULYCHINH" Width="1.5" PointX="18.75" PointY="100.125" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_CONGVIEC_NOIDUNGTRAODOI" Width="1.5" PointX="18.75" PointY="95.625" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_CONGVIEC_XINLUIHAN" Width="1.5" PointX="18.75" PointY="103" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_DOKHAN" Width="1.5" PointX="6" PointY="142" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_DOMAT" Width="1.5" PointX="6" PointY="145.5" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_DONVIBANHANH" Width="1.5" PointX="6" PointY="149.875" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_DONVIPHOIHOP" Width="1.5" PointX="30.75" PointY="5.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_DOUUTIEN_CV" Width="1.5" PointX="11.25" PointY="137.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_FILEUPLOAD" Width="1.5" PointX="30.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_HOSO" Width="1.5" PointX="3" PointY="149.5" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_LINHVUCVANBAN" Width="1.5" PointX="6" PointY="138.625" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_LOAIHOSO" Width="1.5" PointX="3.75" PointY="173.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_LOAIVANBAN" Width="1.5" PointX="0.75" PointY="101" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_MUCDOQUANTRONG" Width="1.5" PointX="6" PointY="135.375" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_NGUOIPHOIHOP" Width="1.5" PointX="30.75" PointY="12.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_NHOMSOVANBAN" Width="1.5" PointX="6" PointY="173" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_PHIEUGUITRAVB" Width="1.5" PointX="3" PointY="146.25" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_PHONGBANPHOIHOP" Width="1.5" PointX="30.75" PointY="15.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_SOVANBAN" Width="1.5" PointX="3" PointY="155" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_TIEPNHANVANBANDEN" Width="1.5" PointX="3" PointY="95.5" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_TONGHOP" Width="1.5" PointX="30.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_TRANGTHAI_CV" Width="1.5" PointX="11.25" PointY="114.25" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDEN" Width="1.5" PointX="5.25" PointY="118.625" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDEN_DONVIPHOIHOP" Width="1.5" PointX="13.5" PointY="123.625" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDEN_NGUOIXULY" Width="1.5" PointX="7.5" PointY="107" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDEN_PHONGBANXULY" Width="1.5" PointX="13.5" PointY="120.625" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDEN_YKIENCHIDAO" Width="1.5" PointX="18.75" PointY="32.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDI" Width="1.5" PointX="8.25" PointY="116" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDI_CANHAN_NHANVB" Width="1.5" PointX="10.5" PointY="107.25" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDI_COSONHAN_TRONGHETHONG" Width="1.5" PointX="30.75" PointY="21.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDI_DONVINHAN_NGOAICOQUAN" Width="1.5" PointX="10.5" PointY="122.625" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDI_DONVINHAN_TRONGCOQUAN" Width="1.5" PointX="10.5" PointY="119.625" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDI_NGUOIKY" Width="1.5" PointX="10.5" PointY="104.125" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANDI_YKIENCHIDAO" Width="1.5" PointX="10.5" PointY="132.5" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANLIENQUAN" Width="1.5" PointX="30.75" PointY="24.75" />
+        <EntityTypeShape EntityType="Model.eAita.HSCV_VANBANNOIBO" Width="1.5" PointX="11.25" PointY="101.125" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_CHUONGTRINH_DUAN_HOPTAC" Width="1.5" PointX="30.75" PointY="27.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_CHUONGTRINH_QUOCGIA" Width="1.5" PointX="30.75" PointY="32.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_DOANRA" Width="1.5" PointX="14.75" PointY="33.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_DOANRA_CANBO" Width="1.5" PointX="32.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_DOANRA_MUCDICH" Width="1.5" PointX="32.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_DOANRA_THANHVIEN" Width="1.5" PointX="32.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_DOANVAO" Width="1.5" PointX="32.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_DOANVAO_KHACHTHAMDU" Width="1.5" PointX="32.75" PointY="20.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_DOANVAO_THANHPHANTIEP" Width="1.5" PointX="32.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_DONVITOCHUC" Width="1.5" PointX="32.75" PointY="26.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_HOCHIEU" Width="1.5" PointX="24.75" PointY="34.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_HOINGHI_HOITHAO" Width="1.5" PointX="32.75" PointY="29.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_HOINGHI_HOITHAO_DONVITAITRO" Width="1.5" PointX="32.75" PointY="34.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_QUOCGIA" Width="1.5" PointX="26.75" PointY="35.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_QUOCGIA_TOCHUC_HOPTAC" Width="1.5" PointX="28.75" PointY="35.75" />
+        <EntityTypeShape EntityType="Model.eAita.HTQT_VANBAN_HTQT" Width="1.5" PointX="34.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.HUYEN" Width="1.5" PointX="34.75" PointY="7.75" />
+        <EntityTypeShape EntityType="Model.eAita.LANHDAONHAN" Width="1.5" PointX="34.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.eAita.LUUTRU_HANG" Width="1.5" PointX="34.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.eAita.LUUTRU_KE" Width="1.5" PointX="34.75" PointY="17.75" />
+        <EntityTypeShape EntityType="Model.eAita.LUUTRU_PHONG" Width="1.5" PointX="16.75" PointY="36.75" />
+        <EntityTypeShape EntityType="Model.eAita.LUUTRU_TANG" Width="1.5" PointX="18.75" PointY="36.75" />
+        <EntityTypeShape EntityType="Model.eAita.LUUTRU_TOANHA" Width="1.5" PointX="34.75" PointY="21.75" />
+        <EntityTypeShape EntityType="Model.eAita.NGUOIDUNG_CHUCNANG" Width="1.5" PointX="3" PointY="10.625" />
+        <EntityTypeShape EntityType="Model.eAita.NGUOIDUNG_THAOTAC" Width="1.5" PointX="8.25" PointY="5.875" />
+        <EntityTypeShape EntityType="Model.eAita.NGUOIDUNG_VAITRO" Width="1.5" PointX="34.75" PointY="25.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTTH_CHUYENVIEN_TRINH_CUCTRUONG" Width="1.5" PointX="34.75" PointY="28.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTTH_DONXIN_NANGLUONG" Width="1.5" PointX="3" PointY="68.875" />
+        <EntityTypeShape EntityType="Model.eAita.NLTTH_LICHSU_NANGLUONG" Width="1.5" PointX="34.75" PointY="31.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_CHUYENVIEN_THAMDINH" Width="1.5" PointX="34.75" PointY="35.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_CHUYENVIEN_THAMDINH_CHITIET" Width="1.5" PointX="30.75" PointY="37.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_CVP_TRINHCUCTRUONG" Width="1.5" PointX="36.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_DONXIN_NANGLUONG" Width="1.5" PointX="36.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_GUI_CHUYENVIEN" Width="1.5" PointX="36.75" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_GUICHANH_VANPHONG" Width="1.5" PointX="36.75" PointY="15.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_KEHOACH_NANGLUONG" Width="1.5" PointX="36.75" PointY="19.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_KEHOACH_NANGLUONG_CHITIET" Width="1.5" PointX="36.75" PointY="24.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_LICHSU_NANGLUONG" Width="1.5" PointX="36.75" PointY="27.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_LICHSU_TOTRINH" Width="1.5" PointX="36.75" PointY="30.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_NHANXET_NANGLUONG" Width="1.5" PointX="36.75" PointY="34.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_THONGBAO_KHNL_CANBO" Width="1.5" PointX="36.75" PointY="38.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_TRINHCUCTRUONG" Width="1.5" PointX="5.75" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.eAita.NLTX_TRINHCUCTRUONG_CHITIET" Width="1.5" PointX="7.75" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.eAita.NP_CHITIET" Width="1.5" PointX="9.75" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.eAita.NP_DONXINNGHI" Width="1.5" PointX="11.75" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.eAita.NP_LICHSUTRINHCAP_COQUAN" Width="1.5" PointX="13.75" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.eAita.NP_LICHSUTRINHCAP_DONVI" Width="1.5" PointX="24.75" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.eAita.NP_NGAYNGHIPHEP_NAM" Width="1.5" PointX="32.75" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.eAita.PH_CHUYENDOITRANGTHAI" Width="1.5" PointX="38.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.PH_DANGKYPHONGHOP" Width="1.5" PointX="38.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.PH_THIETBI" Width="1.5" PointX="38.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.eAita.PH_THIETBI_DANGKY" Width="1.5" PointX="38.75" PointY="17.75" />
+        <EntityTypeShape EntityType="Model.eAita.PH_THONGTINPHONGHOP" Width="1.5" PointX="15.75" PointY="40.75" />
+        <EntityTypeShape EntityType="Model.eAita.QL_BAOHIEM_PHULUC" Width="1.5" PointX="17.75" PointY="40.75" />
+        <EntityTypeShape EntityType="Model.eAita.QL_CAM_TINH_DANG" Width="1.5" PointX="3" PointY="76.625" />
+        <EntityTypeShape EntityType="Model.eAita.QL_CHI_BO" Width="1.5" PointX="0.75" PointY="81.375" />
+        <EntityTypeShape EntityType="Model.eAita.QL_CHI_DOAN" Width="1.5" PointX="3.75" PointY="65.5" />
+        <EntityTypeShape EntityType="Model.eAita.QL_CONG_DOAN" Width="1.5" PointX="19.75" PointY="40.75" />
+        <EntityTypeShape EntityType="Model.eAita.QL_DANG_PHI" Width="1.5" PointX="5.25" PointY="71" />
+        <EntityTypeShape EntityType="Model.eAita.QL_DANG_VIEN" Width="1.5" PointX="3" PointY="83.875" />
+        <EntityTypeShape EntityType="Model.eAita.QL_DOAN_PHI" Width="1.5" PointX="8.25" PointY="75.25" />
+        <EntityTypeShape EntityType="Model.eAita.QL_DOAN_VIEN" Width="1.5" PointX="6" PointY="80.875" />
+        <EntityTypeShape EntityType="Model.eAita.QL_EMAIL" Width="1.5" PointX="38.75" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.eAita.QL_HOATDONG_DANGVIEN" Width="1.5" PointX="5.25" PointY="75.75" />
+        <EntityTypeShape EntityType="Model.eAita.QL_HOATDONG_DOANVIEN" Width="1.5" PointX="8.25" PointY="80.25" />
+        <EntityTypeShape EntityType="Model.eAita.QL_KHENTHUONG_TAPTHE" Width="1.5" PointX="38.75" PointY="27.75" />
+        <EntityTypeShape EntityType="Model.eAita.QL_MAIL_TEMPLATE" Width="1.5" PointX="26.75" PointY="40.75" />
+        <EntityTypeShape EntityType="Model.eAita.QL_PHUCAP_HESO" Width="1.5" PointX="38.75" PointY="32.75" />
+        <EntityTypeShape EntityType="Model.eAita.QL_THONGTINPHUCAP" Width="1.5" PointX="38.75" PointY="35.75" />
+        <EntityTypeShape EntityType="Model.eAita.QLX_DIEUXE" Width="1.5" PointX="38.75" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.eAita.QLX_GIAOXE" Width="1.5" PointX="28.75" PointY="41.75" />
+        <EntityTypeShape EntityType="Model.eAita.QLX_HANGXE" Width="1.5" PointX="40.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.QLX_PHIEUDANGKY" Width="1.5" PointX="40.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.QLX_XE" Width="1.5" PointX="40.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.QUANLY_BIEUMAU" Width="1.5" PointX="40.75" PointY="19.75" />
+        <EntityTypeShape EntityType="Model.eAita.QUANLY_BIEUMAU_LINHVUC" Width="1.5" PointX="3.75" PointY="42.75" />
+        <EntityTypeShape EntityType="Model.eAita.QUANLY_BIEUMAU_LOAI" Width="1.5" PointX="5.75" PointY="42.75" />
+        <EntityTypeShape EntityType="Model.eAita.SK_DANGKYSANGKIEN" Width="1.5" PointX="40.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.eAita.SK_DONGSANGKIEN" Width="1.5" PointX="7.75" PointY="42.75" />
+        <EntityTypeShape EntityType="Model.eAita.SK_LINHVUC" Width="1.5" PointX="40.75" PointY="29.75" />
+        <EntityTypeShape EntityType="Model.eAita.SK_TRINHLANHDAO" Width="1.5" PointX="30.75" PointY="42.75" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_CAUHINH_HANGHIENTHI" Width="1.5" PointX="40.75" PointY="33.75" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_CAUHINHHIENTHI" Width="1.5" PointX="3" PointY="169.875" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_CAUHINHTRANGCHU" Width="1.5" PointX="6" PointY="95.5" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_CHUCNANG_MACDINH" Width="1.5" PointX="32.75" PointY="42.75" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_CHUCNANGTRANGCHU" Width="1.5" PointX="3.75" PointY="108.125" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_CHUCNANGTRANGCHU_VAITRO" Width="1.5" PointX="7" PointY="55.625" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_CONGVIEC_HAS_CHUCNANG" Width="1.5" PointX="40.75" PointY="36.75" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_CONGVIEC_MAP_CHUCNANG" Width="1.5" PointX="40.75" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_ENTITY_MARK" Width="1.5" PointX="40.75" PointY="42.75" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_TINNHAN" Width="1.5" PointX="3" PointY="158.875" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_UYQUYEN" Width="1.5" PointX="34.75" PointY="43.75" />
+        <EntityTypeShape EntityType="Model.eAita.SYS_VAITRO_CHUCNANGTRANGCHU" Width="1.5" PointX="9" PointY="58.625" />
+        <EntityTypeShape EntityType="Model.eAita.TAILIEU_CHUASOHOA" Width="1.5" PointX="36.75" PointY="43.75" />
+        <EntityTypeShape EntityType="Model.eAita.TAILIEU_DUNGLUONGLUUTRU" Width="1.5" PointX="42.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.TAILIEU_LICHSU_CHOMUON" Width="1.5" PointX="42.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.TAILIEU_LICHSUPHEDUYET" Width="1.5" PointX="42.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.eAita.TAILIEU_TRANGTHAI_SUDUNG" Width="1.5" PointX="11.75" PointY="44.75" />
+        <EntityTypeShape EntityType="Model.eAita.TAILIEUDINHKEM" Width="1.5" PointX="42.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_CANHANDANGKY" Width="1.5" PointX="13.75" PointY="44.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_CANHANDANGKY_TMP" Width="1.5" PointX="42.75" PointY="20.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_CHUYENVIEN_TRINHLANHDAO" Width="1.5" PointX="19.75" PointY="44.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_CHUYENVIENCUC_DANHGIA_CANHAN" Width="1.5" PointX="42.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_CHUYENVIENDANHGIA_CANHAN" Width="1.5" PointX="21.75" PointY="44.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_DANH_HIEU_CA_NHAN_CONDITION" Width="1.5" PointX="23.75" PointY="44.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_DANHHIEUCANHAN" Width="1.5" PointX="42.75" PointY="27.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_DANHHIEUTAPTHE" Width="1.5" PointX="25.75" PointY="44.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_DANHSACHTRINHLANHDAOCUC_TDCN" Width="1.5" PointX="42.75" PointY="31.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_DIEUKIEN_DANHHIEU_TAPTHE" Width="1.5" PointX="42.75" PointY="35.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_DIEUKIENDANHHIEUCANHAN" Width="1.5" PointX="42.75" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_KETQUATHIDUA_CANHAN" Width="1.5" PointX="42.75" PointY="42.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_PHONGTRAO_THIDUA" Width="1.5" PointX="15.75" PointY="45.75" />
+        <EntityTypeShape EntityType="Model.eAita.TDKT_THOIDIEM_KETTHUC_THIDUA_CANHAN" Width="1.5" PointX="42.75" PointY="45.75" />
+        <EntityTypeShape EntityType="Model.eAita.THIETLAP_TIENKHOAN" Width="1.5" PointX="44.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.THONGTIN_LUONG" Width="1.5" PointX="44.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.THUMUC_LICHSUPHEDUYET" Width="1.5" PointX="44.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.eAita.THUMUC_LUUTRU" Width="1.5" PointX="44.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.TINH" Width="1.5" PointX="2.25" PointY="60" />
+        <EntityTypeShape EntityType="Model.eAita.TL_MANAGER_VERSION" Width="1.5" PointX="44.75" PointY="20.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_CHINHSACH_QLTL" Width="1.5" PointX="44.75" PointY="24.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_CHUYENTIEP_YEUCAU" Width="1.5" PointX="44.75" PointY="28.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_DANHMUC_THONGTIN" Width="1.5" PointX="27.75" PointY="46.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_DANHMUC_TRINHCUC" Width="1.5" PointX="29.75" PointY="46.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_DANHMUC_TRINHCUC_CHITIET" Width="1.5" PointX="44.75" PointY="32.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_GIAHAN_LICHSU" Width="1.5" PointX="31.75" PointY="46.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_GIAHANTAILIEU" Width="1.5" PointX="44.75" PointY="35.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_LICHSU_KIEMXUAT" Width="1.5" PointX="44.75" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_LOAITAILIEU_THUOCTINH" Width="1.5" PointX="38.75" PointY="46.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_LOAIVANBAN" Width="1.5" PointX="44.75" PointY="42.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_SHARINGFILE" Width="1.5" PointX="44.75" PointY="46.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_TAILIEU_THUOCTINH" Width="1.5" PointX="17.75" PointY="47.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_THONGKE_DANHMUC" Width="1.5" PointX="46.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_THONGKE_DANHMUC_LOG" Width="1.5" PointX="46.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_THUMUC_CHUASOHOA" Width="1.5" PointX="46.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_YEUCAU_CHIASE" Width="1.5" PointX="46.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_YEUCAU_CHIASE_CHITIET" Width="1.5" PointX="46.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.eAita.TM_YEUCAU_CHIASE_LICHSU" Width="1.5" PointX="19.75" PointY="48.75" />
+        <EntityTypeShape EntityType="Model.eAita.TRANSACTION_SMS" Width="1.5" PointX="46.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.eAita.TS_LICHSUBAOHANH" Width="1.5" PointX="6" PointY="90.875" />
+        <EntityTypeShape EntityType="Model.eAita.TS_LICHSUBAOHONG" Width="1.5" PointX="9" PointY="96" />
+        <EntityTypeShape EntityType="Model.eAita.TS_LICHSUSUACHUA" Width="1.5" PointX="3" PointY="90.875" />
+        <EntityTypeShape EntityType="Model.eAita.TS_LICHSUSUDUNG" Width="1.5" PointX="9" PointY="46.25" />
+        <EntityTypeShape EntityType="Model.eAita.TS_NGUONPHATSINH" Width="1.5" PointX="1.5" PointY="35.375" />
+        <EntityTypeShape EntityType="Model.eAita.TS_NHOMTAISAN" Width="1.5" PointX="1.5" PointY="31.625" />
+        <EntityTypeShape EntityType="Model.eAita.TS_TAISAN" Width="1.5" PointX="3.75" PointY="33.125" />
+        <EntityTypeShape EntityType="Model.eAita.TS_THANHLY" Width="1.5" PointX="6" PointY="35" />
+        <EntityTypeShape EntityType="Model.eAita.TS_TRANGTHAITAISAN" Width="1.5" PointX="1.5" PointY="38.875" />
+        <EntityTypeShape EntityType="Model.eAita.VAITRO_CHUCNANG" Width="1.5" PointX="3" PointY="6" />
+        <EntityTypeShape EntityType="Model.eAita.VAITRO_THAOTAC" Width="1.5" PointX="5.25" PointY="6.25" />
+        <EntityTypeShape EntityType="Model.eAita.VM_CHITIETDONVANGMAT" Width="1.5" PointX="11.25" PointY="96" />
+        <EntityTypeShape EntityType="Model.eAita.VM_DONXINVANGMAT" Width="1.5" PointX="9" PointY="84.5" />
+        <EntityTypeShape EntityType="Model.eAita.VM_TRINHLANHDAOCOQUAN" Width="1.5" PointX="14.25" PointY="93.375" />
+        <EntityTypeShape EntityType="Model.eAita.VM_TRINHLANHDAODONVI" Width="1.5" PointX="14.25" PointY="88.375" />
+        <EntityTypeShape EntityType="Model.eAita.VP_LOIVIPHAM" Width="1.5" PointX="6.75" PointY="110.375" />
+        <EntityTypeShape EntityType="Model.eAita.VP_VIPHAM" Width="1.5" PointX="9" PointY="90.5" />
+        <EntityTypeShape EntityType="Model.eAita.WF_BUOCCHUYENTRANGTHAI" Width="1.5" PointX="12" PointY="86" />
+        <EntityTypeShape EntityType="Model.eAita.WF_ENTITY_RELATION" Width="1.5" PointX="10" PointY="10.375" />
+        <EntityTypeShape EntityType="Model.eAita.WF_ENTITY_RELATION_LOG" Width="1.5" PointX="21.75" PointY="48.75" />
+        <EntityTypeShape EntityType="Model.eAita.WF_LICHSUCHUYENDOITRANGTHAI" Width="1.5" PointX="12" PointY="90.875" />
+        <EntityTypeShape EntityType="Model.eAita.WF_NHOMQUYTRINH" Width="1.5" PointX="23.75" PointY="48.75" />
+        <EntityTypeShape EntityType="Model.eAita.WF_QUYTRINH" Width="1.5" PointX="7.75" PointY="10" />
+        <EntityTypeShape EntityType="Model.eAita.WF_QUYTRINH_CAPCOSO" Width="1.5" PointX="46.75" PointY="27.75" />
+        <EntityTypeShape EntityType="Model.eAita.WF_STEP_VAITRO" Width="1.5" PointX="46.75" PointY="30.75" />
+        <EntityTypeShape EntityType="Model.eAita.WF_TRANGTHAI" Width="1.5" PointX="9.75" PointY="110.125" />
+        <EntityTypeShape EntityType="Model.eAita.XA" Width="1.5" PointX="46.75" PointY="33.75" />
+        <AssociationConnector Association="Model.eAita.FK_CHAT_GROUP_DM_NGUOIDUNG_NGUOITAOGROUP" />
+        <AssociationConnector Association="Model.eAita.FK_CHAT_GROUP_USER_CHAT_GROUP" />
+        <AssociationConnector Association="Model.eAita.FK_CHAT_NOIDUNG_CHAT_GROUP" />
+        <AssociationConnector Association="Model.eAita.FK_CHAT_GROUP_USER_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_CHAT_NOIDUNG_DM_NGUOIDUNG_NGUOIGUI" />
+        <AssociationConnector Association="Model.eAita.FK_CHAT_NOIDUNG_DM_NGUOIDUNG_NGUOINHAN" />
+        <AssociationConnector Association="Model.eAita.FK_COSO_TINH" />
+        <AssociationConnector Association="Model.eAita.FK_DM_DONVI_COSO" />
+        <AssociationConnector Association="Model.eAita.FK_CT_PHEDUYETLICHCONGTAC_CT_PHEDUYETLICHCONGTAC" />
+        <AssociationConnector Association="Model.eAita.FK_CTLICHCONGTAC_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_CTLICHCONGTAC_NGUOIDUNG_CTLICHCONGTAC" />
+        <AssociationConnector Association="Model.eAita.FK_CTLICHCONGTAC_NGUOIDUNG_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_NGUOIDUNG_CHUCNANG_DM_CHUCNANG" />
+        <AssociationConnector Association="Model.eAita.FK_VAITRO_CHUCNANG_DM_CHUCNANG" />
+        <AssociationConnector Association="Model.eAita.FK_DT_KEHOACHDAOTAO_DM_COSODAOTAO" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_DM_DONVI" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_DONVIPHOIHOP_DM_DONVI" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_DM_DONVI_SOANTHAO" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_DONVINHAN_TRONGCOQUAN_DM_DONVI_NHANVB" />
+        <AssociationConnector Association="Model.eAita.FK_TS_LICHSUSUDUNG_DM_DONVI" />
+        <AssociationConnector Association="Model.eAita.FK_TS_TAISAN_DM_DONVI" />
+        <AssociationConnector Association="Model.eAita.FK_VM_DONXINVANGMAT_DM_DONVI" />
+        <AssociationConnector Association="Model.eAita.FK_VP_VIPHAM_DM_DONVI" />
+        <AssociationConnector Association="Model.eAita.FK_DT_KEHOACHDAOTAO_DM_HINHTHUCDAOTAO" />
+        <AssociationConnector Association="Model.eAita.FK_DT_KEHOACHDAOTAO_DM_LOAIDAOTAO" />
+        <AssociationConnector Association="Model.eAita.FK__HSCV_HOSO__NGUOI__7B264821" />
+        <AssociationConnector Association="Model.eAita.FK__HSCV_HOSO__NGUOI__7C1A6C5A" />
+        <AssociationConnector Association="Model.eAita.FK__HSCV_PHIE__NGUOI__671F4F74" />
+        <AssociationConnector Association="Model.eAita.FK__HSCV_SOVB__NGUOI__719CDDE7" />
+        <AssociationConnector Association="Model.eAita.FK__HSCV_TIEP__NGUOI__6CD828CA" />
+        <AssociationConnector Association="Model.eAita.FK_DT_KEHOACHDAOTAO_USER_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_DT_LICHSUPHEDUYET_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_BAOCAO_CV_DM_NGUOIDUNG_NGUOIBAOCAO" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_DM_NGUOIDUNG_NGUOIGIAOVIEC" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_NGUOITHAMGIAXULY_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_NGUOITHEODOI_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_NGUOIXULYCHINH_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_NOIDUNGTRAODOI_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_XINLUIHAN_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_DM_NGUOIDUNG1" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_DM_NGUOIDUNG2" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_NGUOIXULY_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_CANHAN_NHANVB_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_DM_NGUOIDUNG_NGUOIKY" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_DM_NGUOIDUNG_NGUOISOAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_NGUOIKY_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_NLTTH_DONXIN_NANGLUONG_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_NLTTH_DONXIN_NANGLUONG_NLTTH_DONXIN_NANGLUONG" />
+        <AssociationConnector Association="Model.eAita.FK_QL_CAM_TINH_DANG_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_QL_DANG_VIEN_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_QL_DOAN_VIEN_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_SYS_CAUHINHHIENTHI_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_SYS_CAUHINHTRANGCHU_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_SYS_TINNHAN_DM_NGUOIDUNG_FROMUSER" />
+        <AssociationConnector Association="Model.eAita.FK_SYS_TINNHAN_DM_NGUOIDUNG_TOUSER" />
+        <AssociationConnector Association="Model.eAita.FK_TS_LICHSUBAOHANH_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_TS_LICHSUBAOHONG_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_TS_LICHSUSUACHUA_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_VM_DONXINVANGMAT_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_VM_TRINHLANHDAOCOQUAN_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_VM_TRINHLANHDAOCOQUAN_DM_NGUOIDUNG1" />
+        <AssociationConnector Association="Model.eAita.FK_VM_TRINHLANHDAOCOQUAN_DM_NGUOIDUNG2" />
+        <AssociationConnector Association="Model.eAita.FK_VM_TRINHLANHDAODONVI_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_VM_TRINHLANHDAODONVI_DM_NGUOIDUNG1" />
+        <AssociationConnector Association="Model.eAita.FK_VM_TRINHLANHDAODONVI_DM_NGUOIDUNG2" />
+        <AssociationConnector Association="Model.eAita.FK_VP_VIPHAM_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_WF_LICHSUCHUYENDOITRANGTHAI_DM_NGUOIDUNG" />
+        <AssociationConnector Association="Model.eAita.FK_DM_NGUONKINHPHI_DM_NGUONKINHPHI" />
+        <AssociationConnector Association="Model.eAita.FK_DT_KEHOACHDAOTAO_DM_NGUONKINHPHI" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_PHONGBANXULY_DM_PHONGBAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_DM_PHONGBAN" />
+        <AssociationConnector Association="Model.eAita.FK_VM_DONXINVANGMAT_DM_PHONGBAN" />
+        <AssociationConnector Association="Model.eAita.FK_VP_VIPHAM_DM_PHONGBAN" />
+        <AssociationConnector Association="Model.eAita.FK_NGUOIDUNG_THAOTAC_DM_THAOTAC" />
+        <AssociationConnector Association="Model.eAita.FK_VAITRO_THAOTAC_DM_THAOTAC" />
+        <AssociationConnector Association="Model.eAita.FK_SYS_CHUCNANGTRANGCHU_VAITRO_DM_VAITRO" />
+        <AssociationConnector Association="Model.eAita.FK_SYS_VAITRO_CHUCNANGTRANGCHU_DM_VAITRO" />
+        <AssociationConnector Association="Model.eAita.FK_VAITRO_CHUCNANG_DM_VAITRO" />
+        <AssociationConnector Association="Model.eAita.FK_DT_CHUNGCHI_DT_KEHOACHDAOTAO" />
+        <AssociationConnector Association="Model.eAita.FK_DT_KEHOACHDAOTAO_USER_DT_KEHOACHDAOTAO" />
+        <AssociationConnector Association="Model.eAita.FK_DT_NHANXETKQDT_DT_KEHOACHDAOTAO1" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_BAOCAO_CV_HSCV_CONGVIEC" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CAPNHATTIENDO_CV_HSCV_CONGVIEC" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_HSCV_DOUUTIEN_CV" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_HSCV_TRANGTHAI_CV" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_HSCV_VANBANDEN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_HSCV_VANBANDI" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_HSCV_VANBANNOIBO" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_NGUOITHAMGIAXULY_HSCV_CONGVIEC" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_NGUOITHEODOI_HSCV_CONGVIEC" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_NGUOIXULYCHINH_HSCV_CONGVIEC" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_NOIDUNGTRAODOI_HSCV_CONGVIEC" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_CONGVIEC_XINLUIHAN_HSCV_CONGVIEC" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_HSCV_DOKHAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_HSCV_DOKHAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_HSCV_DOMAT" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_HSCV_DOMAT" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_DONVIBANHANH_HSCV_DONVIBANHANH" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_HSCV_DONVIBANHANH" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_DONVINHAN_NGOAICOQUAN_HSCV_DONVINHANVANBAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_HSCV_DONVIBANHANH" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_HSCV_LINHVUCVANBAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_NHOMSOVANBAN_HSCV_LOAIVANBAN" />
+        <AssociationConnector Association="Model.eAita.FK__HSCV_TIEP__LOAIV__6BE40491" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_HSCV_LOAIVANBAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_HSCV_LOAIVANBAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_HSCV_MUCDOQUANTRONG" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_HSCV_NHOMSOVANBAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_HSCV_NHOMSOVANBAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_HSCV_SOVANBAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_HSCV_SOVANBAN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_DONVIPHOIHOP_HSCV_VANBANDEN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_NGUOIXULY_HSCV_VANBANDEN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDEN_PHONGBANXULY_HSCV_VANBANDEN" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_CANHAN_NHANVB_HSCV_VANBANDI" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_DONVINHAN_NGOAICOQUAN_HSCV_VANBANDI" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_DONVINHAN_TRONGCOQUAN_HSCV_VANBANDI" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_NGUOIKY_HSCV_VANBANDI" />
+        <AssociationConnector Association="Model.eAita.FK_HSCV_VANBANDI_YKIENCHIDAO_HSCV_VANBANDI" />
+        <AssociationConnector Association="Model.eAita.FK_NGUOIDUNG_THAOTAC_NGUOIDUNG_CHUCNANG" />
+        <AssociationConnector Association="Model.eAita.FK_QL_DANG_VIEN_QL_CHI_BO" />
+        <AssociationConnector Association="Model.eAita.FK_QL_DOAN_VIEN_QL_CHI_DOAN" />
+        <AssociationConnector Association="Model.eAita.FK_QL_DANG_PHI_QL_DANG_VIEN" />
+        <AssociationConnector Association="Model.eAita.FK_QL_HOATDONG_DANGVIEN_QL_DANG_VIEN" />
+        <AssociationConnector Association="Model.eAita.FK_QL_DOAN_PHI_QL_DOAN_VIEN" />
+        <AssociationConnector Association="Model.eAita.FK_QL_HOATDONG_DOANVIEN_QL_DOAN_VIEN" />
+        <AssociationConnector Association="Model.eAita.FK_SYS_CAUHINHTRANGCHU_SYS_CHUCNANGTRANGCHU" />
+        <AssociationConnector Association="Model.eAita.FK_SYS_CHUCNANGTRANGCHU_VAITRO_SYS_CHUCNANGTRANGCHU_VAITRO" />
+        <AssociationConnector Association="Model.eAita.FK_SYS_VAITRO_CHUCNANGTRANGCHU_SYS_CHUCNANGTRANGCHU" />
+        <AssociationConnector Association="Model.eAita.FK_TS_LICHSUBAOHANH_TS_TAISAN" />
+        <AssociationConnector Association="Model.eAita.FK_TS_LICHSUBAOHONG_TS_TAISAN" />
+        <AssociationConnector Association="Model.eAita.FK_TS_LICHSUSUACHUA_TS_TAISAN" />
+        <AssociationConnector Association="Model.eAita.FK_TS_LICHSUSUDUNG_TS_TAISAN" />
+        <AssociationConnector Association="Model.eAita.FK_TS_LICHSUSUDUNG_TS_TRANGTHAITAISAN" />
+        <AssociationConnector Association="Model.eAita.FK_TS_TAISAN_TS_NGUONPHATSINH" />
+        <AssociationConnector Association="Model.eAita.FK_TS_TAISAN_TS_NHOMTAISAN" />
+        <AssociationConnector Association="Model.eAita.FK_TS_TAISAN_TS_TRANGTHAITAISAN" />
+        <AssociationConnector Association="Model.eAita.FK_TS_THANHLY_TS_TAISAN" />
+        <AssociationConnector Association="Model.eAita.FK_VAITRO_THAOTAC_VAITRO_CHUCNANG" />
+        <AssociationConnector Association="Model.eAita.FK_VM_CHITIETDONVANGMAT_VM_DONXINVANGMAT" />
+        <AssociationConnector Association="Model.eAita.FK_VM_TRINHLANHDAOCOQUAN_VM_DONXINVANGMAT" />
+        <AssociationConnector Association="Model.eAita.FK_VM_TRINHLANHDAODONVI_VM_DONXINVANGMAT" />
+        <AssociationConnector Association="Model.eAita.FK_VP_VIPHAM_VP_LOIVIPHAM" />
+        <AssociationConnector Association="Model.eAita.FK_WF_BUOCCHUYENTRANGTHAI_WF_TRANGTHAI" />
+        <AssociationConnector Association="Model.eAita.FK_WF_BUOCCHUYENTRANGTHAI_WF_TRANGTHAI1" />
+        <AssociationConnector Association="Model.eAita.FK_WF_ENTITY_RELATION_WF_QUYTRINH" />
+        <AssociationConnector Association="Model.eAita.FK_WF_LICHSUCHUYENDOITRANGTHAI_WF_TRANGTHAI" />
+        <AssociationConnector Association="Model.eAita.FK_WF_LICHSUCHUYENDOITRANGTHAI_WF_TRANGTHAI1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

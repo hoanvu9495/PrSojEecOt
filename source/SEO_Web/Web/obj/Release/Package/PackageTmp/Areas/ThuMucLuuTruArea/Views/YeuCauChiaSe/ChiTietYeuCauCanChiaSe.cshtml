@@ -1,0 +1,595 @@
+﻿@{
+    ViewBag.Title = "Chi tiết yêu cầu chia sẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@using Business.CommonBusiness;
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeModel
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+    .checkbox-item {
+        background: url('/Content/themes/base/images/TM_DANHMUC_Checkbox.png') no-repeat;
+        display: block;
+        width: 26px;
+        height: 26px;
+        margin-left: 23px;
+    }
+    .Date_Share {
+        text-align: left !important;
+        margin-left: 10px;
+    }
+
+    .btn:hover {
+        cursor: pointer;
+    }
+
+    .approve1 {
+        background: url('/Content/themes/base/images/TmFolder_approvel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .tblFixed {
+        table-layout: fixed;
+    }
+
+    .unexpired {
+        background: rgba(0, 0, 0, 0) url("/Content/themes/base/images/folder_unexpired.png") no-repeat scroll 4px 2px / 22px 22px;
+        float: left;
+        line-height: 1.3em;
+        margin-left: 5px;
+        padding: 10px 15px 10px 38px;
+        text-align: center;
+    }
+
+    .clearfix::before, .clearfix::after, .row::before, .row::after {
+        content: ".";
+        display: block;
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        width: 0;
+    }
+
+    .row::after, .clearfix::after {
+        clear: both;
+    }
+
+    .SearchCriterial.clearfix.hot-news-list-2 {
+        margin-left: 10px;
+        margin-top: 10px;
+        width: 95%;
+    }
+
+    .unapprove1 {
+        background: url('/Content/themes/base/images/Tmfolder-cancel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .expired1 {
+        background: url('/Content/themes/base/images/folder-expired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: red;
+    }
+
+    .unexpired1 {
+        background: url('/Content/themes/base/images/folder_unexpired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+    }
+
+    .private1 {
+        background: url('/Content/themes/base/images/my_folder.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+        color: #ff6a00;
+    }
+
+    .popup-content {
+        width: 97% !important;
+    }
+
+    #browser li {
+        margin-top: 3px;
+    }
+
+    #display {
+        width: 54%;
+        margin-right: 10px;
+        float: left;
+        min-height: 80%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-top: 10px;
+    }
+
+    #treeview {
+        float: left;
+        width: 45%;
+        margin-top: 10px;
+    }
+
+    #Path li {
+        float: left;
+    }
+
+    .SearchResult.hot-news-list-2.mgt20 > #URLPath {
+        margin-bottom: 3%;
+    }
+
+    #right ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        padding: 10px 25px;
+        border-radius: 5px;
+    }
+
+    #right li {
+        float: left;
+        margin-right: 10px;
+    }
+
+    #right i {
+        -moz-user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        padding: 6px 12px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    #right li a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    #right li:hover {
+        color: #357ae8;
+        cursor: pointer;
+    }
+
+    .close-modal:hover {
+        cursor: pointer;
+    }
+
+    #SelectedItem td:nth-child(3) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #SelectedItem td:hover {
+        cursor: pointer;
+    }
+
+    .webGrid tr td:nth-child(4), #SelectedItem td:nth-child(2), #SelectedItem td:nth-child(3) {
+        text-align: left !important;
+    }
+    .webGrid th{
+        text-align:center !important;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" style="width:500px">
+            <h1>Chi tiết yêu cầu được chia sẻ</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-left">
+            </div>
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" onclick="location.href = '@Url.Action("TimKiemTaiLieu", "ThuMucLuuTru")'">Tìm kiếm nâng cao</button>
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" onclick="location.href = '@Url.Action("Index", "ThuMucLuuTru")'">Quản lý tài liệu</button>
+                @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                {
+                    <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" id="XULYYEUCAU" onclick="location.href = '@Url.Action("Index", "DanhMucThongTin")'">Quản lý danh mục thông tin,tài liệu</button>
+                }
+                <div class="btn-group" role="group" style="margin-bottom: 10px;margin-right:50px">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chia sẻ tài liệu
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("DanhSachTaiLieuDaChiaSe", "ThuMucLuuTru")">Đang chia sẻ</a></li>
+                        <li><a href="@Url.Action("DanhSachTaiLieuDuocChiaSe", "ThuMucLuuTru")">Được chia sẻ</a></li>
+                        @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                        {
+                            <li><a href="@Url.Action("Index", "YeuCauChiaSe")">Yêu cầu chia sẻ</a></li>
+                            <li><a href="@Url.Action("YeuCauCanChiaSe", "YeuCauChiaSe")">Xử lý yêu cầu chia sẻ (@Model.XuLy)</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right-all-page" oncontextmenu="return false;" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+    <div class="right-content clearfix">
+        <div class="SearchResult ">
+            <div style="margin: 0 auto;width:60%;margin-left:20%">
+                <table class="YeuCau" style="width:100%">
+                    <tr>
+                        <td colspan="2">
+                            <h3 class="group-tittle mt10" style="margin-bottom:30px">Thông tin yêu cầu chia sẻ tài liệu</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold">
+                            Trạng thái:
+                        </td>
+                        <td>
+                            @switch (Model.CHUYENTIEP.TRANGTHAI)
+                            {
+                                case ChuyenTiepYeuCauContant.DAGUI:
+                                    <span style='color:red'>Chưa xử lý</span>
+                                    break;
+                                case ChuyenTiepYeuCauContant.CHIASE:
+                                <span style='color:green'>Đã xử lý</span>
+                                    break;
+                                case ChuyenTiepYeuCauContant.GUILAI:
+                                <span style='color:red'>Bắt buộc chia sẻ</span>
+                                    break;
+                                case ChuyenTiepYeuCauContant.TUCHOI:
+                                <span style='color:green'>Từ chối chia sẻ</span>
+                                    break;
+                                default:
+                                <span style='color:red'>Chưa xử lý</span>
+                                    break;
+                            }
+                        </td>
+                    </tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>
+                    <tr>
+                        <td style="width:200px;font-weight:bold">Ngày yêu cầu:</td>
+                        <td>
+                            <span style="font-weight:bold">@string.Format("{0:dd-MM-yyyy}", Model.CHUYENTIEP.NGAYGUI)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold">Lý do yêu cầu:</td>
+                        <td>
+                            <span style=" white-space: nowrap">
+                                @Model.CHUYENTIEP.NOIDUNG
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                </table>
+                <table class="webGrid tblFixed">
+                    <thead>
+                        <tr class="head">
+                            <th>
+                                Chia sẻ
+                            </th>
+                            <th>
+                                Đơn vị
+                            </th>
+                            <th>
+                                Tên danh mục
+                            </th>
+                            <th>
+                                Tên tài liệu
+                            </th>
+                            <th>
+                                Ghi chú
+                            </th>
+                            <th>
+                                Thời gian chia sẻ
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="SelectedItem">
+                        @{
+                            var lstDonVi = Model.ListChiTiet.GroupBy(x => x.TENDONVI).Select(g => g.First()).ToList();
+                            foreach (var i in lstDonVi)
+                            {
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                    <td>@i.TENDONVI</td>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                    <td class="Date_Share">
+                                        @if (i.CHIASE_TU != null || i.CHIASE_DEN != null)
+                                        {
+                                        <span style=" white-space: nowrap">
+                                            Từ ngày:
+                                            @if (i.CHIASE_TU != null)
+                                                {
+                                            <span style="font-weight:bold">
+                                                @string.Format("{0:dd-MM-yyyy}", i.CHIASE_TU)
+                                            </span>
+                                                }
+                                                else
+                                                {
+                                            <span>Không có</span>
+                                                }
+                                            <br />
+                                            Đến ngày:
+                                            @if (i.CHIASE_DEN != null)
+                                                {
+                                            <span style="font-weight:bold">
+                                                @string.Format("{0:dd-MM-yyyy}", i.CHIASE_DEN)
+                                            </span>
+                                                }
+                                                else
+                                                {
+                                            <span>Không có</span>
+                                                }
+                                        </span>
+                                        }
+                                    </td>
+                                </tr>
+                                        var ListParent = Model.ListChiTiet.Where(x => x.ISTHUMUC.HasValue && x.ISTHUMUC.Value).ToList();
+                                        foreach (var item in ListParent)
+                                        {
+                                            var ListChild = Model.ListChiTiet.Where(x => x.PARENT_ID == item.DANHMUC_ID).ToList();
+                                            <tr>
+                                                <td>
+                                                    @if (Model.CHUYENTIEP.TRANGTHAI.Value == ChuyenTiepYeuCauContant.DAGUI || Model.CHUYENTIEP.TRANGTHAI.Value == ChuyenTiepYeuCauContant.GUILAI)
+                                                    {
+                                                        if (Model.CHUYENTIEP.TRANGTHAI == ChuyenTiepYeuCauContant.GUILAI && item.TRANGTHAI == YeuCauChiaSeConstant.DADUYET)
+                                                        {
+                                                            <a class="checkbox-item"></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <input class="checkitem checkparent checkparent_@item.ID" data-id="@item.ID" checked type="checkbox" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (item.TRANGTHAI == YeuCauChiaSeConstant.DADUYET)
+                                                        {
+                                                            <a class="checkbox-item"></a>
+                                                        }
+                                                    }
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                                <td>
+                                                    <span title="@item.TENTAILIEU">@item.TENTAILIEU</span>
+                                                </td>
+                                                <td>&nbsp;</td>
+                                                <td>@item.GHICHU</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            foreach (var ele in ListChild)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @if (Model.CHUYENTIEP.TRANGTHAI.Value == ChuyenTiepYeuCauContant.DAGUI || Model.CHUYENTIEP.TRANGTHAI.Value == ChuyenTiepYeuCauContant.GUILAI)
+                                                        {
+                                                            if (Model.CHUYENTIEP.TRANGTHAI == ChuyenTiepYeuCauContant.GUILAI && ele.TRANGTHAI == YeuCauChiaSeConstant.DADUYET)
+                                                            {
+                                                                <a class="checkbox-item"></a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input class="checkitem checkparent checkparent_@item.ID" data-id="@ele.ID" checked type="checkbox" />
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (ele.TRANGTHAI == YeuCauChiaSeConstant.DADUYET)
+                                                            {
+                                                                <a class="checkbox-item"></a>
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        &nbsp;
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <span title="@ele.TENTAILIEU">@ele.TENTAILIEU</span>
+                                                    </td>
+                                                    <td>@ele.GHICHU</td>
+                                                    <td>&nbsp;</td>
+                                                </tr>
+                                            }
+                                        }
+                                        var ListUnknow = Model.ListChiTiet.Where(x => x.DONVI_ID == i.DONVI_ID && x.PARENT_ID.HasValue && !ListParent.Select(y => y.DANHMUC_ID).Contains(x.PARENT_ID.Value)).ToList();
+                                        for (int j = 0; j < ListUnknow.Count; j++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @if (Model.CHUYENTIEP.TRANGTHAI.Value == ChuyenTiepYeuCauContant.DAGUI || Model.CHUYENTIEP.TRANGTHAI.Value == ChuyenTiepYeuCauContant.GUILAI)
+                                                    {
+                                                        if (Model.CHUYENTIEP.TRANGTHAI == ChuyenTiepYeuCauContant.GUILAI && ListUnknow[j].TRANGTHAI == YeuCauChiaSeConstant.DADUYET)
+                                                        {
+                                                            <a class="checkbox-item"></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <input class="checkitem checkparent checkparent_@ListUnknow[j].ID" data-id="@ListUnknow[j].ID" checked type="checkbox" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (ListUnknow[j].TRANGTHAI == YeuCauChiaSeConstant.DADUYET)
+                                                        {
+                                                            <a class="checkbox-item"></a>
+                                                        }
+                                                    }
+                                                </td>
+                                                <td>&nbsp;</td>
+                                                <td>
+                                                    @if (j == 0)
+                                                    {
+                                                        <span>Tài liệu chung</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <span title="@ListUnknow[j].TENTAILIEU">@ListUnknow[j].TENTAILIEU</span>
+                                                </td>
+                                                <td>@ListUnknow[j].GHICHU</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                        }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div style="width:60%;margin-left:20%;text-align:center;margin-top:20px">
+                @if (Model.CHUYENTIEP.TRANGTHAI.HasValue && Model.CHUYENTIEP.TRANGTHAI.Value == ChuyenTiepYeuCauContant.DAGUI)
+                {
+                    <button class="btn btn-danger" onclick="TuChoiChiaSe(@Model.CHUYENTIEP.ID)" type="button">Báo lại Cục trưởng</button>
+                }
+                @if (Model.CHUYENTIEP.TRANGTHAI.HasValue && (Model.CHUYENTIEP.TRANGTHAI.Value == ChuyenTiepYeuCauContant.DAGUI || Model.CHUYENTIEP.TRANGTHAI.Value == ChuyenTiepYeuCauContant.GUILAI))
+                {
+                    <button class="btn btn-success" onclick="TrinhDuyetYeuCau(@Model.CHUYENTIEP.YEUCAU_ID,@Model.CHUYENTIEP.DONVI_ID,@Model.CHUYENTIEP.ID)" type="button">Chia sẻ</button>
+                }
+                <button class="btn btn-default" onclick="location.href='@Url.Action("YeuCauCanChiaSe", "YeuCauChiaSe")'" type="button">Quay lại</button>
+            </div>
+            <div style="margin: 0 auto;width:60%;">
+                <h3 class="group-tittle mt10" style="margin-top:28px ;margin-bottom:20px">Lịch sử yêu cầu chia sẻ tài liệu</h3>
+                @Html.Partial("_LichSuChiaSe")
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="TrinhDuyetYeuCau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<script>
+    function TrinhDuyetYeuCau(YEUCAU_ID, DONVI_ID, CHUYENTIEP) {
+        $.confirm({
+            'title': 'Xác nhận chia sẻ',
+            'message': 'Bạn có chắc mình muốn chia sẻ những tài liệu này',
+            'buttons': {
+                'Chia sẻ': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("BatDauChiaSe", "YeuCauChiaSe")',
+                            type: 'POST',
+                            cache: false,
+                            data: { YEUCAU_ID: YEUCAU_ID, DONVI_ID: DONVI_ID, CHUYENTIEP_ID: CHUYENTIEP },
+                            success: function (data) {
+                                if (data.trim().length > 0) {
+                                    notif({
+                                        type: 'success',
+                                        position: 'bottom',
+                                        msg: 'Đã chia sẻ thành công tài liệu!',
+                                    });
+                                    location.reload();
+                                } else {
+                                    notif({
+                                        type: 'error',
+                                        position: 'bottom',
+                                        msg: 'Có lỗi xảy ra trong quá trình chia sẻ.Mời thử lại sau!',
+                                    });
+                                }
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Đóng': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function TuChoiChiaSe(CHUYENTIEP_ID) {
+        var trangthai = "";
+        $("input.checkitem:checkbox:checked").each(function () {
+            trangthai += $(this).attr("data-id") + ",";
+        });
+        $.ajax({
+            url: '@Url.Action("TuChoiChiaSe")',
+            type: 'POST',
+            cache: false,
+            data: {
+                ID: CHUYENTIEP_ID,
+                PHEDUYET: trangthai
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#TrinhDuyetYeuCau").html(data);
+                    $("#TrinhDuyetYeuCau").modal("show");
+                } else {
+                    $.confirm({
+                        'title': 'Có lỗi xảy ra',
+                        'message': 'Yêu cầu chia sẻ này không tồn tại hoặc bạn không có quyền truy xuất yêu cầu này!',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>

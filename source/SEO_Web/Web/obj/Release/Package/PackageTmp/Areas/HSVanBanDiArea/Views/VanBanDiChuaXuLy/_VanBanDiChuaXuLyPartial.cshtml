@@ -1,0 +1,67 @@
+﻿@using Business.CommonBusiness;
+@using Web.Common;
+@model PageListResultBO<VanBanDiViewBO>
+
+<div class="jarviswidget " id="wid-id-2" data-widget-editbutton="false" role="widget">
+
+    <header role="heading">
+        <div class="jarviswidget-ctrls" role="menu">
+
+        </div>
+        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+        <h2><a href="#vanbandenarea/vanbanden/VanBanChuaXuLy">Văn bản đi chưa xử lý (@Model.Count)</a></h2>
+
+        <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span>
+    </header>
+
+    <!-- widget div-->
+    <div role="content">
+
+        <!-- widget edit box -->
+        <div class="jarviswidget-editbox">
+            <!-- This area used as dropdown edit box -->
+
+        </div>
+        <!-- end widget edit box -->
+        <!-- widget content -->
+        <div class="widget-body no-padding">
+            <div class="table-responsive">
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Số hiệu</th>
+                            <th>Trích yếu</th>
+                            <th>Độ khẩn</th>
+                            <th>Ngày ban hành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.ListItem.Count; i++)
+                        {
+                            <tr>
+                                <td style="width:30px;">@(i + 1)</td>
+                                <td style="width:70px;">@Model.ListItem[i].SOHIEU</td>
+                                <td><a style='font-weight:bold' href='/#hsvanbandiarea/hsvanbandi/detail/@Model.ListItem[i].ID' data-toggle="tooltip" title="@Model.ListItem[i].TRICHYEU">@Model.ListItem[i].TRICHYEU.GetSummary(120) </a></td>
+                                <td style="width:67px;">@Model.ListItem[i].DOKHAN</td>
+
+                                <td style="width:90px;">@string.Format("{0:dd/MM/yyyy}", Model.ListItem[i].NGAYBANHANH)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!-- end widget content -->
+
+    </div>
+    <!-- end widget div -->
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

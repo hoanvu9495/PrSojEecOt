@@ -1,0 +1,338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DBToolStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="CCTC_THANHPHAN">
+      <EntityTypeMapping TypeName="DBTool.CCTC_THANHPHAN">
+        <MappingFragment StoreEntitySet="CCTC_THANHPHAN">
+          <ScalarProperty Name="DIENTHOAI" ColumnName="DIENTHOAI" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="CODE" ColumnName="CODE" />
+          <ScalarProperty Name="ITEM_LEVEL" ColumnName="ITEM_LEVEL" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="PARENT_ID" ColumnName="PARENT_ID" />
+          <ScalarProperty Name="IS_DELETE" ColumnName="IS_DELETE" />
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_CHUCNANG">
+      <EntityTypeMapping TypeName="DBTool.DM_CHUCNANG">
+        <MappingFragment StoreEntitySet="DM_CHUCNANG">
+          <ScalarProperty Name="CSSCLASS" ColumnName="CSSCLASS" />
+          <ScalarProperty Name="ICONPATH" ColumnName="ICONPATH" />
+          <ScalarProperty Name="IS_HIDDEN" ColumnName="IS_HIDDEN" />
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="TT_HIENTHI" ColumnName="TT_HIENTHI" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="CHUCNANG_CHA" ColumnName="CHUCNANG_CHA" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+          <ScalarProperty Name="TEN_CHUCNANG" ColumnName="TEN_CHUCNANG" />
+          <ScalarProperty Name="MA_CHUCNANG" ColumnName="MA_CHUCNANG" />
+          <ScalarProperty Name="DM_CHUCNANG_ID" ColumnName="DM_CHUCNANG_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_LOAI_DONVI">
+      <EntityTypeMapping TypeName="DBTool.DM_LOAI_DONVI">
+        <MappingFragment StoreEntitySet="DM_LOAI_DONVI">
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="PARENT_ID" ColumnName="PARENT_ID" />
+          <ScalarProperty Name="LOAI" ColumnName="LOAI" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_NGUOIDUNG">
+      <EntityTypeMapping TypeName="DBTool.DM_NGUOIDUNG">
+        <MappingFragment StoreEntitySet="DM_NGUOIDUNG">
+          <ScalarProperty Name="ANH_DAIDIEN" ColumnName="ANH_DAIDIEN" />
+          <ScalarProperty Name="FTS" ColumnName="FTS" />
+          <ScalarProperty Name="OptionRole" ColumnName="OptionRole" />
+          <ScalarProperty Name="CHUCVU_ID" ColumnName="CHUCVU_ID" />
+          <ScalarProperty Name="CAPCOSO_ID" ColumnName="CAPCOSO_ID" />
+          <ScalarProperty Name="CODERESETPASS" ColumnName="CODERESETPASS" />
+          <ScalarProperty Name="NGAYSINH" ColumnName="NGAYSINH" />
+          <ScalarProperty Name="DIACHI" ColumnName="DIACHI" />
+          <ScalarProperty Name="EMAILPASS" ColumnName="EMAILPASS" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="HOTEN" ColumnName="HOTEN" />
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="COSO_ID" ColumnName="COSO_ID" />
+          <ScalarProperty Name="DM_DONVI_ID" ColumnName="DM_DONVI_ID" />
+          <ScalarProperty Name="DM_VAITRO_ID" ColumnName="DM_VAITRO_ID" />
+          <ScalarProperty Name="DM_PHONGBAN_ID" ColumnName="DM_PHONGBAN_ID" />
+          <ScalarProperty Name="DIENTHOAI" ColumnName="DIENTHOAI" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+          <ScalarProperty Name="MAHOA_MK" ColumnName="MAHOA_MK" />
+          <ScalarProperty Name="MATKHAU" ColumnName="MATKHAU" />
+          <ScalarProperty Name="TENDANGNHAP" ColumnName="TENDANGNHAP" />
+          <ScalarProperty Name="DM_NGUOIDUNG_ID" ColumnName="DM_NGUOIDUNG_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_THAOTAC">
+      <EntityTypeMapping TypeName="DBTool.DM_THAOTAC">
+        <MappingFragment StoreEntitySet="DM_THAOTAC">
+          <ScalarProperty Name="IS_HIENTHI" ColumnName="IS_HIENTHI" />
+          <ScalarProperty Name="TT_HIENTHI" ColumnName="TT_HIENTHI" />
+          <ScalarProperty Name="IS_SHOW" ColumnName="IS_SHOW" />
+          <ScalarProperty Name="MENU_LINK" ColumnName="MENU_LINK" />
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="DM_CHUCNANG_ID" ColumnName="DM_CHUCNANG_ID" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+          <ScalarProperty Name="TEN_THAOTAC" ColumnName="TEN_THAOTAC" />
+          <ScalarProperty Name="THAOTAC" ColumnName="THAOTAC" />
+          <ScalarProperty Name="DM_THAOTAC_ID" ColumnName="DM_THAOTAC_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_VAITRO">
+      <EntityTypeMapping TypeName="DBTool.DM_VAITRO">
+        <MappingFragment StoreEntitySet="DM_VAITRO">
+          <ScalarProperty Name="IS_DELETE" ColumnName="IS_DELETE" />
+          <ScalarProperty Name="CAPCOSO_ID" ColumnName="CAPCOSO_ID" />
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+          <ScalarProperty Name="COSO_ID" ColumnName="COSO_ID" />
+          <ScalarProperty Name="TEN_VAITRO" ColumnName="TEN_VAITRO" />
+          <ScalarProperty Name="MA_VAITRO" ColumnName="MA_VAITRO" />
+          <ScalarProperty Name="DM_VAITRO_ID" ColumnName="DM_VAITRO_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HUYEN">
+      <EntityTypeMapping TypeName="DBTool.HUYEN">
+        <MappingFragment StoreEntitySet="HUYEN">
+          <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="TENHUYEN" ColumnName="TENHUYEN" />
+          <ScalarProperty Name="TINH_ID" ColumnName="TINH_ID" />
+          <ScalarProperty Name="MAHUYEN" ColumnName="MAHUYEN" />
+          <ScalarProperty Name="HUYEN_ID" ColumnName="HUYEN_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NGUOIDUNG_VAITRO">
+      <EntityTypeMapping TypeName="DBTool.NGUOIDUNG_VAITRO">
+        <MappingFragment StoreEntitySet="NGUOIDUNG_VAITRO">
+          <ScalarProperty Name="ROLE_DEFAULT" ColumnName="ROLE_DEFAULT" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="NGUOIDUNG_ID" ColumnName="NGUOIDUNG_ID" />
+          <ScalarProperty Name="VAITRO_ID" ColumnName="VAITRO_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SPIN_BAIVIET">
+      <EntityTypeMapping TypeName="DBTool.SPIN_BAIVIET">
+        <MappingFragment StoreEntitySet="SPIN_BAIVIET">
+          <ScalarProperty Name="EXTEND_OF" ColumnName="EXTEND_OF" />
+          <ScalarProperty Name="IS_ORIGIN" ColumnName="IS_ORIGIN" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+          <ScalarProperty Name="TIEUDE" ColumnName="TIEUDE" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SPIN_BAIVIET_GROUP">
+      <EntityTypeMapping TypeName="DBTool.SPIN_BAIVIET_GROUP">
+        <MappingFragment StoreEntitySet="SPIN_BAIVIET_GROUP">
+          <ScalarProperty Name="ID_GROUP_TU" ColumnName="ID_GROUP_TU" />
+          <ScalarProperty Name="ID_BAI" ColumnName="ID_BAI" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SPIN_CHUDE">
+      <EntityTypeMapping TypeName="DBTool.SPIN_CHUDE">
+        <MappingFragment StoreEntitySet="SPIN_CHUDE">
+          <ScalarProperty Name="IS_DELETE" ColumnName="IS_DELETE" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SPIN_GROUP_WORD">
+      <EntityTypeMapping TypeName="DBTool.SPIN_GROUP_WORD">
+        <MappingFragment StoreEntitySet="SPIN_GROUP_WORD">
+          <ScalarProperty Name="IS_GLOBAL" ColumnName="IS_GLOBAL" />
+          <ScalarProperty Name="FOR_USER" ColumnName="FOR_USER" />
+          <ScalarProperty Name="IS_DELETE" ColumnName="IS_DELETE" />
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SPIN_WORDS">
+      <EntityTypeMapping TypeName="DBTool.SPIN_WORDS">
+        <MappingFragment StoreEntitySet="SPIN_WORDS">
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="ID_USER" ColumnName="ID_USER" />
+          <ScalarProperty Name="CHUDE" ColumnName="CHUDE" />
+          <ScalarProperty Name="NHOMTU_ID" ColumnName="NHOMTU_ID" />
+          <ScalarProperty Name="TU_CUMTU" ColumnName="TU_CUMTU" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TAILIEUDINHKEM">
+      <EntityTypeMapping TypeName="DBTool.TAILIEUDINHKEM">
+        <MappingFragment StoreEntitySet="TAILIEUDINHKEM">
+          <ScalarProperty Name="CONTENT_CHANGE" ColumnName="CONTENT_CHANGE" />
+          <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+          <ScalarProperty Name="IS_PRIVATE" ColumnName="IS_PRIVATE" />
+          <ScalarProperty Name="IS_SHARING" ColumnName="IS_SHARING" />
+          <ScalarProperty Name="IS_PHEDUYET" ColumnName="IS_PHEDUYET" />
+          <ScalarProperty Name="IS_QLPHIENBAN" ColumnName="IS_QLPHIENBAN" />
+          <ScalarProperty Name="NGUOI_LOCK" ColumnName="NGUOI_LOCK" />
+          <ScalarProperty Name="IS_LOCK" ColumnName="IS_LOCK" />
+          <ScalarProperty Name="DM_LOAITAILIEU_ID" ColumnName="DM_LOAITAILIEU_ID" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+          <ScalarProperty Name="FOLDER_ID" ColumnName="FOLDER_ID" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="SOLUONG_DOWNLOAD" ColumnName="SOLUONG_DOWNLOAD" />
+          <ScalarProperty Name="DINHDANG_FILE" ColumnName="DINHDANG_FILE" />
+          <ScalarProperty Name="DUONGDAN_FILE" ColumnName="DUONGDAN_FILE" />
+          <ScalarProperty Name="MOTA" ColumnName="MOTA" />
+          <ScalarProperty Name="ITEM_ID" ColumnName="ITEM_ID" />
+          <ScalarProperty Name="LOAI_TAILIEU" ColumnName="LOAI_TAILIEU" />
+          <ScalarProperty Name="TENTAILIEU" ColumnName="TENTAILIEU" />
+          <ScalarProperty Name="MATAILIEU" ColumnName="MATAILIEU" />
+          <ScalarProperty Name="TENTACGIA" ColumnName="TENTACGIA" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="NGAYPHATHANH" ColumnName="NGAYPHATHANH" />
+          <ScalarProperty Name="KICHCO" ColumnName="KICHCO" />
+          <ScalarProperty Name="TAILIEU_ID" ColumnName="TAILIEU_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TBL_CONFIG_TAILIEU">
+      <EntityTypeMapping TypeName="DBTool.TBL_CONFIG_TAILIEU">
+        <MappingFragment StoreEntitySet="TBL_CONFIG_TAILIEU">
+          <ScalarProperty Name="COLUM_MIX" ColumnName="COLUM_MIX" />
+          <ScalarProperty Name="FIELD_VALUE" ColumnName="FIELD_VALUE" />
+          <ScalarProperty Name="FIELD_KEY" ColumnName="FIELD_KEY" />
+          <ScalarProperty Name="ID_TAILIEU" ColumnName="ID_TAILIEU" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TBL_SOKETXUAT">
+      <EntityTypeMapping TypeName="DBTool.TBL_SOKETXUAT">
+        <MappingFragment StoreEntitySet="TBL_SOKETXUAT">
+          <ScalarProperty Name="ID_DOANHNGHIEP" ColumnName="ID_DOANHNGHIEP" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="SOTTT" ColumnName="SOTTT" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="MATAILIEU" ColumnName="MATAILIEU" />
+          <ScalarProperty Name="ID_TAILIEU" ColumnName="ID_TAILIEU" />
+          <ScalarProperty Name="ID_DOTNOP" ColumnName="ID_DOTNOP" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TBL_TAILIEU_KETXUAT">
+      <EntityTypeMapping TypeName="DBTool.TBL_TAILIEU_KETXUAT">
+        <MappingFragment StoreEntitySet="TBL_TAILIEU_KETXUAT">
+          <ScalarProperty Name="SOTAILIEU" ColumnName="SOTAILIEU" />
+          <ScalarProperty Name="MA_TAILIEU" ColumnName="MA_TAILIEU" />
+          <ScalarProperty Name="IS_DELETE" ColumnName="IS_DELETE" />
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="TENTAILIEU" ColumnName="TENTAILIEU" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TINH">
+      <EntityTypeMapping TypeName="DBTool.TINH">
+        <MappingFragment StoreEntitySet="TINH">
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="TENTINH" ColumnName="TENTINH" />
+          <ScalarProperty Name="MATINH" ColumnName="MATINH" />
+          <ScalarProperty Name="TINH_ID" ColumnName="TINH_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VAITRO_CHUCNANG">
+      <EntityTypeMapping TypeName="DBTool.VAITRO_CHUCNANG">
+        <MappingFragment StoreEntitySet="VAITRO_CHUCNANG">
+          <ScalarProperty Name="COSO_ID" ColumnName="COSO_ID" />
+          <ScalarProperty Name="MAC_DINH" ColumnName="MAC_DINH" />
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+          <ScalarProperty Name="DM_VAITRO_ID" ColumnName="DM_VAITRO_ID" />
+          <ScalarProperty Name="DM_CHUCNANG_ID" ColumnName="DM_CHUCNANG_ID" />
+          <ScalarProperty Name="VAITRO_CHUCNANG_ID" ColumnName="VAITRO_CHUCNANG_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VAITRO_THAOTAC">
+      <EntityTypeMapping TypeName="DBTool.VAITRO_THAOTAC">
+        <MappingFragment StoreEntitySet="VAITRO_THAOTAC">
+          <ScalarProperty Name="COSO_ID" ColumnName="COSO_ID" />
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+          <ScalarProperty Name="VAITRO_CHUCNANG_ID" ColumnName="VAITRO_CHUCNANG_ID" />
+          <ScalarProperty Name="DM_THAOTAC_ID" ColumnName="DM_THAOTAC_ID" />
+          <ScalarProperty Name="VAITRO_THAOTAC_ID" ColumnName="VAITRO_THAOTAC_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="XA">
+      <EntityTypeMapping TypeName="DBTool.XA">
+        <MappingFragment StoreEntitySet="XA">
+          <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="TENXA" ColumnName="TENXA" />
+          <ScalarProperty Name="HUYEN_ID" ColumnName="HUYEN_ID" />
+          <ScalarProperty Name="MAXA" ColumnName="MAXA" />
+          <ScalarProperty Name="XA_ID" ColumnName="XA_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

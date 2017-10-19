@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns="http://sms.neo" xmlns:ns1="http://org.apache.axis2/xsd" targetNamespace="http://sms.neo" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>
+		Please Type your service description here
+	</wsdl:documentation>
+  <wsdl:types>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://sms.neo">
+      <xs:element name="useCard">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="issure" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="cardCode" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="cardSerial" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="useCardResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sendSMS">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="receiver" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="loaisp" type="xs:int" />
+            <xs:element minOccurs="0" name="brandname" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="target" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sendSMSResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sendMessage">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="receiver" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="repeat" type="xs:int" />
+            <xs:element minOccurs="0" name="repeatType" type="xs:int" />
+            <xs:element minOccurs="0" name="loaisp" type="xs:int" />
+            <xs:element minOccurs="0" name="brandname" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="timestart" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="timeend" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="timesend" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="target" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sendMessageResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sendFromServiceNumber">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="receiver" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="target" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sendFromServiceNumberResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sendFromBrandname">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="receiver" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="brandname" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="target" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sendFromBrandnameResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="insertSMS">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="receiver" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="loaisp" type="xs:int" />
+            <xs:element minOccurs="0" name="brandname" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="isUnicode" type="xs:int" />
+            <xs:element minOccurs="0" name="target" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="insertSMSResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="insertSMSRequest">
+    <wsdl:part name="parameters" element="ns:insertSMS" />
+  </wsdl:message>
+  <wsdl:message name="insertSMSResponse">
+    <wsdl:part name="parameters" element="ns:insertSMSResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendFromServiceNumberRequest">
+    <wsdl:part name="parameters" element="ns:sendFromServiceNumber" />
+  </wsdl:message>
+  <wsdl:message name="sendFromServiceNumberResponse">
+    <wsdl:part name="parameters" element="ns:sendFromServiceNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendMessageRequest">
+    <wsdl:part name="parameters" element="ns:sendMessage" />
+  </wsdl:message>
+  <wsdl:message name="sendMessageResponse">
+    <wsdl:part name="parameters" element="ns:sendMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendFromBrandnameRequest">
+    <wsdl:part name="parameters" element="ns:sendFromBrandname" />
+  </wsdl:message>
+  <wsdl:message name="sendFromBrandnameResponse">
+    <wsdl:part name="parameters" element="ns:sendFromBrandnameResponse" />
+  </wsdl:message>
+  <wsdl:message name="useCardRequest">
+    <wsdl:part name="parameters" element="ns:useCard" />
+  </wsdl:message>
+  <wsdl:message name="useCardResponse">
+    <wsdl:part name="parameters" element="ns:useCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSRequest">
+    <wsdl:part name="parameters" element="ns:sendSMS" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSResponse">
+    <wsdl:part name="parameters" element="ns:sendSMSResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SendMTPortType">
+    <wsdl:operation name="insertSMS">
+      <wsdl:input wsaw:Action="urn:insertSMS" message="ns:insertSMSRequest" />
+      <wsdl:output wsaw:Action="urn:insertSMSResponse" message="ns:insertSMSResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="sendFromServiceNumber">
+      <wsdl:input wsaw:Action="urn:sendFromServiceNumber" message="ns:sendFromServiceNumberRequest" />
+      <wsdl:output wsaw:Action="urn:sendFromServiceNumberResponse" message="ns:sendFromServiceNumberResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="sendMessage">
+      <wsdl:input wsaw:Action="urn:sendMessage" message="ns:sendMessageRequest" />
+      <wsdl:output wsaw:Action="urn:sendMessageResponse" message="ns:sendMessageResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="sendFromBrandname">
+      <wsdl:input wsaw:Action="urn:sendFromBrandname" message="ns:sendFromBrandnameRequest" />
+      <wsdl:output wsaw:Action="urn:sendFromBrandnameResponse" message="ns:sendFromBrandnameResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="useCard">
+      <wsdl:input wsaw:Action="urn:useCard" message="ns:useCardRequest" />
+      <wsdl:output wsaw:Action="urn:useCardResponse" message="ns:useCardResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <wsdl:input wsaw:Action="urn:sendSMS" message="ns:sendSMSRequest" />
+      <wsdl:output wsaw:Action="urn:sendSMSResponse" message="ns:sendSMSResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SendMTSoap11Binding" type="ns:SendMTPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="insertSMS">
+      <soap:operation soapAction="urn:insertSMS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendMessage">
+      <soap:operation soapAction="urn:sendMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendFromServiceNumber">
+      <soap:operation soapAction="urn:sendFromServiceNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendFromBrandname">
+      <soap:operation soapAction="urn:sendFromBrandname" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="useCard">
+      <soap:operation soapAction="urn:useCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <soap:operation soapAction="urn:sendSMS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SendMTSoap12Binding" type="ns:SendMTPortType">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="insertSMS">
+      <soap12:operation soapAction="urn:insertSMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendMessage">
+      <soap12:operation soapAction="urn:sendMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendFromServiceNumber">
+      <soap12:operation soapAction="urn:sendFromServiceNumber" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendFromBrandname">
+      <soap12:operation soapAction="urn:sendFromBrandname" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="useCard">
+      <soap12:operation soapAction="urn:useCard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <soap12:operation soapAction="urn:sendSMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SendMTHttpBinding" type="ns:SendMTPortType">
+    <http:binding verb="POST" />
+    <wsdl:operation name="insertSMS">
+      <http:operation location="insertSMS" />
+      <wsdl:input>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendMessage">
+      <http:operation location="sendMessage" />
+      <wsdl:input>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendFromServiceNumber">
+      <http:operation location="sendFromServiceNumber" />
+      <wsdl:input>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendFromBrandname">
+      <http:operation location="sendFromBrandname" />
+      <wsdl:input>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="useCard">
+      <http:operation location="useCard" />
+      <wsdl:input>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <http:operation location="sendSMS" />
+      <wsdl:input>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SendMT">
+    <wsdl:port name="SendMTHttpSoap11Endpoint" binding="ns:SendMTSoap11Binding">
+      <soap:address location="http://g3g4.vn:8008/smsws/services/SendMT.SendMTHttpSoap11Endpoint/" />
+    </wsdl:port>
+    <wsdl:port name="SendMTHttpSoap12Endpoint" binding="ns:SendMTSoap12Binding">
+      <soap12:address location="http://g3g4.vn:8008/smsws/services/SendMT.SendMTHttpSoap12Endpoint/" />
+    </wsdl:port>
+    <wsdl:port name="SendMTHttpEndpoint" binding="ns:SendMTHttpBinding">
+      <http:address location="http://g3g4.vn:8008/smsws/services/SendMT.SendMTHttpEndpoint/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

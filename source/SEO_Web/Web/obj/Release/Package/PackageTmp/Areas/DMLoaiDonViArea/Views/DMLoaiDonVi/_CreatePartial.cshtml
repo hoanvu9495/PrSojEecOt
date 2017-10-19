@@ -1,0 +1,172 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.eAita;
+@model Web.Areas.DMLoaiDonViArea.Models.DMLoaiDonViCreateModel
+@{
+    UserInfoBO userInfo = (UserInfoBO)SessionManager.GetUserInfo();
+}
+
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+
+<style>
+    .color-red {
+        color: red;
+    }
+
+    .lbl6 {
+        margin-top: 7px;
+    }
+
+    .ms-drop {
+        /*width: 233px;*/
+        width: 100%;
+    }
+
+    .ms-choice > span {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+        width: 100%;
+    }
+
+    .width_100 {
+        width: 100% !important;
+    }
+</style>
+@using (Ajax.BeginForm("SaveCreate", "DMLoaiDonVi", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmVaiTroCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Thêm mới loại đơn vị <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="lbl6">Tên loại<span class="color-red">*</span></label>
+            </div>
+            <div class=" col-sm-8">
+                <div class="form-group">
+                    @Html.TextBox("LOAI_NAME", "", new { @class = "form-control required", @maxlength = "250" })
+                    <div class="note-error">
+                        <span id="ErrLOAI_NAME" class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="lbl6">Loại cha<span class="color-red">*</span></label>
+            </div>
+            <div class=" col-sm-8">
+                @Html.DropDownList("PARENT_ID", Model.ListParent, "NULL", new { @class = "width_100", })
+
+                <div class="note-error">
+                    <span class="error mes-note-error"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer center">
+        <button type="button" class="btn btn-primary" id="btnSave" style="border-radius: 3px;">
+            Lưu
+        </button>
+        <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+    </div>
+
+
+}
+<script type="text/javascript">
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function CreateSuccess(rs) {
+        if (rs.Status) {
+            NotiSuccess("Thêm mới loại đơn vị thành công");
+            ReloadPage();
+            OnCloseLog();
+        } else {
+            NotiError("Có lỗi. Không thêm được loại đơn vị");
+        }
+       
+    }
+    function OnClose() {
+        $("#CreateVaiTro").dialog("close");
+    }
+    function OnCloseLog() {
+        $("#formCreate").html("");
+        $("#CreateVaiTro").modal("hide");
+    }
+    function pageFunction() {
+        $("#LOAI_NAME").change(function () {
+
+            if ($("#LOAI_NAME").val().trim().length > 0) {
+                $.ajax({
+                    type: "Post",
+                    url: '@Url.Action("CheckExist","DMloaiDonVi")',
+                    cache: false,
+                    data: { loaiDV: $("#LOAI_NAME").val() },
+                    success: function (data) {
+                        if (data.Status) {
+                            $("#ErrLOAI_NAME").html(data.Message);
+                            $("#ErrLOAI_NAME").css("display", "inline");
+                            $("#LOAI_NAME").val("");
+                        } else {
+                            $("#ErrLOAI_NAME").css("display", "none");
+                        }
+                    }
+                });
+            }
+
+        });
+        $("#btnSave").click(function () {
+            var err = 0;
+            var required = requiredFieldForFormId("frmVaiTroCreate");
+            if (!required) {
+                err++
+            }
+            if (err == 0) {
+                $("#frmVaiTroCreate").submit();
+                return true;
+            } else {
+                NotiError("Có lỗi. Vui lòng kiểm tra lại");
+                return false;
+            }
+
+        });
+
+
+        $("#PARENT_ID").multipleSelect({
+            single: true,
+            filter: false,
+            single: true,
+        });
+    }
+
+
+    loadScript("Scripts/jquery.unobtrusive-ajax.min.js", function () {
+        loadScript("Scripts/autoNumeric.min.js", function () {
+            loadScript("Scripts/multiple-select.js", pageFunction);
+        });
+    });
+
+
+
+</script>
+

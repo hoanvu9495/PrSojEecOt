@@ -1,0 +1,23 @@
+﻿@using Web.Models;
+@using Business.CommonBusiness;
+@using Web.Areas.HSVanBanDiArea.Models;
+@model VBDiCreateViewModel
+@{
+    
+}
+<h3 class="group-tittle">
+    Trích yếu : @Model.VanBanDi.TRICHYEU
+</h3>
+<form id="frmEditAttachemt" method="post" action="@Url.Action("SaveEditAttachment")" enctype="multipart/form-data">
+    @Html.HiddenFor(x => x.VanBanDi.ID)
+    @{Html.RenderPartial("../Common/UploadFile", Model.ListTaiLieuDinhKem);}
+</form>
+@{
+    LuaChonThuMucModel model_chonthumuc = new LuaChonThuMucModel();
+    model_chonthumuc.USER_ID = (long)Model.UserInfo.UserID;
+    model_chonthumuc.TITLE = "Lựa chọn thư mục để lưu file";
+    model_chonthumuc.ID_CLICK = "ChooseFile";
+    model_chonthumuc.DONVI_ID = Model.UserInfo.DonViID;
+    model_chonthumuc.COSO_ID = Model.UserInfo.CoSoID;
+}
+@{ Html.RenderPartial("../Common/_LuaChonThuMuc", model_chonthumuc);}

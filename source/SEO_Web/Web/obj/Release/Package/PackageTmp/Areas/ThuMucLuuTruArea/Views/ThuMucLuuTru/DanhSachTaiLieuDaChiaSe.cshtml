@@ -1,0 +1,827 @@
+﻿@{
+    ViewBag.Title = "Danh sách thông tin,tài liệu đã chia sẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeTaiLieuModel
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@using Business.CommonBusiness;
+
+<script src="~/Scripts/js/jquery.nu-context-menu-version2.js"></script>
+<link href="~/Content/Custom/Font/contextMenu.css" rel="stylesheet" />
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" style="width:280px">
+            <h1>Tài liệu đang chia sẻ</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-left">
+            </div>
+            <div class="menu-right">
+                @if (Model.IsVanThu)
+                {
+                    <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" onclick="location.href = '@Url.Action("Index", "TaiLieuChuaSoHoa")'">Tài liệu chưa số hóa</button>
+                }
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" onclick="location.href = '@Url.Action("TimKiemTaiLieu", "ThuMucLuuTru")'">Tìm kiếm nâng cao</button>
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" onclick="location.href = '@Url.Action("DanhSachTaiLieuHetHieuLuc", "ThuMucLuuTru")'">Tài liệu đã hết hạn</button>
+                @if (SessionManager.GetValue("ISCUCTRUONG").Equals("true"))
+                {
+                    <div class="btn-group" role="group" style="margin-bottom: 10px;">
+                        <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Phê duyệt tài liệu
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("DanhSachYeuCauChiaSe", "CucTruongPheDuyet")">Phê duyệt tài liệu</a></li>
+                            <li><a href="@Url.Action("Index", "CucTruongPheDuyet")">Phê duyệt yêu cầu chia sẻ</a></li>
+                            <li><a href="@Url.Action("Index", "PheDuyetDanhMucThongTin" )">Phê duyệt danh mục thông tin,tài liệu</a></li>
+                        </ul>
+                    </div>
+                }
+                @if (SessionManager.GetValue("ISVANPHONG").Equals("true"))
+                {
+                    <button style="margin-bottom: 10px; " class="b_btn b_btn-default vbdi_search" id="XULYYEUCAU" onclick="location.href = '@Url.Action("Index", "DanhMucThongTin")'">Quản lý danh mục thông tin,tài liệu</button>
+                }
+                @if (SessionManager.GetValue("ISSYSTEM").Equals("true"))
+                {
+                    <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" onclick="Storage()">Dung lượng lưu trữ</button>
+                    <button style="margin-bottom: 10px; " class="b_btn b_btn-default vbdi_search" onclick="location.href='@Url.Action("Index", "TmLoaiTaiLieu")'">Thuộc tính tài liệu</button>
+                }
+                @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                {
+                    <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" id="XULYYEUCAU" onclick="location.href = '@Url.Action("Index", "DanhMucThongTin")'">Quản lý danh mục thông tin,tài liệu</button>
+                }
+                <div class="btn-group" role="group" style="margin-bottom: 10px;margin-right:50px">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chia sẻ tài liệu
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("DanhSachTaiLieuDaChiaSe", "ThuMucLuuTru")">Đang chia sẻ</a></li>
+                        <li><a href="@Url.Action("DanhSachTaiLieuDuocChiaSe", "ThuMucLuuTru")">Được chia sẻ</a></li>
+                        @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                        {
+                            <li><a href="@Url.Action("Index", "YeuCauChiaSe")">Yêu cầu chia sẻ</a></li>
+                        <li><a href="@Url.Action("YeuCauCanChiaSe", "YeuCauChiaSe")">Xử lý yêu cầu chia sẻ (@Model.XuLy)</a></li>}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right-all-page" oncontextmenu="return false;" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+    <div class="right-content clearfix">
+        <div class="SearchCriterial">
+            <div style="margin-top:-14px;float:right;margin:20px 20px 0px 20px">
+                <div class="input-group" style="width:5px">
+                    <div class="input-group-btn search-panel">
+                        <button type="button" class="btn btn-default btn-select dropdown-toggle" data-toggle="dropdown">
+                            <span id="search_concept">Tìm theo</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#contains">Tìm theo thư mục</a></li>
+                            <li><a href="#its_equal">Tìm theo tên file</a></li>
+                            @*<li><a href="#greather_than">Số hiệu của tài liệu</a></li>*@
+                            <li class="divider"></li>
+                            <li><a href="#all">Tất cả</a></li>
+                        </ul>
+                    </div>
+                    <input type="hidden" name="search_param" value="all" id="search_param">
+                    <input type="text" id="txtSearch" class="form-control" name="x" placeholder="Tìm kiếm file......" style="height:35px;min-width:300px">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" id="btnSearch" type="button" style="min-width:30px"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="SearchResult">
+            <div id="URLPath" style="margin-top:10px;margin-bottom:10px;float:left">
+                <ul id='Path'>
+                    <li data-fid='F_0'>
+                        <span class='folder' data-loaded='false' data-pid='0'><i class="fa fa-folder-open-o"></i>Đang chia sẻ<i class="fa fa-chevron-right"></i></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="input-field4 clearfix fix-width" style="margin-bottom:20px;float:right;margin-top:10px">
+                @Html.DropDownList("DONVI_ID", Model.lstDonVi, "[---Lựa chọn đối tượng---]", new { @style = "", @id = "DONVI_ID" })
+            </div>
+            <div class="folder-content">
+                <div id="display">
+                    <form>
+                        <table class="webGrid">
+                            <thead>
+                                <tr class="head">
+                                    <th>
+                                        Thư mục
+                                    </th>
+                                    <th>
+                                        Chia sẻ cho
+                                    </th>
+                                    <th>
+                                        Số thư mục con
+                                    </th>
+                                    <th>Ngừng chia sẻ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bodyItem">
+                                @Html.Partial("_DanhSachShared")
+                            </tbody>
+                            <tfoot id="footItem">
+                            </tfoot>
+                        </table>
+
+                    </form>
+                    <span class="emptydata">Thư mục lưu trữ rỗng</span>
+
+                </div>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+</div>
+<div class="modal fade" id="ShareFile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<input type="hidden" value="0" id="THUMUC_ID_HIDDEN" />
+<div class="modal fade" id="ShareFile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<script type="text/javascript">
+    function Storage() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("DungLuongConLai", "ThuMucLuuTru")',
+            data: {
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                if (data.length > 0) {
+                    $("#ShareFile").html(data);
+                    $("#ShareFile").modal('show');
+                    $("#ShareFile").find(".modal-dialog").css("height", "550px");
+                }
+            }, error: function (xrt) {
+                alert(xrt.responseText);
+            }
+        });
+    }
+    $(function () {
+        $("#btnSearch").click(function () {
+            if ($("#txtSearch").val().trim().length == 0) {
+                $("#txtSearch").hide();
+                Reload();
+            } else {
+                if ($('.btn-select').text().trim() == "Tìm theo thư mục") {
+                    $("#search_param").val("1");
+                }
+                else if ($('.btn-select').text().trim() == "Tìm theo tên file") {
+                    $("#search_param").val("2");
+                }
+                else {
+                    $("#search_param").val("4");
+                }
+                $.ajax({
+                    url: '@Url.Action("FindFileAssociate", "ThuMucLuuTru")',
+                    type: 'POST',
+                    cache: false,
+                    data: {
+                        OPTION: $("#search_param").val(),
+                        FILTERBOX: $("#txtSearch").val(),
+                        TYPELINK: "shared"
+                    },
+                    success: function (data) {
+                        $("#bodyItem").html("");
+                        $("#bodyItem").html(data);
+                        $(".webGrid td:nth-child(2)").css("width", "20%");
+                    },
+                    error: function (xhr) {
+                        CommonJS.alert(xhr.responseText);
+                    }
+                });
+            }
+        });
+        //filter search box
+        $('.search-panel .dropdown-menu').find('a').click(function (e) {
+            e.preventDefault();
+            var param = $(this).attr("href").replace("#", "");
+            var concept = $(this).text();
+            switch (concept) {
+                case "Tìm theo thư mục":
+                    $('#txtSearch').attr('placeholder', 'Nhập tên thư mục');
+                    break;
+
+                case "Tìm theo tên file":
+                    $('#txtSearch').attr('placeholder', 'Nhập tên file');
+                    break;
+                case "Tất cả":
+                    $('#txtSearch').attr('placeholder', 'Tìm kiếm...');
+                    break;
+            }
+            $('.search-panel span#search_concept').text(concept);
+            $('.input-group #search_param').val(param);
+        });
+    });
+    $(document).keydown(function (event) {
+        var x = event.keyCode;
+        if (x == 116) {//F5
+            var _data_id = $("#THUMUC_ID_HIDDEN").val();
+            if (parseInt(_data_id) > 0) {
+                $(".folder").each(function () {//data-loaded
+                    if ($(this).attr("data-pid") == _data_id && $(this).attr("data-loaded") != undefined) {
+                        $("#bodyItem").html("");
+                        $("#footItem").html("");
+                        $(this).click();
+                        return;
+                    }
+                });
+                event.preventDefault();
+            }
+
+        }
+    });
+    function GetPath(pid, aa) {
+        $.ajax({
+            url: '@Url.Action("GetURLBar", "ThuMucLuuTru")',
+            type: 'GET',
+
+            data: {
+                pID: pid
+            },
+            dataType: "json",
+            success: function (d) {
+                $("#URLPath").html("");
+
+                var $ul = $("<ul id='Path' ></ul>");
+                $ul.append($("<li data-fid='F_0'></li>").append(
+                                   "<span class='folder' data-loaded='false' data-pid='0'><i class=\"fa fa-folder-open-o\"></i>Đang chia sẻ<i class=\"fa fa-chevron-right\"></i></span>"
+                                   )
+                                        )
+                if (d.length > 1) {
+                    for (var i = d.length - 1; i >= 0; i--) {
+                        if (i == 0) {
+                            $ul.append(
+                                   $("<li data-fid='F_" + d[i].ID + "'></li>").append(
+                                   "<span class='folder' data-loaded='false' data-pid='" + d[i].ID + "'><i class=\"fa fa-folder-open-o\"></i>" + d[i].TENTHUMUC + "</span>"
+                                   )
+                                        )
+                        } else {
+                            $ul.append(
+                                   $("<li data-fid='F_" + d[i].ID + "'></li>").append(
+                                   "<span class='folder' data-loaded='false' data-pid='" + d[i].ID + "'><i class=\"fa fa-folder-open-o\"></i>" + d[i].TENTHUMUC + "<i class=\"fa fa-chevron-right\"></i></span>"
+                                   )
+                                        )
+                        }
+                    }
+                } else if (d[0] != null) {
+                    $ul.append(
+                               $("<li data-fid='F_" + d[0].ID + "'></li>").append(
+                              "<i class=\"fa fa-folder-open-o\"></i><span class='folder' data-loaded='false' data-pid='" + d[0].ID + "'>" + d[0].TENTHUMUC + "</span>"
+                               )
+                                    )
+
+                } else {
+                    $ul.append("");
+                }
+                $("#URLPath").append($ul);
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    $(document).on('click', '.folder', function () {
+        var this1 = $(this);
+        this1.closest("li").find("ul").remove("ul");
+        var isLoaded = $(this).attr('data-loaded');
+        var id = $(this1).attr('data-pid');
+        if (id > 0) {
+            if (isLoaded == "false") {
+                this1.attr("data-loaded", true);
+                $("#bodyItem").html("");
+                $("#footItem").html("");
+                $.ajax({
+                    url: '@Url.Action("GetChildShared", "ThuMucLuuTru")',
+                    type: "GET",
+                    data: { pid: $(this1).attr('data-pid') },
+                    dataType: "json",
+                    success: function (d) {
+                        GetPath($(this1).attr('data-pid'), $(this1).text());
+                        if (d.length > 0) {
+                            $(".emptydata").hide();
+                            $(".webGrid").show();
+                            $.each(d, function (i, ele) {
+                                var thumuc = "";
+                                var tailieu = "";
+                                if (ele.IS_THUMUC == true) {
+                                    var thumuc_trangthai = "";
+                                    if (ele.IS_NEEDREVIEW == '@ThuMucConstant.DADUYET') {
+                                        if (new Date(ele.EXPIRE_DATEFROM) <= new Date() && new Date() <= new Date(ele.EXPIRE_DATE)) {
+                                            thumuc_trangthai = "<span class='folder unexpired' data-donvi = '" + ele.DONVI_ID + "' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        }
+                                        else {
+                                            thumuc_trangthai = "<span class='folder item' data-donvi = '" + ele.DONVI_ID + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        }
+                                    } else if (ele.IS_PRIVATE == true) {
+                                        thumuc_trangthai = "<span class='folder private' data-donvi = '" + ele.DONVI_ID + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>"
+                                    }
+                                    if (ele.IS_CENSOR) {
+                                        thumuc = "<tr id='folder-item' style='display:none'><td data-pid='F_" + ele.ID + "'>" + thumuc_trangthai + "</td><td>" + ele.TENDONVI + "</td><td>Có " + ele.SLTHUMUC + " thư mục</td><td><a href='javascript:void(0)' data-yeucau='" + ele.USER_ID + "' class=' StopShared' data-id='" + ele.ID + "' data-donvi='" + ele.DONVI_ID + "' data-file='true'></a></td></tr>";
+                                    } else {
+                                        thumuc = "<tr id='folder-item'><td data-pid='F_" + ele.ID + "'>" + thumuc_trangthai + "</td><td>" + ele.TENDONVI + "</td><td>Có " + ele.SLTHUMUC + " thư mục</td><td><a href='javascript:void(0)' data-yeucau='" + ele.USER_ID + "' class=' StopShared' data-id='" + ele.ID + "' data-donvi='" + ele.DONVI_ID + "' data-file='true'></a></td></tr>";
+                                    }
+
+                                } else {
+                                    var extension = ele.THUMUCCHA;
+                                    var docx = "";
+                                    if (extension == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                                        docx = "docx";
+                                    } else if (extension == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+                                        docx = "ms-excel";
+                                    }
+                                    if (ele.IS_CENSOR) {
+                                        if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DADUYET') {
+                                            tailieu = "<tr style='display:none' id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + extension.split('.')[1] + " filearchive' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td><td><a href='javascript:void(0)' data-yeucau='" + ele.USER_ID + "' class=' StopShared' data-id='" + ele.ID + "' data-donvi='" + ele.DONVI_ID + "' data-file='false'></a></td></tr>";
+                                        } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.TRAVE') {
+                                            tailieu = "<tr style='display:none' id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Trả về)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td><td><a href='javascript:void(0)' data-yeucau='" + ele.USER_ID + "' class=' StopShared' data-id='" + ele.ID + "' data-donvi='" + ele.DONVI_ID + "' data-file='false'></a></td></tr>";
+                                        } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DUTHAO') {
+                                            tailieu = "<tr style='display:none' id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Dự thảo)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td><td><a href='javascript:void(0)' data-yeucau='" + ele.USER_ID + "' class=' StopShared' data-id='" + ele.ID + "' data-donvi='" + ele.DONVI_ID + "' data-file='false'></a></td></tr>";
+                                        }
+                                        else {
+                                            tailieu = "<tr style='display:none' id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + extension.split('.')[1] + " filearchive' data-donvi = '0' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Chưa duyệt)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td><td>" + ngaytao + "</td><td><a href='javascript:void(0)' data-yeucau='" + ele.USER_ID + "' class=' StopShared' data-id='" + ele.ID + "' data-donvi='" + ele.DONVI_ID + "' data-file='false'></a></td></tr>";
+                                        }
+                                    } else {
+                                        if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DADUYET') {
+                                            tailieu = "<tr id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + extension.split('.')[1] + " filearchive' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td><td><a href='javascript:void(0)' data-yeucau='" + ele.USER_ID + "' class=' StopShared' data-id='" + ele.ID + "' data-donvi='" + ele.DONVI_ID + "' data-file='false'></a></td></tr>";
+                                        } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.TRAVE') {
+                                            tailieu = "<tr id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Trả về)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td><td><a href='javascript:void(0)' data-yeucau='" + ele.USER_ID + "' class=' StopShared' data-id='" + ele.ID + "' data-donvi='" + ele.DONVI_ID + "' data-file='false'></a></td></tr>";
+                                        } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DUTHAO') {
+                                            tailieu = "<tr id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Dự thảo)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td><td><a href='javascript:void(0)' data-yeucau='" + ele.USER_ID + "' class=' StopShared' data-id='" + ele.ID + "' data-donvi='" + ele.DONVI_ID + "' data-file='false'></a></td></tr>";
+                                        }
+                                        else {
+                                            tailieu = "<tr id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + extension.split('.')[1] + " filearchive' data-donvi = '0' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Chưa duyệt)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td><td>" + ngaytao + "</td><td><a href='javascript:void(0)' data-yeucau='" + ele.USER_ID + "' class=' StopShared' data-id='" + ele.ID + "' data-donvi='" + ele.DONVI_ID + "' data-file='false'></a></td></tr>";
+                                        }
+                                    }
+                                }
+                                $("#bodyItem").append(thumuc);
+                                $("#footItem").append(tailieu);
+                            });
+                            if ($("#bodyItem").is(":empty")) {
+                                $("#bodyItem").html("<tr></tr>");
+                            }
+                            //$(this1).parent().append($ul);
+                            //$(this1).toggleClass('expand');
+                            //$(this1).closest('li').children('ul').slideDown();
+                        } else {
+                            $(".emptydata").show();
+                        }
+                    },
+                    error: function (xhr, response) {
+                        alert(xhr.responseText);
+                    }
+                });
+
+            } else {
+                $(this1).attr("data-loaded", false);
+                $(this1).removeClass('expand');
+            }
+        } else {
+            Reload();
+            GetPath(0);
+        }
+    });
+    $(document).on('click', '.filearchive', function () {
+
+        var ID = $(this).attr("data-pid");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckkingFile", "ThuMucLuuTru")',
+            data: {
+                ID: ID
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                if (data == "Co") {
+                    location.href = "./DownloadFile?ID=" + ID;
+                } else {
+                    $.confirm({
+                        'title': 'Không tìm thấy tài liệu',
+                        'message': 'Xin lỗi không thể tìm thấy tài liệu mà bạn đang yêu cầu.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+    $(document).on('click', '.StopShared', function () {
+        var this1 = $(this);
+        $.confirm({
+            'title': 'Xác nhận ngừng chia sẻ',
+            'message': 'Bạn có chắc mình muốn ngừng chia sẻ tài liệu này?',
+            'buttons': {
+                'Chắc chắn': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("StopSharedFolder", "ThuMucLuuTru")',
+                            type: 'POST',
+                            cache: false,
+                            data: { ID: $(this1).attr("data-pid"), TRANGTHAI: $(this1).attr("data-file"), YEUCAU_ID: $(this1).attr("data-yeucau"), PRIVATE: $(this1).attr("data-private") },
+                            success: function (data) {
+                                if (data.trim().length > 0) {
+                                    notif({
+                                        type: 'success',
+                                        position: 'bottom',
+                                        msg: 'Ngừng chia sẻ thành công!',
+                                    });
+
+                                    $(this1).closest("tr").remove();
+                                } else {
+                                    notif({
+                                        type: 'error',
+                                        position: 'bottom',
+                                        msg: 'Có lỗi xảy ra.Mời thử lại sau!',
+                                    });
+                                }
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Đóng': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    });
+    function Reload() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadDaChiaSe", "ThuMucLuuTru")',
+            data: {
+
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#bodyItem").html("");
+                $("#footItem").html("");
+                $("#bodyItem").html(data);
+
+                $(".emptydata").hide();
+
+            }
+        });
+    }
+    function ShareFile(ID, ISTHUMUC) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SharingFile", "ThuMucLuuTru")',
+            data: {
+                TAILIEU_ID: ID,
+                ISTHUMUC: ISTHUMUC,
+                IS_QUANLY: false
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                if (data.length > 0) {
+                    $("#ShareFile").html(data);
+                    $("#ShareFile").modal('show');
+                    $("#ShareFile").find(".modal-dialog").css("height", "550px");
+                } else {
+                    $.confirm({
+                        'title': 'Không thể chia sẻ tài liệu',
+                        'message': 'Tài liệu này hiện không phải là tài liệu cá nhân nữa.Bạn vui lòng kiểm tra lại.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { }
+                            }
+                        }
+                    });
+                }
+            }, error: function (xrt) {
+                alert(xrt.responseText);
+            }
+        });
+    }
+    var context = $("#display,#bodyItem ")
+              .nuContextMenu({
+                  hideAfterClick: true,
+                  items: '.shared,.filearchive',
+                  callback: function (key, element) {
+
+                      if (key == "share") {
+                          ShareFile($(element).attr('data-pid'), $(element).attr('data-file'));
+                      }
+                      if (key == "StopSharing") {
+                          StopSharing($(element).attr('data-pid'), $(element).attr('data-file'), $(element).attr('data-yeucau'));
+                      }
+                  },
+                  menu: [
+                    {
+                        name: 'share',
+                        title: 'Chia sẻ',
+                        icon: 'share-alt',
+                    },
+                     {
+                         name: 'StopSharing',
+                         title: 'Ngừng chia sẻ',
+                         icon: 'eye-slash'
+
+                     }
+
+                  ]
+
+              });
+    function StopSharing(ID, TRANGTHAI, YEUCAU_ID) {
+        //alert(ID + "------" + TRANGTHAI + "------" + YEUCAU_ID);
+        $("#bodyItem td").each(function () {
+            var this1 = $(this);
+            if ($(this).attr("data-pid") == "F_" + ID) {
+                $.confirm({
+                    'title': 'Xác nhận ngừng chia sẻ',
+                    'message': 'Bạn có chắc mình muốn ngừng chia sẻ tài liệu này?',
+                    'buttons': {
+                        'Chắc chắn': {
+                            'class': 'btn-confirm-yes',
+                            'action': function () {
+                                $.ajax({
+                                    url: '@Url.Action("StopSharedFolder", "ThuMucLuuTru")',
+                                    type: 'POST',
+                                    cache: false,
+                                    data: { ID: ID, TRANGTHAI: TRANGTHAI, YEUCAU_ID: YEUCAU_ID },
+                                    success: function (data) {
+                                        if (data.trim().length > 0) {
+                                            notif({
+                                                type: 'success',
+                                                position: 'bottom',
+                                                msg: 'Ngừng chia sẻ thành công!',
+                                            });
+
+                                            $(this1).closest("tr").remove();
+                                        } else {
+                                            notif({
+                                                type: 'error',
+                                                position: 'bottom',
+                                                msg: 'Có lỗi xảy ra.Mời thử lại sau!',
+                                            });
+                                        }
+                                    },
+                                    error: function (err) {
+                                        CommonJS.alert(err.responseText);
+                                    }
+                                });
+                            }
+                        },
+                        'Đóng': {
+                            'class': 'btn-info',
+                            'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                        }
+                    }
+                });
+            }
+        });
+    }
+    $(function () {
+        $("#DONVI_ID").change(function () {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("FindFolderShared", "ThuMucLuuTru")',
+                data: {
+                    DONVI_ID: $("#DONVI_ID").val()
+                },
+                cache: false,
+                dataType: "html",
+                success: function (data) {
+                    $("#bodyItem").html(data);
+                }
+            });
+        });
+    });
+</script>
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+    .StopShared {
+        background: url('/Content/Images/Delete.png') no-repeat !important;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+        border: none !important;
+    }
+
+    .approve1 {
+        background: url('/Content/themes/base/images/TmFolder_approvel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .tblFixed {
+        table-layout: fixed;
+    }
+
+    .unexpired {
+        background: rgba(0, 0, 0, 0) url("/Content/themes/base/images/folder_unexpired.png") no-repeat scroll 4px 2px / 22px 22px;
+        float: left;
+        line-height: 1.3em;
+        margin-left: 5px;
+        padding: 10px 15px 10px 38px;
+        text-align: center;
+    }
+
+    .clearfix::before, .clearfix::after, .row::before, .row::after {
+        content: ".";
+        display: block;
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        width: 0;
+    }
+
+    .row::after, .clearfix::after {
+        clear: both;
+    }
+
+    .SearchCriterial.clearfix.hot-news-list-2 {
+        margin-left: 10px;
+        margin-top: 10px;
+        width: 95%;
+    }
+
+    .unapprove1 {
+        background: url('/Content/themes/base/images/Tmfolder-cancel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .expired1 {
+        background: url('/Content/themes/base/images/folder-expired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: red;
+    }
+
+    .unexpired1 {
+        background: url('/Content/themes/base/images/folder_unexpired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+    }
+
+    .private1 {
+        background: url('/Content/themes/base/images/my_folder.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+        color: #ff6a00;
+    }
+
+    .private {
+        background: url('/Content/themes/base/images/my_folder.png');
+        padding: 10px 15px 10px 38px;
+        background-repeat: no-repeat;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px;
+        margin-left: 5px;
+        color: #ff6a00;
+    }
+
+    .popup-content {
+        width: 97% !important;
+    }
+
+    #browser li {
+        margin-top: 3px;
+    }
+
+    #display {
+        width: 100%;
+        margin-right: 10px;
+        float: left;
+        min-height: 80%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #treeview {
+        float: left;
+        width: 45%;
+        margin-top: 10px;
+    }
+
+    #Path li {
+        float: left;
+    }
+
+    .SearchResult.hot-news-list-2.mgt20 > #URLPath {
+        margin-bottom: 3%;
+    }
+
+    #right ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        padding: 10px 25px;
+        border-radius: 5px;
+    }
+
+    #right li {
+        float: left;
+        margin-right: 10px;
+    }
+
+    #right i {
+        -moz-user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        padding: 6px 12px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    #right li a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    #right li:hover {
+        color: #357ae8;
+        cursor: pointer;
+    }
+
+    .webGrid th:nth-child(1), .webGrid #bodyItem td:nth-child(1) {
+        width: 50%;
+    }
+
+    .close-modal:hover {
+        cursor: pointer;
+    }
+
+    #SelectedItem td:nth-child(2) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #SelectedItem td:hover {
+        cursor: pointer;
+    }
+
+    .webGrid tr td:first-child {
+        text-align: left !important;
+    }
+</style>

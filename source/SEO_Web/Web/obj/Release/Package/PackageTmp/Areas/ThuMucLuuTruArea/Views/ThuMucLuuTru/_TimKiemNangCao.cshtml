@@ -1,0 +1,80 @@
+﻿
+<table style="width:60%;margin:0 auto">
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="width:100px" class="content-first">Tên thư mục:</td>
+        <td>
+            <input type="text" id="TENTHUMUC" class="e-input" style="width:233px" placeholder="Nhập tên thư mục" />
+        </td>
+        <td class="content-first">Tên tài liệu:</td>
+        <td>
+            <input type="text" class="e-input" placeholder="Nhập tên tài liệu" style="width:233px" id="TAILIEU" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+        <td class="content-first">Số hiệu:</td>
+        <td>
+            <input type="text" class="e-input" placeholder="Nhập số hiệu của tài liệu" style="width:233px" id="SOHIEU" />
+        </td>
+        <td class="content-first">Tác giả:</td>
+        <td>
+            <input type="text" id="TACGIA" class="e-input" placeholder="Nhập tác giả của tài liệu" style="width:233px" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">&nbsp;</td>
+    </tr>
+    <tr>
+        <td class="content-first">Thời gian:</td>
+        <td colspan="3">
+            <input type="text" id="TUNGAY" placeholder="Lưu trữ từ ngày" class="e-input" style="width:233px" />
+            <span style="margin-right:20px">Đến:</span>
+            <input type="text" id="DENNGAY" placeholder="Lưu trữ đến ngày" class="e-input" style="width:233px;margin-left:25px" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td style="text-align:center" colspan="3">
+            <button type="button" class="btn btn-success" id="btnSearching">Tìm kiếm</button>
+            <button class="btn btn-default" id="btnCloseSearch">Đóng</button>
+        </td>
+    </tr>
+</table>
+<script>
+    $(function () {
+        $('#btnCloseSearch').click(function () {
+            $('.SearchCriterial').hide();
+        });
+        $("#btnSearching").click(function () {
+            AdvancedSearch($("#TENTHUMUC").val(), $("#SOHIEU").val(), $("#TACGIA").val(), $("#TUNGAY").val(), $("#DENNGAY").val(), $("#TAILIEU").val());
+            return true;
+        });
+        $("#TUNGAY").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            onClose: function (selectedDate) {
+                $("#DENNGAY").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#DENNGAY").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            onClose: function (selectedDate) {
+                $("#TUNGAY").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+    });
+</script>
+<style>
+    .content-first {
+        font-weight: bold;
+    }
+</style>

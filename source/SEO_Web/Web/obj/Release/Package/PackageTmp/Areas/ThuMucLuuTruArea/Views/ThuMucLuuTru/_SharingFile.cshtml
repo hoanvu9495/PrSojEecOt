@@ -1,0 +1,261 @@
+﻿@using Web.Common
+@using Web.Models
+@using Business.CommonBusiness
+@using Web.FwCore
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeTaiLieuModel
+@{
+    bool flag = ViewData["MANAGE"] == "false" ? false : true;
+}
+@using (Ajax.BeginForm("SaveSharingFile", "ThuMucLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "createSuccess"
+}, new { id = "frmPheDuyet" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Chia sẻ với những người khác</h4>
+            </div>
+            <div class="modal-body" style="max-height: 300px; height: 300px; overflow: auto; ">
+                <div style="margin-bottom:20px">
+                    Tài liệu đang được chia sẻ: @Model.TAILIEU
+                </div>
+                <div class="side-by-side clearfix" style="margin-bottom:10px">
+                    <div style="margin-bottom:10px">
+                        <input type="hidden" name="TAILIEU_ID" value="@Model.TAILIEU_ID" />
+                        <input type="hidden" name="MANAGE" id="MANAGE" value="@Model.IS_MANAGE.ToString().ToLower()" />
+                        <input type="hidden" name="IS_THUMUC" value="@Model.ISTHUMUC.ToString().ToLower()" />
+                        <em>Lựa chọn người chia sẻ</em>
+                        <select data-placeholder="Nhập tên người được chọn" name="Persion_Share" id="Persion_Share" class="chosen-select" multiple tabindex="6">
+                            <option value=""></option>
+                            @foreach (var item in Model.ListDonVi)
+                            {
+                                <optgroup label="@item.TEN_DONVI">
+                                    @{
+                                var lstNguoiDung = Model.ListNguoiDung.Where(x => x.DM_DONVI_ID == item.ID).ToList();
+                                foreach (var i in lstNguoiDung)
+                                {
+                                    <option value="@i.DM_NGUOIDUNG_ID">@i.HOTEN</option>
+                                }
+                                    }
+                                </optgroup>
+                            }
+                            @foreach (var ele in Model.ListNguoiDungDaChon)
+                            {
+                                <option value="@ele.DM_NGUOIDUNG_ID ," selected>@ele.HOTEN</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <a href="javascript:void(0)" id="message" style="margin-top:5px">Thêm ghi chú</a><br />
+                        <textarea class="e-input" placeholder="Nhập ghi chú cho việc chia sẻ tài liệu" style="width:350px;height:60px;resize:vertical;display:none" id="text-message" name="GHICHU">@Model.GHICHU</textarea>
+                    </div>
+                </div>
+                <table>
+                    <tr>
+                        <td>Thời hạn:</td>
+                        <td>
+                            Từ:
+                            @if (Model.SHARINGFILE.CHIASE_TU != null)
+                            {
+                                @Html.TextBox("CHIASE_TU", String.Format("{0:dd/M/yyyy}", Model.SHARINGFILE.CHIASE_TU), new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "CHIASE_TU" })
+                            }
+                            else
+                            {
+                                @Html.TextBox("CHIASE_TU", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "CHIASE_TU" })
+                            }
+                            Đến:
+                            @if (Model.SHARINGFILE.CHIASE_DEN != null)
+                            {
+                                @Html.TextBox("CHIASE_DEN", String.Format("{0:dd/M/yyyy}", Model.SHARINGFILE.CHIASE_DEN), new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "CHIASE_DEN" })
+                            }
+                            else
+                            {
+                                @Html.TextBox("CHIASE_DEN", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "CHIASE_DEN" })
+                            }
+
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    @if (Model.GHICHU != null)
+                    {
+                        <tr>
+                            <td>
+                                Ghi chú:
+                            </td>
+                            <td>
+                                @Model.GHICHU
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Chia sẻ</button>
+                @*<button type="button" id="SHow" class="btn btn-success">Chia sẻ show</button>*@
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+}
+<script src="~/Scripts/jquerychosen/chosen.jquery.min.js"></script>
+<link href="~/Scripts/jquerychosen/chosen.min.css" rel="stylesheet" />
+<script>
+    $(".chosen-select").chosen({
+        disable_search_threshold: 10,
+        no_results_text: "Oops, Không có kết quả nào",
+        width: "95%",
+        search_contains: true
+    });
+</script>
+<style>
+    .default {
+        width: 100% !important;
+    }
+
+    .btn:hover {
+        cursor: pointer;
+    }
+</style>
+<script>
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+        notif({
+            type: 'error',
+            position: 'bottom',
+            msg: 'Quá trình chia sẻ tài liệu bị lỗi.Mời thử lại',
+        });
+        $("#ShareFile").modal('hide');
+    }
+    function createSuccess() {
+        var parent = $("#THEMTHUMUC").attr("data-pid");
+        if ($("#MANAGE").val() == 'false') {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ReloadDaChiaSe", "ThuMucLuuTru")',
+                data: {
+                },
+                cache: false,
+                dataType: "html",
+                success: function (data) {
+                    $("#bodyItem").html("");
+                    $("#footItem").html("");
+                    $("#bodyItem").html(data);
+                    $(".emptydata").hide();
+
+                }
+            });
+        } else {
+            if (parent > 0) {
+                LoadDataByID(parent);
+                $("#THEMTHUMUC").attr("data-pid", parent);
+                $("#THEMTAILIEU").attr("data-pid", parent);
+                $("#UPLOAD_FILE").show();
+                $("#THEMTHUMUC").show();
+            }
+            if (parent == 0) {
+                reloadGrid();
+                reloadTable();
+            }
+        }
+        $("#ShareFile").html("");
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Đã chia sẻ tài liệu thành công',
+        });
+        $("#ShareFile").modal('hide');
+
+    }
+    $(function () {
+        if ($("#CHIASE_TU").val() >= new Date()) {
+            $("#CHIASE_DEN").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                minDate: $("#CHIASE_TU").val(),
+                onClose: function (selectedDate) {
+                    $("#CHIASE_TU").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+        } else {
+            $("#CHIASE_DEN").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                minDate: new Date(),
+                onClose: function (selectedDate) {
+                    $("#CHIASE_TU").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+        }
+        if ($("#CHIASE_DEN").val() >= new Date()) {
+            $("#CHIASE_TU").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                maxDate: $("#CHIASE_DEN").val(),
+                onClose: function (selectedDate) {
+                    $("#CHIASE_DEN").datepicker("option", "minDate", selectedDate);
+                }
+            });
+        } else {
+            $("#CHIASE_TU").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                maxDate: new Date(),
+                onClose: function (selectedDate) {
+                    $("#CHIASE_DEN").datepicker("option", "minDate", selectedDate);
+                }
+            });
+        }
+        $('#ShareFile').on('hidden.bs.modal', function () {
+            $("#ShareFile").html("");
+        });
+        $("#message").click(function () {
+            if ($(this).text() == "Thêm ghi chú") {
+                $("#text-message").show();
+                $(this).text("Xóa ghi chú");
+            } else {
+                $("#text-message").hide();
+                $(this).text("Thêm ghi chú");
+                $("#text-message").val("");
+            }
+        });
+        $(".btn-success").click(function () {
+            if ($("#Persion_Share").val() == null) {
+                $.confirm({
+                    'title': 'Xác nhận chia sẻ',
+                    'message': 'Vẫn chưa có ai được chọn để chia sẻ?',
+                    'buttons': {
+                        'Xác nhận': {
+                            'class': 'btn-confirm-yes',
+                            'action': function () {
+                                $("#frmPheDuyet").submit();
+                                return true;
+                            }
+                        },
+                        'Đóng': {
+                            'class': 'btn-info',
+                            'action': function () {
+                                $("#Persion_Share").focus();
+                                return false;
+                            }
+                        }
+                    }
+                });
+                return false;
+            } else {
+                return true;
+            }
+        });
+
+    });
+</script>

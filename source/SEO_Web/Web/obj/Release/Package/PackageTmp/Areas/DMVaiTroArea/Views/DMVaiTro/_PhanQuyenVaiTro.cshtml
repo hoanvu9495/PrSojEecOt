@@ -1,0 +1,398 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.eAita;
+@model Web.Areas.DMVaiTroArea.Models.PhanQuyenViewModel
+@{
+    var ListChucNang = Model.ListChucNang;
+}
+@using (Ajax.BeginForm("SaveVaiTroChucNang", "DMVaiTro", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "AddEditSuccess"
+}, new { id = "frmVaiTroChucNang" }))
+{
+    <div>
+
+        @Html.AntiForgeryToken()
+        <div class="pq-float-left">
+            <label class="lbl8">Mã vai trò: <b>@Model.VaiTro.MA_VAITRO</b></label>
+            <label class="lbl9">Tên vai trò: <b>@Model.VaiTro.TEN_VAITRO</b></label>
+        </div>
+        <div class="box-border">
+            <h3 class="group-tittle1 mt10">Danh sách chức năng - thao tác</h3>
+            <table>
+                <tr>
+                    <td>
+                        <div class="padding-10">
+                            @if (ListChucNang != null && ListChucNang.Count > 0)
+                            {
+                                <div class="accordion" style="width: 49%; float: left; margin-right: 2%; height: 420px; overflow-y: auto; overflow-x: hidden; ">
+                                    @foreach (var item in ListChucNang.Skip(0).Take(ListChucNang.Count / 2))
+                                    {
+                                        if (item.ListChildren != null && item.ListChildren.Count > 0)
+                                        {
+                                            <fieldset style="border:1px solid #C0C0C0; padding:10px; margin-right:5px;">
+                                                <legend>
+                                                    @*<h3 class="padding-left-30">@item.TEN_CHUCNANG</h3>*@
+                                                    <b style="color: #00569d;">@item.TEN_CHUCNANG</b>
+                                                </legend>
+                                                <div class="pq-cn-label">
+                                                    <input class="css-checkbox subchucnang" value="-1" data-name="TT_P_ITEM_@item.DM_CHUCNANG_ID" id="TT_P_ALL_@item.DM_CHUCNANG_ID" name="TT_P_ITEM_ALL_@item.DM_CHUCNANG_ID" type="checkbox">
+                                                    <label for="TT_P_ALL_@item.DM_CHUCNANG_ID" class="css-label2 font-bold">Tất cả</label>
+                                                    @foreach (var child in item.ListChildren)
+                                                    {
+                                                        <input class="css-checkbox hassubchucnang" data-cn="@child.DM_CHUCNANG_ID" data-p="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-name="TT_ITEM_@child.DM_CHUCNANG_ID" value="@child.DM_CHUCNANG_ID" id="TT_ALL_@child.DM_CHUCNANG_ID" name="CN_ITEM_@child.DM_CHUCNANG_ID" type="checkbox">
+                                                        <label for="TT_ALL_@child.DM_CHUCNANG_ID" class="css-label2 font-bold">@child.TEN_CHUCNANG</label>
+                                                        <div id="DIV_TT_ITEM_@child.DM_CHUCNANG_ID" class="pq-label-fix">
+                                                            @if (child.ListThaoTac != null && child.ListThaoTac.Count > 0)
+                                                            {
+                                                                var lstt = "";
+                                                                var lstt_checked = "";
+                                                                foreach (var tt in child.ListThaoTac)
+                                                                {
+                                                                    lstt += tt.DM_THAOTAC_ID + ",";
+                                                                    if (tt.Checked)
+                                                                    {
+                                                                        lstt_checked += tt.DM_THAOTAC_ID + ",";
+                                                                        <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-cn="@tt.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_ITEM_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox" checked="checked">
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-cn="@tt.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_ITEM_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox">
+                                                                    }
+                                                                    <label for="TT_ITEM_@tt.DM_THAOTAC_ID" class="css-label2">@tt.TEN_THAOTAC</label>
+                                                                }
+                                                                <input type="hidden" value="@lstt_checked" name="ALL_VAL_SELECT_TT_LEFT_@child.DM_CHUCNANG_ID" id="ALL_VAL_SELECT_TT_@child.DM_CHUCNANG_ID" />
+                                                                <input type="hidden" value="@lstt" name="ALL_VAL_TT_@child.DM_CHUCNANG_ID" id="ALL_VAL_TT_@child.DM_CHUCNANG_ID" />
+                                                            }
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </fieldset>
+                                        }
+                                        else
+                                        {
+                                            <fieldset style="border:1px solid #C0C0C0; padding:10px; margin-right:5px;">
+                                                <legend>
+                                                    @*<h3 class="padding-left-30">@item.TEN_CHUCNANG</h3>*@
+                                                    <b style="color: #00569d;">@item.TEN_CHUCNANG</b>
+                                                </legend>
+                                                <div class="pq-cn-label">
+                                                    @if (item.ListThaoTac != null && item.ListThaoTac.Count > 0)
+                                                    {
+                                                        <input class="css-checkbox nosubchucnang" data-cn="@item.DM_CHUCNANG_ID" value="-1" data-name="TT_ITEM_@item.DM_CHUCNANG_ID" id="TT_ALL_@item.DM_CHUCNANG_ID" name="TT_ITEM_ALL_@item.DM_CHUCNANG_ID" type="checkbox">
+                                                        <label for="TT_ALL_@item.DM_CHUCNANG_ID" class="css-label2 font-bold">Tất cả</label>
+                                                        var lstt = "";
+                                                        var lstt_checked = "";
+                                                        foreach (var tt in item.ListThaoTac)
+                                                        {
+                                                            lstt += tt.DM_THAOTAC_ID + ",";
+                                                            if (tt.Checked)
+                                                            {
+                                                                lstt_checked += tt.DM_THAOTAC_ID + ",";
+                                                                <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="-1" data-cn="@item.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox" checked="checked">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="-1" data-cn="@item.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox">
+                                                            }
+                                                            <label for="TT_@tt.DM_THAOTAC_ID" class="css-label2">@tt.TEN_THAOTAC</label>
+                                                        }
+                                                        <input type="hidden" value="@lstt_checked" name="ALL_VAL_SELECT_TT_LEFT_@item.DM_CHUCNANG_ID" id="ALL_VAL_SELECT_TT_@item.DM_CHUCNANG_ID" />
+                                                        <input type="hidden" value="@lstt" name="ALL_VAL_TT_@item.DM_CHUCNANG_ID" id="ALL_VAL_TT_@item.DM_CHUCNANG_ID" />
+                                                    }
+                                                </div>
+                                            </fieldset>
+                                        }
+                                    }
+                                </div>
+                                <div class="accordion" style="width: 49%; float: left; height: 420px; overflow-y: auto; overflow-x: hidden;">
+                                    @foreach (var item in ListChucNang.Skip(ListChucNang.Count / 2))
+                                    {
+                                        if (item.ListChildren != null && item.ListChildren.Count > 0)
+                                        {
+                                            <fieldset style="border:1px solid #C0C0C0; padding:10px; margin-right:5px;">
+                                                <legend>
+                                                    @*<h3 class="padding-left-30">@item.TEN_CHUCNANG</h3>*@
+                                                    <b style="color: #00569d;">@item.TEN_CHUCNANG</b>
+                                                </legend>
+                                                <div class="pq-cn-label">
+                                                    <input class="css-checkbox subchucnang" value="-1" data-name="TT_P_ITEM_@item.DM_CHUCNANG_ID" id="TT_P_ALL_@item.DM_CHUCNANG_ID" name="TT_P_ITEM_ALL_@item.DM_CHUCNANG_ID" type="checkbox">
+                                                    <label for="TT_P_ALL_@item.DM_CHUCNANG_ID" class="css-label2 font-bold">Tất cả</label>
+                                                    @foreach (var child in item.ListChildren)
+                                                    {
+                                                        <input class="css-checkbox hassubchucnang" data-cn="@child.DM_CHUCNANG_ID" data-p="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-name="TT_ITEM_@child.DM_CHUCNANG_ID" value="@child.DM_CHUCNANG_ID" id="TT_ALL_@child.DM_CHUCNANG_ID" name="CN_ITEM_@child.DM_CHUCNANG_ID" type="checkbox">
+                                                        <label for="TT_ALL_@child.DM_CHUCNANG_ID" class="css-label2 font-bold">@child.TEN_CHUCNANG</label>
+                                                        <div id="DIV_TT_ITEM_@child.DM_CHUCNANG_ID" class="pq-label-fix">
+                                                            @if (child.ListThaoTac != null && child.ListThaoTac.Count > 0)
+                                                            {
+                                                                var lstt = "";
+                                                                var lstt_checked = "";
+                                                                foreach (var tt in child.ListThaoTac)
+                                                                {
+                                                                    lstt += tt.DM_THAOTAC_ID + ",";
+                                                                    if (tt.Checked)
+                                                                    {
+                                                                        lstt_checked += tt.DM_THAOTAC_ID + ",";
+                                                                        <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-cn="@tt.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_ITEM_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox" checked="checked">
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-cn="@tt.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_ITEM_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox">
+                                                                    }
+                                                                    <label for="TT_ITEM_@tt.DM_THAOTAC_ID" class="css-label2">@tt.TEN_THAOTAC</label>
+                                                                }
+                                                                <input type="hidden" value="@lstt_checked" name="ALL_VAL_SELECT_TT_RIGHT_@child.DM_CHUCNANG_ID" id="ALL_VAL_SELECT_TT_@child.DM_CHUCNANG_ID" />
+                                                                <input type="hidden" value="@lstt" name="ALL_VAL_TT_@child.DM_CHUCNANG_ID" id="ALL_VAL_TT_@child.DM_CHUCNANG_ID" />
+                                                            }
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </fieldset>
+                                        }
+                                        else
+                                        {
+                                            <fieldset style="border:1px solid #C0C0C0; padding:10px; margin-right:5px;">
+                                                <legend>
+                                                    @*<h3 class="padding-left-30">@item.TEN_CHUCNANG</h3>*@
+                                                    <b style="color: #00569d;">@item.TEN_CHUCNANG</b>
+                                                </legend>
+                                                <div class="pq-cn-label">
+                                                    @if (item.ListThaoTac != null && item.ListThaoTac.Count > 0)
+                                                    {
+                                                        <input class="css-checkbox nosubchucnang" value="-1" data-cn="@item.DM_CHUCNANG_ID" data-name="TT_ITEM_@item.DM_CHUCNANG_ID" id="TT_ALL_@item.DM_CHUCNANG_ID" name="TT_ITEM_ALL_@item.DM_CHUCNANG_ID" type="checkbox">
+                                                        <label for="TT_ALL_@item.DM_CHUCNANG_ID" class="css-label2 font-bold">Tất cả</label>
+                                                        var lstt = "";
+                                                        var lstt_checked = "";
+                                                        foreach (var tt in item.ListThaoTac)
+                                                        {
+                                                            lstt += tt.DM_THAOTAC_ID + ",";
+                                                            if (tt.Checked)
+                                                            {
+                                                                lstt_checked += tt.DM_THAOTAC_ID + ",";
+                                                                <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="-1" data-cn="@item.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox" checked="checked">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="-1" data-cn="@item.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox">
+                                                            }
+                                                            <label for="TT_@tt.DM_THAOTAC_ID" class="css-label2">@tt.TEN_THAOTAC</label>
+                                                        }
+                                                        <input type="hidden" value="@lstt_checked" name="ALL_VAL_SELECT_TT_RIGHT_@item.DM_CHUCNANG_ID" id="ALL_VAL_SELECT_TT_@item.DM_CHUCNANG_ID" />
+                                                        <input type="hidden" value="@lstt" name="ALL_VAL_TT_@item.DM_CHUCNANG_ID" id="ALL_VAL_TT_@item.DM_CHUCNANG_ID" />
+                                                    }
+                                                </div>
+                                            </fieldset>
+                                        }
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="clear-both"></div>
+            <div class="pq-default-button">
+                <input type="button" value="Lưu" id="btnAddEdit" class="btnSearch" />
+                <input type="button" value="Đóng" onclick="OnClose()" class="btnSearch" />
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="DM_VAITRO_ID" value="@Model.VaiTro.DM_VAITRO_ID" />
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".pq-cn-label").css({ "height": "auto" });
+        $(".ttchildnosubchucnang").each(function () {
+            var cn_id = $(this).attr("data-cn");
+            var listChecked = "";
+            $("input[name=TT_ITEM_" + cn_id + "]:checked").each(function () {
+                listChecked += $(this).val() + ",";
+            });
+            $("#ALL_VAL_SELECT_TT_" + cn_id).val(listChecked);
+            if (listChecked == $("#ALL_VAL_TT_" + cn_id).val()) {
+                $("#TT_ALL_" + cn_id).prop("checked", true);
+                $("#TT_ALL_" + cn_id).prop("indeterminate", false);
+            }
+            else {
+                if ($("#ALL_VAL_SELECT_TT_" + cn_id).val().trim().length > 0) {
+                    $("#TT_ALL_" + cn_id).prop("checked", true);
+                    $("#TT_ALL_" + cn_id).prop("indeterminate", true);
+                } else {
+                    $("#TT_ALL_" + cn_id).prop("indeterminate", false);
+                    $("#TT_ALL_" + cn_id).prop("checked", false);
+                }
+            }
+            //lấy id cấp 1 để check tất cả
+            var data_p = $(this).attr("data-firstlevel");
+            if (data_p != "-1") {
+                SetCheckAll(data_p);
+            }
+        });
+    });
+    $(function () {
+        //$(".accordion").accordion({ autoHeight: true});
+    });
+    function SetCheckAll(data_p) {
+        var allsub = $("input[data-p='" + data_p + "']").length;
+        var allsub_select = $("input[data-p='" + data_p + "']:checked").length;
+        if (allsub_select > 0 && allsub == allsub_select) {
+            $("input[data-name='" + data_p + "']").prop("indeterminate", false);
+            $("input[data-name='" + data_p + "']").prop("checked", true);
+        }
+        else if (allsub_select > 0 && allsub > allsub_select) {
+            $("input[data-name='" + data_p + "']").prop("indeterminate", true);
+            $("input[data-name='" + data_p + "']").prop("checked", true);
+        }
+        else {
+            $("input[data-name='" + data_p + "']").prop("indeterminate", false);
+            $("input[data-name='" + data_p + "']").prop("checked", false);
+        }
+    }
+    //1. Xử lý sự kiện check all của các chức năng không có chức năng con
+    //những chức năng có children
+    $(".hassubchucnang").change(function () {
+        var subname = $(this).attr("data-name");
+        //$("#DIV_" + subname).toggle();
+        if ($(this).prop("checked") == true) {
+            $("input[name='" + subname + "']").prop("checked", true);
+        } else {
+            $("input[name='" + subname + "']").prop("checked", false);
+        }
+        var listChecked = "";
+        $("input[name='" + subname + "']:checked").each(function () {
+            listChecked += $(this).val() + ",";
+        });
+        var cn_id = $(this).attr("data-cn");
+        $("#ALL_VAL_SELECT_TT_" + cn_id).val(listChecked);
+        var data_p = $(this).attr("data-p");
+        SetCheckAll(data_p);
+    });
+
+    //những chức năng ko có children
+    $(".nosubchucnang").change(function () {
+        var subname = $(this).attr("data-name");
+        if ($(this).prop("checked") == true) {
+            $("input[name='" + subname + "']").prop("checked", true);
+        } else {
+            $("input[name='" + subname + "']").prop("checked", false);
+        }
+        var cn_id = $(this).attr("data-cn");
+        var listChecked = "";
+        $("input[name=TT_ITEM_" + cn_id + "]:checked").each(function () {
+            listChecked += $(this).val() + ",";
+        });
+        $("#ALL_VAL_SELECT_TT_" + cn_id).val(listChecked);
+    });
+
+    //Chọn/bỏ chọn thao tác
+    $(".ttchildnosubchucnang").change(function () {
+        var cn_id = $(this).attr("data-cn");
+        var listChecked = "";
+        $("input[name=TT_ITEM_" + cn_id + "]:checked").each(function () {
+            listChecked += $(this).val() + ",";
+        });
+        $("#ALL_VAL_SELECT_TT_" + cn_id).val(listChecked);
+        if (listChecked == $("#ALL_VAL_TT_" + cn_id).val()) {
+            $("#TT_ALL_" + cn_id).prop("checked", true);
+            $("#TT_ALL_" + cn_id).prop("indeterminate", false);
+        }
+        else {
+            if ($("#ALL_VAL_SELECT_TT_" + cn_id).val().trim().length > 0) {
+                $("#TT_ALL_" + cn_id).prop("checked", true);
+                $("#TT_ALL_" + cn_id).prop("indeterminate", true);
+            } else {
+                $("#TT_ALL_" + cn_id).prop("indeterminate", false);
+                $("#TT_ALL_" + cn_id).prop("checked", false);
+            }
+        }
+        //lấy id cấp 1 để check tất cả
+        var data_p = $(this).attr("data-firstlevel");
+        if (data_p != "-1") {
+            SetCheckAll(data_p);
+        }
+    });
+    //end 1.
+    //subchucnang
+    $(".subchucnang").change(function () {
+        var subname = $(this).attr("data-name");
+        $("input[data-p='" + subname + "']").prop("indeterminate", false);
+        if ($(this).prop("checked") == true) {
+            $("input[data-p='" + subname + "']").prop("checked", true);
+        } else {
+            $("input[data-p='" + subname + "']").prop("checked", false);
+        }
+        $("input[data-p='" + subname + "']").change();
+    });
+    function SelectCap1(i) {
+        // khi select checkbox chức năng cấp 1 nếu checked = true set tất cả các danh sách chức năng cấp 2 checked= true và ngược lại
+        if ($("#Cap1_" + i).prop("checked") == true) {
+            $("#ShowCap2_" + i).find("input[type='checkbox']").each(function () {
+                $(this).attr("checked", "true");
+            });
+            $("#ShowCap2_" + i).find("input[type='hidden']").each(function () {
+                $(this).val("true");
+            });
+        } else {
+            //$("#check_" + i).children("input").attr("checked","false");
+            $("#ShowCap2_" + i).find("input[type='checkbox']").each(function () {
+                $(this).prop("checked", false);
+            });
+            $("#ShowCap2_" + i).find("input[type='hidden']").each(function () {
+                $(this).val("false");
+            });
+        }
+    }
+    function SetSelectCap2(i) {
+        if ($("#Cap2_" + i).prop("checked") == false) {
+            $("#SetSelect_" + i).val("false");
+        } else if ($("#Cap2_" + i).prop("checked") == true) {
+            $("#SetSelect_" + i).val("true");
+        }
+    }
+    function SelectCap2(i) {
+        // khi kích vào tên của checkbox chức năng cấp 2 set checked cho checkbox chức năng cấp 2
+        if ($("#Cap2_" + i).prop("checked") == false) {
+            // checked = false set bằng true
+            $("#Cap2_" + i).prop("checked", true);
+            $("#SetSelect_" + i).val("true");
+        }
+        else if ($("#Cap2_" + i).prop("checked") == true) {
+            $("#Cap2_" + i).prop("checked", false);
+            $("#SetSelect_" + i).val("false");
+        }
+    }
+    function ShowCap2(i) {
+        // hiển thị danh sách chức năng cấp 2
+        //if($('#car2').is(':hidden')) {
+        if ($('#ShowCap2_' + i).css('display') == 'none') {
+            // nếu display = none set display = true
+            $("#ShowCap2_" + i).fadeIn(500);
+        }
+        else {
+            $("#ShowCap2_" + i).fadeOut(500);
+        }
+    }
+    $("#btnAddEdit").click(function () {
+
+        $("#frmVaiTroChucNang").submit();
+        return true;
+    });
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function AddEditSuccess() {
+        CommonJS.alert("Thiết lập quyền vai trò chức năng thành công");
+        $("#AddPhanQuyen").dialog("close");
+        reloadGrid();
+    }
+    function OnClose() {
+        $("#AddPhanQuyen").dialog("close");
+    }
+
+</script>

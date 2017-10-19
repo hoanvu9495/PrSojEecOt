@@ -1,0 +1,349 @@
+﻿@using Business.CommonBusiness
+@using Web.Models;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Common;
+@using Web.Areas.HSVanBanDiArea.Models;
+@model VBDiCreateViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    ViewBag.Title = Model.VanBanDenID > 0 ? "Khởi tạo văn bản đi " : "Thêm mới Văn bản đi";
+}
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+<style>
+    
+    .ms-drop {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+        width: 100%;
+    }
+
+    .ms-parent {
+        width: 100%;
+    }
+
+    .ms-choice > span {
+        width: 100%;
+    }
+    .red{
+        color:red;
+    }
+</style>
+<div class="SearchCriterial clearfix hot-news-list-2">
+    <div class="jarviswidget" id="wid-id-0">
+        <header role="heading">
+            <span class="widget-icon"> <i class="fa fa-file-image-o txt-color-darken"></i> </span>
+            <h2 class="hidden-xs hidden-sm">Thêm mới văn bản đi </h2>
+        </header>
+        <div role="content">
+            <div class="widget-body">
+                <form action="hsvanbandiarea/hsvanbandi/insertvanbandi" method="post" enctype="multipart/form-data" id="frmCreateVanBanDi">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" name="VANBANDEN_ID" value="@Model.vanBanDenId">
+                    <div class="tab-content custom-scroll">
+                        <fieldset>
+                            <div class="row">
+                                <section class="col col-lg-6">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="TRICHYEU" class="lbl control-label">
+                                                    Trích yếu <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea name="TRICHYEU" id="TRICHYEU" class="required form-control" style="resize:none" autofocus="" autocomplete="false"></textarea>
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="LOAIVANBAN_ID" class="lbl control-label">
+                                                    Hình thức văn bản <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownList("LOAIVANBAN_ID", Model.ListLoaiVanBan, "--- Chọn loại văn bản ---", new { @class = "requiredDropDownList width-100", })
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="DONVISOANTHAO_ID" class="lbl control-label">
+                                                    Đơn vị soạn thảo <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownList("DONVISOANTHAO_ID", Model.listDonViSoanThaos, "--- Chọn đơn vị soạn thảo ---", new { @class = "requiredDropDownList width-100 ", })
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="LINHVUCVANBAN_ID" class="lbl control-label">
+                                                    Lĩnh vực
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownList("LINHVUCVANBAN_ID", Model.ListLinhVucVanBan, "--- Chọn lĩnh vực ---", new { @class = "width-100 requiredDropDownList", })
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="DOKHAN_ID" class="lbl control-label">
+                                                    Độ khẩn
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownList("DOKHAN_ID", Model.ListDoKhanVanBan, "--- Chọn độ khẩn ---", new { @class = "width-100 requiredDropDownList", })
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label class="lbl" for="THOIHAN_XULY_CHECK">
+                                                    <input type="checkbox" id="THOIHAN_XULY_CHECK" />
+                                                    Thời hạn xử lý
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input name="THOIHAN_XULY" id="THOIHAN_XULY" type="text" class="form-control datepicker1" data-mask="99/99/9999" data-mask-placeholder="-" disabled>
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="THOIHAN_HOIBAO_CHECK">
+                                                    <input type="checkbox" id="THOIHAN_HOIBAO_CHECK" />
+                                                    Thời hạn hồi báo
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input name="THOIHAN_HOIBAO" id="THOIHAN_HOIBAO" type="text" class="form-control datepicker1" data-mask="99/99/9999" data-mask-placeholder="-" disabled>
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="NOIDUNGVANBAN" class="lbl control-label">
+                                                    Nội dung
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea name="NOIDUNGVANBAN" id="NOIDUNGVANBAN" class="form-control" style="resize:none;"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="col col-lg-6">
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                @{Html.RenderPartial("../Common/UploadFile", new List<Model.eAita.TAILIEUDINHKEM>());}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="form-actions center">
+                        <center>
+                            <input type="submit" value="Lưu văn bản" id="btnSave" class="btn btn-primary btn-sm" />
+                            <input type="button" value="Hủy bỏ" id="button--huybo-vanbandi" class="btn btn-default btn-sm" />
+                        </center>
+                    </div>
+                </form>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    pageSetUp();
+    
+
+    var pageFunction= function(){
+
+        CKEDITOR.replace('NOIDUNGVANBAN',{  // Define the toolbar groups as it is a more accessible solution.
+            toolbarGroups: [
+    { "name": "basicstyles", "groups": ["basicstyles"] },
+    { "name": "links", "groups": ["links"] },
+    { "name": "paragraph", "groups": ["list", "blocks"] },
+    { "name": "document", "groups": ["mode"] },
+    { "name": "insert", "groups": ["insert"] },
+    { "name": "styles", "groups": ["styles"] },
+    { "name": "about", "groups": ["about"] }
+            ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
+    });
+        $('#DOKHAN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn độ khẩn"
+
+        });
+
+        $('#LINHVUCVANBAN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn lĩnh vực"
+
+        });
+        $('#DONVISOANTHAO_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn đơn vị soạn thảo"
+
+        });
+
+        $('#LOAIVANBAN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn độ loại văn bản"
+
+        });
+
+        $('#THOIHAN_HOIBAO_CHECK').on('change', function (event) {
+            if ($(this).is(':checked')) {
+                $('#THOIHAN_HOIBAO').removeAttr('disabled');
+                $('#THOIHAN_HOIBAO').addClass('validateDate');
+            } else {
+                $('#THOIHAN_HOIBAO').val($emptyStr);
+                $('#THOIHAN_HOIBAO').attr('disabled', 'disabled');
+                $('#THOIHAN_HOIBAO').removeClass('validateDate');
+            }
+        });
+
+        $('#THOIHAN_XULY_CHECK').on('change', function (event) {
+            if ($(this).is(':checked')) {
+                $('#THOIHAN_XULY').removeAttr('disabled');
+                $('#THOIHAN_XULY').addClass('validateDate');
+            } else {
+                $('#THOIHAN_XULY').val($emptyStr);
+                $('#THOIHAN_XULY').attr('disabled', 'disabled');
+                $('#THOIHAN_XULY').removeClass('validateDate');
+
+            }
+        });
+
+        $('#button--huybo-vanbandi').on('click', function () {
+            location.href = "/#HSVanBanDiArea/HSVanBanDi/Index";
+        });
+
+        $("#btnSave").click(function () {
+            var is_submit = onSubmit();
+            if (is_submit) {
+                $("#frmCreateVanBanDi").submit();
+            } else {
+                return false;
+            }
+        });
+    }
+    var $emptyStr = "";
+    //$('select').chosen({
+    //    width: '100%'
+    //});
+
+    $(".datepicker1").datepicker({
+        dateFormat: 'dd/mm/yy',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-20:+20"
+    });
+
+   
+    function onSubmit() {
+
+        var err = 0;
+        var require = requiredFieldForFormId("frmCreateVanBanDi");
+        if (!require) {
+            err++;
+        }
+        var IsDate = ValidateFieldDate("frmCreateVanBanDi");
+        if (!IsDate) {
+            err++;
+        }
+        var requireDropdownlist = RequireDropDownlist("frmCreateVanBanDi");
+        if (!requireDropdownlist) {
+            err++;
+        }
+
+        var IsDateExist = ValidateFieldDateExist("frmCreateVanBanDi");
+        if (!IsDateExist) {
+            err++;
+        }
+        if (err == 0) {
+            return true;
+        } else {
+            NotiError("Có lỗi. Vui lòng kiểm tra lại");
+            return false;
+        }
+
+    }
+
+    //function SelectTab(tab_id) {
+    //    var tab_current = $("li[aria-selected='true'] a").attr("id");
+    //    var current_id = tab_current.split('-')[2];
+    //    if (tab_id != current_id) {
+    //        $("#vb_di_tabs-t-" + tab_id).click();
+    //    }
+    //}
+
+    //function formShowWorkFlowStepChange(entity_id, step_name, trang_thai_1, trang_thai_2) {
+    //    if (onSubmit()) {
+    //        showWorkFlowStepChange(entity_id, step_name, trang_thai_1, trang_thai_2);
+    //    }
+    //}
+    loadScript("Scripts/multiple-select.js", pageFunction);
+</script>

@@ -1,0 +1,68 @@
+﻿@using Web.FwCore
+@using Business.Business
+@using Business.CommonBusiness
+@using Web.Models
+@model Web.Areas.TDKTPhongTraoThiDuaArea.Models.PhongTraoThiDuaViewModel
+@{
+    ViewBag.Title = "Phong trào thi đua khen thưởng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #collapseThongTinChinh {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+</style>
+<script src="~/Scripts/tiny_mce/tinymce.min.js"></script>
+@Html.Partial("_TopNavbar")
+@Html.Partial("_MenuLeft")
+
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <h3 class="group-tittle mt10" style="height: 41px">Chi tiết phong trào thi đua</h3>
+    <div style="margin:auto; margin-top:20px" id="collapseThongTinChinh" class="panel-collapse collapse in" aria-expanded="true">
+        <table id="tbl_create_nangluong_truocthoihan">
+            <tr>
+                <td style="width:20%">
+                    <label class="lbl-title">Kế hoạch thi đua:<span style="color: red;">*</span></label>
+                </td>
+                <td colspan="3">
+                    <div class="input-field4 clearfix fix-width" style="width:100%">
+                        <label>
+                            @Model.PhongTraoThiDua.KE_HOACH_THI_DUA
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                </td>
+            </tr>
+            @*End*@
+            @*Tự đánh giá các mặt công tác*@
+            <tr>
+                <td>
+                    <label class="lbl-title">Nội dung phong trào thi đua:<span style="color: red;">*</span></label>
+                </td>
+                <td colspan="3">
+                    @Html.TextArea("NOI_DUNG", "", new { @style = "width:700px;height:300px;", @placeholder = "", @class = "e-input", @maxlength = "500" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="ERR_NOI_DUNG" style="color: red"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl-title">Tài liệu liên quan: </label>
+                </td>
+                <td colspan="3">
+                    @{Html.RenderPartial("../Common/UploadFile", new List<Model.eAita.TAILIEUDINHKEM>());}
+                </td>
+            </tr>
+            @*end*@
+        </table>
+    </div>
+</div>

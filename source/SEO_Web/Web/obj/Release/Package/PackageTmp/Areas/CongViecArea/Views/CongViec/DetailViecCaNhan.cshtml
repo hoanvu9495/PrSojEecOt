@@ -1,0 +1,1142 @@
+﻿@using Web.Models;
+@using Web.Areas.CongViecArea.Models;
+@using Web.Areas.MarkItemArea.Models;
+@using Web.Common;
+@using Business.CommonBusiness;
+@model CongViecDetailViewModel
+@{
+    TimeSpan t_span = DateTime.Now.Subtract(Model.CongViec.HANKETTHUC.Value);
+    string minDate = string.Format("{0:dd/MM/yyyy}", DateTime.Now);
+    var songayquahan = (int)t_span.TotalDays;
+    ViewBag.Title = "Smart DMS | eGovOffice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var grid = new WebGrid(Model.ListNoiDungTraoDoi,
+                      rowsPerPage: 10,
+                      canPage: true,
+                      canSort: true,
+                      ajaxUpdateContainerId: "grid",
+                       selectionFieldName: "selectedRow");
+    var task = Model.CongViec;
+}
+<link href="~/Content/Custom/countdown/assets/countdown/jquery.countdown.css" rel="stylesheet" />
+<link href="~/Content/Custom/horizontal-timeline/css/reset.css" rel="stylesheet" />
+<link href="~/Content/Custom/horizontal-timeline/css/style.css" rel="stylesheet" />
+<link href="~/Content/Custom/css/congviec/congviec.css" rel="stylesheet" />
+<style type="text/css">
+    .ms-parent {
+        width: 100% !important;
+        margin: 5px 0 0 0;
+    }
+
+    button.ms-choice {
+        background: none;
+        width: 100%;
+        border: 1px solid #ccc;
+    }
+
+        button.ms-choice div[class=""], button.ms-choice div {
+            background: url("/Content/Custom/css/multiple-select.png") left top no-repeat;
+        }
+
+            button.ms-choice div[class="open"] {
+                background: url("/Content/Custom/css/multiple-select.png") right top no-repeat;
+            }
+
+    .ms-drop ul li label span {
+        vertical-align: middle;
+        margin: 0 0 0 5px;
+    }
+
+    .red {
+        color: red;
+    }
+
+    #modal-approve table {
+        width: 100%;
+    }
+
+        #modal-approve table tr td:first-child {
+            width: 200px;
+        }
+
+    #TXT_DELETE_REASON {
+        width: 100%;
+        height: 120px;
+    }
+
+    .edit-table tr td p {
+        margin: 0;
+    }
+
+    .btnAccept {
+        background: url('/Content/Images/1460042838_accept.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .label_danhmuc {
+        margin-top: 0;
+    }
+
+    .lblThemMoi {
+        margin-bottom: 5px;
+    }
+
+    .e-input {
+        height: 30px !important;
+    }
+
+    .right-content label {
+        font-weight: normal !important;
+    }
+
+    .stt {
+        width: 30px;
+    }
+
+    ._actions {
+        width: 100px;
+    }
+
+    .hanlui {
+        position: relative;
+        text-align: left;
+    }
+
+    .traloi {
+        width: 60px;
+    }
+
+    .nguoidang {
+        width: 130px;
+    }
+
+    .nguoixinlui {
+        width: 250px;
+    }
+
+    .ngayxinlui {
+        width: 60px;
+    }
+
+    .ngaydang {
+        width: 130px;
+    }
+
+    .edit-table tr {
+        border-bottom: 1px solid #ccc;
+    }
+
+        .edit-table tr td {
+            padding: 8px 0;
+        }
+
+        .edit-table tr:last-child {
+            border-bottom: 0;
+        }
+
+    /*.edit-table tr td {
+            padding-bottom: 3px;
+        }*/
+
+    input[type=checkbox].css-checkbox + label.css-label2 {
+        cursor: default;
+    }
+
+    .height-15 {
+        height: 15px;
+    }
+
+    #menu-toolbar .right-all-page {
+        border: 0;
+        background: none;
+    }
+
+        #menu-toolbar .right-all-page .btnAddNew {
+            margin-right: 10px;
+        }
+
+    #label--ten-congviec {
+        border: 0;
+        color: #477311;
+    }
+
+    #block--thongtin-congviec {
+        float: left;
+        width: 100%;
+    }
+
+    #block--thongtin-congviec-left {
+        border-right: 1px solid #CCC;
+        float: left;
+        width: 69%;
+        margin-right: 7px;
+    }
+
+        #block--thongtin-congviec-left .edit-table {
+            width: 99%;
+        }
+
+    #block--thongtin-congviec-right {
+        width: 30%;
+    }
+
+        #block--thongtin-congviec-right h3.group-tittle {
+            text-transform: uppercase;
+            padding-top: 0;
+            padding-bottom: 4px;
+            text-align: center;
+        }
+
+    .width-auto {
+        width: auto;
+    }
+
+    #block--thongtin-congviec-right .edit-table {
+        width: 99%;
+        margin-top: 5px;
+    }
+
+    #block--task-discussion, #block--task-related {
+        margin: 10px 0 20px 0;
+        width: 100%;
+    }
+
+    #grid, #gridLuiHan {
+        margin-top: 15px;
+    }
+
+    #btnCloseDialog {
+        background-color: #336699;
+        height: 25px;
+        border: none;
+        width: auto;
+        color: white;
+    }
+
+    #btnPheDuyetLuiHan, #btnClosepheDuyetDialog {
+        background-color: #336699;
+        height: 25px;
+        border: none;
+        width: auto;
+        color: white;
+    }
+
+    #BUTPHELANHDAO {
+        width: 100% !important;
+        height: 50px !important;
+        resize: both;
+    }
+
+    #pheDuyetDialog .edit-table {
+        width: 95.5%;
+    }
+
+    #btnSaveTienDo, #btnCloseTienDo {
+        background-color: #336699;
+        /*height: 25px;*/
+        border: none;
+        width: auto;
+        color: white;
+        border-radius: 4px;
+    }
+    /*#btnSaveTienDo{
+        border-radius:4px;
+    }*/
+
+    #TIENDOCONGVIEC {
+        width: 40px;
+        height: 15px;
+    }
+
+    #gridCongViecChuyenTiep tbody td {
+        text-align: left;
+    }
+
+    #btnThayDoiTrangThai {
+        margin-left: 5px;
+    }
+
+    #ThayDoiTrangThai {
+        display: none;
+    }
+
+    #dropdown--thaydoi-trangthai {
+        width: 200px;
+    }
+
+    #btnSaveTrangThai {
+        margin-top: 5px;
+        margin-left: 10px;
+        background-color: #336699;
+        border: none;
+        border-radius: 4px;
+        width: auto;
+        color: white;
+    }
+
+    #btnCloseTrangThai {
+        background-color: #336699;
+        border-radius: 4px;
+        border: none;
+        width: auto;
+        color: white;
+    }
+
+    #btnSaveNgayBatDauXuLy {
+        background-color: #336699;
+        /*height: 25px;*/
+        border-radius: 4px;
+        border: none;
+        width: auto;
+        color: white;
+    }
+
+    #NGAYBATDAUXULY {
+        width: 85px;
+        height: 15px;
+    }
+
+    #btnViewAllTienDo {
+        margin-left: 5px;
+    }
+
+    label[for=NGAYCAPNHATTIENDO] {
+        margin-right: 5px;
+    }
+
+    #NGAYCAPNHATTIENDO {
+        width: 85px;
+        height: 15px;
+    }
+
+    #span--tiendo-congviec {
+        margin-left: 15px;
+        margin-right: 10px;
+    }
+
+    .modal-dialog .modal-header {
+        text-transform: uppercase;
+    }
+
+    #block--title-xin-luihan {
+        text-transform: none;
+        padding-top: 0;
+        padding-bottom: 4px;
+    }
+
+    #note {
+        font-weight: bold;
+        font-size: 16px;
+    }
+</style>
+<div id="menu-toolbar" class="date-time">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+
+    <div class="right-all-page">
+        <div class="menu-left">
+            @if (Model.HAS_ROLE_GIAOVIEC)
+            {
+                <div class="btnAddNew">
+                    <a href="@Url.Action("create")">
+                        <span>Giao việc</span>
+                    </a>
+                </div>
+            }
+            <div class="btn-group" role="group">
+                <a class="b_btn b_btn-default" href="@Url.Action("Edit", new { id = task.ID})" title="Sửa công việc">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    &nbsp;
+                    Cập nhật
+                </a>
+                <a class="b_btn b_btn-default" title="Xóa công việc" onclick="openDeleteTaskModal(@task.ID)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    &nbsp;
+                    Xóa
+                </a>
+            </div>
+        </div>
+        <div class="menu-right">
+            <div class="btnAddNew">
+                <a href="@Url.Action("Create", new { myjob = 1 })">
+                    <span>Việc cá nhân</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div class="left-content block">
+        @Html.Partial("_MenuCongViec", Model.CongViecCounter, new ViewDataDictionary { { "ROLE_GIAO_VIEC", Model.HAS_ROLE_GIAOVIEC }, { "Active", 0 } })
+    </div>
+</div>
+<div class="right-all-page">
+    <div class="right-content clearfix">
+        <h3 class="group-tittle">
+            Công việc: <span id="label--ten-congviec">
+                @Model.CongViec.TENCONGVIEC
+            </span>
+        </h3>
+        <div id="block--thongtin-congviec">
+            <div id="block--thongtin-congviec-left">
+                <table class="edit-table">
+                    <tr>
+                        <td>
+                            <label class="lbl">Ngày bắt đầu:</label>
+                        </td>
+                        <td>
+                            <span style="width:200px" class="float-left">
+                                @string.Format("{0:dd/MM/yyyy}", task.NGAYBATDAU)
+                            </span>
+                            <span class="float-left">
+                                <label style="margin-right:5px" class="lbl float-left">Ngày kết thúc: @string.Format("{0:dd/MM/yyyy}", task.HANKETTHUC)</label>
+                            </span>
+                        </td>
+                    </tr>
+                    <!--THỜI GIAN-->
+
+                    <tr>
+                        <td>
+                            <label class="lbl">Độ ưu tiên:</label>
+                        </td>
+                        <td>
+                            <span style="width:200px" class="float-left">
+                                @task.DOUUTIEN
+                            </span>
+                            <label style="margin-right:5px;" class="lbl width-auto float-left">
+                                Trạng thái:
+                            </label>
+                            <span class="float-left">
+                                @task.TRANGTHAI
+                            </span>
+                        </td>
+                    </tr>
+                    <!--ĐỘ ƯU TIÊN-->
+
+                    <tr>
+                        <td>
+                            <label class="lbl">
+                                Nhận thông báo:
+                            </label>
+                        </td>
+                        <td>
+                            @if (task.IS_POPUP == true)
+                            {
+                                <input disabled="disabled" class="css-checkbox" id="CHK_IS_POPUP" checked="checked" value="True" name="CHK_IS_POPUP" type="checkbox">
+                            }
+                            else
+                            {
+                                <input disabled="disabled" class="css-checkbox" id="CHK_IS_POPUP" value="True" name="CHK_IS_POPUP" type="checkbox">
+                            }
+                            <label style="width:auto;" for="CHK_IS_POPUP" class="css-label2">Tin thông báo</label>
+                            @if (task.IS_MESG == true)
+                            {
+                                <input disabled="disabled" class="css-checkbox" id="CHK_IS_MESG" checked="checked" value="True" name="CHK_IS_MESG" type="checkbox">
+                            }
+                            else
+                            {
+                                <input disabled="disabled" class="css-checkbox" id="CHK_IS_MESG" value="True" name="CHK_IS_MESG" type="checkbox">
+                            }
+                            <label style="width:auto;" for="CHK_IS_MESG" class="css-label2">Tin nhắn</label>
+                            @if (task.IS_EMAIL == true)
+                            {
+                                <input disabled="disabled" class="css-checkbox" id="CHK_IS_EMAIL" checked="checked" value="True" name="CHK_IS_EMAIL" type="checkbox">
+                            }
+                            else
+                            {
+                                <input disabled="disabled" class="css-checkbox" id="CHK_IS_EMAIL" value="True" name="CHK_IS_EMAIL" type="checkbox">
+                            }
+                            <label style="width:auto;" for="CHK_IS_EMAIL" class="css-label2">Email</label>
+                            @if (task.IS_SMS == true)
+                            {
+                                <input disabled="disabled" class="css-checkbox" id="CHK_IS_SMS" checked="checked" value="True" name="CHK_IS_SMS" type="checkbox">
+                            }
+                            else
+                            {
+                                <input disabled="disabled" class="css-checkbox" id="CHK_IS_SMS" value="True" name="CHK_IS_SMS" type="checkbox">
+                            }
+                            <label style="width:auto;" for="CHK_IS_SMS" class="css-label2">SMS</label>
+                        </td>
+                    </tr>
+                    <!--NHẬN THÔNG BÁO-->
+
+                    <tr>
+                        <td>
+                            <label class="lbl">Nhắc việc đến hạn:</label>
+                        </td>
+                        <td>
+                            @if (task.HAS_NHACVIECDENHAN == true)
+                            {
+                                <input disabled="disabled" class="css-checkbox" id="CHK_HAS_NHACVIECDENHAN" checked="checked" value="True" name="CHK_HAS_NHACVIECDENHAN" type="checkbox">
+                            }
+                            else
+                            {
+                                <input disabled="disabled" class="css-checkbox" id="CHK_HAS_NHACVIECDENHAN" value="True" name="CHK_HAS_NHACVIECDENHAN" type="checkbox">
+                            }
+                            <label style="margin-top: -5px;" for="CHK_HAS_NHACVIECDENHAN" class="css-label2 width-auto">
+                                Gửi tin nhắn nhắc việc đến hạn <b>trước</b>
+                            </label>
+                            @(task.SONGAYNHACTRUOCHAN.HasValue ? task.SONGAYNHACTRUOCHAN.Value.ToString("00")
+                            : "0") (ngày)
+                        </td>
+                    </tr>
+                    <!--NHẮC VIỆC ĐẾN HẠN-->
+
+                    <tr>
+                        <td>
+                            <label class="lbl">
+                                Nội dung công việc:
+                            </label>
+                        </td>
+                        <td>
+                            @Html.Raw(task.NOIDUNGCONGVIEC)
+                        </td>
+                    </tr><!--NỘI DUNG CÔNG VIỆC-->
+                    @if (Model.ListTaiLieuDinhKem != null && Model.ListTaiLieuDinhKem.Count > 0)
+                    {
+                        <tr>
+                            <td>
+                                <label class="lbl">Tài liệu đính kèm:</label>
+                            </td>
+                            <td>
+                                <div style="width:100%;">
+                                    @{Html.RenderPartial("../Common/UploadFile", Model.ListTaiLieuDinhKem, new ViewDataDictionary { { "detail", 1 } });}
+                                </div>
+                            </td>
+                        </tr>
+                    }<!--TÀI LIỆU ĐÌNH KÈM-->
+                    @if (Model.HasCongVan)
+                    {
+                        if (Model.ListTaiLieuDinhKem != null && Model.ListTaiLieuDinhKem.Count > 0)
+                        {
+                            <tr>
+                                <td>
+                                    <label class="lbl">Tài liệu của Công văn:</label>
+                                </td>
+                                <td>
+                                    <div style="width:750px;">
+                                        @{Html.RenderPartial("../Common/UploadFile", Model.ListTaiLieuDinhKemCuaVanBan, new ViewDataDictionary { { "detail", 1 } });}
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td>
+                                <label class="lbl">
+                                    Phân phát công văn:
+                                </label>
+                            </td>
+                            <td>
+                                @if (Model.ListTaiLieuDinhKemCuaVanBan != null && Model.ListTaiLieuDinhKemCuaVanBan.Count > 0)
+                                {
+                                    if (task.IS_DINHKEMTAILIEUVANBAN == true)
+                                    {
+                                        <input class="css-checkbox" id="CHK_IS_DINHKEMTAILIEUVANBAN" checked="checked" value="True" name="CHK_IS_DINHKEMTAILIEUVANBAN" type="checkbox">
+                                    }
+                                    else
+                                    {
+                                        <input class="css-checkbox" id="CHK_IS_DINHKEMTAILIEUVANBAN" value="True" name="CHK_IS_DINHKEMTAILIEUVANBAN" type="checkbox">
+                                    }
+                                    <label for="CHK_IS_DINHKEMTAILIEUVANBAN" class="css-label2 width-auto">
+                                        Đính kèm tài liệu của Công văn vào công việc
+                                    </label>
+                                }
+                                @if (task.IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY == true)
+                                {
+                                    <input class="css-checkbox" id="CHK_IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY" checked="checked" value="True" name="CHK_IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY" type="checkbox" disabled="disabled">
+                                }
+                                else
+                                {
+                                    <input class="css-checkbox" id="CHK_IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY" value="True" name="CHK_IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY" type="checkbox" disabled="disabled">
+                                }
+                                <label for="CHK_IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY" class="css-label2 width-auto">
+                                    Phân phát công văn cho cán bộ tham gia xử lý công việc
+                                </label>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+            <div id="block--thongtin-congviec-right" class="float-left">
+                <h3 class="group-tittle">
+                    Cập nhật trạng thái và tiến độ
+                </h3>
+                <table class="edit-table">
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <div id="countdown"></div>
+                                <p id="note"></p>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" style="padding:5px 0">
+                                Trạng thái:
+                            </label>
+                        </td>
+                        <td>
+                            <label class="float-left width-auto">
+                                <b>@task.TRANGTHAI</b>
+                            </label>
+                            <a href="javascript:void(0)" id="btnThayDoiTrangThai" class="btnEdit float-left" title="Thay đổi trạng thái"></a>
+                        </td>
+                    </tr>
+                    <tr id="ThayDoiTrangThai">
+                        <td colspan="2" style="padding:3px">
+                            <div class="input-field2 clearfix float-left" id="dropdown--thaydoi-trangthai">
+                                @Html.DropDownListFor(m => m.CongViec.TRANGTHAI_ID, Model.ListTrangThai, new { @class = " width-100", Id = "dropdown--trangthai-congviec" })
+                            </div>
+                            <input type="button" value="Cập nhật" id="btnSaveTrangThai" />
+                            <input type="button" value="Hủy" id="btnCloseTrangThai" />
+                        </td>
+                    </tr>
+                    @if (Model.CongViec.NGAYBATDAUXULY.HasValue)
+                    {
+                        <tr>
+                            <td width="150px" style="padding:5px 0">
+                                <label class="lbl">Ngày bắt đầu thực tế:</label>
+                            </td>
+                            <td>
+                                <label>@string.Format("{0:dd/MM/yyyy}", task.NGAYBATDAUXULY)</label>
+                            </td>
+                        </tr>
+                        if (Model.CongViec.NGAYHOANTHANH.HasValue)
+                        {
+                            <tr>
+                                <td width="150px">
+                                    <label class="lbl">Hoàn thành thực tế:</label>
+                                </td>
+                                <td style="padding-top:2px;">
+                                    <label>@string.Format("{0:dd/MM/yyyy}", task.NGAYHOANTHANH)</label>
+                                </td>
+                            </tr>
+                        }
+                        if (Model.ListTienDoCongViec != null && Model.ListTienDoCongViec.Count > 0)
+                        {
+                            minDate = string.Format("{0:dd/MM/yyyy}", Model.ListTienDoCongViec.Last().NGAYCAPNHATTIENDO);
+                            <tr>
+                                <td colspan="2" style="padding-top: 3px;">
+                                    <label style="margin-right:5px;" class="lbl width-auto">
+                                        Tiến độ:
+                                    </label>
+                                    <b>
+                                        @(Model.CURRENT_PROGRESS + "%")
+                                    </b>
+                                    <span id="span--tiendo-congviec">
+                                        ngày @(string.Format("{0:dd/MM/yyyy}", Model.ListTienDoCongViec.Last().NGAYCAPNHATTIENDO))
+                                    </span>
+                                    <a href="javascript:void(0)" id="btnThemTienDo" title="Cập nhật tiến độ">
+                                        <img src="~/Content/Images/iconadd-16.png" />
+                                    </a>
+                                    <a href="javascript:void(0)" id="btnViewAllTienDo" title="Xem diễn biến tiến độ công việc">
+                                        <img src="~/Content/Images/iconstatistic.png" />
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr id="AddTienDo">
+                                <td colspan="2" style="padding-top: 3px;">
+                                    <label class="lbl width-auto" for="NGAYCAPNHATTIENDO">
+                                        Tiến độ:
+                                    </label>
+                                    <input type="text" name="NGAYCAPNHATTIENDO" id="NGAYCAPNHATTIENDO" value="@string.Format("{0:dd/MM/yyyy}",DateTime.Now)" placeholder="" class="e-input datepicker" maxlength="10" />
+                                    <input type="text" name="TIENDOCONGVIEC" id="TIENDOCONGVIEC" value="" class="e-input" placeholder="" maxlength="3" />%
+                                    <input type="button" value="Cập nhật" id="btnSaveTienDo" />
+                                    <input type="button" value="Hủy" id="btnCloseTienDo" />
+                                    <span class="lb-Check" id="ErrorSaveTienDo"></span>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="2" style="padding-top: 3px;">
+                                    <label class="lbl width-auto" for="NGAYCAPNHATTIENDO">
+                                        Tiến độ:
+                                    </label>
+                                    <input type="text" name="NGAYCAPNHATTIENDO" id="NGAYCAPNHATTIENDO"
+                                           value="@string.Format("{0:dd/MM/yyyy}",DateTime.Now)" placeholder="" class="e-input datepicker" maxlength="10" />
+                                    <input type="text" name="TIENDOCONGVIEC" id="TIENDOCONGVIEC" value="" class="e-input" placeholder="" maxlength="3" />%
+                                    <input type="button" value="Cập nhật" id="btnSaveTienDo" />
+                                    <span class="lb-Check float-left width-100" id="ErrorSaveTienDo"></span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td width="150px">
+                                <label class="lbl" for="NGAYBATDAUXULY">
+                                    Ngày bắt đầu thực tế:
+                                </label>
+                            </td>
+                            <td style="padding-top: 3px;">
+                                <input type="text" name="NGAYBATDAUXULY" id="NGAYBATDAUXULY" value="@string.Format("{0:dd/MM/yyyy}",DateTime.Now)" class="e-input datepicker" maxlength="10" />
+                                <input type="button" value="Thực hiện" id="btnSaveNgayBatDauXuLy" />
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+        <div class="float-left" id="block--task-discussion">
+            <h3 class="group-tittle">
+                Nội dung trao đổi công việc
+            </h3>
+            <div id="grid">
+                <div id="HeaderGrid">
+                    <div class="margin">
+                        <label class="label_danhmuc">
+                            @(Model.ListNoiDungTraoDoi == null ? "0" : Model.ListNoiDungTraoDoi.Count.ToString("000"))&nbsp; trao đổi
+                        </label>
+                        <div class="lblThemMoi">
+                            <a class="b_btn b_btn-default dropdown-toggle" href="@Url.Action("AddComment", new { id = Model.CongViec.ID, replyto = 0, type = ViewBag.Active })" onclick="OnCreateNoiDung()">
+                                Ghi nội dung
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center stt"),
+                grid.Column("NGAYTAO", format: (item) => new MvcHtmlString(string.Format("{0:dd/MM/yyyy - hh:mm}", item.NGAYTAO)), header: "Ngày đăng", style: "ngaydang"),
+                grid.Column("NguoiDangNoiDung", "Người đăng", style: "nguoidang"),
+                grid.Column("TIEUDE", format: (item) =>
+                {
+                    var tmp_file = "";
+                    if (item.TaiLieuDinhKem != null && item.TaiLieuDinhKem.Count > 0)
+                    {
+                        tmp_file += "<span style='float:right;'><span style='float:left;width:20px;' title='Có tệp đính kèm' class='btnAttFile'></span>";
+                        foreach (var file in item.TaiLieuDinhKem)
+                        {
+                            tmp_file += "<a style='margin-right: 10px;' title='Tải tệp đính kèm này' href='/Common/DownloadFile/" + file.TAILIEU_ID + "'>";
+                            tmp_file += file.TENTAILIEU;
+                            tmp_file += "</a>";
+                        }
+                        tmp_file += "</span>";
+                    }
+                    return new MvcHtmlString("<p style='font-weight:bold'>" + item.TIEUDE + "</p>" + item.NOIDUNG + tmp_file);
+                }, header: "Nội dung", style: "col-left"),
+                grid.Column(format: (item) =>
+                {
+                    return new MvcHtmlString("<a href='" + Url.Action("AddComment", new { id = Model.CongViec.ID, replyto = item.ID }) + "' class='btnReply' title = 'Trả lời nội dung này'></a>");
+                }, header: "Trả lời", style: "traloi")
+                ))
+                @if (Model.ListNoiDungTraoDoi.Count == 0)
+                {
+                    <div id="Empty" class="color-red">
+                        Chưa có nội dung trao đổi
+                    </div>
+                }
+            </div>
+        </div><!--NỘI DUNG TRAO ĐỔi CÔNG VIỆC-->
+    </div>
+</div>
+
+<div id="modal--progress-dialog" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Diễn biến tiến độ công việc</h4>
+            </div>
+            <div class="modal-body">
+                @if (Model.ListTienDoCongViec != null && Model.ListTienDoCongViec.Count > 0)
+                {
+                    <section class="cd-horizontal-timeline">
+                        <div class="timeline">
+                            <div class="events-wrapper">
+                                <div class="events">
+                                    <ol>
+                                        @{var stt = 0;}
+                                        @foreach (var item in Model.ListTienDoCongViec)
+                                        {
+                                            stt++;
+                                            if (stt == 1)
+                                            {
+                                                <li>
+                                                    <a href="#0" data-date="@(string.Format("{0:dd/MM/yyyy}", item.NGAYCAPNHATTIENDO))" class="selected">
+                                                        @item.TIENDOCONGVIEC%
+                                                    </a>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li>
+                                                    <a href="#0" data-date="@(string.Format("{0:dd/MM/yyyy}", item.NGAYCAPNHATTIENDO))">
+                                                        @item.TIENDOCONGVIEC%
+                                                    </a>
+                                                </li>
+                                            }
+                                        }
+                                    </ol>
+                                    <span class="filling-line" aria-hidden="true"></span>
+                                </div> <!-- .events -->
+                            </div> <!-- .events-wrapper -->
+
+                            <ul class="cd-timeline-navigation">
+                                <li><a href="#0" class="prev inactive">Prev</a></li>
+                                <li><a href="#0" class="next">Next</a></li>
+                            </ul> <!-- .cd-timeline-navigation -->
+                        </div> <!-- .timeline -->
+                        <div class="events-content">
+                            <ol>
+                                @{stt = 0;}
+                                @foreach (var item in Model.ListTienDoCongViec)
+                                {
+                                    stt++;
+                                    <li data-date="@(string.Format("{0:dd/MM/yyyy}", item.NGAYCAPNHATTIENDO))" class="@(stt == 1 ? "selected" : "")">
+                                        <h5>
+                                            Ngày cập nhật: @(string.Format("{0:dd/MM/yyyy}", item.NGAYCAPNHATTIENDO))
+                                        </h5>
+                                        <h4>
+                                            Người cập nhật: @item.NGUOITAO
+                                        </h4>
+                                    </li>
+                                }
+                            </ol>
+                        </div>
+                    </section>
+                }
+                else
+                {
+                    <h3>Chưa có thông tin về tiến độ công việc</h3>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-approve" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Phê duyệt yêu cầu xin lùi hạn xử lý</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="@Url.Action("PheDuyetLuiHanCongViec")" id="frmPheDuyetLuiHanCongViec">
+                    <input type="hidden" id="LUIHAN_ID" name="LUIHAN_ID" />
+                    <input type="hidden" id="CONGVIEC_ID" name="CONGVIEC_ID" value="@task.ID" />
+                    <table class="edit-table">
+                        <tr>
+                            <td>
+                                <label class="lbl">
+                                    Quyết định <span class="red">*</span> :
+                                </label>
+                            </td>
+                            <td>
+                                <input checked="checked" class="css-checkbox" id="IS_APPROVED_1" name="IS_APPROVED" type="radio" value="1">
+                                <label style="width:auto;" for="IS_APPROVED_1" class="css-label">
+                                    Đồng ý
+                                </label>
+
+                                <input class="css-checkbox" id="IS_APPROVED_0" name="IS_APPROVED" type="radio" value="0">
+                                <label style="width:auto;" for="IS_APPROVED_0" class="css-label">
+                                    Không đồng ý
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="lbl" for="BUTPHELANHDAO">
+                                    Bút phê:
+                                </label>
+                            </td>
+                            <td>
+                                <textarea id="BUTPHELANHDAO" name="BUTPHELANHDAO" placeholder="" class="e-input" maxlength="1500"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="submitLuiHanPheDuyet()">Gửi</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.HAS_ROLE_DELETE_CONGVIEC)
+{
+    <div id="modal--delete-task" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4>XÁC NHẬN XÓA CÔNG VIỆC</h4>
+                </div>
+                <div class="modal-body">
+                    <textarea placeholder="Lý do" id="TXT_DELETE_REASON" autofocus="autofocus"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="DeleteCongViec(@task.ID)">Xác nhận</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script src="~/Content/Custom/lobibox-master/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/Content/Custom/countdown/assets/countdown/jquery.countdown.js"></script>
+<script src="~/Content/Custom/horizontal-timeline/js/main.js"></script>
+<script type="text/javascript">
+    $('a.linktip').mouseover(function () {
+        $(this).next().show();
+    }).mouseout(function () {
+        $(this).next().hide();
+    });
+    $(document).ready(function () {
+        $(".datepicker").datepicker({ dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true, yearRange: "0:+10" });
+        $("#NGAYCAPNHATTIENDO").datepicker("option", "minDate", "@minDate");
+
+        $("#btnClosepheDuyetDialog").click(function() {
+            $("#LUIHAN_ID").val("");
+            $("#pheDuyetDialog").dialog("close");
+        });
+
+        $("#btnThayDoiTrangThai").click(function() {
+            $("#ThayDoiTrangThai" ).toggle( "slow");
+        });
+
+        $("#btnCloseTrangThai").click(function() {
+            $("#ThayDoiTrangThai").toggle( "slow");
+        });
+
+
+        $( "#btnViewAllTienDo").click(function() {
+            $("#modal--progress-dialog").modal('show');
+        });
+
+        $("#btnThemTienDo").click(function() {
+            $("#AddTienDo").toggle( "slow");
+            $('#ErrorSaveTienDo').hide();
+        });
+
+        $("#btnCloseTienDo").click(function() {
+            $("#AddTienDo").toggle( "slow");
+        });
+
+        $("#btnSaveTrangThai").click(function(){
+            var trangthai = $("#dropdown--trangthai-congviec").val();
+            var congviec_id ='@task.ID';
+            $.ajax({
+                url: '@Url.Action("CapNhatTrangThai")',
+                type: 'POST',
+                cache: false,
+                data: { id:congviec_id,trangthai:trangthai},
+                success: function (result) {
+                    if(result.success === true){
+                        notif({
+                            type: 'success',
+                            position: 'bottom',
+                            msg: 'Cập nhật trạng thái thành công!',
+                        });
+                        setTimeout(function(){
+                            location.reload();
+                        },1500);
+                    }
+                },
+                error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        });
+
+        $("#btnSaveNgayBatDauXuLy").click(function(){
+            var ngaythuchien = $("#NGAYBATDAUXULY").val();
+            var congviec_id='@Model.CongViec.ID';
+            $.ajax({
+                url: '@Url.Action("CapNhatNgayBatDau", "CongViec")',
+                type: 'post',
+                cache: false,
+                data: {
+                    congviec_id:congviec_id,
+                    ngaythuchien:ngaythuchien
+                },
+                success: function (data) {
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: 'Cập nhật ngày bắt đầu xử lý thành công!',
+                    });
+                    setTimeout(function(){
+                        location.reload();
+                    },1000);
+                },
+                error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        });
+
+        $("#btnSaveTienDo").click(function(){
+            var ngaythuchien = $("#NGAYCAPNHATTIENDO").val();
+            var tiendo = $("#TIENDOCONGVIEC").val();
+            if (ngaythuchien.trim().length > 0) {
+                if (checkDateTime(ngaythuchien) == false) {
+                    $("#ErrorSaveTienDo").html("Định dạng ngày tháng (ngày/tháng/năm)");
+                    $("#ErrorSaveTienDo").show();
+                    $("#NGAYCAPNHATTIENDO").focus();
+                    return false;
+                }
+                else {
+                    $("#ErrorSaveTienDo").hide();
+                }
+            }
+            else {
+                $("#ErrorSaveTienDo").html("Bạn hãy nhập ngày");
+                $("#ErrorSaveTienDo").show();
+                $("#NGAYCAPNHATTIENDO").focus();
+                return false;
+            }
+            if(tiendo.length <=0)
+            {
+                $("#ErrorSaveTienDo").html("Bạn phải nhập tiến độ");
+                $("#ErrorSaveTienDo").show();
+                $("#TIENDOCONGVIEC").focus();
+                return false;
+            }
+            else{
+                if ($.isNumeric(tiendo) == false) {
+                    $("#ErrorSaveTienDo").html("Bạn phải nhập dạng số");
+                    $("#ErrorSaveTienDo").show();
+                    $("#TIENDOCONGVIEC").focus();
+                    return false;
+                }
+                else{
+                    if (parseFloat(tiendo) > 100) {
+                        $("#ErrorSaveTienDo").html("Giá trị tối đa là 100");
+                        $("#ErrorSaveTienDo").show();
+                        $("#TIENDOCONGVIEC").focus();
+                        return false;
+                    }
+                    else{
+                        if(parseFloat(tiendo) <= parseFloat('@Model.CURRENT_PROGRESS')){
+                            $("#ErrorSaveTienDo").html("Giá trị phải lớn hơn "+@Model.CURRENT_PROGRESS);
+                            $("#ErrorSaveTienDo").show();
+                            $("#TIENDOCONGVIEC").focus();
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            $.ajax({
+                url: '@Url.Action("CapNhatTienDo")',
+                type: 'post',
+                cache: false,
+                data: {
+                    id: '@task.ID',
+                    ngay_hoan_thanh: ngaythuchien,
+                    tiendo:tiendo
+                },
+                success: function (result) {
+                    if(result.success === true){
+                        notif({
+                            type: 'success',
+                            position: 'bottom',
+                            msg: 'Cập nhật tiến độ thành công!',
+                        });
+                        setTimeout(function(){
+                            location.reload();
+                        },1500);
+                    }
+                },
+                error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('#dropdown--trangthai-congviec').multipleSelect({
+            single:true
+        });
+    });
+    $(function () {
+        var year=@Model.CongViec.HANKETTHUC.Value.Year;
+        var month=@Model.CongViec.HANKETTHUC.Value.Month;
+        var day = @Model.CongViec.HANKETTHUC.Value.Day;
+        var note = $('#note'),newYear = true,
+        ts = new Date(year, parseInt(month - 1) , day, 00, 00, 00, 00);
+        if ((new Date()) > ts) {
+            note.html("Quá hạn xử lý " + @songayquahan +" ngày");
+            note.css("color", "red");
+        }
+        else{
+            $('#countdown').countdown({
+                timestamp: ts,
+                callback: function (days, hours, minutes, seconds) {
+                    var message = "Còn lại: ";
+                    message += days + " ngày, ";
+                    message += hours + " giờ, ";
+                    message += minutes + " phút và ";
+                    message += seconds + " giây <br />";
+                    note.html(message);
+                }
+            });
+        }
+    });
+    function BoSungThanhVien()
+    {
+        alert("Bổ sung thành viên");
+    }
+
+    function openDeleteTaskModal(id){
+        if($('#modal--delete-task').length > 0){
+            $('#modal--delete-task').modal('show');
+        }
+    }
+    function DeleteCongViec(id){
+        var lydo = $('#TXT_DELETE_REASON').val().trim();
+        $.ajax({
+            url:'@Url.Action("Delete")',
+            type:'POST',
+            dataType:'json',
+            contentType:'application/json;charset=utf-8',
+            data : JSON.stringify({id:id, lydo:lydo}),
+            success : function(result){
+                if(result.success === true){
+                    notif({
+                        msg : 'Xóa công việc thành công !',
+                        type:'success',
+                        position:'bottom'
+                    });
+                    location.href='@Url.Action("Index")';
+                }else{
+                    notif({
+                        msg : 'Xóa công việc không thành công !',
+                        type:'error',
+                        position:'bottom'
+                    });
+                }
+            },error : function(xhr){
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    function submitLuiHanPheDuyet(){
+        $("#frmPheDuyetLuiHanCongViec").submit();
+    }
+</script>

@@ -1,0 +1,41 @@
+﻿@using Model.eAita;
+@using Web.FwCore;
+@{
+    List<TM_LOAITAILIEU_THUOCTINH> lstThuocTinh = (List<TM_LOAITAILIEU_THUOCTINH>)SessionManager.GetValue("ListThuocTinh");
+}
+@if (lstThuocTinh.Count > 0)
+{
+    int count = 0;
+    string SL_THUOCTINH = "";
+    foreach (var item in lstThuocTinh)
+    {
+        count++;
+        SL_THUOCTINH += count + ",";
+        <tr class="fixed-position">
+            <td style="width:155px" valign="middle">
+                @item.TEN_THUOCTINH
+            </td>
+            <td>
+                <input type="hidden" name="THUOCTINHID_@count" value="@item.ID" />
+                <input type="hidden" name="ID_@count" value="0" />
+                <input class="e-input form-control" style="width:233px" name="THUOCTINH_@count" id="THUOCTINH_@count" />
+                @*<span style="color:red;display:none;text-align:left" id="THUOCTINHNULL_@count">Bạn vui lòng nhập @item.TEN_THUOCTINH</span>*@
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                &nbsp;
+            </td>
+        </tr>
+    }
+    <input type="hidden" name="SL_THUOCTINH" value="@SL_THUOCTINH" />
+}
+else
+{
+    <tr>
+        <td colspan="2">
+            <span style="color:red;">Chưa có thuộc tính nào được tạo</span>
+        </td>
+    </tr>
+}
+

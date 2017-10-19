@@ -1,0 +1,299 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Web.Areas.DMDonViArea.Models.DonViViewModel
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #EDIT_ID {
+        display: none;
+    }
+</style>
+@using (Ajax.BeginForm("SaveDonVi", "DMDonVi", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmDonViEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Cập nhật đơn vị <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body" id="modal_body" style="height:250px; overflow-x:hidden; overflow-y:hidden">
+        @if (Model.DonVi != null)
+        {
+            <div style="width:100%; margin:auto;">
+                <div style="overflow-x: hidden;">
+                    <table>
+                        <tr style="height: 20px;"></tr>
+                        <tr>
+                            <td style="width:120px">
+                                <label class="lbl" style=" width: 130px;">Mã đơn vị:<span style="color: red;">*</span></label>
+                            </td>
+                            <td colspan="3">
+                                @Html.TextBox("MA_DONVI", Model.DonVi.MA_DONVI, new { @style = "width: 233px;", maxlength = "250", @class = "e-input", @id = "MA_DONVI" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 20px;"></td>
+                            <td>
+                                <span class="lb-Check" id="MA_DONVI_HTML" style="margin-left: 0px; color: red;">Mã đơn vị không được chứa thẻ HTML.</span>
+                                <span class="lb-Check" id="MA_DONVI_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập mã đơn vị </span>
+                                <span class="lb-Check" id="MA_DONVI_ERROR" style="margin-left: 0px; color: red;">Mã đơn vị đã tồn tại</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:100px">
+                                <label class="lbl" style=" width: 130px;">Tên đơn vị:<span style="color: red;">*</span></label>
+                            </td>
+                            <td colspan="3">
+                                @Html.TextBox("TEN_DONVI", Model.DonVi.TEN_DONVI, new { @style = "width: 233px;", maxlength = "250", @class = "e-input", @id = "EDIT_DONVI" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 20px;"></td>
+                            <td>
+                                <span class="lb-Check" id="EDIT_DONVI_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập tên đơn vị </span>
+                                <span class="lb-Check" id="EDIT_DONVI_ERROR" style="margin-left: 0px; color: red;">Tên đơn vị đã tồn tại</span>
+                                <span class="lb-Check" id="EDIT_DONVI_HTML" style="margin-left: 0px; color: red;">Tên đơn vị không được chứa thẻ HTML.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="lbl" style=" width: 130px;">Cấp cơ sở:<span style="color: red;">*</span></label>
+                            </td>
+                            <td>
+                                <div class="input-field4 clearfix width_233">
+                                    @Html.DropDownList("CAPCOSO_ID", Model.ListCapCoSo, "[--- Tất cả ---]", new { @class = "width_100", @id = "EDIT_CAPCOSO_ID" })
+                                </div>
+                            </td>
+                        </tr>
+                        <tr style="height:20px">
+                            <td></td>
+                            <td>
+                                <span class="lb-Check" id="EDIT_CAPCOSO_NULL" style="margin-left: 0px; color: red;">Bạn chọn cấp cơ sở </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="lbl" style=" width: 130px;">Cơ sở:<span style="color: red;">*</span></label>
+                            </td>
+                            <td>
+                                <div class="input-field4 clearfix width_233">
+                                    @Html.DropDownList("COSO_ID", Model.ListCoSo, "[--- Tất cả ---]", new { @class = "width_100", @id = "EDIT_COSO_ID" })
+                                </div>
+                            </td>
+
+                        </tr>
+                        <tr style="height:20px">
+                            <td></td>
+                            <td>
+                                <span class="lb-Check" id="EDIT_COSO_NULL" style="margin-left: 0px; color: red;">Bạn chọn cơ sở </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="lbl" style=" width: 130px;">Trạng Thái:<span style="color: red;">*</span></label>
+                            </td>
+                            <td>
+                                <div class="input-field4 clearfix width_233">
+                                    @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text = "Hiệu lực", Value = "true",Selected=(Model.DonVi.TRANGTHAI==true) },
+                        new SelectListItem{ Text = "Không hiệu lực", Value = "false",Selected=(Model.DonVi.TRANGTHAI==false) }
+                    })
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <input type="hidden" id="ID_HIDDEN" name="ID" value="@Model.DonVi.ID" />
+        }
+        else
+        {
+            <div>
+                <span>Không tìm thấy đơn vị cần cập nhật</span>
+            </div>
+        }
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btnSave" style="border-radius: 3px;">
+            Lưu
+        </button>
+        <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+    </div>
+}
+<script type="text/javascript">
+    var tontai = false;
+    var donvi = $("#EDIT_DONVI").val();
+    function OnClose() {
+        $("#PrepareDonVi").dialog("close");
+    }
+    $("#EDIT_CAPCOSO_ID").change(function () {
+        if ($(this).val() != "") {
+            $.ajax({
+                type: "GET",
+                cache: false,
+                data: { CapCoSoID: $(this).val() },
+                url: '@Url.Action("GetCoSo", "DMDonVi")',
+                success: function (data) {
+                    $("#EDIT_COSO_ID").html(data);
+                }
+            });
+        }
+    });
+    $("#EDIT_DONVI").blur(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#EDIT_DONVI_NULL").show();
+        } else {
+            $("#EDIT_DONVI_NULL").hide();
+        }
+    });
+    $("#EDIT_CAPCOSO_ID").blur(function () {
+        if ($("#EDIT_CAPCOSO_ID").val() == "" || $("#EDIT_CAPCOSO_ID").val() == null) {
+            $("#EDIT_CAPCOSO_NULL").show();
+
+        } else {
+            $("#EDIT_CAPCOSO_NULL").hide();
+        }
+    });
+    $("#EDIT_COSO_ID").blur(function () {
+        if ($("#EDIT_COSO_ID").val() == "" || $("#EDIT_COSO_ID").val() == null) {
+            $("#EDIT_COSO_NULL").show();
+
+        } else {
+            $("#EDIT_COSO_NULL").hide();
+        }
+    });
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function updateSuccess() {
+
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: "Cập nhật đơn vị thành công!",
+        });
+
+        OnCloseLog();
+        reloadGrid();
+    }
+    function OnCloseLog() {
+        $("#create_user").html("");
+        $("#nhan_su_dialog").modal("hide");
+    }
+    $(function () {
+        var DonVi = $("#EDIT_DONVI").val().trim();
+        $("#btnSave").click(function () {
+            if ($("#MA_DONVI").val().trim() == "" || $("#MA_DONVI").val() == null) {
+                $("#MA_DONVI").select();
+                $("#MA_DONVI_NULL").show();
+                return false;
+            } else {
+                $("#MA_DONVI_NULL").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#MA_DONVI").val())) {
+                $("#MA_DONVI").select();
+                $("#MA_DONVI_HTML").show();
+                return false;
+            } else {
+                $("#MA_DONVI_HTML").hide();
+            }
+            if (KiemTraMa($("#MA_DONVI").val(), $("#ID_HIDDEN").val())) {
+                $("#MA_DONVI_ERROR").show();
+                $("#MA_DONVI").focus();
+                return false;
+            } else {
+                $("#MA_DONVI_ERROR").hide();
+            }
+            if ($("#EDIT_DONVI").val().trim() == null || $("#EDIT_DONVI").val().trim() == "") {
+                $("#EDIT_DONVI_NULL").show();
+                $("#EDIT_DONVI").focus();
+                return false;
+            } else {
+                $("#EDIT_DONVI_NULL").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#EDIT_DONVI").val())) {
+                $("#EDIT_DONVI").select();
+                $("#EDIT_DONVI_HTML").show();
+                return false;
+            } else {
+                $("#EDIT_DONVI_HTML").hide();
+            }
+            if ($("#EDIT_CAPCOSO_ID").val() == "" || $("#EDIT_CAPCOSO_ID").val() == null) {
+                $("#EDIT_CAPCOSO_ID").focus();
+                $("#EDIT_CAPCOSO_NULL").show();
+                return false;
+            }
+            if ($("#EDIT_COSO_ID").val() == "" || $("#EDIT_COSO_ID").val() == null) {
+                $("#EDIT_COSO_ID").focus();
+                $("#EDIT_COSO_NULL").show();
+                return false;
+            }
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("validateDonVi", "DMDonVi")',
+                data: {
+                    tendonvi: $("#EDIT_DONVI").val(),
+                    COSO_ID: $("#EDIT_COSO_ID").val(),
+                    CAPCOSO: $("#EDIT_CAPCOSO_ID").val()
+                },
+                cache: false,
+                success: function (data) {
+                    if (data == "existed") {
+                        if (DonVi != $("#EDIT_DONVI").val().trim()) {
+                            $("#EDIT_DONVI").select();
+                            $("#EDIT_DONVI_ERROR").show();
+                            return false;
+                        } else {
+                            $("#EDIT_DONVI_ERROR").hide();
+                            $("#frmDonViEdit").submit();
+                        }
+                    } else {
+                        $("#EDIT_DONVI_ERROR").hide();
+                        $("#frmDonViEdit").submit();
+                    }
+                }, error: function () {
+                    return false;
+                }
+            });
+            return false;
+
+        });
+    });
+    function KiemTraMa(MADONVI, ID) {
+        var exist = false;
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ValidateMaDonVi", "DMDonVi")',
+            data: {
+                MADONVI: MADONVI,
+                ID: ID
+            },
+            cache: false,
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.length > 0) {
+                    exist = true;
+                } else {
+                    exist = false;
+                }
+            }, error: function (xrt) {
+                alert(xrt.responseText);
+            }
+        });
+        return exist;
+    }
+</script>

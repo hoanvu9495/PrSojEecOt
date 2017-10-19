@@ -1,0 +1,217 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.eAita
+@model HSCV_VANBANDEN
+
+@using (Ajax.BeginForm("SaveLoaiVanBan", "QLLoaiVanBanArea", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmLoaiVanBanCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table>
+            <tr class="height_20"></tr>
+            <tr>
+                <td class="hn_label">
+                    <label class="lbl6">Cơ quan ban hành:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("COQUANBANHANH_ID", "", new { @class = "e-input width_222", @id = "EDIT_COQUANBANHANH_ID", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="COQUANBANHANH_ID" style="color: red"></span>
+                </td>
+            </tr>
+
+            <tr class="height_20"></tr>
+            <tr>
+                <td class="hn_label">
+                    <label class="lbl6">Số/Ký hiệu:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("SOKYHIEU", "", new { @class = "e-input width_222", @id = "EDIT_SOKYHIEU", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="SOKYHIEU" style="color: red"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="hn_label">
+                    <label class="lbl6">Trích yếu:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("TRICHYEU", "", new { @class = "e-input width_222", @id = "EDIT_TRICHYEU", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="TRICHYEU" style="color: red"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="hn_label">
+                    <label class="lbl6">Ngày đến:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("NGAYDEN", "", new { @class = "e-input width_222", @id = "EDIT_NGAYDEN", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="NGAYDEN" style="color: red"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="hn_label">
+                    <label class="lbl6">Ngày văn bản:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("NGAYVANBAN", "", new { @class = "e-input width_222", @id = "EDIT_NGAYVANBAN", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="NGAYVANBAN" style="color: red"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl6">Hình thức văn bản:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("LOAIVANBAN_ID", "", new { @class = "e-input width_222", @id = "EDIT_LOAIVANBAN_ID", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="LOAIVANBAN_ID" style="color: red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label class="lbl6">Hình thức văn bản:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("LOAIVANBAN_ID", "", new { @class = "e-input width_222", @id = "EDIT_LOAIVANBAN_ID", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="LOAIVANBAN_ID" style="color: red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label class="lbl6">Hình thức văn bản:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("LOAIVANBAN_ID", "", new { @class = "e-input width_222", @id = "EDIT_LOAIVANBAN_ID", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="LOAIVANBAN_ID" style="color: red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label class="lbl6">Sổ văn bản:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("SOVANBANDEN_ID", "", new { @class = "e-input width_222", @id = "EDIT_SOVANBANDEN_ID", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="SOVANBANDEN_ID" style="color: red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label class="lbl6">Số văn bản đến:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("SODEN", "", new { @class = "e-input width_222", @id = "EDIT_SODEN", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="SODEN" style="color: red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label class="lbl6">Độ khẩn:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("DOKHAN_ID", "", new { @class = "e-input width_222", @id = "EDIT_DOKHAN_ID", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="DOKHAN_ID" style="color: red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label class="lbl6">Số trang:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("SOTRANG", "", new { @class = "e-input width_222", @id = "EDIT_SOTRANG", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="SOTRANG" style="color: red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label class="lbl6">Đơn vị nhận hồ sơ:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("DONVINHANHOSO_ID", "", new { @class = "e-input width_222", @id = "EDIT_DONVINHANHOSO_ID", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span id="DONVINHANHOSO_ID" style="color: red"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="margin-top-10 center">
+        <input type="submit" value="Lưu" id="btnSave" class="btnSearch" />
+        <input type="button" value="Đóng" onclick="OnClose()" class="btnSearch" />
+    </div>
+}

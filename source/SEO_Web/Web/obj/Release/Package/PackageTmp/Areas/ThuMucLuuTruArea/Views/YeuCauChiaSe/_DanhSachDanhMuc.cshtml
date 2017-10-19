@@ -1,0 +1,72 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using Model.eAita;
+@{
+    List<TM_DANHMUC_THONGTIN> lstChiase = new List<TM_DANHMUC_THONGTIN>();
+    lstChiase = (List<TM_DANHMUC_THONGTIN>)SessionManager.GetValue("ListThongTin");
+    var ListChiTiet = (List<TM_YEUCAU_CHIASE_CHITIET>)SessionManager.GetValue("ListChiTiet");
+    if (lstChiase == null)
+    {
+        lstChiase = new List<TM_DANHMUC_THONGTIN>();
+    }
+    if (lstChiase.Count > 0)
+    {
+        <table class="webGrid tblFixed">
+            <thead>
+                <tr class="head">
+                    <th>
+                        Tên danh mục, tài liệu
+                    </th>
+                    <th>
+                        Ghi chú
+                    </th>
+                    <th>Xóa</th>
+                </tr>
+            </thead>
+            <tbody id="SelectedItem">
+                @foreach (var item in lstChiase)
+                {
+                    var CHITIET = new List<TM_YEUCAU_CHIASE_CHITIET>();
+                    if(ListChiTiet != null){
+                        CHITIET = ListChiTiet.Where(x => x.DANHMUC_ID == item.ID).ToList();
+                    }
+                    <tr id="DANHMUC_@item.ID">
+                        <td>@item.TENTHONGTIN</td>
+                        <td>
+                            @if (CHITIET.Count > 0)
+                            {
+                            <input type="text" value="@CHITIET[0].GHICHU" name="GHICHU_@item.ID" class="e-input" style="width:150px" placeholder="Nhập ghi chú" />
+                            }
+                            else
+                            {
+                            <input type="text" value="" name="GHICHU_@item.ID" class="e-input" style="width:150px" placeholder="Nhập ghi chú" />
+                            }
+                            
+                        </td>
+                        <td>
+                            @if (ListChiTiet != null)
+                            {
+
+                                if (CHITIET.Count > 0)
+                                {
+                                    <a title="Xóa danh mục, tài liệu" href="javascript:XoaDanhMucDaLuu('@CHITIET[0].ID')"><img src="~/Content/Images/Delete.png" /></a>
+                                }
+                                else
+                                {
+                                    <a title="Xóa danh mục, tài liệu" href="javascript:XoaDanhMuc('@item.ID')"><img src="~/Content/Images/Delete.png" /></a>
+                                }
+                            }
+                            else
+                            {
+                                <a title="Xóa danh mục, tài liệu" href="javascript:XoaDanhMuc('@item.ID')"><img src="~/Content/Images/Delete.png" /></a>
+                            }
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

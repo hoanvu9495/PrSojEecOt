@@ -1,0 +1,527 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common;
+@using Web.Models;
+@using Web.Areas.VanBanDenArea.Models
+@model VanBanDenDetailModel
+<style type="text/css">
+    .lbl-title {
+        font-weight: bold;
+    }
+
+    th {
+        text-align: center;
+    }
+</style>
+
+<div id="block--info-vanbanden" class="clearfix hot-news-list-2">
+    <div class="jarviswidget" id="wid-id-0">
+        <header role="heading">
+            <span class="widget-icon"> <i class="fa fa-file-image-o txt-color-darken"></i> </span>
+            <h2 class="hidden-xs hidden-sm">Thông tin văn bản đến</h2>
+            <ul class="nav nav-tabs pull-right in" id="myTab">
+                <li class="active">
+                    <a data-toggle="tab" href="#mainTab" aria-expanded="true">
+                        <i class="fa fa-crop text-success"></i>
+                        <span class="hidden-mobile hidden-tablet">Thông tin chính</span>
+                    </a>
+                </li>
+                @if (Model.ListVanBanLienQuan != null && Model.ListVanBanLienQuan.Count > 0)
+                {
+                    <li class="">
+                        <a data-toggle="tab" href="#relatedTab" aria-expanded="false">
+                            <i class="fa fa-crop text-primary"></i>
+                            <span class="hidden-mobile hidden-tablet">Văn bản liên quan</span>
+                        </a>
+                    </li>
+                }
+                <li class="">
+                    <a data-toggle="tab" href="#historyTab" aria-expanded="false">
+                        <i class="fa fa-crop text-warning"></i>
+                        <span class="hidden-mobile hidden-tablet">Lịch sử xử lý</span>
+                    </a>
+                </li>
+            </ul>
+            <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span>
+        </header>
+
+        <div role="content">
+            <div class="widget-body">
+                <div class="tab-content custom-scroll">
+                    <div class="tab-pane clearfix fade active in" id="mainTab">
+                        <table id="tbl_view_vanbanden" class="table table-bordered">
+                            <tr>
+                                <td class="td-label">
+                                    <label class="lbl-title">Cơ quan ban hành</label>
+                                </td>
+                                <td colspan="3">
+                                    <label>
+                                        @Model.vbDen.COQUANBANHANHTEXT
+                                    </label>
+                                </td>
+                            </tr><!--CƠ QUAN BAN HÀNH-->
+                            <tr>
+                                <td class="td-label">
+                                    <label class="lbl-title">Số/Ký hiệu</label>
+                                </td>
+                                <td>
+                                    <label>@Model.vbDen.SOKYHIEU</label>
+                                </td>
+                                <td class="td-label">
+                                    <label class="lbl-title">Hình thức văn bản</label>
+                                </td>
+                                <td>
+                                    <label>@Model.vbDen.HSCV_LOAIVANBAN.TENLOAIVANBAN</label>
+                                </td>
+                            </tr><!--SỐ KÝ HIỆU-->
+                            <tr>
+                                <td class="td-label">
+                                    <label class="lbl-title">Trích yếu</label>
+                                </td>
+                                <td colspan="3">
+                                    @Model.vbDen.TRICHYEU
+                                </td>
+                            </tr><!--TRÍCH YẾU-->
+                            <tr>
+                                <td class="td-label">
+                                    <label class="lbl-title">Nội dung</label>
+                                </td>
+                                <td colspan="3">
+                                    @Model.vbDen.NOIDUNGVANBAN
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-label">
+                                    <label class="lbl-title">Ngày ban hành</label>
+                                </td>
+                                <td>
+                                    @string.Format("{0:dd-MM-yyyy}", Model.vbDen.NGAYVANBAN)
+                                </td>
+                                <td class="td-label">
+                                    <label class="lbl-title">Thời hạn xử lý</label>
+                                </td>
+                                <td>
+                                    @string.Format("{0:dd-MM-yyyy}", Model.vbDen.THOIHAN_XULY)
+                                </td>
+                            </tr><!--NGÀY ĐẾN + NGÀY VĂN BẢN-->
+                            <tr>
+                                <td class="td-label">
+                                    <label class="lbl-title">Sổ văn bản đến</label>
+                                </td>
+                                <td>
+                                    @(Model.vbDen.HSCV_SOVANBAN != null ? Model.vbDen.HSCV_SOVANBAN.TENSO : "")
+                                </td>
+                                <td class="td-label">
+                                    <label class="lbl-title">Số đến</label>
+                                </td>
+                                <td>
+                                    @Model.vbDen.SODEN
+                                </td>
+                            </tr><!--SỐ VĂN BẢN ĐẾN + SỐ ĐẾN-->
+                            <tr>
+                                <td class="td-label">
+                                    <label class="lbl-title">Độ khẩn</label>
+                                </td>
+                                <td>
+                                    @Model.vbDen.HSCV_DOKHAN.DOKHAN
+                                </td>
+                                <td class="td-label">
+                                    <label class="lbl-title">Số trang</label>
+                                </td>
+                                <td>
+                                    @Model.vbDen.SOTRANG
+                                </td>
+                            </tr><!--ĐỘ KHẨN + SỐ TRANG-->
+                            <tr>
+                                <td class="td-label">
+                                    <label class="lbl-title">Người ký</label>
+                                </td>
+                                <td>
+                                    @Model.vbDen.NGUOIKY
+                                </td>
+
+                                <td class="td-label">
+                                    <label class="lbl-title">Chức vụ người ký</label>
+                                </td>
+                                <td>
+                                    @Model.vbDen.CHUCVU_NGUOIKY
+                                </td>
+                            </tr><!--NGƯỜI KÝ-->
+                            @{
+                                if (Model.donvi != null)
+                                {
+                                    <tr>
+                                        <td class="td-label">
+                                            <label class="lbl-title">Đơn vị nhận hồ sơ</label>
+                                        </td>
+                                        <td colspan="3">
+                                            @Model.donvi.TEN_DONVI
+                                        </td>
+                                    </tr><!--ĐƠN VỊ NHẬN HỒ SƠ-->
+                                }
+                            }
+                            @{
+                                if (Model.vbDen.NGUOI_XU_LY_ID != null)
+                                {
+                                    <tr>
+                                        <td class="td-label">
+                                            <label class="lbl-title">Người xử lý chính</label>
+                                        </td>
+                                        <td colspan="3">
+                                            @Model.vbDen.DM_NGUOIDUNG2.HOTEN
+                                        </td>
+                                    </tr><!--NGƯỜI XỬ LÝ-->
+                                }
+                            }
+                            @*<tr>
+                                <td>
+                                    <label class="lbl-title">Nội dung văn bản</label>
+                                </td>
+                                <td colspan="3">
+                                    @Html.Raw(Model.vbDen.NOIDUNGVANBAN)
+                                </td>
+                            </tr>*@
+                            <!--NỘI DUNG VĂN BẢN-->
+                            <tr>
+                                <td class="td-label">
+                                    <label class="lbl-title">Trạng thái văn bản</label>
+                                </td>
+                                <td>
+                                    @Html.Raw(Model.vbDen.TENTRANGTHAI)
+                                </td>
+                                <td class="td-label">
+                                    <label class="lbl-title">Ngày đến</label>
+                                </td>
+                                <td>
+                                    @string.Format("{0:dd-MM-yyyy}", Model.vbDen.NGAYDEN)
+                                </td>
+                            </tr><!--NỘI DUNG VĂN BẢN-->
+                            <tr>
+                                <td class="td-label">
+                                    <label class="lbl-title">Tài liệu đính kèm</label>
+                                </td>
+                                <td colspan="3">
+                                    <div style="margin-left:10px;">
+                                        @{Html.RenderPartial("../Common/UploadFile", Model.ListTaiLieuDinhKem, new ViewDataDictionary { { "detail", 1 } });}
+                                    </div>
+                                </td>
+                               
+                            </tr>
+                        </table>
+                    </div>
+
+                    @if (Model.ListVanBanLienQuan != null && Model.ListVanBanLienQuan.Count > 0)
+                    {
+                        <div class="tab-pane clearfix fade" id="relatedTab">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <b>
+                                                Trích yếu
+                                            </b>
+                                        </th>
+                                        <th>
+                                            <b>
+                                                Số hiệu
+                                            </b>
+                                        </th>
+                                        <th>
+                                            <b>
+                                                Loại văn bản
+                                            </b>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                @foreach (var related in Model.ListVanBanLienQuan)
+                                {
+                                    <tr>
+                                        <td>
+                                            @if (related.LOAI_VAN_BAN == LOAITAILIEU.VANBANDI)
+                                            {
+                                                <a href="#HsVanBanDiArea/HsVanBanDi/Detail/@related.VAN_BAN_LIEN_QUAN_ID" class="float-left" target="_blank">
+                                                    @related.TRICHYEU
+                                                </a>
+                                            }
+                                            @if (related.LOAI_VAN_BAN == LOAITAILIEU.VANBANDEN)
+                                            {
+                                                <a href="#VanBanDenArea/VanBanDen/ViewDetail/@related.VAN_BAN_LIEN_QUAN_ID" })" class="float-left" target="_blank">
+                                                    @related.TRICHYEU
+                                                </a>
+                                            }
+                                        </td>
+                                        <td>
+                                            <span class="float-left">
+                                                @related.SOHIEU_VAN_BAN
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (related.LOAI_VAN_BAN == LOAITAILIEU.VANBANDEN)
+                                            {
+                                                <span class="float-left">Văn bản đến</span>
+                                            }
+                                            @if (related.LOAI_VAN_BAN == LOAITAILIEU.VANBANDI)
+                                            {
+                                                <span class="float-left">Văn bản đi</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    }
+                    <div class="tab-pane clearfix fade" id="historyTab">
+                        <table id="block--steps-history" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th colspan="9">
+                                        <h3 class="group-tittle mt10">
+                                            Lịch sử xử lý văn bản
+                                        </h3>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <b>STT</b>
+                                    </th>
+                                    <th>
+                                        <b>Trạng thái bắt đầu</b>
+                                    </th>
+                                    <th>
+                                        <b>Trạng thái kết thúc</b>
+                                    </th>
+                                    <th>
+                                        <b>Ghi chú</b>
+                                    </th>
+                                    <th>
+                                        <b>Người xử lý</b>
+                                    </th>
+                                    <th>
+                                        <b>Thời gian xử lý</b>
+                                    </th>
+                                    <th>
+                                        <b>Người nhận</b>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int countListWfHistory = Model.listWfHistory.Count;
+                                }
+                                @for (int i = 0; i < countListWfHistory; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <text>@(i + 1)</text>
+                                        </td>
+                                        <td>@Model.listWfHistory[i].TEN_TRANGTHAI_1</td>
+                                        <td>@Model.listWfHistory[i].TEN_TRANGTHAI_2</td>
+                                        <td>@Model.listWfHistory[i].GHICHU</td>
+                                        <td>@Model.listWfHistory[i].TEN_NGUOIXULY</td>
+                                        <td>@string.Format("{0:dd/MM/yyyy HH:mm:ss}", Model.listWfHistory[i].NGAYTAO)</td>
+                                        <td style="position:relative">
+                                            @{
+                                    string strNhanVienXuLyChinh = string.Join(", ", Model.listWfHistory[i].ListNhanVienXuLyChinh.Select(x => x.HOTEN).ToArray());
+                                    if (!string.IsNullOrEmpty(strNhanVienXuLyChinh))
+                                    {
+                                        <p>
+                                            <b>Xử lý chính :</b>
+                                            @strNhanVienXuLyChinh
+                                        </p>
+                                    }
+                                    if (Model.listWfHistory[i].ListNhanVienThamGiaXuLy != null && Model.listWfHistory[i].ListNhanVienThamGiaXuLy.Count > 0)
+                                    {
+                                        string strNhanVienThamGiaXuLy = string.Empty;
+                                        strNhanVienThamGiaXuLy = string.Join(", ", Model.listWfHistory[i].ListNhanVienThamGiaXuLy.Select(x => x.HOTEN).ToArray());
+                                        <div>
+                                            <b>Tham gia xử lý:</b>
+                                            @Html.Raw(strNhanVienThamGiaXuLy)
+                                        </div>
+                                    }
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="block block--wf-buttons">
+    <center>
+        @for (int i = 0; i < Model.listSteps.Count; i++)
+        {
+            <button class="btn btn-primary" onclick="showWfStepChangeView(@Model.vbDen.ID,@Model.listSteps[i].TRANGTHAI_1,@Model.listSteps[i].TRANGTHAI_2)">@Model.listSteps[i].TENBUOC</button>
+        }
+        @if (Model.canAnswer)
+        {
+            <a class="btn btn-primary" href="/#hsvanbandiarea/hsvanbandi/createvb?vanBanDenId=@Model.vbDen.ID">Khởi tạo văn bản đi mới</a>
+        }
+        <a class="btn btn-default" href="javascript:goBack()">Quay lại</a>
+    </center>
+</div>
+@Html.Partial("_GenerateBtn")
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+    if ('@TempData["CompleteWfStepChangeFailure"]' !== '') {
+        NotiError('@TempData["CompleteWfStepChangeFailure"]');
+    }
+    if ('@TempData["CompleteWfStepChangeSuccess"]' !== '') {
+        NotiSuccess('@TempData["CompleteWfStepChangeSuccess"]');
+    }
+    function showWfStepChangeView(id, startStatus, endStatus) {
+        $.ajax({
+            url: '/VanBanDenArea/VanBanDen/ShowWfStepChangeView',
+            type: 'post',
+            dataType: 'html',
+            data: {
+                id: id,
+                startStatus: startStatus,
+                endStatus: endStatus
+            },
+            success: function (result) {
+                if (result !== null) {
+                    $('#modal--wf-stepchange .modal-content').html(result);
+
+                    $('#modal--wf-stepchange').modal('show');
+                } else {
+                    alert('Có lỗi khi tải dữ liệu');
+                }
+            }
+        });
+    }
+
+    function showAdditionalUser(isMainProcess) {
+        var listRestrictedUsersIds = [];
+        $.each($('#modal--wf-stepchange .USER_PROCESS'), function (index, item) {
+            listRestrictedUsersIds.push(item.value);
+        });
+        $.ajax({
+            url: '@Url.Action("ShowAdditionalUser")',
+            type: 'post',
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify({
+                listRestrictedUsersIds: listRestrictedUsersIds,
+                isMainProcess: isMainProcess
+            }),
+            dataType: 'html',
+            success: function (result) {
+                $('#modal--wf-additional-recipient .modal-body').html(result);
+                $('#modal--wf-additional-recipient').modal('show');
+            }, error: function (err) {
+                CommonJS.showNotifyError('Tải dữ liệu người dùng không thành công');
+            }
+        });
+    }
+
+    function addNewRecipient() {
+        var htmlAdditionalProcessUsers = '';
+        var isMainProcess = $('#modal--wf-additional-recipient #IS_MAIN_PROCESS').val() == "1" ? true : false;
+        $('#block--add-recipients').find('input[type=checkbox]:checked').each(function (index, item) {
+            var userId = $(this).val();
+            var userName = $(this).next('i').next('.USER_ADD_PROCESS_NAME').text();
+            if (index == 0) {
+                htmlAdditionalProcessUsers += '<tr class="clearfix row-addtional">';
+                htmlAdditionalProcessUsers += '<td class="clearfix">';
+                htmlAdditionalProcessUsers += '<div class="col-sm-12 pull-right">';
+                htmlAdditionalProcessUsers += '<strong>' + (isMainProcess == true ? "NGƯỜI XỬ LÝ MỚI" : "NGƯỜI THAM GIA XỬ LÝ MỚI") + '</strong>';
+                htmlAdditionalProcessUsers += '<span class="text-danger pull-right glyphicon glyphicon-remove" title="Xóa người xử lý mới" style="cursor:pointer" onclick="removeAllRecipients(' + isMainProcess + ')"></span></div>';
+                htmlAdditionalProcessUsers += '</td>';
+                htmlAdditionalProcessUsers += '</tr>'
+            }
+            if (isMainProcess) {
+                htmlAdditionalProcessUsers += '<tr class="clearfix row-addtional">';
+                htmlAdditionalProcessUsers += '<td class="clearfix">';
+                htmlAdditionalProcessUsers += '<div class="col-sm-10 pull-right">';
+                htmlAdditionalProcessUsers += ' <label class="radio" for="USER_MAIN_PROCESS_' + userId + '">';
+                htmlAdditionalProcessUsers += '<input name="USER_MAIN_PROCESS" type="radio" value="' + userId + '" id="USER_MAIN_PROCESS_' + userId + '" class="USER_PROCESS">';
+                htmlAdditionalProcessUsers += '<i></i>' + userName;
+                htmlAdditionalProcessUsers += '<span class="text-danger pull-right glyphicon glyphicon-remove" title="Xóa người xử lý mới" style="cursor:pointer" onclick="removeRecipient(this,' + isMainProcess + ')"></span></label>';
+                htmlAdditionalProcessUsers += '</div>';
+                htmlAdditionalProcessUsers += ' </td>';
+                htmlAdditionalProcessUsers += '</tr>';
+            } else {
+                htmlAdditionalProcessUsers += '<tr class="clearfix row-addtional">';
+                htmlAdditionalProcessUsers += '<td class="clearfix">';
+                htmlAdditionalProcessUsers += '<div class="col-sm-10 pull-right">';
+                htmlAdditionalProcessUsers += '<label class="checkbox" for="USER_JOIN_PROCESS_' + userId + '">';
+                htmlAdditionalProcessUsers += '<input name="USER_JOIN_PROCESS" type="checkbox" value="' + userId + '" id="USER_JOIN_PROCESS_' + userId + '" class="USER_PROCESS">';
+                htmlAdditionalProcessUsers += '<i></i>' + userName;
+                htmlAdditionalProcessUsers += '<span class="text-danger pull-right glyphicon glyphicon-remove" title="Xóa người xử lý mới" style="cursor:pointer" onclick="removeRecipient(this,' + isMainProcess + ')"></span></label>';
+                htmlAdditionalProcessUsers += '</div>';
+                htmlAdditionalProcessUsers += '</td>';
+                htmlAdditionalProcessUsers += '</tr>';
+            }
+        });
+        if (htmlAdditionalProcessUsers !== '') {
+            if (isMainProcess) {
+                $('#table--select-main-process').find('tr.row-addtional').remove();
+                $('#table--select-main-process tbody tr:first').before(htmlAdditionalProcessUsers);
+            } else {
+                $('#table--select-join-process').find('tr.row-addtional').remove();
+                $('#table--select-join-process tbody tr:first').before(htmlAdditionalProcessUsers);
+            }
+        }
+        $('#modal--wf-additional-recipient').modal('hide');
+    }
+
+    function removeAllRecipients(isMainProcess) {
+        $.confirm({
+            'title': 'XÁC NHẬN XÓA',
+            'message': 'Bạn có chắc chắn muốn xóa những người xử lý này ?',
+            'buttons': {
+                'Có': {
+                    'class': 'btn-default',
+                    'action': function () {
+                        if (isMainProcess) {
+                            $('#table--select-main-process').find('tr.row-addtional').remove();
+                        } else {
+                            $('#table--select-join-process').find('tr.row-addtional').remove();
+                        }
+                    }
+                },
+                'Không': {
+                    'class': 'btn-info',
+                    'action': function () { }
+                }
+            }
+        });
+    }
+
+    function removeRecipient(e, isMainProcess) {
+        $.confirm({
+            'title': 'XÁC NHẬN XÓA',
+            'message': 'Bạn có chắc chắn muốn xóa người xử lý này ?',
+            'buttons': {
+                'Có': {
+                    'class': 'btn-default',
+                    'action': function () {
+                        $(e).parents('tr.row-addtional').remove();
+                        if (isMainProcess) {
+                            if ($('#table--select-main-process tr.row-addtional').length == 1) {
+                                $('#table--select-main-process').find('tr.row-addtional').remove();
+                            }
+                        } else {
+                            if ($('#table--select-join-process tr.row-addtional').length == 1) {
+                                $('#table--select-join-process').find('tr.row-addtional').remove();
+                            }
+                        }
+                    }
+                },
+                'Không': {
+                    'class': 'btn-info',
+                    'action': function () { }
+                }
+            }
+        });
+    }
+</script>

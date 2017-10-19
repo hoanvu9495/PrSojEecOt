@@ -1,0 +1,39 @@
+﻿@using Web.Models
+@model TuyChonGuiModel
+@{
+    string Role = "";
+    foreach (var item in Model.LISTROLE)
+    {
+        Role += item + ",";
+    }
+}
+<input type="hidden" value="@Role" id="LISTROLE" />
+<div id="CHONNGUOIDUNG">
+
+</div>
+<script>
+    $(function () {
+        $.ajax({
+            type: "POST",
+            url: '/Common/GetUserNameVB',
+            cache: false,
+            data: {
+                COSO_ID: '@Model.COSO_ID',
+                DONVI_ID: '@Model.DONVI_ID',
+                USER_ID: '@Model.USER_ID',
+                ListRole: $("#LISTROLE").val(),
+                Is_Multi: '@Model.IS_MULTI',
+                TIEUDE: '@Model.TIEUDE',
+                SELECTED: '@Model.SELECTED',
+                EXISTED: '@Model.EXISTED',
+                SPECIFY_ROLE: '@Model.DM_VAITRO_ID'
+            },
+            success: function (data) {
+                $("#CHONNGUOIDUNG").html(data);
+            },
+            error: function (err) {
+                alert(err.responseText);
+            }
+        });
+    });
+</script>

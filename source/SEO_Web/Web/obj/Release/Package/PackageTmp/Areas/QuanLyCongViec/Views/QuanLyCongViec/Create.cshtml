@@ -1,0 +1,158 @@
+﻿@using Web.Models
+@using Web.Areas.CongViecArea.Models
+@model CongViecViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<script src="~/Scripts/tiny_mce/tinymce.min.js"></script>
+<style>
+    .red{
+        color: red;
+    }
+</style>
+<link rel="stylesheet" href="/Content/select/css/bootstrap-select.css">
+<div id="widget-grid">
+    <div class="row">
+        <article class="col-sm-12 col-md-12">
+            <div class="jarviswidget jarviswidget-sortable" >
+                <header role="heading">                    
+                    <h2>Tạo mới công việc</h2>
+                </header>
+                <div role="content">
+                    <div class="widget-body">
+                        <form class="form-horizontal" action="QuanLyCongViec/QuanLyCongViec/InsertCongViec" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Tên công việc<span class="red">*</span>
+                                </label>
+                                <div class="col-md-10">
+                                    <input class="form-control required" placeholder="Tên công việc" type="text" name="TENCONGVIEC">
+                                    @*Dành cho công việc cá nhân*@
+                                    <input type="hidden" name="ISVIECCANHAN" value="1">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Ngày bắt đầu<span class="red">*</span>
+                                </label>
+                                <div class="col-md-4">
+                                    <input class="form-control datepicker1 required" placeholder="Ngày bắt đầu" type="text" name="NGAYBATDAU">
+                                </div>
+                                <label class="col-md-2 control-label">
+                                    Ngày kết thúc
+                                </label>
+                                <div class="col-md-4">
+                                    <input class="form-control datepicker1 required" placeholder="Ngày kết thúc" type="text" name="HANKETTHUC">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Độ ưu tiên
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("DOUUTIEN_ID", Model.ListDoUuTien, new { @class = "selectpicker" })
+                                </div>
+                                <label class="col-md-2 control-label">
+                                    Trạng thái
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("TRANGTHAI_ID", Model.ListTrangThai, new { @class = "selectpicker" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Nội dung công việc<span class="red">*</span>
+                                </label>
+                                <div class="col-md-10">
+                                    <input class="form-control required" type="text" id="NOIDUNGCONGVIEC" name="NOIDUNGCONGVIEC">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Tài liệu đính kèm
+                                </label>
+                                <div class="col-md-10">
+                                    @{Html.RenderPartial("../Common/UploadFile", new List<Model.eAita.TAILIEUDINHKEM>());}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Nhận thông báo
+                                </label>
+                                <div class="col-md-10">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="checkbox style-0" value="1" name="TYPE_NOTIFY">
+                                        <span>Qua email</span>
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="checkbox style-0" value="2" name="TYPE_NOTIFY">
+                                        <span>Tin nhắn</span>
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="checkbox style-0" value="3" name="TYPE_NOTIFY">
+                                        <span>Tin thông báo</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Nhắc việc trước
+                                </label>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <input class="form-control" id="append" type="text" name="SONGAYNHACTRUOCHAN">
+                                        <span class="input-group-addon">(ngày)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <legend></legend>
+                            <div class="form-group" style="text-align:center">
+                                <button type="submit" class="btn btn-success" onclick="saveForm()">Lưu</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>
+
+
+<script>
+    pageSetUp();
+
+    var pageFunction = function () {
+        $(".datepicker1").datepicker({
+            dateFormat: 'dd/mm/yy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-20:+20"
+        });
+        tinymce.init({
+            selector: '#NOIDUNGCONGVIEC',
+            language: 'vi_VN',            
+            height: 100,
+            plugins: [
+                    "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+            toolbar2: "cut copy paste pastetext | bullist numlist | outdent indent | undo redo | link unlink code | forecolor backcolor",
+            toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | insertdatetime preview | print fullscreen | ltr rtl | pagebreak restoredraft",
+            menubar: true,
+            convert_urls: false,
+            paste_data_images: true,
+            toolbar_items_size: 'small'
+        });
+     
+    }
+    loadScript("Content/select/js/bootstrap-select.js", pageFunction);
+
+    function saveForm() {
+
+    }
+</script>

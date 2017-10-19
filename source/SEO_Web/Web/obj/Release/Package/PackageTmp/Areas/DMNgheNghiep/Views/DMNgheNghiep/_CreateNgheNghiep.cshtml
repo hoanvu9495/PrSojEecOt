@@ -1,0 +1,93 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+</style>
+@using (Ajax.BeginForm("SaveNgheNghiep", "DMNgheNghiep", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmNgheNghiepCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table>
+            <tr style="height:20px"></tr>
+            
+            <tr>
+                <td>
+                    <label class="lbl" for="CREATE_NGHENGHIEP" style=" width: 150px;">Tên nghề nghiệp:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("NGHE_NGHIEP", "", new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "CREATE_NGHENGHIEP" })
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px;"></td>
+                <td>
+                    <span class="lb-Check" id="CREATE_NGHENGHIEP_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập nghề nghiệp </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl" for="CREATE_STATUS" style=" width: 150px;">Trạng Thái:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text = "Có sử dụng", Value = "true" },
+                        new SelectListItem{ Text = "Không sử dụng", Value = "false" }
+                    })
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin-top: 15px; text-align:center;">
+        <input type="submit" value="Lưu" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+        <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+    </div>
+}
+<script type="text/javascript">
+    function OnClose() {
+        $("#CreateNgheNghiep").dialog("close");
+    }
+    $("#CREATE_NGHENGHIEP").focusout(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#CREATE_NGHENGHIEP_NULL").show();
+        } else {
+            $("#CREATE_NGHENGHIEP_NULL").hide();
+        }
+    });
+    function CreateSuccess() {
+        CommonJS.alert("Tạo mới nghề nghiệp thành công");
+        $("#CreateNgheNghiep").dialog("close");
+        reloadGrid();
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $(function () {
+        $("#frmNgheNghiepCreate").submit(function (event) {
+            if (($("#CREATE_NGHENGHIEP").val().trim() == null || $("#CREATE_NGHENGHIEP").val().trim() == "")) {
+                event.preventDefault();
+            }
+        });
+        $("#btnSave").click(function () {
+            if (($("#CREATE_NGHENGHIEP").val().trim() == null || $("#CREATE_NGHENGHIEP").val().trim() == "")) {
+                return false;
+            } else {
+                $("#frmNgheNghiepCreate").submit();
+                return true;
+            }
+
+        });
+    });
+</script>

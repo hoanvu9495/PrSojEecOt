@@ -1,0 +1,178 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@model Web.Areas.DMDonViArea.Models.ChiTietDonViModel
+@{
+    List<DM_PHONGBAN> lstPhongBan = new List<DM_PHONGBAN>();
+    lstPhongBan = Model.ListPhongBan;
+    var grid = new WebGrid(lstPhongBan,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+
+}
+@Html.AntiForgeryToken()
+@if (lstPhongBan.Count > 0)
+{
+    <div id="grid" style="margin-top:30px">
+        <div id="HeaderGrid">
+            <div style="margin:20px 0px 10px 10px;">
+                <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">@(lstPhongBan == null ? "0" : "Có "+lstPhongBan.Count.ToString()) &nbsp;phòng ban trực thuộc đơn vị</label>
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                           grid.Column("TENPHONGBAN", "Tên phòng ban"),
+             grid.Column(format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == true ? "Được sử dụng" : "<span style='color: red;'>Không được sử dụng</span>"
+                                    )), header: "Trạng Thái"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                  "<a href='javascript:void(0)' onclick='EditPhongBan(" + item.DM_PHONGBAN_ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                  "<a href='javascript:void(0)' onclick='RemovePhongBan(" + item.DM_PHONGBAN_ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+
+                 )
+    )
+
+    </div>
+}
+else
+{
+    <div id="Empty" style="color: red;margin-top:30px">
+        Không có danh mục phòng ban nào
+    </div>
+}
+<div class="modal fade" id="CreatePhongBan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="PreparePhongBan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<style>
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .head th:first-child {
+        width: 10px;
+    }
+
+    .webGrid tbody tr td:nth-child(2) {
+        width: 250px;
+    }
+</style>
+<script type="text/javascript">
+    
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("AddFormPhongBan", "DMDonVi")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#CreatePhongBan").html(data);
+                $("#CreatePhongBan").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+    function EditPhongBan(DM_PHONGBAN_ID) {
+        $.ajax({
+            url: '@Url.Action("EditFormPhongBan", "DMDonVi")',
+            type: 'post',
+            cache: false,
+            data: {
+                DM_PHONGBAN_ID: DM_PHONGBAN_ID
+            },
+            success: function (data) {
+                $("#PreparePhongBan").html(data);
+                $("#PreparePhongBan").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function RemovePhongBan(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa phòng ban này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemovePhongBan", "DMDonVi")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Xóa phòng ban thành công!',
+                                });
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { }
+                }
+            }
+        });
+    }
+
+</script>

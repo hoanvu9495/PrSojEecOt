@@ -1,0 +1,414 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@model Web.Areas.DMVaiTroArea.Models.VaiTroViewModel
+
+<style>
+    .modal-dialog {
+        width: 550px;
+        margin: 50px auto;
+        margin-top: 5%;
+        z-index: 999999;
+    }
+
+    .modal-backdrop {
+        z-index: 99 !important;
+    }
+
+    .center {
+        text-align: center;
+    }
+</style>
+@{
+    //UserInfoBO user = (UserInfoBO)SessionManager.GetUserInfo();
+    //List<DmVaiTroBO> lstVaiTro = new List<DmVaiTroBO>();
+
+    //if (ViewData["Search"] == "0")
+    //{
+    //    lstVaiTro = (List<DmVaiTroBO>)SessionManager.GetValue("ListVaiTro");
+    //}
+    //if (ViewData["Search"] == "1")
+    //{
+    //    lstVaiTro = (List<DmVaiTroBO>)SessionManager.GetValue("ListVaiTroSearch");
+    //}
+    //var grid = new WebGrid(lstVaiTro,
+    //                      rowsPerPage: 20,
+    //                      canPage: true,
+    //                      canSort: true,
+    //                      ajaxUpdateContainerId: "grid",
+    //                       selectionFieldName: "selectedRow"
+    //                      );
+    var jsonDatas = Html.Raw(JsonConvert.SerializeObject(Model.listVaitro));
+}
+
+<div id="ribbon" style=" background-color:#57889c">
+
+
+    <div class="col-md-6">
+        <ol class="breadcrumb">
+            <!-- This is auto generated -->
+        </ol>
+    </div>
+    <!-- breadcrumb -->
+    <!-- end breadcrumb -->
+
+    <div class="col-md-6">
+        <a class="btn btn-default btn-flat pull-right" href="javascript:OnCreate()">
+            <i class="fa fa-plus"></i> <span>Thêm mới vai trò</span>
+        </a>
+    </div>
+</div>
+<!-- #MAIN CONTENT -->
+<div id="content">
+
+    <div class="jarviswidget" id="wid-id-0">
+        <header role="heading">
+            <h2 class="group-tittle mt10">
+                Danh sách vai trò (@(Model.listVaitro == null ? "0" : Model.listVaitro.Count.ToString()))
+
+            </h2>
+            @*<a class="btn btn-success btn-sm" href="javascript:OnCreate()" style="float:right">
+                <i class="fa fa-plus"></i> <span>Thêm mới vai trò</span>
+            </a>*@
+        </header>
+        <div class="widge-t-body no-padding">
+            <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+                <table class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Mã vai trò</th>
+                            <th>Vai trò</th>
+                            @*<th>Tên cơ sở</th>
+                                <th>Cấp cơ sở</th>*@
+                            <th>Trạng thái</th>
+                            <th>Người dùng</th>
+                            <th>Phân quyền</th>
+                            @*<th>Chức năng trang chủ</th>*@
+                            <th>Thao tác</th>
+
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="nhan_su_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="create_user">
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="phanquyen_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" style="width:1250px; margin-top:1.5%" role="document">
+            <div class="modal-content" id="phanquyen_user">
+            </div>
+        </div>
+    </div>
+    <div id="SetChucNangTrangChuVaiTro" title="Thiết lập chức năng hiển thị trên trang chủ">
+    </div>
+    <div id="CreateVaiTro" title="Thêm mới vai trò" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" id="formCreate">
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="PrepareVaiTro" title="Sửa vai trò" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" id="formEdit">
+
+            </div>
+        </div>
+    </div>
+    <div id="AddPhanQuyen" title="Phân quyền vai trò chức năng">
+    </div>
+    <div id="SetDefault" title="Thiết lập chức năng mặc định của vai trò">
+    </div>
+</div>
+<script type="text/javascript">
+
+    var JsonDatas = eval(@jsonDatas);
+
+    var loadDataTable = function (item) {
+        var table = $('.wtfayo').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "iDisplayLength": 20,
+            paging: true,
+            "aoColumns": [
+                 {
+                     "mData": function (data, type, dataToSet) {
+                         return '<input class="global_checkbox" ' + ((data.IS_READ == true) ? "is_read" : "is_unread") + ' type="checkbox" name="ids" value="' + data.ID + '" />';
+                     },
+                     "orderable": false,
+                 },
+
+                    //{
+                    //    "class": 'details-control',
+                    //    "orderable": false,
+                    //    "data": null,
+                    //    "defaultContent": ''
+                    //},
+
+                  {
+                      "mData": function (data, type, dataToSet) {
+                          return "<span class='tr_left'>" + data.MA_VAITRO + "</span>";
+                      },
+
+                  },
+                   {
+
+                       "mData": function (data, type, dataToSet) {
+                           return "<span >" + data.TEN_VAITRO + "</span>";
+                       },
+
+                   },
+
+                    //{
+
+                    //    "mData": function (data, type, dataToSet) {
+                    //        return "<span >" + data.TEN_COSO + "</span>";
+                    //    },
+
+                    //},
+                    //{
+
+                    //    "mData": function (data, type, dataToSet) {
+                    //        return "<span >" + data.CAPCOSO + "</span>";
+                    //    },
+
+                    //},
+
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            return data.TRANGTHAI == 0 ? "<span style='color:red; text-align:center;'>Không hiệu lực</span>" : "<span style='color:green;text-align:center;'>Hiệu lực</span>"
+                        },
+
+                    },
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            return "<a href='javascript:void(0)' onclick='showUserInRole(" + data.DM_VAITRO_ID + ")'  title = 'Người dùng thuộc vai trò'><i class='fa  fa-user' style='font-size:bold'></i></a>"
+                        },
+
+                    },
+                     {
+                         "sClass": "center",
+                         "mData": function (data, type, dataToSet) {
+                             return "<a href='javascript:void(0)' onclick='PhanQuyenVaiTro(" + data.DM_VAITRO_ID + ")' class='btnRole' title = 'Phân quyền'><i class='fa  fa-cog' style='font-size:bold'></i></a>";
+                         },
+
+                     },
+
+                     //{
+                     //    "sClass": "center",
+                     //    "mData": function (data, type, dataToSet) {
+                     //        return "<a href='javascript:void(0)' onclick='SetChucNangTrangChu(" + data.DM_VAITRO_ID + ")'  title = 'Thiết lập Chức năng trang chủ'><i class='fa fa-home' style='font-size:bold'></i></a>"
+                     //    },
+
+                     //},
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            var result = "<div class='btn-group'>";
+                            if (data.IS_DELETE == true) {
+                                result += "<a href='javascript:void(0)' onclick='EditVaiTro(" + data.DM_VAITRO_ID + ")'   title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>";
+                                result += "<a href='javascript:void(0)' onclick='DeleteVaiTro(" + data.DM_VAITRO_ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
+                            }
+
+                            result += "</div>";
+                            return result;
+                        },
+
+                    },
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                //runAllCharts()
+            }
+        });
+    }
+
+    var pagefunction = function () {
+
+        loadDataTable(JsonDatas);
+    };
+
+
+    $(document).ready(function () {
+        $('.grid tbody').on('hover', function () {
+            $(this).toggleClass('clickable');
+        });
+    });
+
+    function SetChucNangTrangChu(DM_VAITRO_ID) {
+        $.ajax({
+            url: '@Url.Action("GetChucNangTrangChu", "DMVaiTro")',
+            type: 'post',
+            cache: false,
+            data: { DM_VAITRO_ID: DM_VAITRO_ID },
+            success: function (data) {
+                $("#create_user").html(data);
+                $("#nhan_su_dialog").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    function showUserInRole(DM_VAITRO_ID) {
+        $.ajax({
+            url: '@Url.Action("GetUserInRole", "DMVaiTro")',
+            type: 'post',
+            cache: false,
+            data: { DM_VAITRO_ID: DM_VAITRO_ID },
+            success: function (data) {
+                $("#create_user").html(data);
+                $("#nhan_su_dialog").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    function PhanQuyenVaiTro(DM_VAITRO_ID) {
+        window.location = "/DMVaiTroArea/DMVaiTro/RoleAuthorities?id=" + DM_VAITRO_ID;
+        @*$.ajax({
+            url: '@Url.Action("PhanQuyenVaiTro", "DMVaiTro")',
+            type: 'post',
+            cache: false,
+            data: { DM_VAITRO_ID: DM_VAITRO_ID, COSO: $("#COSO").val() },
+            success: function (data) {
+                //$("#AddPhanQuyen").html(data);
+                //$("#AddPhanQuyen").dialog("open");
+                $("#phanquyen_user").html(data);
+                $("#phanquyen_dialog").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });*@
+    }
+    function OnCreate() {
+
+        $.ajax({
+            url: '@Url.Action("AddFormVaiTro", "DMVaiTro")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#formEdit").html("");
+                $("#formCreate").html("");
+                $("#formCreate").html(data);
+                $("#CreateVaiTro").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function EditVaiTro(DM_VAITRO_ID) {
+        $.ajax({
+            url: '@Url.Action("EditFormVaiTro", "DMVaiTro")',
+            type: 'post',
+            cache: false,
+            data: {
+                DM_VAITRO_ID: DM_VAITRO_ID
+            },
+            success: function (data) {
+                $("#formEdit").html("");
+                $("#formCreate").html("");
+
+                $("#formEdit").html(data);
+                $("#PrepareVaiTro").modal("show");
+
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function SetDefault(DM_VAITRO_ID) {
+        $.ajax({
+            url: '@Url.Action("VaiTroMacDinh", "DMVaiTro")',
+            type: 'post',
+            cache: false,
+            data: {
+                DM_VAITRO_ID: DM_VAITRO_ID
+            },
+            success: function (data) {
+                $("#SetDefault").html(data);
+                $("#SetDefault").dialog("open");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    function DeleteVaiTro(DM_VAITRO_ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa vai trò này?',
+            'buttons': {
+                'Đồng ý': {
+                    'class': 'btn-confirm-yes btn-primary',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("DeleteVaiTro", "DMVaiTro")',
+                            type: 'post',
+                            cache: false,
+                            data: { DM_VAITRO_ID: DM_VAITRO_ID },
+                            success: function (data) {
+                                NotiSuccess("Xóa vai trò thành công");
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Hủy bỏ': {
+                    'class': 'btn-default',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        loadScript("/js/plugin/datatables/jquery.dataTables.min.js", function () {
+            loadScript("/js/plugin/datatables/dataTables.colVis.min.js", function () {
+                loadScript("/js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                    loadScript("/js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                        loadScript("/js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
+                    });
+                });
+            });
+        });
+    })
+
+
+</script>

@@ -1,0 +1,235 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.eAita;
+@model  Web.Areas.DMChucNangArea.Models.DMChucNangCreateViewModel
+@using (Ajax.BeginForm("SaveChucNang", "ChucNang", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmChucNangCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table>
+            <tr class="height_20"></tr>
+            <tr>
+                <td>
+                    <label class="lbl3">Mã chức năng:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("MA_CHUCNANG", "", new { @class = "e-input width_222", maxlength = "10", @id = "CREATE_MACHUCNANG" })
+                </td>
+                <td>
+                    <label class="lbl2">Tên chức năng:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("TEN_CHUCNANG", "", new { @class = "e-input width_222", maxlength = "100", @id = "CREATE_TENCHUCNANG" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span class="lb-Check2" id="CREATE_MACHUCNANG_NULL" >Bạn nhập mã chức năng </span>
+                    <span class="lb-Check2" id="CREATE_MACHUCNANG_ER" >Mã chức năng đã được sử dụng </span>
+                </td>
+                <td></td>
+                <td>
+                    <span class="lb-Check2" id="CREATE_TENCHUCNANG_NULL">Bạn nhập tên chức năng </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl3">Chức năng cha:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix width_233">
+                        @Html.DropDownList("CHUCNANG_CHA", @Model.ListChucNangCha, "[--- Tất cả ---]", new { @class = "width_100" })
+                    </div>
+                </td>
+                <td>
+                    <label class="lbl2">Trạng thái:</label>
+                </td>
+                <td>
+                    <div class="float-width-40">
+                        <input type="radio" class="css-checkbox" name="TRANGTHAI" id="CREATE_ISACTIVE_HL" value="1" checked="checked" />
+                        <label class="css-label" for="CREATE_ISACTIVE_HL">Hiệu lực</label>
+                    </div>
+                    <div class="float-width">
+
+                        <input type="radio" class="css-checkbox" name="TRANGTHAI" id="CREATE_ISACTIVE_KHL" value="0" />
+                        <label class="css-label" for="CREATE_ISACTIVE_KHL">Không hiệu lực</label>
+                    </div>
+                </td>
+            </tr>
+            <tr class="height_20"></tr>
+
+            <tr>
+                <td>
+                    <label class="lbl3">Thứ tự hiển thị</label>
+                </td>
+                <td colspan="3">
+                    @Html.TextBox("TT_HIENTHI", "", new { @class = "e-input width_222", maxlength = 3, @id = "CREATE_TT_HIENTHI" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td colspan="3">
+                    <span class="lb-Check2" id="CREATE_HIENTHI_ER">Bạn phải nhập số</span>
+                    <span class="lb-Check2" id="CREATE_HIENTHI_SOAM">Bạn không được nhập số âm</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl3">Địa chỉ URL:<span class="color-red">*</span></label>
+                </td>
+                <td colspan="3">
+                    @Html.TextBox("URL", "", new { @class = "e-input width_615", maxlength = "300", @id = "CREATE_URL" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td colspan="3">
+                    <span class="lb-Check2" id="CREATE_URL_NULL">Bạn nhập URL </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="margin-top-10 center">
+        <input type="button" value="Lưu" id="btnSave" class="btnSearch" />
+        <input type="button" value="Đóng" onclick="OnClose()" class="btnSearch" />
+    </div>
+}
+<script type="text/javascript">
+    $("#btnSave").click(function () {
+        if (($("#CREATE_MACHUCNANG").val() == null || $("#CREATE_MACHUCNANG").val() == "")) {
+            $("#CREATE_MACHUCNANG_NULL").show();
+            $("#CREATE_MACHUCNANG").focus();
+            return false;
+        }
+        if (!$("#CREATE_MACHUCNANG_ER").is(":hidden")) {
+            $("#CREATE_MACHUCNANG").focus();
+            return false;
+        }
+        if (($("#CREATE_TENCHUCNANG").val() == null || $("#CREATE_TENCHUCNANG").val() == "")) {
+            $("#CREATE_TENCHUCNANG_NULL").show();
+            $("#CREATE_TENCHUCNANG").focus();
+            return false;
+        }
+        if (($("#CREATE_URL").val().trim() == null || $("#CREATE_URL").val().trim() == "")) {
+            $("#CREATE_URL_NULL").show();
+            $("#CREATE_URL").focus();
+            return false;
+        }
+
+        if ($("#CREATE_TT_HIENTHI").val().length > 0) {
+            if (isNaN($("#CREATE_TT_HIENTHI").val())) {
+                $("#CREATE_HIENTHI_ER").show();
+                $("#CREATE_TT_HIENTHI").focus();
+                return false;
+            } else {
+                if ($("#CREATE_TT_HIENTHI").val() == "-0") {
+                    $("#CREATE_HIENTHI_ER").show();
+                    $("#CREATE_TT_HIENTHI").focus();
+                    return false;
+                }
+            }
+            if ($("#CREATE_TT_HIENTHI").val() < 0) {
+                $("#CREATE_HIENTHI_SOAM").show();
+                $("#CREATE_TT_HIENTHI").focus();
+                return false;
+            }
+        }
+        $("#frmChucNangCreate").submit();
+        return true;
+    });
+
+    $("#CREATE_MACHUCNANG").focusout(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#CREATE_MACHUCNANG_NULL").show();
+            //$(this).focus();
+        } else {
+            $("#CREATE_MACHUCNANG_NULL").hide();
+        }
+        $("#CREATE_MACHUCNANG").val($("#CREATE_MACHUCNANG").val().trim());
+    });
+    $("#CREATE_MACHUCNANG").change(function () {
+        if ($("#CREATE_MACHUCNANG").val() != "") {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("FindMa","DMChucNang")',
+                cache: false,
+                data: {
+                    CHUCNANG_ID: 0,
+                    MACHUCNANG: $("#CREATE_MACHUCNANG").val()
+                },
+                success: function (data) {
+                    if (data > 0) {
+                        $("#CREATE_MACHUCNANG_ER").show();
+                        $("#CREATE_MACHUCNANG").focus();
+                    } else {
+                        $("#CREATE_MACHUCNANG_ER").hide();
+                        $("#CREATE_TENCHUCNANG").focus();
+                    }
+                }
+            });
+        }
+
+    });
+    $("#CREATE_TENCHUCNANG").focusout(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#CREATE_TENCHUCNANG_NULL").show();
+            //$(this).focus();
+        } else {
+            $("#CREATE_TENCHUCNANG_NULL").hide();
+        }
+        $("#CREATE_TENCHUCNANG").val($("#CREATE_TENCHUCNANG").val().trim());
+    });
+    $("#CREATE_URL").focusout(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#CREATE_URL_NULL").show();
+            //$(this).focus();
+        } else {
+            $("#CREATE_URL_NULL").hide();
+        }
+        $("#CREATE_URL").val($("#CREATE_URL").val().trim());
+    });
+    $("#CREATE_TT_HIENTHI").focusout(function () {
+        $("#CREATE_TT_HIENTHI").val($("#CREATE_TT_HIENTHI").val().trim());
+        if ($("#CREATE_TT_HIENTHI").val() != "") {
+            if (isNaN($("#CREATE_TT_HIENTHI").val())) {
+                $("#CREATE_HIENTHI_ER").show();
+            } else {
+                if ($("#CREATE_TT_HIENTHI").val() == "-0") {
+                    $("#CREATE_HIENTHI_ER").show();
+                } else {
+                    $("#CREATE_HIENTHI_ER").hide();
+                }
+            }
+            if ($("#CREATE_TT_HIENTHI").val() < 0) {
+                $("#CREATE_HIENTHI_SOAM").show();
+            } else {
+                $("#CREATE_HIENTHI_SOAM").hide();
+            }
+        } else {
+            $("#CREATE_HIENTHI_ER").hide();
+            $("#CREATE_HIENTHI_SOAM").hide();
+        }
+    });
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function updateSuccess() {
+        CommonJS.alert("Tạo mới chức năng thành công");
+        $("#CreateChucNang").dialog("close");
+        reloadGrid();
+    }
+    function OnClose() {
+        $("#CreateChucNang").dialog("close");
+    }
+
+</script>

@@ -1,0 +1,421 @@
+﻿@using Web.Areas.CongViecArea.Models;
+@using Web.Common;
+@using Web.Models;
+@model ReportCongViecByDepartmentViewModel
+@{
+    var listCongViecTrangThai = Model.ListCongViec.GroupBy(x => x.TRANGTHAI_ID)
+        .Select(x => new
+        {
+            TRANGTHAI_ID = x.Key,
+            TEN_TRANGTHAI = x.FirstOrDefault().TRANGTHAI,
+            ListCongViec = x.ToList(),
+            SoLuong = x.Count()
+        }).ToList();
+    int hoanthanh = listCongViecTrangThai.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DAHOANTHANH).Select(x => x.SoLuong).FirstOrDefault();
+    int dangthuchien = listCongViecTrangThai.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DANGTHUCHIEN).Select(x => x.SoLuong).FirstOrDefault();
+    int chuabatdau = listCongViecTrangThai.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_CHUABATDAU).Select(x => x.SoLuong).FirstOrDefault();
+    int dahuybo = listCongViecTrangThai.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DAHUYBO).Select(x => x.SoLuong).FirstOrDefault();
+    int dangtamdung = listCongViecTrangThai.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DANGTAMDUNG).Select(x => x.SoLuong).FirstOrDefault();
+    string today = string.Format("{0:dd/MM/yyyy}", DateTime.Now);
+    DateTime currentDate = today.ToDateTimeNotNull();
+    int denhan = Model.ListCongViec.Where(x => x.NGAYHOANTHANH == null && x.HANKETTHUC == currentDate).Count();
+    int quahan = Model.ListCongViec.Where(x => x.NGAYHOANTHANH == null && x.HANKETTHUC < currentDate).Count();
+}
+<style type="text/css">
+    #piechart {
+        width: 50%;
+        height: 300px;
+        float: right;
+    }
+
+    #stats {
+        width: 20%;
+        height: 260px;
+        float: right;
+        text-align:left;
+        padding:40px 0 0 0;
+        text-transform:uppercase;
+        font-size:16px;
+    }
+    #table--report-congviec thead tr th {
+        font-weight: bold;
+    }
+
+    #table--report-congviec tr th, #table--report-congviec tr td {
+        text-align: left;
+    }
+
+    .italic {
+        font-style: italic;
+        padding: 0 0 0 20px !important;
+        font-size: 14px;
+    }
+</style>
+<div id="piechart">
+
+</div>
+<div id="stats">
+    <p>
+        Chưa bắt đầu :<b>
+            @chuabatdau
+        </b>
+    </p>
+    <p>
+        Đang thực hiện :<b>
+            @dangthuchien
+        </b>
+    </p>
+    <p>
+        Đã hoàn thành :<b>
+            @hoanthanh
+        </b>
+    </p>
+    <p>
+        Đã hủy bỏ :<b>
+            @dahuybo
+        </b>
+    </p>
+    <p>
+        Đang tạm dừng :<b>
+            @dangtamdung
+        </b>
+    </p>
+    <p>
+        Đến hạn :<b>
+            @denhan
+        </b>
+    </p>
+    <p>
+        Quá hạn : <b>
+            @quahan
+        </b>
+    </p>
+</div>
+<table class="webGrid" id="table--report-congviec">
+    <thead>
+        <tr class="head">
+            <th scope="col">
+                NHÓM TRẠNG THÁI
+            </th>
+            <th scope="col">
+                NGƯỜI XỬ LÝ CHÍNH
+            </th>
+            <th scope="col">
+                CÔNG VIỆC
+            </th>
+            <th scope="col">
+                TRẠNG THÁI
+            </th>
+            <th scope="col">
+                NGÀY BẮT ĐẦU - HẠN KẾT THÚC
+            </th>
+            <th>
+                THỜI GIAN(VƯỢT/CHẬM) TIẾN ĐỘ
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in listCongViecTrangThai)
+        {
+            <tr>
+                <td colspan="6">
+                    <b>
+                        @item.TEN_TRANGTHAI.ToUpper() (@item.SoLuong)
+                    </b>
+                </td>
+            </tr>
+            if (item.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DAHOANTHANH)
+            {
+                var listCvTruocHan = item.ListCongViec.Where(x => x.NGAYHOANTHANH != null && x.NGAYHOANTHANH > x.HANKETTHUC && x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DAHOANTHANH).ToList();
+                var listCvQuaHan = item.ListCongViec.Where(x => x.NGAYHOANTHANH != null && x.NGAYHOANTHANH > x.HANKETTHUC && x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DAHOANTHANH).ToList();
+                var listCvTrongHan = item.ListCongViec.Where(x => x.NGAYHOANTHANH != null && x.NGAYHOANTHANH == x.HANKETTHUC && x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DAHOANTHANH).ToList();
+                <tr>
+                    <td colspan="6" class="italic">
+                        Trước hạn (@listCvTruocHan.Count)
+                    </td>
+                </tr>
+                foreach (var cv in listCvTruocHan)
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            @{
+                    string strNguoiXuLyChinh = string.Join(",", cv.ListNguoiXuLyChinh.Select(x => x.UserName).ToArray());
+                            }
+                            <span>
+                                @strNguoiXuLyChinh
+                            </span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Detail", new { id = cv.ID })">
+                                cv.TENCONGVIEC
+                            </a>
+                        </td>
+                        <td>
+                            @cv.TRANGTHAI
+                        </td>
+                        <td>
+                            <span>
+                                @string.Format("{0:dd/MM/yyyy}", cv.NGAYBATDAU) - @string.Format("{0:dd/MM/yyyy}", cv.HANKETTHUC)
+                            </span>
+                        </td>
+                        <td>
+                            @{
+                    TimeSpan ts = (cv.NGAYHOANTHANH.Value.Subtract(cv.HANKETTHUC.Value));
+                            }
+                            <span>
+                                @(Math.Abs((int)ts.TotalDays)) ngày
+                            </span>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="6" class="italic">
+                        Trong hạn (@listCvTrongHan.Count)
+                    </td>
+                </tr>
+                foreach (var cv in listCvTrongHan)
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            @{
+                    string strNguoiXuLyChinh = string.Join(",", cv.ListNguoiXuLyChinh.Select(x => x.UserName).ToArray());
+                            }
+                            <span>
+                                @strNguoiXuLyChinh
+                            </span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Detail",new{@id = cv.ID})">
+                                @cv.TENCONGVIEC
+                            </a>
+                        </td>
+                        <td>
+                            @cv.TRANGTHAI
+                        </td>
+                        <td>
+                            <span>
+                                @string.Format("{0:dd/MM/yyyy}", cv.NGAYBATDAU) - @string.Format("{0:dd/MM/yyyy}", cv.HANKETTHUC)
+                            </span>
+                        </td>
+                        <td>
+                            @{
+                    TimeSpan ts = (cv.NGAYHOANTHANH.Value.Subtract(cv.HANKETTHUC.Value));
+                            }
+                            <span>
+                                @(Math.Abs((int)ts.TotalDays)) ngày
+                            </span>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="6" class="italic">
+                        <i>Quá hạn (@listCvQuaHan.Count)</i>
+                    </td>
+                </tr>
+                foreach (var cv in listCvQuaHan)
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            @{
+                    string strNguoiXuLyChinh = string.Join(",", cv.ListNguoiXuLyChinh.Select(x => x.UserName).ToArray());
+                            }
+                            <span>
+                                @strNguoiXuLyChinh
+                            </span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Detail",new{@id = cv.ID})">
+                                @cv.TENCONGVIEC
+                            </a>
+                        </td>
+                        <td>
+                            @cv.TRANGTHAI
+                        </td>
+                        <td>
+                            <span>
+                                @string.Format("{0:dd/MM/yyyy}", cv.NGAYBATDAU) - @string.Format("{0:dd/MM/yyyy}", cv.HANKETTHUC)
+                            </span>
+                        </td>
+                        <td>
+                            @{
+                    TimeSpan ts = (cv.NGAYHOANTHANH.Value.Subtract(cv.HANKETTHUC.Value));
+                            }
+                            <span>
+                                @(Math.Abs((int)ts.TotalDays)) ngày
+                            </span>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (item.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DANGTHUCHIEN)
+            {
+                var listCvTruocHan = item.ListCongViec.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DANGTHUCHIEN && x.HANKETTHUC > DateTime.Now).ToList();
+                var listCvQuaHan = item.ListCongViec.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DANGTHUCHIEN && x.HANKETTHUC < DateTime.Now).ToList();
+                var listCvTrongHan = item.ListCongViec.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DANGTHUCHIEN && x.HANKETTHUC == DateTime.Now).ToList();
+                <tr>
+                    <td colspan="6" class="italic">
+                        Trước hạn (@listCvTruocHan.Count)
+                    </td>
+                </tr>
+                foreach (var cv in listCvTruocHan)
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            @{
+                    string strNguoiXuLyChinh = string.Join(",", cv.ListNguoiXuLyChinh.Select(x => x.UserName).ToArray());
+                            }
+                            <span>
+                                @strNguoiXuLyChinh
+                            </span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Detail",new{@id = cv.ID})">
+                                @cv.TENCONGVIEC
+                            </a>
+                        </td>
+                        <td>
+                            @cv.TRANGTHAI
+                        </td>
+                        <td>
+                            <span>
+                                @string.Format("{0:dd/MM/yyyy}", cv.NGAYBATDAU) - @string.Format("{0:dd/MM/yyyy}", cv.HANKETTHUC)
+                            </span>
+                        </td>
+                        <td>
+                            @{
+                    TimeSpan ts = (DateTime.Now.Subtract(cv.HANKETTHUC.Value));
+                            }
+                            <span>
+                                @(Math.Abs((int)ts.TotalDays)) ngày
+                            </span>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="6" class="italic">
+                        Trong hạn (@listCvTrongHan.Count)
+                    </td>
+                </tr>
+                foreach (var cv in listCvTrongHan)
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            @{
+                    string strNguoiXuLyChinh = string.Join(",", cv.ListNguoiXuLyChinh.Select(x => x.UserName).ToArray());
+                            }
+                            <span>
+                                @strNguoiXuLyChinh
+                            </span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Detail",new{@id = cv.ID})">
+                                @cv.TENCONGVIEC
+                            </a>
+                        </td>
+                        <td>
+                            @cv.TRANGTHAI
+                        </td>
+                        <td>
+                            <span>
+                                @string.Format("{0:dd/MM/yyyy}", cv.NGAYBATDAU) - @string.Format("{0:dd/MM/yyyy}", cv.HANKETTHUC)
+                            </span>
+                        </td>
+                        <td>
+                            @{
+                    TimeSpan ts = (DateTime.Now.Subtract(cv.HANKETTHUC.Value));
+                            }
+                            <span>
+                                @(Math.Abs((int)ts.TotalDays)) ngày
+                            </span>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="6" class="italic">
+                        <i>Quá hạn (@listCvQuaHan.Count)</i>
+                    </td>
+                </tr>
+                foreach (var cv in listCvQuaHan)
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            @{
+                    string strNguoiXuLyChinh = string.Join(",", cv.ListNguoiXuLyChinh.Select(x => x.UserName).ToArray());
+                            }
+                            <span>
+                                @strNguoiXuLyChinh
+                            </span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Detail",new{@id = cv.ID})">
+                                @cv.TENCONGVIEC
+                            </a>
+                        </td>
+                        <td>
+                            @cv.TRANGTHAI
+                        </td>
+                        <td>
+                            <span>
+                                @string.Format("{0:dd/MM/yyyy}", cv.NGAYBATDAU) - @string.Format("{0:dd/MM/yyyy}", cv.HANKETTHUC)
+                            </span>
+                        </td>
+                        <td>
+                            @{
+                    TimeSpan ts = (DateTime.Now.Subtract(cv.HANKETTHUC.Value));
+                            }
+                            <span>
+                                @(Math.Abs((int)ts.TotalDays)) ngày
+                            </span>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                var listCongViec = item.ListCongViec.Where(x => x.TRANGTHAI_ID != CongViecConstant.TRANGTHAI_DANGTHUCHIEN && x.TRANGTHAI_ID != CongViecConstant.TRANGTHAI_DAHOANTHANH);
+                foreach (var congviec in listCongViec)
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            @{
+                    string strNguoiXuLyChinh = string.Join(", ", congviec.ListNguoiXuLyChinh.Select(x => x.UserName).ToArray());
+                    <span>@strNguoiXuLyChinh</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Detail",new{@id = congviec.ID})">
+                                @congviec.TENCONGVIEC
+                            </a>
+                        </td>
+                        <td>
+                            <span>@congviec.TRANGTHAI</span>
+                        </td>
+                        <td>
+                            <span>
+                                @string.Format("{0:dd/MM/yyyy}", congviec.NGAYBATDAU) - @string.Format("{0:dd/MM/yyyy}", congviec.HANKETTHUC)
+                            </span>
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    var hoanthanh = parseInt('@hoanthanh');
+    var chuabatdau = parseInt('@chuabatdau');
+    var dangthuchien = parseInt('@dangthuchien');
+    var huybo = parseInt('@dahuybo');
+    var dangtamdung = parseInt('@dangtamdung');
+    $(function () {
+        drawChart(hoanthanh, chuabatdau, dangthuchien, huybo, dangtamdung);
+    })
+</script>

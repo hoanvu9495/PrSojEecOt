@@ -1,0 +1,90 @@
+﻿@using Web.Common
+@model  Web.Areas.DMChucNangArea.Models.DMChucNangIndexViewModel
+            <style type="text/css">
+                .SearchCriterial {
+                    margin: 0px;
+                }
+
+                .SearchResult {
+                    margin: 0px;
+                    padding: 0px;
+                }
+            </style>
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindChucNang", "ChucNang", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearh" }))
+    {
+        <div>
+            <h3 class="group-tittle mt10"><a href="javascript:void(0)" id="showSearch" style="color: #35498e">Tìm kiếm chức năng</a></h3>
+            <table style="margin:0 auto; width:75%; display:none" id="contentSearch">
+                <tr class="height_20"></tr>
+                <tr>
+                    <td class="width_100px">
+                        <label>Tên chức năng:</label>
+                    </td>
+                    <td class="width_222">
+                        @Html.TextBox("TENCHUCNANG", "", new { maxlength = "100", @class = "e-input width_222" })
+                    </td>
+                    <td class="width_200"></td>
+                    <td class="width_100px">
+                        <label>Chức năng cha:</label>
+                    </td>
+                    <td>
+                        <div class="input-field4 clearfix width_233">
+                            @Html.DropDownList("CHUCNANGCHA", @Model.ListChucNangCha, "[--- Tất cả ---]", new { @class = "width_100" })
+                        </div>
+                    </td>
+                </tr>
+                <tr style="height:20px"></tr>
+                <tr>
+                    <td colspan="4">
+                        <div class="margin-top-10" style="margin-left:50%;">
+                            <button type="button" onclick="Search()" class="btn btn-primary">Tìm kiếm</button>
+                            <button type="button" onclick="CloseSearch()" class="btn btn-default">Đóng</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+    }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#CHUCNANGCHA").val("@ViewData["CURRENTCHUCNANGCHA"]");
+        $("#TENCHUCNANG").val("@ViewData["TENCHUCNANG"]");
+        $("#showSearch").click(function () {
+            if ($("#contentSearch").is(':hidden')) {
+                $("#contentSearch").fadeIn();
+            } else {
+                $("#contentSearch").fadeOut();
+            }
+
+        });
+
+        $("#TENCHUCNANG").change(function () {
+            $("#Keyword").val($(this).val());
+        });
+        document.onkeydown = function () {
+            if (window.event.keyCode == '13') {
+                Search();
+            }
+        }
+    });
+    function Search() {
+        $("#frmSearh").submit();
+    }
+    function CloseSearch() {
+        $("#contentSearch").fadeOut();
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+        $("#TENCHUCNANG").val("");
+        $("#CHUCNANGCHA").val("");
+    }
+</script>

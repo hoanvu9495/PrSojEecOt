@@ -1,0 +1,13 @@
+﻿@using Business.CommonBusiness
+@model  List<ChucNangBO>
+@if (Model != null && Model.Count > 0)
+{
+    <ul class="admin-menu">
+        @foreach (var item in Model)
+        {
+            <li class="menu" style="z-index:10">
+                <a href="@item.URL">@item.TEN_CHUCNANG</a>
+        </li>
+        }
+    </ul>
+}

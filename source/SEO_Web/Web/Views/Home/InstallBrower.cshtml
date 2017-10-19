@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Hướng dẫn tải trình duyệt";
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>@ViewBag.Title</title>
+    <link rel="icon" type="image/png" href="~/Content/Images/Edit.png" />
+
+    <link href="@Url.Content("~/Content/themes/smas/common.css")" rel="stylesheet" type="text/css" />
+    @Scripts.Render("~/bundles/jquery")
+    <style>
+        #Huongdancaidat {
+            border: 3px solid #FFFFFF;
+            border-radius: 6px;
+            margin: 150px auto 0;
+            min-height: 300px;
+            width: 800px;
+        }
+        #brs_ul {float: left; padding: 0px 50px; margin: 0px; list-style: none outside none; width: 80%;}
+        #brs_ul li {float: left; background: none repeat scroll 0% 0% #ddd;margin:0px 5px;height: 120px; width: 150px; border-radius: 6px; text-align: center;}
+        #brs_ul li a {display: block; padding:30px 10px 10px}
+    </style>
+</head>
+<body class="body_login">
+    <div id="Huongdancaidat">
+        <p style="color: black; font-family: tahoma,arial,serif; text-align: left; padding: 10px; line-height: 21px">
+            Trình duyệt Internet Explorer đã quá cũ.Vui lòng cập nhật  trình duyệt của bạn để được hỗ trợ và sử dụng các tính năng của phần mềm tốt nhất.<br />
+            <br />
+            Chỉ cần nhấn chuột vào một trong các biểu tượng dưới đây để tới trang dowload
+        </p>
+
+        <ul id="brs_ul">
+            <li>
+                <a onclick="OpenTabFirefox()" title="Bấm vào đây để tải về" target="_blank" href="http://www.mozilla.org/vi/firefox/new/">  
+                    <img src="/Content/Images/Firefox-icon.png"/>
+                </a>
+                 Firefox 4++
+            </li>
+            <li>
+                <a title="Bấm vào đây để tải về" target="_blank" href="https://www.google.com/intl/vi/chrome/browser/?hl=vi&amp;brand=CHNG&amp;utm_source=vi-hpp&amp;utm_medium=hpp&amp;utm_campaign=vi">
+                    <img src="/Content/Images/Google-Chrome-icon.png"/>
+                </a>
+                Chorme 7++
+            </li>
+        </ul>       
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    function OpenTabFirefox() {
+        window.open("/Home/FireFox", '_blank');
+    }
+</script>

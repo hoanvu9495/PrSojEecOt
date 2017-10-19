@@ -1,0 +1,139 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.DBTool;
+@model Web.Areas.DMVaiTroArea.Models.CreatePhanQuyen
+<style type="text/css">
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    .demo1 {
+        height: 100px;
+    }
+</style>
+@using (Ajax.BeginForm("SaveVaiTroChucNang", "DMVaiTro", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "AddEditSuccess"
+}, new { id = "frmVaiTroChucNang" }))
+{
+    <div>
+
+        @Html.AntiForgeryToken()
+        <div>
+            <label class="lbl" style="width:100px">Mã vai trò:</label>
+            <label class="lbl" style="width:150px">@Model.VaiTro.MA_VAITRO</label>
+            <label class="lbl" style="width:100px">Tên vai trò:</label>
+            <label class="lbl" style="width:150px">@Model.VaiTro.TEN_VAITRO</label>
+        </div>
+        <div style="height:20px"></div>
+        <label style="font-size:20px"> Chọn chức năng</label>
+        <hr style="border:2px solid red" />
+        <div style="width:700px;">
+
+            @for (int i = 0; i < Model.ListChucNangCap1.Count(); i++)
+            {
+                <div style="float:left; width: 650px;  padding-bottom: 15px; padding-top: 15px;border-bottom:1px solid rgba(0, 0, 0, 0.13); ">
+                    <input id="Cap1_@i" type="checkbox" value="@Model.ListChucNangCap1[i].DM_CHUCNANG_ID.ToString()" checked="@Model.ListChucNangCap1[i].selected" onclick="SelectCap1(@i); " /><label style="color:rgb(15, 27, 164); font-weight:bold" onclick="ShowCap2(@i)">@Model.ListChucNangCap1[i].TEN_CHUCNANG</label>
+                    <div id="ShowCap2_@i" style="@Model.ListChucNangCap1[i].display">
+                        @foreach (var item in Model.ListChucNangCap2)
+                        {
+                            // nếu chức năng cha bằng mã chức năng của chức năng cấp 1
+                            if (item.CHUCNANG_CHA == Model.ListChucNangCap1[i].DM_CHUCNANG_ID)
+                            {
+
+                                <div style="padding-bottom: 10px; padding-top: 10px;  font-size: 16px; ">
+                                    <input id='Cap2_@item.DM_CHUCNANG_ID' name="chucnang_@item.DM_CHUCNANG_ID" type='checkbox' value="@item.DM_CHUCNANG_ID" checked="@item.selected" onclick='SetSelectCap2(@item.DM_CHUCNANG_ID)' /><label onclick='SelectCap2("@item.DM_CHUCNANG_ID")'>@item.TEN_CHUCNANG</label>
+                                    <input type="hidden" id="SetSelect_@item.DM_CHUCNANG_ID" name="GetSelect_@item.DM_CHUCNANG_ID" value="@item.selected.ToString().ToLower()" />
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+            }
+
+        </div>
+        <div style="clear:both"></div>
+        <div style="margin-top: 15px; text-align:center; clear:left">
+            <input type="submit" value="Lưu" id="btnAddEdit" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+            <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+        </div>
+    </div>
+    <input type="hidden" name="DM_VAITRO_ID" value="@Model.VaiTro.DM_VAITRO_ID" />
+}
+<script type="text/javascript">
+    function SelectCap1(i) {
+        // khi select checkbox chức năng cấp 1 nếu checked = true set tất cả các danh sách chức năng cấp 2 checked= true và ngược lại
+        if ($("#Cap1_" + i).prop("checked") == true) {
+            $("#ShowCap2_" + i).find("input[type='checkbox']").each(function () {
+                $(this).attr("checked", "true");
+            });
+            $("#ShowCap2_" + i).find("input[type='hidden']").each(function () {
+                $(this).val("true");
+            });
+        } else {
+            //$("#check_" + i).children("input").attr("checked","false");
+            $("#ShowCap2_" + i).find("input[type='checkbox']").each(function () {
+                $(this).prop("checked", false);
+            });
+            $("#ShowCap2_" + i).find("input[type='hidden']").each(function () {
+                $(this).val("false");
+            });
+        }
+    }
+    function SetSelectCap2(i) {
+        if ($("#Cap2_" + i).prop("checked") == false) {
+            $("#SetSelect_" + i).val("false");
+        } else if ($("#Cap2_" + i).prop("checked") == true) {
+            $("#SetSelect_" + i).val("true");
+        }
+    }
+    function SelectCap2(i) {
+        // khi kích vào tên của checkbox chức năng cấp 2 set checked cho checkbox chức năng cấp 2
+        if ($("#Cap2_" + i).prop("checked") == false) {
+            // checked = false set bằng true
+            $("#Cap2_" + i).prop("checked", true);
+            $("#SetSelect_" + i).val("true");
+        }
+        else if ($("#Cap2_" + i).prop("checked") == true) {
+            $("#Cap2_" + i).prop("checked", false);
+            $("#SetSelect_" + i).val("false");
+        }
+    }
+    function ShowCap2(i) {
+        // hiển thị danh sách chức năng cấp 2
+        //if($('#car2').is(':hidden')) {
+        if ($('#ShowCap2_' + i).css('display') == 'none') {
+            // nếu display = none set display = true
+            $("#ShowCap2_" + i).fadeIn(500);
+        }
+        else {
+            $("#ShowCap2_" + i).fadeOut(500);
+        }
+    }
+    $("#btnAddEdit").click(function () {
+
+        $("#frmVaiTroChucNang").submit();
+        return true;
+    });
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function AddEditSuccess() {
+        CommonJS.alert("Thiết lập quyền vai trò chức năng thành công");
+        $("#AddPhanQuyen").dialog("close");
+        reloadGrid();
+    }
+    function OnClose() {
+        $("#AddPhanQuyen").dialog("close");
+    }
+
+</script>

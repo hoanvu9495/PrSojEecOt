@@ -1,0 +1,183 @@
+﻿@using Model.eAita
+@model List<HTQT_DOANRA_CANBO>
+@using Web.FwCore
+@{
+    var is_detail = false;
+
+    if (ViewData["detail"] != null)
+    {
+        is_detail = int.Parse(ViewData["detail"].ToString()) == 1;
+    }
+}
+<table class="webGrid">
+    <thead>
+        <tr class="head">
+            <th>Họ và Tên</th>
+            <th>Đơn vị</th>
+            <th>Chức vụ</th>
+            <th>Điện thoại</th>
+            @*<th>Email</th>*@
+            @if (is_detail == false)
+            {
+                <th>
+                    <center>
+                        <img src="~/Content/Images/Add.png" width="16" title="Thêm tài liệu" id="btnAddNguoiCuDi" style="cursor:pointer;" />
+                    </center>
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody id="AddOtherPeople">
+        @if (Model != null && Model.Count > 0)
+        {
+            var i = 1;
+            foreach (var item in Model)
+            {
+                <tr id="peoplesaved_@i">
+                    <td>
+                        @item.HOTEN
+                    </td>
+                    <td>@item.DONVI</td>
+                    <td>@item.CHUCVU</td>
+                    <td>@item.DIENTHOAI</td>
+                    @*<td>@item.EMAIL</td>*@
+                    @if (is_detail == false)
+                    {
+                        <td>
+                            <a title="Xóa tài liệu" href="javascript:RemovePeopleSaved('@item.ID', '@i')" data-id="nguoidung_@i"><img src="~/Content/Images/Delete.png" /></a>
+                        </td>
+                    }
+                </tr>
+            }
+        }
+        @if (is_detail == false)
+        {
+            <tr id="nguoidung_1">
+                <td>
+                    <input name="HOTEN_1" id="HOTEN_1" type="text" class="e-input" placeholder="Nhập họ tên người cử đi" style="width:150px" />
+                </td>
+                <td>
+                    <input name="DONVI_1" id="DONVI_1" type="text" class="e-input" placeholder="Nhập đơn vị người cử đi" style="width: 150px; " />
+                </td>
+                <td>
+                    <input name="CHUCVU_1" id="CHUCVU_1" type="text" class="e-input" placeholder="Nhập chức vụ người cử đi" style="width: 150px; " />
+                </td>
+                <td>
+                    <input name="DIENTHOAI_1" id="DIENTHOAI_1" type="text" class="e-input" placeholder="Nhập điện thoại của người cử đi" style="width: 150px; " />
+                </td>
+                @*<td>
+                        <input name="EMAIL" id="EMAIL_1" type="text" class="e-input" placeholder="Nhập email của người cử đi" style="width: 140px" />
+                    </td>*@
+                <td>
+                    <a title="Xóa người cử đi" href="javascript:RemovePeople(1)" data-id="file_1"><img src="~/Content/Images/Delete.png" /></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<input type="hidden" name="THANHPHANKHAC" id="THANHPHANKHAC" value="1,">
+<script>
+    $(function () {
+        var count = 1;
+        $("#btnAddNguoiCuDi").click(function () {
+            count++;
+            $("#AddOtherPeople").append(AddPeople(count));
+            $("#THANHPHANKHAC").val($("#THANHPHANKHAC").val() + count + ",");
+        });
+    });
+    function AddPeople(count) {
+        var html = '<tr id="nguoidung_' + count + '">';
+        html += '<td><input name="HOTEN_' + count + '" id="HOTEN_' + count + '" class="e-input" placeholder="Nhập họ tên người cử đi" style="width:150px" type="text"></td>';
+        html += '<td><input name="DONVI_' + count + '" id="DONVI_' + count + '" class="e-input" placeholder="Nhập đơn vị người cử đi" style="width: 150px;" type="text"></td>';
+        html += '<td><input name="CHUCVU_' + count + '" id="CHUCVU_' + count + '" class="e-input" placeholder="Nhập chức vụ người cử đi" style="width: 150px; " type="text"></td>';
+        html += '<td><input name="DIENTHOAI_' + count + '" id="DIENTHOAI_' + count + '" class="e-input" placeholder="Nhập điện thoại của người cử đi" style="width: 150px; " type="text"></td>';
+        html += ' <td><a title="Xóa người cử đi" href="javascript:RemovePeople(' + count + ')" data-id="file_1"><img src="/Content/Images/Delete.png"></a></td>';
+        html += '</tr>';
+        return html;
+    }
+    function RemovePeople(count) {
+        var rowCount = $('#AddOtherPeople tr').length;
+        var hoten = $("#HOTEN_" + count).val().trim();
+        var unit = $("#DONVI_" + count).val().trim();
+        var position = $("#CHUCVU_" + count).val().trim();
+        var phone = $("#DIENTHOAI_" + count).val().trim();
+        if (hoten.length > 0 || unit.length > 0 || unit.length > 0 || position.length > 0 || phone.length > 0) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn thông tin này?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            if (rowCount == 1) {
+                                $("#HOTEN_" + count).val("");
+                                $("#DONVI_" + count).val("");
+                                $("#CHUCVU_" + count).val("");
+                                $("#DIENTHOAI_" + count).val("");
+                            } else {
+                                $("#nguoidung_" + count).remove();
+                            }
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+        } else {
+            if (rowCount == 1) {
+                $("#HOTEN_" + count).val("");
+                $("#DONVI_" + count).val("");
+                $("#CHUCVU_" + count).val("");
+                $("#DIENTHOAI_" + count).val("");
+            } else {
+                $("#nguoidung_" + count).remove();
+            }
+        }
+    }
+    function RemovePeopleSaved(ID) {
+
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn thông tin này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            type: "POST",
+                            url: '/Common/RemoveOtherPeople',
+                            cache: false,
+                            data: {
+                                ID: ID
+                            },
+                            success: function (data) {
+                                if (data == "1") {
+                                    $("#peoplesaved_" + count).remove();
+                                    notif({
+                                        type: 'success',
+                                        position: 'bottom',
+                                        msg: 'Xóa thành phần khác tham gia thành công!',
+                                    });
+                                }
+                                else {
+                                    notif({
+                                        type: 'error',
+                                        position: 'bottom',
+                                        msg: 'Có lỗi trong quá trình xóa, vui lòng thử lại!',
+                                    });
+                                }
+                            }
+                        });
+
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+</script>

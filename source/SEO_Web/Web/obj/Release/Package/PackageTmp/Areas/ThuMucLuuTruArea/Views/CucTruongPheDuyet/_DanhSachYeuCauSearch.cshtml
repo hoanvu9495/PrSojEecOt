@@ -1,0 +1,102 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common
+@using Web.Models
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeTaiLieuModel
+@{
+    List<NPDonXinNghiBO> lstPheDuyet = (List<NPDonXinNghiBO>)SessionManager.GetValue("ListDonXinNghi");
+
+    List<NPDonXinNghiBO> lstChuyenVien = new List<NPDonXinNghiBO>();
+    List<DM_DONVI> lstDonVi = (List<DM_DONVI>)SessionManager.GetValue("ListDonVi");
+    if (lstPheDuyet != null)
+    {
+        lstChuyenVien = lstPheDuyet.GroupBy(x => x.TENNCHUYENVIEN).Select(g => g.First()).ToList();
+
+    }
+}
+@using (Ajax.BeginForm("FindDanhSachYeuCau", "CucTruongPheDuyet", new AjaxOptions()
+{
+
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "GET",
+    OnFailure = "failure",
+    UpdateTargetId = "grid",
+}, new { id = "frmSearch" }))
+{
+    <table style="width:40%;margin:0 auto;text-align:center;margin-top:20px">
+        <tr>
+            <td>
+                <label class="lblDiemThi" style="width: 80px" for="KEYWORD">Từ khóa:</label>
+</td>
+            <td>
+                <input type="text" name="KEYWORD" style="width:233px;height:25px;font-size:13px" maxlength="255" id="KEYWORD" placeholder="Nhập từ khóa bạn muốn tìm kiếm" class="form-control">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="width:100px">
+                <label class="lblDiemThi" style="width: 80px" for="DONVI">Tên đơn vị:</label>
+            </td>
+            <td align="left">
+                @Html.DropDownList("ID", Model.lstDonVi, new { @style = "width:220px;text-align:left", @multiple = "multiple", @id = "DONVI_ID" })
+                <input type="hidden" value="" name="DONVI" id="DONVI" />
+
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input id="btnSearch" type="submit" value="Tìm kiếm" class="btn btn-warning" />
+            </td>
+        </tr>
+    </table>
+}
+
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+<script type="text/javascript" src="/Scripts/multiple-select.js"></script>
+<script type="text/javascript">
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $("#DONVI_ID").multipleSelect({
+        multiple: true,
+        filter: true,
+    });
+    function initialVulue() {
+        $("#DONVI").val($("#DONVI_ID").multipleSelect("getSelects"));
+    }
+    $("#btnSearch").click(function () {
+        initialVulue();
+        if (/<[a-z][\s\S]*>/i.test($("#KEYWORD").val().trim()) || /<[a-z][\s\S]*/i.test($("#KEYWORD").val().trim())) {
+            $.confirm({
+                'title': 'Có lỗi xảy ra',
+                'message': 'Bạn không được nhập ký tự "<" khi tìm kiếm',
+                'buttons': {
+                    'Đóng': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+
+                        }
+                    }
+
+                }
+            });
+            return false;
+        } else {
+            return true;
+        }
+    });
+</script>
+<style>
+    input[type="checkbox"] {
+        margin: 0 6px 0 !important;
+    }
+</style>

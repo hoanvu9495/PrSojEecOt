@@ -1,0 +1,119 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.eAita;
+@model Web.Areas.DMVaiTroArea.Models.DefaultChucNangViewMoel
+@{
+    var ListChucNang = Model.ListChucNang;
+}
+@using (Ajax.BeginForm("SaveChucNangDefault", "DMVaiTro", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "Success"
+}, new { id = "frmChucNangDefault" }))
+{
+    <div>
+
+        @Html.AntiForgeryToken()
+        <div>
+            <label class="lbl3" style="width:100px">Mã vai trò:</label>
+            <label class="lbl3" style="width:150px"><b>@Model.VaiTro.MA_VAITRO</b></label>
+            <label class="lbl3" style="width:100px">Tên vai trò:</label>
+            <label class="lbl3" style="width:500px"><b>@Model.VaiTro.TEN_VAITRO</b></label>
+        </div>
+        <div class="box-border">
+            <h3 class="group-tittle1 mt10">Danh sách chức năng - thao tác</h3>
+            <table>
+                <tr>
+                    <td>
+                        <div style="padding:10px;width:900px">
+                            @if (ListChucNang != null && ListChucNang.Count > 0)
+                            {
+                                <div class="cn-label-default">
+                                    @foreach (var parent in ListChucNang.Skip(0).Take(ListChucNang.Count / 2))
+                                    {
+                                        <label class="font-bold">@parent.TEN_CHUCNANG</label>
+                                        if (parent.ListChildren != null && parent.ListChildren.Count > 0)
+                                        {
+                                            <div class="margin-left-15">
+                                                @foreach (var child in parent.ListChildren)
+                                                {
+                                                    <p style="padding-bottom:1px">
+                                                        <input class="css-checkbox" type="radio" name="DM_CHUCNANG_ID" data-cn="" value="@child.DM_CHUCNANG_ID" id="cn_@child.DM_CHUCNANG_ID" checked="@child.selected" /><label class="css-label" for="cn_@child.DM_CHUCNANG_ID">@child.TEN_CHUCNANG</label>
+                                                    </p>
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <p>
+                                                <span class="margin-left-10">
+                                                    <input class="css-checkbox" type="radio" name="DM_CHUCNANG_ID" value="@parent.DM_CHUCNANG_ID" id="cn_@parent.DM_CHUCNANG_ID" checked="@parent.selected" /><label class="css-label" for="cn_@parent.DM_CHUCNANG_ID">@parent.TEN_CHUCNANG</label>
+                                                </span>
+                                            </p>
+                                        }
+                                    }
+                                </div>
+                                <div class="cn-label-default">
+
+                                    @foreach (var parent2 in ListChucNang.Skip(ListChucNang.Count / 2))
+                                    {
+                                        <label class="font-bold">@parent2.TEN_CHUCNANG</label>
+                                        if (parent2.ListChildren != null && parent2.ListChildren.Count > 0)
+                                        {
+                                            <div class="margin-left-15">
+                                                @foreach (var child in parent2.ListChildren)
+                                                {
+                                                    <p style="padding-bottom:1px">
+                                                        <input class="css-checkbox" type="radio" name="DM_CHUCNANG_ID" value="@child.DM_CHUCNANG_ID" id="cn_@child.DM_CHUCNANG_ID" checked="@child.selected" /><label class="css-label" for="cn_@child.DM_CHUCNANG_ID">@child.TEN_CHUCNANG</label>
+                                                    </p>
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <p>
+                                                <span class="margin-left-10">
+                                                    <input class="css-checkbox" type="radio" name="DM_CHUCNANG_ID" value="@parent2.DM_CHUCNANG_ID" id="cn_@parent2.DM_CHUCNANG_ID" checked="@parent2.selected" /><label class="css-label" for="cn_@parent2.DM_CHUCNANG_ID">@parent2.TEN_CHUCNANG</label>
+                                                </span>
+                                            </p>
+                                        }
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="clear-both"></div>
+            <div class="pq-default-button">
+                <input type="submit" value="Lưu" id="btnSave" class="btnSearch" />
+                <input type="button" value="Đóng" onclick="OnClose()" class="btnSearch" />
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="DM_VAITRO_ID" value="@Model.VaiTro.DM_VAITRO_ID" />
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSave").click(function () {
+            $("#frmChucNangDefault").submit();
+        });
+    });
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function Success() {
+        CommonJS.alert("Thiết lập chức năng mặc định thành công");
+        $("#SetDefault").dialog("close");
+        reloadGrid();
+    }
+    function OnClose() {
+        $("#SetDefault").dialog("close");
+    }
+
+</script>

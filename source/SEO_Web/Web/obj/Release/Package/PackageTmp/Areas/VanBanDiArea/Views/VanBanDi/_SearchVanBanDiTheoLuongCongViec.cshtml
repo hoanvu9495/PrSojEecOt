@@ -1,0 +1,242 @@
+﻿@using Web.Common;
+@model Web.Areas.VanBanDiArea.Models.VBDiIndexViewModel
+<style>
+    .lbl-search {
+        line-height: 30px !important;
+    }
+</style>
+<div id="searchPanel" style="display:none;">
+    <h3 class="group-tittle" style="">
+        Tìm kiếm văn bản đi @Model.TenTrangThai
+    </h3>
+    <div style="float: left; margin-left: 15%;">
+        @Html.AntiForgeryToken()
+        @using (Ajax.BeginForm("FindVanBanDiTheoLuongXuLy", "VanBanDi", new AjaxOptions()
+        {
+            //InsertionMode = InsertionMode.Replace,
+            HttpMethod = "GET",
+            OnFailure = "failure",
+            OnSuccess = "searchSuccess",
+            UpdateTargetId = "grid",
+        }, new { id = "frmSearh" }))
+        {
+            <div style="width:100%;">
+                <table style="width:100%;">
+                    <tr style="height: 20px;"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl-search">Từ khóa tìm kiếm:</label>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBox("keyword", "", new { @style = "width: 72%;", @class = "e-input mf10" })
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td width="15%;">
+                            <label class="lbl-search">Ngày ban hành:</label>
+                        </td>
+                        <td width="20%;">
+                            @Html.TextBox("ngaybanhanh_from", "", new { @placeholder = "Từ ngày", @style = "width: 220px;", @class = "e-input mf10 vbdi_datepicker" })
+                        </td>
+                        <td width="10%;">
+                            <label class="lbl-search"></label>
+                        </td>
+                        <td width="55%;">
+                            @Html.TextBox("ngaybanhanh_to", "", new { @placeholder = "Đến ngày", @style = "width: 233px;", @class = "e-input mf10 vbdi_datepicker" })
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td width="15%;">
+                            <label class="lbl-search">Ngày có hiệu lực:</label>
+                        </td>
+                        <td width="20%;">
+                            @Html.TextBox("ngaycohieuluc_from", "", new { @placeholder = "Từ ngày", @style = "width: 220px", @class = "e-input mf10 vbdi_datepicker" })
+                        </td>
+                        <td width="10%;">
+                            <label class="lbl-search"></label>
+                        </td>
+                        <td width="55%;">
+                            @Html.TextBox("ngaycohieuluc_to", "", new { @placeholder = "Đến ngày", @style = "width: 233px;", @class = "e-input mf10 vbdi_datepicker" })
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td width="15%;">
+                            <label class="lbl-search">Nhóm sổ văn bản:</label>
+                        </td>
+                        <td width="20%;">
+                            <div class="input-field clearfix mf10" style="width: 262px; float:left">
+                                <div class="input-field4 clearfix" style="width: 233px;">
+                                    @if (Model.ListNhomSoVanBan != null && Model.ListNhomSoVanBan.Count == 1)
+                                    {
+                                        @Html.DropDownList("NHOMSOVANBAN_ID", Model.ListNhomSoVanBan, new { @class = "create-phanloai", @style = "width: 100%" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownList("NHOMSOVANBAN_ID", Model.ListNhomSoVanBan, "[--- Chọn nhóm sổ văn bản ---]", new { @class = "create-phanloai", @style = "width: 100%" })
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <label class="lbl-search">Sổ văn bản:</label>
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix" style="width: 233px; margin-left:10px;">
+                                <select multiple="multiple" name="sovanban" id="SOVANBAN_ID">
+                                    @if (Model.ListSoVanBan != null && Model.ListSoVanBan.Count > 0)
+                                    {
+                                        foreach (var item in Model.ListSoVanBan)
+                                        {
+                                            <option data-sovb="@item.SOVBTHEOSO" value="@item.ID">@item.TENSO</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl-search">Loại văn bản:</label>
+                        </td>
+                        <td>
+                            <div class="input-field clearfix mf10" style="width: 262px; float:left">
+                                <div class="input-field4 clearfix" style="width: 233px;">
+                                    <select multiple="multiple" name="loaivanban_id" id="LOAIVANBAN_ID">
+                                        @if (Model.ListLoaiVanBan != null && Model.ListLoaiVanBan.Count > 0)
+                                        {
+                                            foreach (var item in Model.ListLoaiVanBan)
+                                            {
+                                                <option value="@item.ID">@item.TENLOAIVANBAN</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <label class="lbl-search">Đánh dấu:</label>
+                        </td>
+                        <td>
+                            <div class="input-field clearfix mf10" style="width: 262px; float:left">
+                                <div class="input-field4 clearfix" style="width: 233px;" id="markitem_panel">
+                                    <select multiple="multiple" name="list_mark_item" id="list_mark_item">
+                                        <option value="@LOAITAILIEU.CONS_READ">Đã đọc</option>
+                                        <option value="@LOAITAILIEU.CONS_UNREAD">Chưa đọc</option>
+                                        <option value="@LOAITAILIEU.CONS_FAVORITE">Có gắn dấu sao</option>
+                                        <option value="@LOAITAILIEU.CONS_UNFAVORITE">Không gắn dấu sao</option>
+                                        <option value="@LOAITAILIEU.CONS_IMPORTANT">Quan trọng</option>
+                                        <option value="@LOAITAILIEU.CONS_UNIMPORTANT">Không quan trọng</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                </table>
+            </div>
+            <div style="margin-left:30%;">
+                <input type="hidden" value="@Model.State_ID" name="state_id" id="state_id" />
+                <input type="hidden" value="" name="LST_LOAIVANBAN_ID" id="LST_LOAIVANBAN_ID" />
+                <input type="hidden" value="" name="LST_SOVANBAN_ID" id="LST_SOVANBAN_ID" />
+                <input type="hidden" value="" name="mark_item" id="mark_item" />
+                <input type="hidden" id="reload" name="reload" value="0" />
+                <input type="button" value="Tìm kiếm" id="btnSearchVanBanDi" style="background-color: #336699; height: 25px; border: none; width: 100px; color: white;" />
+                <input type="button" value="Đóng" class="vbdi_search" style="background-color: #336699; height: 25px; border: none; width: 100px; color: white;" />
+            </div>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    $("#keyword").keypress(function (e) {
+        if (e.which == '13') {
+            e.preventDefault();
+            $("#txtQuickSearch").val($("#keyword").val());
+            $("#frmSearh").submit();
+        }
+    });
+    $("#LOAIVANBAN_ID").multipleSelect({
+        single: false,
+        filter: true,
+        placeholder: "[--- Chọn Loại văn bản ---]"
+    });
+    $("#SOVANBAN_ID").multipleSelect({
+        single: false,
+        filter: true,
+        placeholder: "[--- Chọn sổ văn bản ---]"
+    });
+    $("#list_mark_item").multipleSelect({
+        selectAll: false,
+        single: false,
+        filter: true,
+        placeholder: "[--- Hình thức đánh dấu ---]"
+    });
+    $(".vbdi_search").click(function () {
+        $("#searchPanel").toggle();
+    });
+    $(function () {
+        $(".vbdi_datepicker").datepicker({ dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true, yearRange: "-50:+20", showWeek: false, weekHeader: "Tuần", language: 'vi' });
+    });
+    $("#btnSearchVanBanDi").click(function () {
+        $("#LST_LOAIVANBAN_ID").val($("#LOAIVANBAN_ID").multipleSelect("getSelects"));
+        $("#LST_SOVANBAN_ID").val($("#SOVANBAN_ID").multipleSelect("getSelects"));
+        $("#txtQuickSearch").val($("#keyword").val());
+        $("#mark_item").val($("#list_mark_item").multipleSelect("getSelects"));
+        $("#reload").val("0");
+        $("#frmSearh").submit();
+    });
+    $("#NHOMSOVANBAN_ID").change(function () {
+        var id = $("#NHOMSOVANBAN_ID").val();
+        if (id.length > 0 && parseInt(id) > 0) {
+            $.ajax({
+                url: "/VanBanDiArea/VanBanDi/GetListSoVanBanByNhomSo",
+                type: 'POST',
+                data: { id: id },
+                success: function (data) {
+                    $('#SOVANBAN_ID').html(data);
+                },
+                error: function (data) {
+                    $('#SOVANBAN_ID').html("<option value=''>[--- Chọn sổ văn bản ---]</option>");
+                }
+            });
+            $("#NHOMSOVANBAN_ID_NULL").hide();
+        }
+        else {
+            $('#SOVANBAN_ID').html("<option value=''>[--- Chọn sổ văn bản ---]</option>");
+            $("#NHOMSOVANBAN_ID_NULL").show();
+        }
+
+    });
+    function failure() {
+    }
+    function searchSuccess() {
+        if (_ShowImportant == 1) {
+            $(".webGrid thead tr th").eq(2).show();
+            $(".webGrid tbody tr").each(function () {
+                $(this).find("td").eq(2).show();
+            });
+        }
+        else {
+            $(".webGrid thead tr th").eq(2).hide();
+            $(".webGrid tbody tr").each(function () {
+                $(this).find("td").eq(2).hide();
+            });
+        }
+        if (_ShowFavorite == 1) {
+            $(".webGrid thead tr th").eq(1).show();
+            $(".webGrid tbody tr").each(function () {
+                $(this).find("td").eq(1).show();
+            });
+        }
+        else {
+            $(".webGrid thead tr th").eq(1).hide();
+            $(".webGrid tbody tr").each(function () {
+                $(this).find("td").eq(1).hide();
+            });
+        }
+    }
+
+</script>

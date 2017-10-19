@@ -1,0 +1,143 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+</style>
+@using (Ajax.BeginForm("SaveTrangThai", "TrangThaiSuDungTaiLieu", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmLoaiVanBanCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm mới trạng thái sử dụng</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    @*<tr style="height:20px"></tr>
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>*@
+                    <tr>
+                        <td style="width:100px">
+                            <label class="lbl" for="CREATE_LOAIVANBAN" style=" width: 130px;">Tên trạng thái:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("TENTRANGTHAI", "", new { @style = "width: 233px;", maxlength = "50", @class = "e-input", @id = "TENTRANGTHAI" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="TENTRANGTHAI_ER" style="margin-left: 0px; color: red;">Trạng thái này đã tồn tại.</span>
+                            <span class="lb-Check" id="TENTRANGTHAI_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập trạng thái</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="CREATE_STATUS" style=" width: 130px;">Trạng Thái:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix">
+                                <select name="TRANGTHAI">
+                                    <option value="true">Sử dụng</option>
+                                    <option value="false">Không sử dụng</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td></td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btnSave">Thêm mới</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+}
+<style>
+
+</style>
+<script type="text/javascript">
+    $(function () {
+
+        $("#TENTRANGTHAI").blur(function () {
+            if ($("#TENTRANGTHAI").val().trim().length == 0) {
+
+            } else {
+                $("#LOAITAILIEU_NULL").hide();
+            }
+        });
+
+
+        $("#btnSave").click(function () {
+            if ($("#TENTRANGTHAI").val().trim().length == 0) {
+                $("#TENTRANGTHAI").focus();
+                $("#TENTRANGTHAI_NULL").show();
+                return false;
+            } else {
+                $("#TENTRANGTHAI_NULL").hide();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Validate", "TrangThaiSuDungTaiLieu")',
+                    data: {
+                        TRANGTHAI: $("#TENTRANGTHAI").val()
+
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.length > 0) {
+                            $("#TENTRANGTHAI").select();
+                            $("#TENTRANGTHAI_ER").show();
+                            return false;
+                        } else {
+                            $("#TENTRANGTHAI_ER").hide();
+                            $("#frmLoaiVanBanCreate").submit();
+                            return true;
+                        }
+                    }, error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            }
+            return false;
+        });
+    });
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function CreateSuccess() {
+
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Đã tạo mới trạng thái sử dụng tài liệu!',
+        });
+        $("#CreateTrangThai").modal("hide");
+        reloadGrid();
+    }
+</script>

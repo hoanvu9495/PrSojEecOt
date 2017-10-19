@@ -1,0 +1,216 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.eAita;
+@model Web.Areas.DMVaiTroArea.Models.VaiTroViewModel
+@{
+    UserInfoBO userInfo = (UserInfoBO)SessionManager.GetUserInfo();
+}
+
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+
+<style>
+    .color-red {
+        color: red;
+    }
+
+    .lbl6 {
+        margin-top: 7px;
+    }
+
+    .ms-drop {
+        /*width: 233px;*/
+        width: 100%;
+    }
+
+    .ms-choice > span {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+        width: 100%;
+    }
+
+    .width_100 {
+        width: 100% !important;
+    }
+</style>
+@using (Ajax.BeginForm("SaveVaiTro", "DMVaiTro", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "EditSuccess"
+}, new { id = "frmVaiTroEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Sửa vai trò <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="lbl6">Mã vai trò<span class="color-red">*</span></label>
+            </div>
+            <div class=" col-sm-8">
+                <div class="form-group">
+                    @Html.TextBox("MA_VAITRO", Model.VaiTro.MA_VAITRO, new { @class = "form-control required", @id = "CREATE_MAVAITRO", @maxlength = "20" })
+                    <div class="note-error">
+                        <span id="ErrVaiTro" class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="lbl6">Tên vai trò<span class="color-red">*</span></label>
+            </div>
+            <div class=" col-sm-8">
+                <div class="form-group">
+
+                    @Html.TextBox("TEN_VAITRO", Model.VaiTro.TEN_VAITRO, new { @class = "form-control required", @id = "CREATE_TENVAITRO ", @maxlength = "100" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.RoleIsValid)
+        {
+            <div class="row">
+                <div class="col-sm-4">
+                    <label class="lbl6">Cấp cơ sở<span class="color-red">*</span></label>
+                </div>
+                <div class=" col-sm-8">
+                    @Html.DropDownList("CAPCOSO_ID", Model.ListCapCoSo, "NULL", new { @class = "width_100", @id = "CREATE_CAPCOSO_ID" })
+
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="lbl6">Trạng thái<span class="color-red">*</span></label>
+            </div>
+            <div class=" col-sm-8">
+                <select name="TRANGTHAI" id="TRANGTHAI" style="width: 100%;">
+                    @if (Model.VaiTro.TRANGTHAI.HasValue && Model.VaiTro.TRANGTHAI == 1)
+                    {
+                        <option value="1" selected>Hiệu lực</option>
+                        <option value="0">Không hiệu lực</option>
+                    }
+                    else
+                    {
+                        <option value="1">Hiệu lực</option>
+                        <option value="0" selected>Không hiệu lực</option>
+                    }
+                </select>
+
+                <div class="note-error">
+                    <span class="error mes-note-error"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" name="DM_VAITRO_ID" value="@Model.VaiTro.DM_VAITRO_ID" />
+    <div class="modal-footer">
+        @{
+    if (!Model.RoleIsValid)
+    {
+        <input type="hidden" name="CREATE_CAPCOSO_ID" id="CREATE_CAPCOSO_ID" value="@userInfo.CAPCOSO_ID" />
+    }
+        }
+        <button type="button" class="btn btn-primary" id="btnEdit" style="border-radius: 3px;">
+            Lưu
+        </button>
+        <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+    </div>
+}
+<script type="text/javascript">
+
+ 
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function EditSuccess(rs) {
+        if (rs) {
+            NotiSuccess("Cập nhật vai trò thành công");
+        }
+
+
+        OnCloseLog();
+        reloadGrid();
+    }
+    function OnClose() {
+        $("#PrepareVaiTro").dialog("close");
+    }
+    function OnCloseLog() {
+
+        $("#formEdit").html("");
+        $("#PrepareVaiTro").modal("hide");
+    }
+  
+    function pageFunction() {
+        $("#TRANGTHAI").multipleSelect({
+            multiple: false,
+            filter: false,
+            single: true,
+        });
+        $("#CREATE_MAVAITRO").change(function () {
+            if ($("#CREATE_MAVAITRO").val().trim().length > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("FindEditMa", "DMVaiTro")',
+                    cache: false,
+                    data: {
+                        MAVAITRO: "@Model.VaiTro.MA_VAITRO",
+                        input: $("#CREATE_MAVAITRO").val()
+                    },
+                    success: function (data) {
+                        if (data > 0) {
+                            $("#ErrVaiTro").html("Mã đã tồn tại");
+                            $("#ErrVaiTro").css("display", "inline");
+                            $("#CREATE_MAVAITRO").val("");
+                        } else {
+                            $("#ErrVaiTro").css("display", "none");
+                        }
+                    }
+                });
+            }
+        });
+
+        $("#btnEdit").click(function () {
+            var err = 0;
+            var required = requiredFieldForFormId("frmVaiTroCreate");
+            if (!required) {
+                err++
+            }
+            if (err == 0) {
+                $("#frmVaiTroEdit").submit();
+                return true;
+            } else {
+                NotiError("Có lỗi. Vui lòng kiểm tra lại");
+                return false;
+            }
+
+        });
+    }
+
+    loadScript("Scripts/jquery.unobtrusive-ajax.min.js", function () {
+        loadScript("Scripts/autoNumeric.min.js", function () {
+            loadScript("Scripts/multiple-select.js", pageFunction);
+        });
+    });
+    
+</script>

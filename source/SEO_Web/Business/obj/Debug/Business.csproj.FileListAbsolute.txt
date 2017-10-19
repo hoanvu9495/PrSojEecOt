@@ -1,0 +1,241 @@
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\Business.dll.config
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\Business.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\Business.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\BarcodeLib.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\Ciloci.Flee.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\DAL.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\EntityFramework.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\EntityFramework.Extended.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\Ionic.Zip.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\log4net.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\Model.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\NativeExcel.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.OOXML.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.OpenXml4Net.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.OpenXmlFormats.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\Oracle.DataAccess.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\Serializer.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.EntityFramework.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\DAL.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\EntityFramework.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\Model.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.EntityFramework.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\obj\Debug\Business.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\obj\Debug\Business.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\obj\Debug\Business.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\obj\Debug\Business.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Business.dll.config
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Business.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Business.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\BarcodeLib.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Ciloci.Flee.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\DAL.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\EntityFramework.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\EntityFramework.Extended.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Ionic.Zip.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\log4net.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Model.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\NativeExcel.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.OOXML.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.OpenXml4Net.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.OpenXmlFormats.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Oracle.DataAccess.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Serializer.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.EntityFramework.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\DAL.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\EntityFramework.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Model.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.EntityFramework.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\Business.dll.config
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\Business.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\Business.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\BarcodeLib.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\Ciloci.Flee.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\EntityFramework.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\EntityFramework.Extended.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\Ionic.Zip.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\log4net.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\NativeExcel.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\NPOI.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\NPOI.OOXML.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\NPOI.OpenXml4Net.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\NPOI.OpenXmlFormats.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\Oracle.DataAccess.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\bin\Debug\EntityFramework.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\obj\Debug\Business.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\obj\Debug\Business.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Business.dll.config
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Business.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Business.pdb
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\BarcodeLib.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Ciloci.Flee.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\DAL.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\EntityFramework.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\EntityFramework.Extended.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Ionic.Zip.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\log4net.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Model.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\NativeExcel.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.OOXML.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.OpenXml4Net.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\NPOI.OpenXmlFormats.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Oracle.DataAccess.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Serializer.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.EntityFramework.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\DAL.pdb
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\EntityFramework.xml
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\Model.pdb
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.pdb
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.xml
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\bin\Debug\MiniProfiler.EntityFramework.pdb
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\obj\Debug\Business.dll
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\obj\Debug\Business.pdb
+E:\Project\TCMR\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\Business.dll.config
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\Business.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\Business.pdb
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\BarcodeLib.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\Ciloci.Flee.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\DAL.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\EntityFramework.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\EntityFramework.Extended.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\Ionic.Zip.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\log4net.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\Model.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\NativeExcel.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\NPOI.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\NPOI.OOXML.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\NPOI.OpenXml4Net.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\NPOI.OpenXmlFormats.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\Oracle.DataAccess.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\MiniProfiler.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\MiniProfiler.EntityFramework.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\DAL.pdb
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\EntityFramework.xml
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\Model.pdb
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\MiniProfiler.pdb
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\MiniProfiler.xml
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\bin\Debug\MiniProfiler.EntityFramework.pdb
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\obj\Debug\Business.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\obj\Debug\Business.pdb
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\DLLOut\Business.dll.config
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\DLLOut\Business.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\DLLOut\Business.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\obj\Debug\Business.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Business\obj\Debug\Business.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Business\obj\Debug\Business.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Business\obj\Debug\Business.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\DLLOut\Business.dll.config
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\DLLOut\Business.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\DLLOut\Business.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\DLLOut\Business.dll.config
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\DLLOut\Business.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\DLLOut\Business.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Business\obj\Debug\Business.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Business\obj\Debug\Business.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\DLLOUTPUT\Business.dll.config
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\DLLOUTPUT\Business.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\DLLOUTPUT\Business.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Business\obj\Debug\Business.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Business\obj\Debug\Business.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\DLLOUTPUT\Business.dll.config
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\DLLOUTPUT\Business.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\DLLOUTPUT\Business.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Business\obj\Debug\Business.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Business\obj\Debug\Business.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\DLLOUTPUT\Business.dll.config
+D:\code\trunk\04.SourceCode\eAita_Web\DLLOUTPUT\Business.dll
+D:\code\trunk\04.SourceCode\eAita_Web\DLLOUTPUT\Business.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+D:\code\trunk\04.SourceCode\eAita_Web\Business\obj\Debug\Business.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Business\obj\Debug\Business.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Business\obj\Debug\Business.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Business\obj\Debug\Business.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\DLLOUTPUT\Business.dll.config
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\DLLOUTPUT\Business.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\DLLOUTPUT\Business.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\DLLOUTPUT\Business.dll.config
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\DLLOUTPUT\Business.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\DLLOUTPUT\Business.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Business\obj\Debug\Business.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Business\obj\Debug\Business.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\DLLOUTPUT\Business.dll.config
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\DLLOUTPUT\Business.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\DLLOUTPUT\Business.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Business\obj\Debug\Business.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Business\obj\Debug\Business.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\DLLOUTPUT\Business.dll.config
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\DLLOUTPUT\Business.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\DLLOUTPUT\Business.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Business\obj\Debug\Business.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Business\obj\Debug\Business.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Business\obj\Debug\Business.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Business\obj\Debug\Business.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\DLLOUTPUT\Business.dll.config
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\DLLOUTPUT\Business.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\DLLOUTPUT\Business.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\DLLOUTPUT\Business.dll.config
+F:\VNIO\qldh_vnio2017\eAita_Web\DLLOUTPUT\Business.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\DLLOUTPUT\Business.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+F:\VNIO\qldh_vnio2017\eAita_Web\Business\obj\Debug\Business.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Business\obj\Debug\Business.pdb
+F:\qldh_vnio24-06\eAita_Web\DLLOUTPUT\Business.dll.config
+F:\qldh_vnio24-06\eAita_Web\DLLOUTPUT\Business.dll
+F:\qldh_vnio24-06\eAita_Web\DLLOUTPUT\Business.pdb
+F:\qldh_vnio24-06\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+F:\qldh_vnio24-06\eAita_Web\Business\obj\Debug\Business.dll
+F:\qldh_vnio24-06\eAita_Web\Business\obj\Debug\Business.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\DLLOUTPUT\Business.dll.config
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\DLLOUTPUT\Business.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\DLLOUTPUT\Business.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\obj\Debug\Business.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Business\obj\Debug\Business.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+F:\TemplateComplex\qldh_vnio\eAita_Web\Business\obj\Debug\Business.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Business\obj\Debug\Business.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\DLLOUTPUT\Business.dll.config
+F:\TemplateComplex\qldh_vnio\eAita_Web\DLLOUTPUT\Business.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\DLLOUTPUT\Business.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Business\obj\Debug\Business.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Business\obj\Debug\Business.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\DLLOUTPUT\Business.dll.config
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\DLLOUTPUT\Business.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\DLLOUTPUT\Business.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\DLLOUTPUT\Business.dll.config
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\DLLOUTPUT\Business.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\DLLOUTPUT\Business.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Business\obj\Debug\Business.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Business\obj\Debug\Business.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\DLLOUTPUT\Business.dll.config
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\DLLOUTPUT\Business.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\DLLOUTPUT\Business.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Business\obj\Debug\Business.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Business\obj\Debug\Business.pdb

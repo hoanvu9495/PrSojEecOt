@@ -1,0 +1,40 @@
+﻿<style>
+    .txt {
+        width: 250px;
+    }
+
+    .btn {
+        height: 30px;
+        background: #0099CC;
+        font-weight: bold;
+        color: white;
+        border: none;
+    }
+   
+</style>
+<div class="panel">
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindDanToc","DMDanToc",new AjaxOptions(){
+
+    InsertionMode=InsertionMode.Replace,
+    HttpMethod= "POST",
+    OnFailure = "failure",
+    UpdateTargetId = "grid",
+    },new {id="frmSearch"})){
+    <div style="text-align:center">
+        <label class="lblDiemThi" style="margin-left:130px;width:80px">Tên dân tộc:</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        @Html.TextBox("DANTOC", "", new {@style ="width:200px", @class="e-input"})
+        <input type="submit" id="btnSearch" value="Tìm Kiếm" style="background-color:#336699;font-weight:bold;height:35px;border:none;width:100px;color:white" />
+    </div>
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#DANTOC").val(@ViewData["DanToc"]);
+    });
+    function failure(xhr, response) {
+        CommonJS.alert(xhr.responseText);
+        $("#DANTOC").val("");
+    }
+</script>

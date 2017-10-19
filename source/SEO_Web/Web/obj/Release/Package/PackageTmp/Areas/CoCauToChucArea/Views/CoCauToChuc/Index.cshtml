@@ -1,0 +1,681 @@
+﻿@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@using Business.CommonBusiness;
+@using Web.Areas.CoCauToChucArea.Models;
+
+@model CoCauToChucIndexModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    var jsonDatas = Html.Raw(JsonConvert.SerializeObject(Model.TreeData));
+    var jsonType = Html.Raw(JsonConvert.SerializeObject(Model.DS_TYPE));
+}
+<link href="~/Scripts/MenuContext/jquery.contextMenu.min.css" rel="stylesheet" />
+
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+
+<style>
+    .ms-drop {
+        /*width: 233px;*/
+        width: 100%;
+    }
+
+    .ms-choice > span {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+        width: 100%;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .lbl3 {
+        margin-top: 7px;
+    }
+
+    .color-red {
+        color: red;
+    }
+
+    .width-100 {
+        width: 100% !important;
+    }
+
+    .title {
+        font-size: x-large;
+    }
+</style>
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <h2 class="group-tittle mt10">
+            Cơ cấu tổ chức
+        </h2>
+    </header>
+    <div class="tree smart-form">
+
+        <ul id="rootNode"></ul>
+    </div>
+</div>
+
+<div id="CreateModal" title="Thêm mới" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content" id="form-createChucNang">
+            @using (Ajax.BeginForm("Create", "ChucNang", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "actionCreateSuccess"
+}, new { id = "frmChucNangCreate" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Thêm mới thành phần cơ cấu tổ chức <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <div class=" row">
+                        <div class="col-sm-4">
+                            <label class="lbl3">Cấp trên<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <input type="hidden" name="PARENT" id="CREATE_PARENT_ID" class="form-control" />
+                                <input type="text" name="CREATE_PARENT" id="CREATE_PARENT" class="form-control" value="Tổng công ty" readonly />
+                                <div class="note-error">
+                                    <span id="ErrMaChucNang" class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" row">
+                        <div class="col-sm-4">
+                            <label class="lbl3">Loại</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                @Html.DropDownList("TYPE", Model.DS_TYPE, new { @class = "width-100" })
+                                <div class="note-error">
+                                    <span id="" class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class=" row">
+                        <div class="col-sm-4">
+                            <label class="lbl3">Tên cấp<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <input type="text" name="NAME" class="form-control required" />
+
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" row">
+                        <div class="col-sm-4">
+                            <label class="lbl3">Mã<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <input type="text" name="CODE" id="C-CODE" class="form-control required" />
+
+                                <div class="note-error">
+                                    <span id="errC-CODE" class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <div class="modal-footer center">
+                    <button type="button" class="btn btn-primary" id="btnSave" style="border-radius: 3px;">
+                        Lưu
+                    </button>
+                    <button type="button" class="btn btn-default" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+<div id="UpdateModal" title="Cập nhật" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content" id="form-createChucNang">
+            @using (Ajax.BeginForm("Edit", "ChucNang", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "actionUpdateSuccess"
+}, new { id = "frmChucNangEdit" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Cập nhật thành phân cơ cấu tổ chức <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <div class=" row">
+                        <div class="col-sm-4">
+                            <label class="lbl3">Cấp trên<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <select name="PARENT" id="Update_PARENT" class="width-100"></select>
+
+                                <div class="note-error">
+                                    <span id="ErrMaChucNang" class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class=" row">
+                        <div class="col-sm-4">
+                            <label class="lbl3">Loại</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <select name="TYPE" id="listLoai" class="width-100"></select>
+
+                                <div class="note-error">
+                                    <span id="" class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class=" row">
+                        <div class="col-sm-4">
+                            <label class="lbl3">Tên cấp<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <input type="text" name="NAME" id="EDIT_NAME" class="form-control required" />
+
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class=" row">
+                        <div class="col-sm-4">
+                            <label class="lbl3">Mã<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <input type="text" name="CODE" id="E-CODE" class="form-control required" />
+
+                                <div class="note-error">
+                                    <span id="errE-CODE" class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <input type="hidden" name="ID_NODE" id="ID_NODE" value="" />
+                </div>
+
+                <div class="modal-footer center">
+                    <button type="button" class="btn btn-primary" id="btnEdit" style="border-radius: 3px;">
+                        Lưu
+                    </button>
+                    <button type="button" class="btn btn-default" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+                </div>
+            }
+
+
+        </div>
+
+    </div>
+</div>
+<div id="UserModal" title="Cập nhật" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content" id="form-createChucNang">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Danh sách người dùng <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="TitlePhongBan" class="modal-title center title">
+
+                </p>
+                <div class="row">
+                    <div class=" col-sm-12 custom-scroll" style=" max-height:300px; overflow-x:hidden;overflow-y:scroll;">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr><th>STT</th><th>Họ tên</th></tr>
+                            </thead>
+                            <tbody id="ListNguoiDung"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer center">
+                    <button type="button" class="btn btn-default" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    pageSetUp();
+    var isSearch = false;
+    var data = eval(@jsonDatas);
+    var arrType = eval(@jsonType);
+    var failure = function () {
+        NotiError("Có lỗi");
+    }
+    var createModalOpen = function (id) {
+        $("#frmChucNangCreate").find(".error").css("display", "none");
+        $.ajax({
+            url: '@Url.Action("GetNode", "cocautochuc", new { @area="cocautochucarea"})',
+            data: { "id": parseInt(id) },
+            async: false,
+            success: function (rs) {
+                $("#CREATE_PARENT_ID").val(rs.ID);
+                $("#CREATE_PARENT").val(rs.NAME);
+                $("#CreateModal").modal("show");
+            }
+        });
+
+    }
+    var UserModalOpen = function (id) {
+        $("#frmChucNangEdit").find(".error").css("display", "none");
+        $.ajax({
+            url: '@Url.Action("GetUser", "cocautochuc", new { @area="cocautochucarea"})',
+            data: { "id": parseInt(id) },
+            async: false,
+            success: function (rs) {
+                $("#TitlePhongBan").html(rs.Item.NAME + " (" + rs.ListNguoiDung.length + ")");
+                var str = "";
+                for (var i = 0; i < rs.ListNguoiDung.length; i++) {
+                    str += "<tr>";
+                    str += "<td>" + (i + 1) + "</td>";
+                    str += "<td>" + rs.ListNguoiDung[i].HOTEN + "</td>";
+                    str += "</tr>";
+
+                }
+                $("#ListNguoiDung").html(str);
+                $("#UserModal").modal("show");
+            }, error: function (mes) {
+                NotiError("Có lỗi");
+            }
+        });
+
+    }
+
+ 
+    var editModalOpen = function (id) {
+        $.ajax({
+            url: '@Url.Action("GetParent", "cocautochuc", new { @area = "cocautochucarea" })',
+            data: { "id": parseInt(id) },
+            async: false,
+            success: function (rs) {
+                var str = "";
+                for (var i = 0; i < rs.DS_PARENT.length; i++) {
+                    if (rs.DS_PARENT[i].ID == rs.Item.PARENT_ID) {
+                        str += '<option value="' + rs.DS_PARENT[i].ID + '" selected>' + rs.DS_PARENT[i].NAME + '</option>';
+                    } else {
+                        str += '<option value="' + rs.DS_PARENT[i].ID + '">' + rs.DS_PARENT[i].NAME + '</option>';
+                    }
+                }
+
+                $("#Update_PARENT").html(str);
+                $("#ID_NODE").val(rs.Item.ID);
+                $("#EDIT_NAME").val(rs.Item.NAME);
+                $("#E-CODE").val(rs.Item.CODE);
+
+
+                var sttType = "";
+                for (var i = 0; i < rs.DS_TYPE.length; i++) {
+                    if (rs.DS_TYPE[i].Value == rs.Item.TYPE) {
+                        sttType += '<option value="' + rs.DS_TYPE[i].Value + '" selected>' + rs.DS_TYPE[i].Text + '</option>';
+                    } else {
+                        sttType += '<option value="' + rs.DS_TYPE[i].Value + '">' + rs.DS_TYPE[i].Text + '</option>';
+                    }
+                }
+                $("#listLoai").html(sttType);
+            }, complete: function () {
+                $("#listLoai").multipleSelect({
+                    multiple: false,
+                    filter: false,
+                    single: true,
+                });
+                $("#Update_PARENT").multipleSelect({
+                    multiple: false,
+                    filter: false,
+                    single: true,
+                });
+                $("#UpdateModal").modal("show");
+            }
+        });
+
+    }
+
+    function ActionDelete(id) {
+        var is_DELete = true;
+        $.ajax({
+            url: '@Url.Action("CheckHasChild", "cocautochuc", new { @area = "cocautochucarea" })',
+            type: 'post',
+            cache: false,
+            async: false,
+            data: {
+                id: id
+            },
+            success: function (data) {
+                if (data) {
+                    is_DELete = false;
+                }
+            },
+            error: function (xhr) {
+                is_DELete = false;
+            }
+        });
+        if (is_DELete) {
+            Delete(id);
+        } else {
+            NotiError("Thành phần này không thể xóa bỏ.");
+        }
+    }
+
+    function Delete(id) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn muốn thành phần cơ cấu tổ chức này này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes btn-primary',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delele", "cocautochuc", new {@area="cocautochucarea" })',
+                            type: 'post',
+                            cache: false,
+                            data: {
+                                id: id
+                            },
+                            success: function (data) {
+                                NotiSuccess("Xóa thành công");
+                                reloadPage();
+                            },
+                            error: function (xhr) {
+                                NotiError("Xóa thất bại");
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-default',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+
+    }
+
+
+    function reloadPage() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadPage", "cocautochuc", new { @area="cocautochucarea"})',
+            cache: false,
+            async: false,
+            success: function (data) {
+                var treeData = getChild(data);
+                $("#rootNode").html(treeData);
+            }, complete: function () {
+                var mytreebranch = $(".tree").find("li:has(ul)").addClass("parent_li").attr("role", "treeitem").find(" > span").attr("title", "Thu gọn nhánh này");
+                $(".tree > ul").attr("role", "tree").find("ul").attr("role", "group"), mytreebranch.on("click", function (a) {
+                    var b = $(this).parent("li.parent_li").find(" > ul > li");
+                    b.is(":visible") ? (b.hide("fast"), $(this).attr("title", "Mở rộng").find(" > i").addClass("icon-plus-sign").removeClass("icon-minus-sign")) : (b.show("fast"), $(this).attr("title", "Thu gọn nhánh này").find(" > i").addClass("icon-minus-sign").removeClass("icon-plus-sign")), a.stopPropagation()
+
+                }
+       )
+                //alert(isSearch);
+                //loadScript("js/plugin/bootstraptree/bootstrap-tree.min.js");
+            }
+        });
+
+
+    }
+
+    var actionCreateSuccess = function (rs) {
+        if (rs) {
+            NotiSuccess("Tạo mới thành công");
+            $("#CreateModal").modal("hide");
+            reloadPage();
+        }
+
+    }
+
+    var actionUpdateSuccess = function (rs) {
+        if (rs) {
+            NotiSuccess("Cập nhật thành công");
+            $("#UpdateModal").modal("hide");
+            reloadPage();
+        }
+
+    }
+
+    function getChild(item) {
+        var str = "";
+        if (item.ITEM_LEVEL <= 3) {
+            str += "<li>";
+
+        } else {
+            str += "<li style='display:none'>";
+
+        }
+
+        if (item.Child != null && item.Child.length > 0) {
+            str += '<span class="itemData">' +
+                '<input type="hidden" value="' + item.ID + '"/>'
+                + '<i class="fa fa-lg fa-plus-circle"></i>' + item.CODE + " - " + item.NAME + "</span>";
+            str += "<ul>";
+            for (var i = 0; i < item.Child.length; i++) {
+                str += getChild(item.Child[i]);
+            }
+            str += "</ul>";
+        } else {
+            str += '<span class="itemData">' + '<input type="hidden" value="' + item.ID + '"/>' + '<i ></i>' + item.CODE + " - " + item.NAME + "</span>";
+        }
+        str += "</li>";
+
+        return str;
+    }
+
+    var pagefunction = function () {
+
+        var treeData = getChild(data);
+
+        $("#rootNode").html(treeData);
+
+        $.contextMenu({
+            selector: 'span.itemData',
+            autoHide: true,
+            items: {
+                "add": {
+                    name: "Thêm",
+                    type: "",
+                    icon: function (opt, $itemElement, itemKey, item) {
+                        // Set the content to the menu trigger selector and add an bootstrap icon to the item.
+                        $itemElement.html('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Thêm mới' + opt.selector);
+                        return 'context-menu-icon-updated';
+                    },
+                    callback: function (key, opt) {
+                        var id = opt.$trigger.find("input").val();
+                        createModalOpen(id);
+                    },
+                },
+                "edit": {
+                    name: "Sửa",
+                    icon: function (opt, $itemElement, itemKey, item) {
+                        // Set the content to the menu trigger selector and add an bootstrap icon to the item.
+                        $itemElement.html('<span   class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp; Sửa' + opt.selector);
+                        return 'context-menu-icon-updated';
+                    },
+                    callback: function (key, opt) {
+                        var id = opt.$trigger.find("input").val();
+                        editModalOpen(id);
+                    },
+                },
+                "delete": {
+                    name: "Xóa",
+                    icon: function (opt, $itemElement, itemKey, item) {
+                        // Set the content to the menu trigger selector and add an bootstrap icon to the item.
+                        $itemElement.html('<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp; Xóa' + opt.selector);
+                        return 'context-menu-icon-updated';
+                    },
+                    callback: function (key, opt) {
+                        var id = opt.$trigger.find("input").val();
+                        ActionDelete(id);
+                    },
+                },
+                "user": {
+                    name: "Danh sách người dùng",
+                    icon: function (opt, $itemElement, itemKey, item) {
+                        // Set the content to the menu trigger selector and add an bootstrap icon to the item.
+                        $itemElement.html('<span  class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Danh sách người dùng' + opt.selector);
+                        return 'context-menu-icon-updated';
+                    },
+                    callback: function (key, opt) {
+                        var id = opt.$trigger.find("input").val();
+                        UserModalOpen(id);
+                    },
+                },
+            }
+        });
+
+        $('.context-menu-one').on('click', function (e) {
+            console.log('clicked', this);
+        })
+
+        $("#btnSave").click(function () {
+            var err = 0;
+            var require = requiredFieldForFormId("frmChucNangCreate");
+            if (!require) {
+                err++;
+            }
+            if (err == 0) {
+                $("#frmChucNangCreate").submit();
+                return true;
+            } else {
+                NotiError("Có lỗi. Vui lòng kiểm tra lại");
+                return false;
+            }
+        })
+
+        $("#btnEdit").click(function () {
+            var err = 0;
+            var require = requiredFieldForFormId("frmChucNangEdit");
+            if (!require) {
+                err++;
+            }
+            if (err == 0) {
+                $("#frmChucNangEdit").submit();
+                return true;
+            } else {
+                NotiError("Có lỗi. Vui lòng kiểm tra lại");
+                return false;
+            }
+        })
+
+        $("#TYPE").multipleSelect({
+            multiple: false,
+            filter: false,
+            single: true,
+        });
+
+        loadScript("js/plugin/bootstraptree/bootstrap-tree.min.js");
+
+
+    };
+    $("#E-CODE").change(function () {
+        var code = $("#E-CODE").val();
+        var id = parseInt($("#ID_NODE").val());
+        if (code != "") {
+            $.ajax({
+                url: "cocautochucarea/cocautochuc/CheckCode",
+                type: "post",
+                dataType: "json",
+                data: { "code": code, "id": id },
+                success: function (rs) {
+                    if (rs.Status) {
+                        $("#errE-CODE").html("Mã đã tồn tại");
+                        $("#errE-CODE").css("display", "inline");
+                        $("#E-CODE").val("");
+                    } else {
+                        $("#errE-CODE").css("display", "none");
+                    }
+                }
+            });
+        }
+    });
+    $("#C-CODE").change(function () {
+        var code = $("#C-CODE").val();
+
+        if (code != "") {
+            $.ajax({
+                url: "cocautochucarea/cocautochuc/CheckCode",
+                type: "post",
+                dataType: "json",
+                data: { "code": code, "id": 0 },
+                success: function (rs) {
+                    if (rs.Status) {
+                        $("#errC-CODE").html("Mã đã tồn tại");
+                        $("#errC-CODE").css("display", "inline");
+                        $("#C-CODE").val("");
+                    } else {
+                        $("#errC-CODE").css("display", "none");
+                    }
+                }
+            });
+        }
+    });
+
+  
+    //pagefunction();
+    loadScript("Scripts/jquery.unobtrusive-ajax.min.js", function () {
+        loadScript("Scripts/MenuContext/jquery.contextMenu.min.js", function () {
+            loadScript("Scripts/multiple-select.js", pagefunction);
+        });
+    });
+</script>
+

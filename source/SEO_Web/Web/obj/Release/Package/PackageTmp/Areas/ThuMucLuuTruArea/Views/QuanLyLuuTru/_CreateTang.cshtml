@@ -1,0 +1,235 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.QuanLyTangModel
+@using (Ajax.BeginForm("SaveTang", "QuanLyLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmThuMucCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm mới tầng lưu trữ</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td>
+                            Tòa nhà:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix">
+                                @Html.DropDownList("TOANHA_ID", new SelectList(Model.lstToaNha, "Value", "Text", Model.TANG.TOANHA_ID), "[---Lựa chọn tòa nhà---]", new { @style = "", @id = "TOANHA_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TOANHA_NULL">Bạn cần phải chọn tòa nhà</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100px">
+                            Mã tầng:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" class="e-input" style="width:233px" name="MATANG" id="MATANG" placeholder="Nhập mã tầng lưu trữ" maxlength="255">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="MATANG_NULL">Mã tầng lưu trữ không được để trống</span>
+                            <span style="color: red; display: none" id="MATANG_ERROR">Mã tầng lưu trữ đã tồn tại</span>
+                            <span style="color: red; display: none" id="MATANG_HTML">Mã tầng lưu trữ chỉ được chứa chữ và số</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100px">
+                            Tên tầng:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" class="e-input" style="width:233px" name="TENTANG" id="TENTANG" placeholder="Nhập tên tầng lưu trữ" maxlength="255">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TENTANG_NULL">Tên tầng lưu trữ không được để trống</span>
+                            <span style="color: red; display: none" id="TENTANG_ERROR">Tên tầng lưu trữ đã tồn tại</span>
+                            <span style="color: red; display: none" id="TENTANG_HTML">Tên tầng lưu trữ không được chứa ký tự HTML(<>)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100px">
+                            Mô tả:
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="MOTA" id="MOTA" placeholder="Nhập mô tả tầng lưu trữ" maxlength="255"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+
+                            <span style="color: red; display: none" id="MOTA_HTML">Mô tả tầng lưu trữ không được chứa ký tự HTML(<>)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Trạng thái:
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix">
+                                <select name="TRANGTHAI">
+                                    <option value="true">Sử dụng</option>
+                                    <option value="false">Không sử dụng</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btnSave">Thêm mới</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" value="@Model.MATANG" id="MATANG_CHECK" />
+    <input type="hidden" value="@Model.TENTANG" id="TENTANG_CHECK" />
+}
+<script>
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Đã thêm mới tầng lưu trữ!',
+        });
+        $("#CreateTang").html("");
+        $("#CreateTang").modal("hide");
+        reloadGrid();
+
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $(function () {
+        $("#MATANG").blur(function () {
+            if ($(this).val().trim() != "") {
+                $("#MATANG_NULL").hide();
+                $("#MATANG_HTML").hide();
+                $("#MATANG_ERROR").hide();
+            }
+        });
+        $("#TENTANG").blur(function () {
+            if ($(this).val().trim() != "") {
+                $("#TENTANG_NULL").hide();
+                $("#TENTANG_HTML").hide();
+                $("#TENTANG_ERROR").hide();
+            }
+        });
+        $("#TOANHA_ID").change(function () {
+            if ($("#TOANHA_ID").val() != "") {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListMaTang", "QuanLyLuuTru")',
+                    data: {
+                        TOANHA: $("#TOANHA_ID").val()
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        $("#MATANG_CHECK").val(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListTenTang", "QuanLyLuuTru")',
+                    data: {
+                        TOANHA: $("#TOANHA_ID").val()
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        $("#TENTANG_CHECK").val(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            } else {
+                $("#MATANG_CHECK").val("");
+                $("#TENTANG_CHECK").val("");
+            }
+        });
+        $("#btnSave").click(function () {
+            var element = this;
+            if ($("#TOANHA_ID").val().trim() == "") {
+                $("#TOANHA_NULL").show();
+                $("#TOANHA_ID").focus();
+                return false;
+            } else {
+                $("#TOANHA_NULL").hide();
+            }
+
+            if ($("#MATANG").val().trim() == "") {
+                $("#MATANG_NULL").show();
+                $("#MATANG").focus();
+                return false;
+            } else {
+                $("#MATANG_NULL").hide();
+            }
+            if (/^[a-z0-9]*$/i.test($("#MATANG").val()) == false) {
+                $("#MATANG").focus();
+                $("#MATANG_HTML").show();
+                return false;
+            } else {
+                $("#MATANG_HTML").hide();
+            }
+
+            var Ma = $("#MATANG_CHECK").val();
+            var lstMa = Ma.split(",");
+
+            if ($.inArray($("#MATANG").val().toLowerCase(), lstMa) != -1) {
+                $("#MATANG").focus();
+                $("#MATANG_ERROR").show();
+                return false;
+            } else {
+                $("#MATANG_ERROR").hide();
+            }
+            if ($("#TENTANG").val().trim() == "") {
+                $("#TENTANG_NULL").show();
+                $("#TENTANG").focus();
+                return false;
+            } else {
+                $("#TENTANG_NULL").hide();
+                if (/<[a-z][\s\S]*>/i.test($("#TENTANG").val())) {
+                    $("#TENTANG").focus();
+                    $("#TENTANG_HTML").show();
+                    return false;
+                } else {
+                    $("#TENTANG_HTML").hide();
+                }
+                var lstTen = $("#TENTANG_CHECK").val().split(",");
+                if ($.inArray($("#TENTANG").val().toLowerCase(), lstTen) != -1) {
+                    $("#TENTANG").focus();
+                    $("#TENTANG_ERROR").show();
+                    return false;
+                } else {
+                    $("#TENTANG_ERROR").hide();
+                }
+            }
+            return true;
+        });
+    });
+</script>

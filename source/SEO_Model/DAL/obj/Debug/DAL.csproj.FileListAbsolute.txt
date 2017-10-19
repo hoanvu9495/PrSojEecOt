@@ -1,0 +1,135 @@
+D:\YTe du phong\SourceCode_SMAS\ThiQG_Model\Dll Out\DAL.dll.config
+D:\YTe du phong\SourceCode_SMAS\ThiQG_Model\Dll Out\DAL.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_Model\Dll Out\DAL.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_Model\DAL\obj\Debug\DAL.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_Model\DAL\obj\Debug\DAL.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_Model\DAL\obj\Debug\DAL.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_Model\DAL\obj\Debug\DAL.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_Model\Dll Out\DAL.dll.config
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_Model\Dll Out\DAL.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_Model\Dll Out\DAL.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Model\Dll Out\DAL.dll.config
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Model\Dll Out\DAL.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Model\Dll Out\DAL.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Model\DAL\obj\Debug\DAL.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Model\DAL\obj\Debug\DAL.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\ThiQG_Model\Dll Out\DAL.dll.config
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\ThiQG_Model\Dll Out\DAL.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\ThiQG_Model\Dll Out\DAL.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\ThiQG_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\ThiQG_Model\DAL\obj\Debug\DAL.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\ThiQG_Model\DAL\obj\Debug\DAL.pdb
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Model\Dll Out\DAL.dll.config
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Model\Dll Out\DAL.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Model\Dll Out\DAL.pdb
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Model\DAL\obj\Debug\DAL.dll
+D:\Projects\DICHBENH\Wip\Source\DichBenh\DichBenh_Model\DAL\obj\Debug\DAL.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Model\Dll Out\DAL.dll.config
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Model\Dll Out\DAL.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Model\Dll Out\DAL.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Model\DAL\obj\Debug\DAL.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Model\DAL\obj\Debug\DAL.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Model\DAL\obj\Debug\DAL.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Model\DAL\obj\Debug\DAL.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Model\Dll Out\DAL.dll.config
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Model\Dll Out\DAL.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Model\Dll Out\DAL.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Model\Dll Out\DAL.dll.config
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Model\Dll Out\DAL.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Model\Dll Out\DAL.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Model\DAL\obj\Debug\DAL.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Model\DAL\obj\Debug\DAL.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\Dll Out\DAL.dll.config
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\Dll Out\DAL.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\Dll Out\DAL.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.dll.config
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.dll.config
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.pdb
+E:\Hinet\eAitaQLDH\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.dll.config
+E:\Hinet\eAitaQLDH\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.dll
+E:\Hinet\eAitaQLDH\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.pdb
+E:\Hinet\eAitaQLDH\trunk\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\Hinet\eAitaQLDH\trunk\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.dll
+E:\Hinet\eAitaQLDH\trunk\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.pdb
+D:\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.dll.config
+D:\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.dll
+D:\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.pdb
+D:\code\trunk\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+D:\code\trunk\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.dll
+D:\code\trunk\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\DAL\obj\Debug\DAL.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.dll.config
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\DAL.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\DAL\obj\Debug\DAL.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\DAL\obj\Debug\DAL.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\DLLOUTPUT\DAL.dll.config
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\DLLOUTPUT\DAL.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\DLLOUTPUT\DAL.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\DAL\obj\Debug\DAL.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\DAL\obj\Debug\DAL.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\DLLOUTPUT\DAL.dll.config
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\DLLOUTPUT\DAL.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\DLLOUTPUT\DAL.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\DLLOUTPUT\DAL.dll.config
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\DLLOUTPUT\DAL.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\DLLOUTPUT\DAL.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\DAL\obj\Debug\DAL.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\DAL\obj\Debug\DAL.pdb
+F:\qldh_vnio24-06\eAita_Model\DLLOUTPUT\DAL.dll.config
+F:\qldh_vnio24-06\eAita_Model\DLLOUTPUT\DAL.dll
+F:\qldh_vnio24-06\eAita_Model\DLLOUTPUT\DAL.pdb
+F:\qldh_vnio24-06\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+F:\qldh_vnio24-06\eAita_Model\DAL\obj\Debug\DAL.dll
+F:\qldh_vnio24-06\eAita_Model\DAL\obj\Debug\DAL.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\DLLOUTPUT\DAL.dll.config
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\DLLOUTPUT\DAL.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\DLLOUTPUT\DAL.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\DAL\obj\Debug\DAL.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\DAL\obj\Debug\DAL.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Model\DLLOUTPUT\DAL.dll.config
+F:\TemplateComplex\qldh_vnio\eAita_Model\DLLOUTPUT\DAL.dll
+F:\TemplateComplex\qldh_vnio\eAita_Model\DLLOUTPUT\DAL.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+F:\TemplateComplex\qldh_vnio\eAita_Model\DAL\obj\Debug\DAL.dll
+F:\TemplateComplex\qldh_vnio\eAita_Model\DAL\obj\Debug\DAL.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\DAL\obj\Debug\DAL.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\DAL\obj\Debug\DAL.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\DLLOUTPUT\DAL.dll.config
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\DLLOUTPUT\DAL.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\DLLOUTPUT\DAL.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\DAL\obj\Debug\DAL.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\DAL\obj\Debug\DAL.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\DLLOUTPUT\DAL.dll.config
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\DLLOUTPUT\DAL.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\DLLOUTPUT\DAL.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\DAL\obj\Debug\DAL.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\DAL\obj\Debug\DAL.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\DLLOUTPUT\DAL.dll.config
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\DLLOUTPUT\DAL.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\DLLOUTPUT\DAL.pdb

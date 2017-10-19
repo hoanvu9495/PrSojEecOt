@@ -1,0 +1,16 @@
+﻿@using Web.Common;
+@{
+    ViewBag.Title = "[eAita] Điều hành tác nghiệp > Quản lý văn bản đến > Chi tiết văn bản đến";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<div class="box-content">
+    @Html.Partial("_ViewVanBanDen")
+</div>
+
+<script>
+    $(document).ready(function () {
+        drawBreadCrumbManual("Quản lý văn bản/ Văn bản đến/Thông tin văn bản đến");
+        $("#VANBANDEN").addClass("open");
+        $("#VANBANDEN ul").css("display", "block")
+    });
+</script>

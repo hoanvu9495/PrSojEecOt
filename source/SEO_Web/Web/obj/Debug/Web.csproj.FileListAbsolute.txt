@@ -1,0 +1,1816 @@
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Uploads\Temp\Empty.txt
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Web.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Web.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Antlr3.Runtime.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Business.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Ciloci.Flee.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\CsQuery.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\DAL.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\DocX.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\EntityFramework.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\EntityFramework.Extended.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\HtmlSanitizer.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Ionic.Zip.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\log4net.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Microsoft.Web.DistributedCache.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Microsoft.Web.Infrastructure.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Microsoft.WindowsFabric.Common.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\MiniProfiler.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\MiniProfiler.EntityFramework.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Model.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\NativeExcel.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Newtonsoft.Json.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Ninject.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Oracle.DataAccess.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\SAML20Library.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Serializer.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Net.Http.Formatting.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.Http.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.Http.WebHost.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.Mvc.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.Optimization.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.Providers.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.Razor.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.Deployment.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.Razor.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\WebGrease.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\NPOI.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\NPOI.OOXML.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\BarcodeLib.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\NPOI.OpenXmlFormats.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\NPOI.OpenXml4Net.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Business.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\DAL.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\EntityFramework.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\MiniProfiler.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\MiniProfiler.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\MiniProfiler.EntityFramework.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Model.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Ninject.pdb
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Ninject.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\Newtonsoft.Json.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Net.Http.Formatting.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.Http.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.Http.WebHost.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.Mvc.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.Razor.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.Deployment.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.Razor.xml
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\obj\Debug\Web.dll
+D:\YTe du phong\SourceCode_SMAS\ThiQG_TiepNhanHS\Web\obj\Debug\Web.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\obj\Debug\Web.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\obj\Debug\Web.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Uploads\Temp\Empty.txt
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Web.dll.config
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Web.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Web.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Antlr3.Runtime.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Business.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Ciloci.Flee.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\CsQuery.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\DAL.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\DocX.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\EntityFramework.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\EntityFramework.Extended.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\HtmlSanitizer.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Ionic.Zip.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\log4net.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Microsoft.Web.DistributedCache.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Microsoft.Web.Infrastructure.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Microsoft.WindowsFabric.Common.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\MiniProfiler.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\MiniProfiler.EntityFramework.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Model.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\NativeExcel.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Newtonsoft.Json.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Ninject.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Oracle.DataAccess.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\SAML20Library.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Serializer.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Net.Http.Formatting.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.Http.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.Http.WebHost.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.Mvc.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.Optimization.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.Razor.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.Deployment.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.Razor.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\WebGrease.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\NPOI.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\NPOI.OOXML.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\BarcodeLib.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\NPOI.OpenXmlFormats.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\NPOI.OpenXml4Net.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Business.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\DAL.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\EntityFramework.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\MiniProfiler.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\MiniProfiler.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\MiniProfiler.EntityFramework.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Model.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Ninject.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Ninject.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Newtonsoft.Json.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Net.Http.Formatting.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.Http.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.Http.WebHost.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.Mvc.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.Razor.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.Deployment.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.WebPages.Razor.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Uploads\Temp\Empty.txt
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Web.dll.config
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Web.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Web.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Antlr3.Runtime.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Business.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Ciloci.Flee.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\CsQuery.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\DocX.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\EntityFramework.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\EntityFramework.Extended.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\HtmlSanitizer.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Ionic.Zip.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\log4net.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\MiniProfiler.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\MiniProfiler.EntityFramework.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\NativeExcel.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Newtonsoft.Json.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Ninject.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Oracle.DataAccess.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\SAML20Library.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Net.Http.Formatting.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.Http.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.Http.WebHost.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.Mvc.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.Optimization.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.Providers.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.Razor.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.WebPages.Deployment.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.WebPages.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.WebPages.Razor.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\WebGrease.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\NPOI.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\NPOI.OOXML.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\BarcodeLib.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\NPOI.OpenXmlFormats.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\NPOI.OpenXml4Net.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Business.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\EntityFramework.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\MiniProfiler.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\MiniProfiler.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Ninject.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Ninject.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\Newtonsoft.Json.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Net.Http.Formatting.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.Http.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.Http.WebHost.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.Mvc.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.Razor.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.WebPages.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.WebPages.Deployment.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\bin\System.Web.WebPages.Razor.xml
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\obj\Debug\Web.dll
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\TCMR_Web\Web\obj\Debug\Web.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\Antlr3.Runtime.pdb
+E:\Working\HiNet\30.Viettel\TCMR-SVN\Wip\Source\FW_VT\ThiQG_TiepNhanHS\Web\bin\System.Web.Optimization.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Uploads\Temp\Empty.txt
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Web.dll.config
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Web.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Web.pdb
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Antlr3.Runtime.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Business.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Ciloci.Flee.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\CsQuery.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\DocX.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\EntityFramework.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\EntityFramework.Extended.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\HtmlSanitizer.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Ionic.Zip.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\log4net.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\MiniProfiler.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\MiniProfiler.EntityFramework.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\NativeExcel.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Newtonsoft.Json.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Ninject.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\SAML20Library.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Net.Http.Formatting.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Http.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Http.WebHost.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Mvc.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Optimization.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Razor.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.Deployment.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.Razor.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\WebGrease.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\NPOI.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\NPOI.OOXML.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\BarcodeLib.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\NPOI.OpenXmlFormats.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\NPOI.OpenXml4Net.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Business.pdb
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Antlr3.Runtime.pdb
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\EntityFramework.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\MiniProfiler.pdb
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\MiniProfiler.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Newtonsoft.Json.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Ninject.pdb
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Ninject.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Optimization.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Net.Http.Formatting.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Http.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Http.WebHost.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Mvc.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Razor.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.Deployment.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.Razor.xml
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\obj\Debug\Web.dll
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\obj\Debug\Web.pdb
+D:\Data\Wip\Source\DichBenh\DichBenh_Web\Web\bin\oracle.dataaccess.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Uploads\Temp\Empty.txt
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Web.dll.config
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Web.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Web.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Antlr3.Runtime.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Business.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Ciloci.Flee.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\CsQuery.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\DocX.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\EntityFramework.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\EntityFramework.Extended.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\HtmlSanitizer.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Ionic.Zip.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\log4net.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\MiniProfiler.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\MiniProfiler.EntityFramework.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\NativeExcel.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Newtonsoft.Json.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Ninject.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\oracle.dataaccess.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\SAML20Library.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Net.Http.Formatting.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Http.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Http.WebHost.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Mvc.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Optimization.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Razor.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.Deployment.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.Razor.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\WebGrease.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\NPOI.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\NPOI.OOXML.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\BarcodeLib.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\NPOI.OpenXmlFormats.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\NPOI.OpenXml4Net.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Antlr3.Runtime.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Business.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\EntityFramework.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\MiniProfiler.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\MiniProfiler.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Newtonsoft.Json.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Ninject.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Ninject.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Optimization.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Net.Http.Formatting.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Http.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Http.WebHost.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Mvc.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.Razor.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.Deployment.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\System.Web.WebPages.Razor.xml
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\obj\Debug\Web.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\obj\Debug\Web.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\DAL.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Model.dll
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\DAL.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\bin\Model.pdb
+E:\Working\HiNet\30.Viettel\DichBenhSVN\Wip\Source\DichBenh\DichBenh_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Web.dll.config
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Web.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Web.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Business.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Ciloci.Flee.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\CsQuery.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\DAL.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\DocX.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\EntityFramework.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\EntityFramework.Extended.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\HtmlSanitizer.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Ionic.Zip.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\log4net.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\MiniProfiler.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Model.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\NativeExcel.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Newtonsoft.Json.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Ninject.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\oracle.dataaccess.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\SAML20Library.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.Http.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.Razor.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\WebGrease.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\NPOI.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\NPOI.OOXML.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\BarcodeLib.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Business.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\DAL.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\EntityFramework.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\MiniProfiler.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\MiniProfiler.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Model.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Newtonsoft.Json.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Ninject.pdb
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\Ninject.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.Http.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.Razor.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\obj\Debug\Web.dll
+E:\Working\HiNet\12.eAita\03.SourceCode\eAita_Web\Web\obj\Debug\Web.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Web.dll.config
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Web.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Web.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Business.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Ciloci.Flee.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\CsQuery.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\DAL.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\DocX.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\EntityFramework.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\EntityFramework.Extended.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\HtmlSanitizer.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Ionic.Zip.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\log4net.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\MiniProfiler.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Model.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\NativeExcel.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Newtonsoft.Json.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Ninject.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\oracle.dataaccess.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\SAML20Library.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.Http.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.Razor.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\WebGrease.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\NPOI.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\NPOI.OOXML.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\BarcodeLib.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Business.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\DAL.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\EntityFramework.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\MiniProfiler.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\MiniProfiler.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Model.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Newtonsoft.Json.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Ninject.pdb
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\Ninject.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.Http.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.Razor.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\obj\Debug\Web.dll
+E:\Working\HiNet\12.eAita\01.1.DieuHanh\02.SourceCode\eAita_Web\Web\obj\Debug\Web.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Web.dll.config
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Web.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Web.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Business.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Ciloci.Flee.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\CsQuery.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\DAL.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\DocX.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\EntityFramework.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\EntityFramework.Extended.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\HtmlSanitizer.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Ionic.Zip.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\log4net.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Model.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\NativeExcel.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Newtonsoft.Json.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Ninject.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\oracle.dataaccess.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\SAML20Library.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Razor.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\WebGrease.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\NPOI.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\NPOI.OOXML.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\BarcodeLib.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Business.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\DAL.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\EntityFramework.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Model.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Newtonsoft.Json.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Ninject.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Ninject.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Razor.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\obj\Debug\Web.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\obj\Debug\Web.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Web.dll.config
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Web.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Web.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Business.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Ciloci.Flee.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\CsQuery.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\DAL.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\DocX.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\EntityFramework.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\EntityFramework.Extended.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\HtmlSanitizer.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Ionic.Zip.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\log4net.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Model.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\NativeExcel.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Newtonsoft.Json.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Ninject.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\SAML20Library.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Razor.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\WebGrease.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\NPOI.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\BarcodeLib.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\NPOI.OOXML.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Business.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\DAL.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\EntityFramework.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Model.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Newtonsoft.Json.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Ninject.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\Ninject.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.Razor.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\obj\Debug\Web.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\obj\Debug\Web.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Web.dll.config
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Web.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Web.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Business.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Ciloci.Flee.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\CsQuery.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\DAL.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\DocX.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Elasticsearch.Net.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\EntityFramework.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\EntityFramework.Extended.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\HtmlSanitizer.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Ionic.Zip.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\log4net.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Model.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\NativeExcel.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Nest.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Newtonsoft.Json.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Ninject.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\SAML20Library.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Razor.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\WebGrease.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\NPOI.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\NPOI.OOXML.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\BarcodeLib.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Business.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\DAL.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Elasticsearch.Net.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\EntityFramework.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Model.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Nest.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Nest.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Ninject.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\Ninject.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Razor.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+D:\code\trunk\04.SourceCode\eAita_Web\Web\obj\Debug\Web.dll
+D:\code\trunk\04.SourceCode\eAita_Web\Web\obj\Debug\Web.pdb
+D:\code\trunk\04.SourceCode\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\obj\Debug\Web.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\obj\Debug\Web.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Web.dll.config
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Web.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Web.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\AE.Net.Mail.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Business.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Ciloci.Flee.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\CsQuery.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\DAL.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\DocX.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Elasticsearch.Net.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\EntityFramework.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\EntityFramework.Extended.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\HtmlSanitizer.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Ionic.Zip.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\log4net.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Model.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\NativeExcel.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Nest.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Newtonsoft.Json.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Ninject.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\SAML20Library.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Razor.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\WebGrease.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\NPOI.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\NPOI.OOXML.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\BarcodeLib.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Business.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\AE.Net.Mail.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\DAL.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Elasticsearch.Net.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\EntityFramework.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\HtmlAgilityPack.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Model.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Nest.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Nest.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Ninject.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\Ninject.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Optimization.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Mvc.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.Razor.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Web.dll.config
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Web.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Web.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\AE.Net.Mail.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Antlr3.Runtime.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Business.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Ciloci.Flee.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\CsQuery.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\DAL.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\DocX.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Elasticsearch.Net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\EntityFramework.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\EntityFramework.Extended.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\HtmlAgilityPack.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\HtmlSanitizer.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Ionic.Zip.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\log4net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\MiniProfiler.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Model.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\NativeExcel.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Nest.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Newtonsoft.Json.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Ninject.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\SAML20Library.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.Http.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.Mvc.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.Optimization.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.Razor.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.WebPages.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\WebGrease.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\NPOI.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\NPOI.OOXML.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\BarcodeLib.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Business.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\AE.Net.Mail.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\DAL.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Elasticsearch.Net.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\EntityFramework.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\HtmlAgilityPack.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\MiniProfiler.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\MiniProfiler.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Model.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Nest.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Nest.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Ninject.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\Ninject.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.Optimization.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.Http.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.Mvc.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.Razor.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.WebPages.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\obj\Debug\Web.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eAita_Web\Web\obj\Debug\Web.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Web.dll.config
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Web.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Web.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\AE.Net.Mail.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Antlr3.Runtime.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\BarcodeLib.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Business.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Ciloci.Flee.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\CsQuery.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\DAL.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\DocX.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Elasticsearch.Net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\EntityFramework.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\EntityFramework.Extended.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\HtmlAgilityPack.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\HtmlSanitizer.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Ionic.Zip.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\log4net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\MiniProfiler.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Model.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\NativeExcel.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Nest.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Newtonsoft.Json.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Ninject.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\SAML20Library.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.Http.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.Mvc.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.Optimization.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.Razor.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.WebPages.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\WebGrease.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\NPOI.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\NPOI.OOXML.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Business.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\AE.Net.Mail.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\DAL.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Elasticsearch.Net.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\EntityFramework.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\HtmlAgilityPack.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\MiniProfiler.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\MiniProfiler.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Model.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Nest.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Nest.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Ninject.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\Ninject.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.Optimization.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.Http.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.Mvc.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.Razor.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.WebPages.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\obj\Debug\Web.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\obj\Debug\Web.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\EngineIoClientDotNet.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\SocketIOClient.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\WebSocket4Net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\SocketIOClient.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\SocketIOClient.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Web\Web\bin\WebSocket4Net.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Web.dll.config
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Web.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Web.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\AE.Net.Mail.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Antlr3.Runtime.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\BarcodeLib.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Business.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Ciloci.Flee.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\CsQuery.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\DAL.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\DocX.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Elasticsearch.Net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\EngineIoClientDotNet.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\EntityFramework.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\EntityFramework.Extended.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\HtmlAgilityPack.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\HtmlSanitizer.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Ionic.Zip.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\log4net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\MiniProfiler.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Model.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\NativeExcel.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Nest.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Newtonsoft.Json.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Ninject.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\SAML20Library.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\SocketIOClient.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.Http.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.Mvc.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.Optimization.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.Razor.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.WebPages.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\WebGrease.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\WebSocket4Net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\NPOI.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\NPOI.OOXML.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Business.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\AE.Net.Mail.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\DAL.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Elasticsearch.Net.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\EntityFramework.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\HtmlAgilityPack.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\MiniProfiler.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\MiniProfiler.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Model.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Nest.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Nest.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Ninject.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\Ninject.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\SocketIOClient.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\SocketIOClient.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.Optimization.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.Http.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.Mvc.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.Razor.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.WebPages.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\WebSocket4Net.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\obj\Debug\Web.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\obj\Debug\Web.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\obj\Debug\Web.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Web.dll.config
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Web.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Web.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\AE.Net.Mail.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Antlr3.Runtime.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Business.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Ciloci.Flee.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\CsQuery.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\DAL.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\DocX.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Elasticsearch.Net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\EngineIoClientDotNet.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\EntityFramework.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\EntityFramework.Extended.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\HtmlAgilityPack.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\HtmlSanitizer.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Ionic.Zip.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\log4net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Model.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\NativeExcel.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Nest.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Newtonsoft.Json.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Ninject.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\SAML20Library.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\SocketIOClient.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.Http.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.Mvc.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.Optimization.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.Razor.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\WebGrease.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\WebSocket4Net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\NPOI.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\NPOI.OOXML.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Business.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\AE.Net.Mail.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\BarcodeLib.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\DAL.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Elasticsearch.Net.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\EntityFramework.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\HtmlAgilityPack.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Model.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Nest.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Nest.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Ninject.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\Ninject.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\SocketIOClient.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\SocketIOClient.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.Optimization.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.Http.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.Mvc.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.Razor.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\WebSocket4Net.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eBizOffice\eAita_Web\Web\obj\Debug\Web.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Web.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Web.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\AE.Net.Mail.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Antlr3.Runtime.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Business.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Ciloci.Flee.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\CsQuery.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\DAL.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\DocX.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Elasticsearch.Net.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\EngineIoClientDotNet.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\EntityFramework.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\EntityFramework.Extended.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\HtmlAgilityPack.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\HtmlSanitizer.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Ionic.Zip.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\log4net.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Model.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\NativeExcel.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Nest.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Ninject.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\SAML20Library.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.Http.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.Mvc.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.Optimization.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.Razor.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\WebGrease.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\NPOI.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\NPOI.OOXML.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Business.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\AE.Net.Mail.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\DAL.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Elasticsearch.Net.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\EntityFramework.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\HtmlAgilityPack.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Model.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Nest.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Nest.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Ninject.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\Ninject.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.Optimization.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.Http.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.Mvc.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.Razor.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\obj\Debug\Web.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\obj\Debug\Web.pdb
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+D:\01. Hinet\ebizfinal\eBizOffice\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\obj\Debug\Web.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\obj\Debug\Web.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Web.dll.config
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Web.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Web.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\AE.Net.Mail.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Antlr3.Runtime.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Business.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Ciloci.Flee.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\CsQuery.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\DAL.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\DocX.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Elasticsearch.Net.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\EngineIoClientDotNet.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\EntityFramework.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\EntityFramework.Extended.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\HtmlAgilityPack.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\HtmlSanitizer.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Ionic.Zip.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\log4net.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Model.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\NativeExcel.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Nest.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Newtonsoft.Json.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Ninject.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\PagedList.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\PagedList.Mvc.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\SAML20Library.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.Http.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.Mvc.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.Optimization.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.Razor.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\WebGrease.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\NPOI.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\NPOI.OOXML.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Business.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\AE.Net.Mail.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\DAL.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Elasticsearch.Net.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\EntityFramework.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\HtmlAgilityPack.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Model.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Nest.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Nest.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Ninject.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\Ninject.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\PagedList.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\PagedList.Mvc.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.Optimization.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.Http.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.Mvc.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.Razor.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Web.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Web.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\AE.Net.Mail.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Antlr3.Runtime.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Business.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Ciloci.Flee.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\CsQuery.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\DAL.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\DocX.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Elasticsearch.Net.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\EngineIoClientDotNet.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\EntityFramework.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\EntityFramework.Extended.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\HtmlAgilityPack.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\HtmlSanitizer.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Ionic.Zip.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\log4net.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\MiniProfiler.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Model.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\NativeExcel.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Nest.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Ninject.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\PagedList.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\PagedList.Mvc.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\SAML20Library.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.Http.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.Mvc.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.Optimization.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.Razor.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.WebPages.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\WebGrease.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\NPOI.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\NPOI.OOXML.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Business.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\AE.Net.Mail.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\DAL.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Elasticsearch.Net.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\EntityFramework.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\HtmlAgilityPack.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\MiniProfiler.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\MiniProfiler.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Model.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Nest.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Nest.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Ninject.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\Ninject.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\PagedList.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\PagedList.Mvc.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.Optimization.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.Http.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.Mvc.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.Razor.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.WebPages.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\obj\Debug\Web.dll
+F:\VNIO\qldh_vnio2017\eAita_Web\Web\obj\Debug\Web.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Web.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Web.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\AE.Net.Mail.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Antlr3.Runtime.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Business.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Ciloci.Flee.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\CsQuery.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\DAL.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\DocX.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Elasticsearch.Net.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\EngineIoClientDotNet.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\EntityFramework.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\EntityFramework.Extended.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\HtmlAgilityPack.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\HtmlSanitizer.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Ionic.Zip.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\log4net.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\MiniProfiler.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Model.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\NativeExcel.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Nest.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Ninject.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\PagedList.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\PagedList.Mvc.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\SAML20Library.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Net.Http.Formatting.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.Http.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.Http.WebHost.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.Mvc.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.Optimization.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.Razor.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.WebPages.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\WebGrease.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\NPOI.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\NPOI.OOXML.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Business.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\AE.Net.Mail.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\DAL.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Elasticsearch.Net.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\EntityFramework.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\HtmlAgilityPack.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\MiniProfiler.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\MiniProfiler.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Model.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Nest.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Nest.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Ninject.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\bin\Ninject.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\PagedList.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\PagedList.Mvc.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.Optimization.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Net.Http.Formatting.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.Http.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.Http.WebHost.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.Mvc.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.Razor.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.WebPages.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+F:\qldh_vnio24-06\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+F:\qldh_vnio24-06\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+F:\qldh_vnio24-06\eAita_Web\Web\obj\Debug\Web.dll
+F:\qldh_vnio24-06\eAita_Web\Web\obj\Debug\Web.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Web.dll.config
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Web.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Web.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\AE.Net.Mail.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Antlr3.Runtime.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Business.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Ciloci.Flee.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\CsQuery.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\DAL.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\DocX.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Elasticsearch.Net.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\EngineIoClientDotNet.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\EntityFramework.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\EntityFramework.Extended.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\HtmlAgilityPack.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\HtmlSanitizer.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Ionic.Zip.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\log4net.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Model.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\NativeExcel.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Nest.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Newtonsoft.Json.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Ninject.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\PagedList.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\PagedList.Mvc.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\SAML20Library.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\System.Web.Mvc.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\System.Web.Optimization.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\System.Web.Razor.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\WebGrease.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\NPOI.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\NPOI.OOXML.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Business.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\AE.Net.Mail.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\DAL.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Elasticsearch.Net.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\EntityFramework.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\HtmlAgilityPack.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Model.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Nest.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Nest.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Ninject.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\Ninject.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\PagedList.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\PagedList.Mvc.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\System.Web.Optimization.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\System.Web.Razor.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\obj\Debug\Web.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\obj\Debug\Web.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\obj\Debug\Web.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\obj\Debug\Web.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Uploads\Temp\Empty.txt
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Web.dll.config
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Web.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Web.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\AE.Net.Mail.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Antlr3.Runtime.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Business.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Ciloci.Flee.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\CsQuery.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\DAL.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\DocX.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Elasticsearch.Net.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\EngineIoClientDotNet.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\EntityFramework.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\EntityFramework.Extended.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\HtmlAgilityPack.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\HtmlSanitizer.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Ionic.Zip.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\log4net.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Model.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\NativeExcel.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Nest.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Newtonsoft.Json.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Ninject.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\PagedList.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\PagedList.Mvc.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\SAML20Library.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\System.Web.Optimization.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\System.Web.Razor.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\WebGrease.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\NPOI.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\NPOI.OOXML.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Business.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\AE.Net.Mail.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\DAL.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Elasticsearch.Net.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\EntityFramework.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\HtmlAgilityPack.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Model.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Nest.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Nest.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Ninject.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\Ninject.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\PagedList.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\PagedList.Mvc.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\System.Web.Optimization.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\System.Web.Razor.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+F:\TemplateComplex\qldh_vnio\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\obj\Debug\Web.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\obj\Debug\Web.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Web.dll.config
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Web.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Web.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\AE.Net.Mail.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Antlr3.Runtime.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Business.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Ciloci.Flee.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\CsQuery.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\DAL.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\DocX.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Elasticsearch.Net.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\EngineIoClientDotNet.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\EntityFramework.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\EntityFramework.Extended.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\HtmlAgilityPack.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\HtmlSanitizer.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Ionic.Zip.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\log4net.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\MiniProfiler.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Model.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\NativeExcel.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Nest.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Newtonsoft.Json.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Ninject.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\PagedList.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\PagedList.Mvc.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\SAML20Library.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\System.Web.Optimization.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\System.Web.Razor.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\System.Web.WebPages.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\WebGrease.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\NPOI.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\NPOI.OOXML.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Business.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\AE.Net.Mail.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\DAL.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Elasticsearch.Net.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\EntityFramework.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\HtmlAgilityPack.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\MiniProfiler.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\MiniProfiler.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Model.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Nest.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Nest.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Ninject.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\Ninject.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\PagedList.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\PagedList.Mvc.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\System.Web.Optimization.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\System.Web.Razor.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\System.Web.WebPages.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Web.dll.config
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Web.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Web.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\AE.Net.Mail.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Antlr3.Runtime.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Business.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Ciloci.Flee.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\CsQuery.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\DAL.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\DocX.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Elasticsearch.Net.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\EngineIoClientDotNet.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\EntityFramework.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\EntityFramework.Extended.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\HtmlAgilityPack.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\HtmlSanitizer.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Ionic.Zip.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\log4net.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\MiniProfiler.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Model.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\NativeExcel.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Nest.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Newtonsoft.Json.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Ninject.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\PagedList.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\PagedList.Mvc.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\SAML20Library.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\System.Web.Optimization.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\System.Web.Razor.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\System.Web.WebPages.Deployment.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\System.Web.WebPages.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\System.Web.WebPages.Razor.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\WebGrease.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\NPOI.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\NPOI.OOXML.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\MiniProfiler.EntityFramework.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\EntityFramework.SqlServer.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\NPOI.OpenXmlFormats.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\NPOI.OpenXml4Net.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Business.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\AE.Net.Mail.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Antlr3.Runtime.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\DAL.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Elasticsearch.Net.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Elasticsearch.Net.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\EntityFramework.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\HtmlAgilityPack.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\HtmlAgilityPack.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\MiniProfiler.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\MiniProfiler.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Model.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Nest.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Nest.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Ninject.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\Ninject.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\PagedList.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\PagedList.Mvc.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\System.Web.Optimization.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\System.Web.Razor.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\System.Web.WebPages.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\System.Web.WebPages.Deployment.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\System.Web.WebPages.Razor.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\obj\Debug\Web.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\obj\Debug\Web.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\DocumentFormat.OpenXml.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\OpenXmlPowerTools.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\DocumentFormat.OpenXml.xml
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\EPPlus.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Web\Web\bin\EPPlus.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Web.dll.config
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Web.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Web.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\AE.Net.Mail.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Antlr3.Runtime.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Business.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Ciloci.Flee.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\CsQuery.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\DAL.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\DocumentFormat.OpenXml.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\DocX.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Elasticsearch.Net.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\EngineIoClientDotNet.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\EntityFramework.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\EntityFramework.Extended.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\EPPlus.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\HtmlAgilityPack.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\HtmlSanitizer.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Ionic.Zip.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\log4net.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Microsoft.ApplicationServer.Caching.Client.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Microsoft.ApplicationServer.Caching.Core.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Microsoft.Web.DistributedCache.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Microsoft.Web.Infrastructure.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Microsoft.WindowsFabric.Common.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Microsoft.WindowsFabric.Data.Common.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\MiniProfiler.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\MiniProfiler.EntityFramework6.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Model.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\NativeExcel.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Nest.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Newtonsoft.Json.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Ninject.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\PagedList.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\PagedList.Mvc.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\SAML20Library.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\System.Web.Optimization.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\System.Web.Razor.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\System.Web.WebPages.Deployment.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\System.Web.WebPages.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\System.Web.WebPages.Razor.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\WebGrease.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\NPOI.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\NPOI.OOXML.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\MiniProfiler.EntityFramework.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\NPOI.OpenXmlFormats.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\NPOI.OpenXml4Net.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Business.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\AE.Net.Mail.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Antlr3.Runtime.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\DAL.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\DocumentFormat.OpenXml.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Elasticsearch.Net.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Elasticsearch.Net.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\EntityFramework.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\EPPlus.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\HtmlAgilityPack.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\HtmlAgilityPack.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\MiniProfiler.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\MiniProfiler.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\MiniProfiler.EntityFramework6.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\MiniProfiler.EntityFramework6.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Model.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Nest.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Nest.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Ninject.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Ninject.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\PagedList.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\PagedList.Mvc.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\System.Web.Optimization.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\System.Web.Razor.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\System.Web.WebPages.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\System.Web.WebPages.Deployment.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\System.Web.WebPages.Razor.xml
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\MiniProfiler.EntityFramework.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\obj\Debug\Web.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\obj\Debug\Web.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\EntityFramework.SqlServer.dll

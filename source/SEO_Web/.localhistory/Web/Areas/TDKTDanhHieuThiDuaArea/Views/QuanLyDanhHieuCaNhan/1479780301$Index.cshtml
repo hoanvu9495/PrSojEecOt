@@ -1,0 +1,108 @@
+﻿@using Model.eAita
+@model Web.Areas.TDKTDanhHieuThiDuaArea.Models.PermissionModel
+@{
+    ViewBag.Title = "Quản lý danh sách danh hiệu thi đua cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div class="block" id="smart-dms">
+            <h1 style="font-size: 24px">Thi đua khen thưởng</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none; border:none;">
+        <div id="menu-child">
+            <div class="menu-left" style="display:inline-block">
+                @if (Model.HasRoleTaoMoiDanhHieuThiDuaCaNhan)
+                {
+                    <div class="btnAddNew" style="margin-right: 20px">
+                        <a href="/TDKTDanhHieuThiDuaArea/QuanLyDanhHieuCaNhan/Create">
+                            <span>Tạo mới danh hiệu thi đua cá nhân</span>
+                        </a>
+                    </div>
+                }
+                <button style="" type="button" class="b_btn b_btn-default">
+                    <a class="" aria-controls="collapseOne" aria-expanded="false" href="#collapseOne" data-toggle="collapse" role="button">
+                        Tìm kiếm
+                    </a>
+                </button>
+            </div>
+            <div class="menu-right">
+                <div class="right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Action("RenderMenu", "QuanLyDanhHieuCaNhan", new { @area = "TDKTDanhHieuThiDuaArea" })
+
+<div class="right-all-page" style="background:#fff;">
+    <div class="right-content clearfix">
+        <div id="search_danh_hieu_thi_dua">
+            @Html.Partial("_VanBanDenSearch", Model)
+        </div>
+        @Html.Partial("_DanhHieuResult")
+    </div>
+</div>
+<script type="text/javascript">
+
+</script>
+
+
+<script>
+    var count = 0;
+    $(function () {
+        $("#btnAdd").click(function () {
+            count += 1;
+            $("#UpLoadFile").append(CreateFile(count));
+        });
+    });
+
+    function CreateFile(count) {
+        return '<tr id="file_' + count + '"> ' +
+            '<td>' +
+        $("#ListDanhHieuHiddenId").html()
+            + '</td>' +
+                '<td><input type="text" value="" style="width: 220px;" name="SOLUONG_TYPE_' + count + '" maxlength="255" id="SOLUONG_TYPE_' + count + '" class="e-input"></td><td><a title="Xóa tài liệu" href="javascript:XoaTaiLieu(' + count + ')" class="remove"><img src="../../../Content/Images/Delete.png" /></a></td></tr>';
+    }
+    function DeleteDanhHieu(id) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa danh hiệu này ?',
+            'buttons': {
+                'Yes': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "QuanLyDanhHieuCaNhan")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: id },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Xóa thành công!',
+                                });
+                                //reloadGrid();
+                                setTimeout('reloadGrid()', 2000);
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'No': {
+                    'class': 'btn-info',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function reloadGrid() {
+        location.reload();
+    }
+</script>

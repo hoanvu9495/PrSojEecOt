@@ -1,0 +1,464 @@
+﻿@using Model.eAita;
+@using Web.FwCore;
+@using Web.Common;
+@using Web.Areas.HSVanBanDiArea.Models;
+@using Web.Areas.MarkItemArea.Models;
+@using System.Globalization;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@using PagedList.Mvc;
+@using PagedList;
+@using Business.CommonBusiness;
+@model PageListResultBO<VanBanDiViewBO>
+
+@{
+    ViewBag.Title = "Danh sách văn bản đi đã xử lý của cá nhân";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    MarkItemViewModel mark_model = new MarkItemViewModel();
+    mark_model.ITEM_TYPE = LOAITAILIEU.VANBANDI;
+    mark_model.RELOAD_FUNCTION = "ReloadPage";
+    var jsonDatas = Html.Raw(JsonConvert.SerializeObject(Model.ListItem));
+}
+<style>
+    .center {
+        text-align: center;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .justify {
+        text-align: justify;
+    }
+</style>
+
+<div class="row" style="margin-bottom:7px;">
+    <div class=" col-sm-3">
+        @Html.Partial("~/Areas/MarkItemArea/Views/_ActionMarkItem.cshtml", mark_model)
+    </div>
+    <div class="col-sm-9">
+
+        <a href="#collapseSearch" class="btn btn-labeled btn-primary" aria-controls="collapseSearch" data-toggle="collapse" role="button" style="float: right; margin-right:5px;">
+            <span class="btn-label">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+            Tìm kiếm nâng cao
+        </a>
+
+    </div>
+</div>
+
+<div class="clearfix">
+    @Html.Partial("_SearchVanBanDiDaXuLyPartial")
+</div>
+
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <h2 class="group-tittle mt10">
+            <i>Danh sách văn bản đi đã xử lý của cá nhân </i><strong id="countTotal" class="text-danger">(@(Model == null ? "0" : Model.Count.ToString()))</strong>
+        </h2>
+    </header>
+    <div class="widge-t-body no-padding">
+        <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+            <table class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Đánh dấu</th>
+                        @*<th>Ban hành</th>*@
+                        @*<th>Số hiệu</th>*@
+                        <th>Trích yếu</th>
+                        @*<th>Đơn vị ban hành</th>*@
+                        @*<th>Người soạn</th>*@
+                        <th>Đơn vị soạn thảo</th>
+                        @*<th>Người tạo</th>*@
+                        <th>Trạng thái</th>
+                        @*<th>Thao tác</th>*@
+
+                    </tr>
+                </thead>
+            </table>
+            <div class="center">
+                <ul class="pagination pagination-sm" id="paging1"></ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+@*@Html.Partial("~/Areas/HSVanBanDiArea/Views/HSVanBanDi/_GenerateBtn.cshtml")*@
+<script src="/js/generateBtnVanBanDi.js"></script>
+<script type="text/javascript">
+    pageSetUp();
+    var currentPage = 1;
+    var $emptyStr = '';
+    var JsonDatas = eval(@jsonDatas);
+    DefineCssPageList();
+
+    function GetDataPage(page){
+        $.ajax({
+            url: '@Url.Action("RefreshData")',
+            type: 'POST',
+            dataType: 'Json',
+            async:false,
+            data: {
+                pageIndex: page,
+
+            },
+            success: function (rs) {
+                $('#countTotal').html('(' + rs.Count+')');
+                for (var i = 0; i < rs.ListItem.length; i++) {
+                    if (rs.ListItem[i].NGAYBANHANH != null) {
+                        var str = rs.ListItem[i].NGAYBANHANH;
+                        rs.ListItem[i].NGAYBANHANH = ConvertToDateISO(str);
+                    }
+                }
+                currentPage=page;
+                LoadData(rs.ListItem);
+            }, error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+    GenPaging(1, @Model.TotalPage, "paging1", GetDataPage);
+
+    $.date = function (dateObject) {
+        var d = new Date(dateObject);
+        var day = d.getDate();
+        var month = d.getMonth() + 1;
+        var year = d.getFullYear();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+        var date = day + "/" + month + "/" + year;
+
+        return date;
+    };
+
+    function format(d) {
+        // `d` is the original data object for the row
+        var tabledata = '<table cellpadding="5" cellspacing="0" border="0" class="table table-hover table-condensed">' +
+            '<tr>' +
+                '<td style="width:140px">Ngày ban hành:</td>' +
+                '<td>' + $.date(d.NGAYBANHANH) + '</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>Số hiệu:</td>' +
+                '<td>' + (d.SOHIEU != null ? d.SOHIEU : "") + '</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>Trích yếu:</td>' +
+                '<td>' + d.TRICHYEU + '</td>' +
+            '</tr>' +
+        '<tr>' +
+           '<td>Đơn vị soạn thảo:</td>' +
+           '<td>' + d.DONVISOANTHAO
+        '</tr>';
+
+
+        tabledata +=
+            '<tr>' +
+                '<td>Nội dung văn bản:</td>' +
+                '<td>' + d.NOIDUNGVANBAN +'</td>' +
+                '</tr>';
+
+        tabledata += '</table>';
+        return tabledata;
+    }
+
+    var LoadData = function (item) {
+
+        var table = $('.wtfayo').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "iDisplayLength": 20,
+            paging: false,
+            "bPaginate":false,
+            "bInfo":false,
+            "aoColumns": [
+                 {
+                     "mData": function (data, type, dataToSet) {
+                         return '<input class="global_checkbox ' + ((data.IS_READ == true) ? "is_read" : "is_unread") + '" type="checkbox" name="ids" value="' + data.ID + '" />';
+                     },
+                     "orderable": false,
+                 },
+
+                    {
+                        "class": 'details-control',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": ''
+                    },
+
+                  {
+                      "width": "45px",
+                      "class": 'center',
+                      "orderable": false,
+                      "mData": function (data, type, dataToSet) {
+                          var str = "<div class='btn-group'>";
+                          str += (data.IS_FAVORITE != null && data.IS_FAVORITE == true) ? "<a class='favorite' style='margin-right:5px' href='javascript:void(0)' onclick='ActionDauSao(" + data.ID + ",false)'><i class='fa fa-star text-success'></i></a>" : "<a class='notset_favorite' href='javascript:void(0)' onclick='ActionDauSao(" + data.ID + ",true)' style='margin-right:5px'><i class='fa fa-star-o text-muted'></i></a>";
+                          str += (data.IS_IMPORTANT != null && data.IS_IMPORTANT == true) ? "<a class='important' href='javascript:void(0)' onclick='ActionDauSao(" + data.ID + ",false)'><i class='fa fa-bookmark text-success'></i></a>" : "<a class='notset_important' href='javascript:void(0)' onclick='ActionQuanTrong(" + data.ID + ",true)'><i class='fa   fa-bookmark-o text-muted'></i></a> ";
+                          str += (data.HAS_FILE != null && data.HAS_FILE == true) ? "<a  href='javascript:void(0)' onclick=''><i class='fa fa-paperclip text-success'></i></a>" : "";
+
+                          str += "</div>";
+                          return str;
+
+                      },
+                  },
+
+                    //{
+                    //    "mData": function (data, type, dataToSet) {
+                    //        return data.NGAYBANHANH != null ? data.IS_READ != true ? ("<b>" + $.date(data.NGAYBANHANH) + "</b>") : $.date(data.NGAYBANHANH) : "";
+                    //    },
+
+                    //},
+                    //{
+
+                    //    "mData": function (data, type, dataToSet) {
+                    //        return data.SOHIEU != null ? (data.IS_READ != true ? ("<b>" + data.SOHIEU + "</b>") : data.SOHIEU) : "";
+                    //    },
+
+                    //},
+                    {
+                        "class":"justify",
+                        "mData": function (data, type, dataToSet) {
+                            var tmp_html = "<br><div class='project-members'>"+data.AvatarMember+"</div>";
+                            var str = "";
+                            if (data.IS_READ != true) {
+                                str += "<b>" + data.TRICHYEU + "</b>";
+                            } else {
+                                str += data.TRICHYEU;
+                            }
+                            str += tmp_html;
+                            return "<a id='item" + data.ID + "' href='javascript:void(0);'onclick='return ViewDetail(" + data.ID + ")'>" + str + "</a>";
+                        },
+
+                    },
+                    //{
+                    //    "mData": function (data, type, dataToSet) {
+                    //        return data.DONVIBANHANH != null ? (data.IS_READ != true ? ("<b>" + data.DONVIBANHANH + "</b>") : data.DONVIBANHANH) : "";
+                    //    },
+
+                    //},
+                    //{
+                    //    "mData": function (data, type, dataToSet) {
+                    //        var nguoi_soan = "";
+                    //        if (data.IS_READ) {
+                    //            nguoi_soan = data.NGUOISOAN;
+                    //        }
+                    //        else {
+                    //            nguoi_soan = "<b>" + data.NGUOISOAN + "</b>";
+                    //        }
+                    //        return nguoi_soan;
+                    //    },
+
+                    //},
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            var donvi_soan = "";
+                            if (data.IS_READ) {
+                                donvi_soan = data.DONVISOANTHAO;
+                            }
+                            else {
+                                donvi_soan = "<b>" + data.DONVISOANTHAO + "</b>";
+                            }
+                            return donvi_soan;
+                        },
+
+                    },
+                    //{
+                    //    "mData": function (data, type, dataToSet) {
+                    //        var nguoi_gui = "";
+                    //        if (data.IS_READ) {
+                    //            nguoi_gui = data.NGUOITAO;
+                    //        }
+                    //        else {
+                    //            nguoi_gui = "<b>" + data.NGUOITAO + "</b>";
+                    //        }
+                    //        return nguoi_gui;
+                    //    },
+
+                    //},
+
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            if (data.IS_READ) {
+                                return data.TENTRANGTHAI;
+                            }
+                            else {
+                                return "<b>" + data.TENTRANGTHAI + "</b>";
+                            }
+                        },
+
+                    },
+                //{
+                //    "orderable": false,
+                //    "sClass": "center",
+                //    "mData": function (data, type, dataToSet) {
+                //        var result = "<div class='project-members'>";
+                //        //if (data.ListSteps.length > 0) {
+                //        if (data.Is_ThaoTac==true) {
+                //            result += data.GenerateButtonStr;
+                //            result += "<a href='javascript:void(0)' onclick='actionEdit(" + data.ID + ")'   title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>";
+                //            result += "<a href='javascript:void(0)' onclick='DeleteVanBanDi(" + data.ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
+                //        }
+                //        result += "</div>";
+                //        return result;
+                //    },
+
+                //},
+
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                runAllCharts()
+            }
+        });
+        $('.wtfayo tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child(format(row.data())).show();
+                tr.addClass('shown');
+            }
+        });
+    }
+
+    var pagefunction = function () {
+        LoadData(JsonDatas);
+    };
+
+    function ViewDetail(id) {
+        location.href = '#hsvanbandiarea/hsvanbandi/detail/' + id;
+    }
+
+    function ReloadPage() {
+        $.ajax({
+            url: '@Url.Action("RefreshData")',
+            type: 'POST',
+            dataType: 'Json',
+            data: {
+                pageIndex: currentPage,
+            },
+            success: function (rs) {
+                $('#countTotal').html('(' + rs.Count+')');
+                for (var i = 0; i < rs.ListItem.length; i++) {
+                    if (rs.ListItem[i].NGAYBANHANH != null) {
+                        var str = rs.ListItem[i].NGAYBANHANH;
+                        rs.ListItem[i].NGAYBANHANH = ConvertToDateISO(str);
+                    }
+                }
+                LoadData(rs.ListItem);
+            }, error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+
+    function ActionQuanTrong(id, status) {
+        $.ajax({
+            url: '@Url.Action("SetQuanTrong", "HSVanBanDi")',
+            type: 'post',
+            cache: false,
+            data: { id: id, status: status },
+            success: function (data) {
+                if (data) {
+                    NotiSuccess("Thao tác thành công");
+                    ReloadPage();
+                } else {
+                    NotiError("Thao tác thất bại");
+                }
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    //function actionEdit(id) {
+    //    window.location.href = "/#hsvanbandiarea/hsvanbandi/EditVB?id=" + id;
+    //}
+
+    @*function DeleteVanBanDi(id) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa văn bản đi này?',
+            'buttons': {
+                'Đồng ý': {
+                    'class': 'btn-confirm-yes btn-primary',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delete","HSVanBanDi")',
+                            type: 'POST',
+                            data: { 'id': id },
+                            success: function (data) {
+                                if (data.success === true) {
+                                    NotiSuccess("Xóa văn bản đi thành công")
+                                    ReloadPage();
+                                } else {
+                                    NotiError("Bạn không thể xóa văn bản này");
+                                }
+                            },
+                            error: function (data) {
+                                alert(data.responseText);
+                            },
+                        });
+                    }
+                },
+                'Hủy bỏ': {
+                    'class': 'btn-default ',
+                    'action': function () { }
+                }
+            }
+        });
+    }*@
+    function ActionDauSao(id, status) {
+        $.ajax({
+            url: '@Url.Action("SetDauSao", "HSVanBanDi")',
+            type: 'post',
+            cache: false,
+            data: { id: id, status: status },
+            success: function (data) {
+                if (data) {
+                    NotiSuccess("Thao tác thành công");
+                    ReloadPage();
+
+                } else {
+                    NotiError("Thao tác thất bại");
+
+                }
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    loadScript("js/plugin/datatables/jquery.dataTables.min.js", function () {
+        loadScript("js/plugin/datatables/dataTables.colVis.min.js", function () {
+            loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                loadScript("js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                    loadScript("js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
+                });
+            });
+        });
+    });
+</script>

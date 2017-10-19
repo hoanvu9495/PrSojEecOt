@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://impl.bulkSms.ws/" name="WSBulkSms" targetNamespace="http://impl.bulkSms.ws/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://125.235.4.202:8985/WS?xsd=1" namespace="http://impl.bulkSms.ws/" />
+    </xsd:schema>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://125.235.4.202:8985/WS?xsd=2" namespace="http://bulk.viettel.com.vn/" />
+    </xsd:schema>
+  </types>
+  <message name="checkBalance">
+    <part name="parameters" element="tns:checkBalance" />
+  </message>
+  <message name="checkBalanceResponse">
+    <part name="parameters" element="tns:checkBalanceResponse" />
+  </message>
+  <message name="wsCpMt">
+    <part name="parameters" element="tns:wsCpMt" />
+  </message>
+  <message name="wsCpMtResponse">
+    <part name="parameters" element="tns:wsCpMtResponse" />
+  </message>
+  <message name="wsCpMtTest">
+    <part name="parameters" element="tns:wsCpMtTest" />
+  </message>
+  <message name="wsCpMtTestResponse">
+    <part name="parameters" element="tns:wsCpMtTestResponse" />
+  </message>
+  <message name="wsCpCtnt">
+    <part name="parameters" element="tns:wsCpCtnt" />
+  </message>
+  <message name="wsCpCtntResponse">
+    <part name="parameters" element="tns:wsCpCtntResponse" />
+  </message>
+  <message name="wsReportHour">
+    <part name="parameters" element="tns:wsReportHour" />
+  </message>
+  <message name="wsReportHourResponse">
+    <part name="parameters" element="tns:wsReportHourResponse" />
+  </message>
+  <message name="Exception">
+    <part name="fault" element="tns:Exception" />
+  </message>
+  <message name="wsReportDaily">
+    <part name="parameters" element="tns:wsReportDaily" />
+  </message>
+  <message name="wsReportDailyResponse">
+    <part name="parameters" element="tns:wsReportDailyResponse" />
+  </message>
+  <message name="wsReportMonth">
+    <part name="parameters" element="tns:wsReportMonth" />
+  </message>
+  <message name="wsReportMonthResponse">
+    <part name="parameters" element="tns:wsReportMonthResponse" />
+  </message>
+  <portType name="WsBulkSms">
+    <operation name="checkBalance">
+      <input message="tns:checkBalance" />
+      <output message="tns:checkBalanceResponse" />
+    </operation>
+    <operation name="wsCpMt">
+      <input message="tns:wsCpMt" />
+      <output message="tns:wsCpMtResponse" />
+    </operation>
+    <operation name="wsCpMtTest">
+      <input message="tns:wsCpMtTest" />
+      <output message="tns:wsCpMtTestResponse" />
+    </operation>
+    <operation name="wsCpCtnt">
+      <input message="tns:wsCpCtnt" />
+      <output message="tns:wsCpCtntResponse" />
+    </operation>
+    <operation name="wsReportHour">
+      <input message="tns:wsReportHour" />
+      <output message="tns:wsReportHourResponse" />
+      <fault name="Exception" message="tns:Exception" />
+    </operation>
+    <operation name="wsReportDaily">
+      <input message="tns:wsReportDaily" />
+      <output message="tns:wsReportDailyResponse" />
+      <fault name="Exception" message="tns:Exception" />
+    </operation>
+    <operation name="wsReportMonth">
+      <input message="tns:wsReportMonth" />
+      <output message="tns:wsReportMonthResponse" />
+      <fault name="Exception" message="tns:Exception" />
+    </operation>
+  </portType>
+  <binding name="WsBulkSmsPortBinding" type="tns:WsBulkSms">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="checkBalance">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="wsCpMt">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="wsCpMtTest">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="wsCpCtnt">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="wsReportHour">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </fault>
+    </operation>
+    <operation name="wsReportDaily">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </fault>
+    </operation>
+    <operation name="wsReportMonth">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <service name="WSBulkSms">
+    <port name="WsBulkSmsPort" binding="tns:WsBulkSmsPortBinding">
+      <soap:address location="http://125.235.4.202:8985/WS" />
+    </port>
+  </service>
+</definitions>

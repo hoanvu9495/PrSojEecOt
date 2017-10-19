@@ -1,0 +1,646 @@
+﻿@using Web.Models;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.VanBanDiArea.Models;
+@using Web.Common;
+@model VanBanDiDetailViewModel
+@{
+    ViewBag.Title = "[eAita] Điều hành tác nghiệp > Chi tiết văn bản đi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<WF_TRANGTHAI> lstSteps = new List<WF_TRANGTHAI>();
+    lstSteps = (List<WF_TRANGTHAI>)SessionManager.GetValue("ListBuocChuyenTrangThaiVanBanDi");
+    string nguoiky_vb = "";
+}
+<script src="~/Scripts/workflow.js"></script>
+<style>
+    #vb_di_tabs section {
+        height: 100px;
+    }
+
+    .edit-table tr {
+        border-bottom: 1px dotted #ccc;
+    }
+
+        .edit-table tr:last-child {
+            border-bottom: 0px;
+        }
+
+        .edit-table tr td {
+            padding-bottom: 3px;
+        }
+
+    .lbl {
+        font-weight: 600;
+    }
+
+    #tab_thongtinchinh {
+        overflow: auto;
+        height: 34em;
+    }
+</style>
+<div id="menu-toolbar" class="date-time">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none; border:0px;">
+        <div class="menu-left">
+            <div class="btnAddNew" style="margin-right:10px;">
+                <a href="/vanbandiarea/vanbandi/create">
+                    <span>Văn bản đi Mới</span>
+                </a>
+            </div>
+            <div class="btn-group" role="group" aria-label="...">
+                <div class="btn-group" role="group">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Theo dõi văn bản
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @*<li><a href="">Tạo hồ sơ</a></li>*@
+                        <li><a href="/congviecarea/congviec/create?vbType=@LOAITAILIEU.VANBANDI&vbId=@Model.VanBanDi.ID">Tạo công việc</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tác vụ khác
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="/vanbandiarea/vanbandi/edit/@Model.VanBanDi.ID">Sửa</a></li>
+                        <li><a href="">Xóa</a></li>
+                        <li><a href="">Bỏ duyệt</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div class="left-content block">
+        <ul class="admin-menu">
+            <li class="menu" style="z-index:10">
+                <a href="/VanBanDiArea/VanBanDi/Index">Tất cả Văn bản đi</a>
+                <ul class="admin-menu-child">
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanToiDaKy">Văn bản đi tôi đã ký</a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanToiTheoDoi">Văn bản đi tôi theo dõi chính</a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanToiSoanThao">Văn bản đi tôi soạn thảo</a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanPhongToiTheoDoi">Văn bản đi phòng tôi theo dõi</a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanPhongToiSoanThao">Văn bản đi phòng tôi soạn thảo</a>
+                    </li>
+                </ul>
+            </li>
+            @if (lstSteps != null && lstSteps.Count > 0)
+            {
+                <li class="menu">
+                    <a href="javascript:void(0)">Văn bản theo luồng xử lý</a>
+                    <ul class="admin-menu-child">
+                        @foreach (var item in lstSteps)
+                        {
+                            <li>
+                                <div class="">
+                                    <a href="/VanBanDiArea/VanBanDi/DanhSachVanBan/@item.ID">Văn bản đi @item.TENTRANGTHAI</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+            <li class="menu has-child" style="z-index:10">
+                <a href="/VanBanDenArea/VanBanDen/Index">Quản lý Văn bản đến</a>
+            </li>
+            <li class="menu has-child" style="z-index:10">
+                <a href="/CongViecArea/CongViec/Index">Quản lý Công việc</a>
+            </li>
+            <li class="menu has-child">
+                <a href="javascript:void(0)">Cấu hình</a>
+                <ul class="">
+                    <li class="menu">
+                        <div class="">
+                            <a href="/WorkFlowArea/WorkFlow/ChonLuongXuLy">Chọn luồng xử lý cho văn bản đi/đến</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="right-all-page">
+    <div class="right-content clearfix">
+        <div class="hsContent">
+
+            @*<div class="hsBar">Thêm mới văn bản đi</div>*@
+            <div id="vb_di_tabs">
+                <h3>Thông tin chính </h3>
+                <section>
+                    <div id="tab_thongtinchinh">
+                        <table class="edit-table" style="width:95.5%">
+                            @*Hàng 1*@
+                            <tr>
+                                <td>
+                                    <label class="lbl">Nhóm sổ văn bản:</label>
+                                </td>
+                                <td>
+                                    @Model.VanBanDi.NHOMSOVANBAN
+                                <td>
+                                    <label class="lbl">Sổ văn bản:</label>
+                                </td>
+                                <td>
+                                    @Model.VanBanDi.SOVANBAN
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr style="height: 15px;"></tr>
+                            @*Hàng 2*@
+                            <tr>
+                                <td>
+                                    <label class="lbl">Độ khẩn:</label>
+                                </td>
+                                <td>
+                                    @Model.VanBanDi.DOKHAN
+                                </td>
+                                <td>
+                                    <label class="lbl">Mức độ quan trọng:</label>
+                                </td>
+                                <td>
+                                    @Model.VanBanDi.MUCDOQUANTRONG
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr style="height: 15px;"></tr>
+                            @*Hàng 3*@
+                            <tr>
+                                <td>
+                                    <label class="lbl">Loại văn bản:</label>
+                                </td>
+                                <td colspan="4">
+                                    @Model.VanBanDi.LOAIVANBAN
+                                </td>
+                            </tr>
+                            <tr style="height: 15px;"></tr>
+                            @*Hàng 4*@
+                            <tr>
+                                <td>
+                                    <label class="lbl">Số đi theo sổ:</label>
+                                </td>
+                                <td>
+                                    @Model.VanBanDi.SODITHEOSO
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr style="height: 15px;"></tr>
+                            @*Hàng 5*@
+                            <tr>
+                                <td>
+                                    <label class="lbl">Số hiệu văn bản:</label>
+                                </td>
+                                <td colspan="4">
+                                    @Model.VanBanDi.SOHIEU
+                                </td>
+                            </tr>
+                            <tr style="height: 15px;"></tr>
+                            @*Hàng 6*@
+                            <tr>
+                                <td>
+                                    <label class="lbl">Ngày ký:</label>
+                                </td>
+                                <td colspan="4">
+                                    @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYKY))
+                                </td>
+                            </tr>
+                            <tr style="height: 15px;"></tr>
+                            @*Hàng 7*@
+                            <tr>
+                                <td>
+                                    <label class="lbl">Người ký:</label>
+                                </td>
+                                <td>
+                                    @Model.VanBanDi.TENNGUOIKY
+                                    @if (!string.IsNullOrEmpty(Model.VanBanDi.TENNGUOIKY))
+                                    {
+                                        nguoiky_vb += Model.VanBanDi.TENNGUOIKY;
+                                    }
+                                </td>
+                                <td>
+                                    <label class="lbl">Chức vụ:</label>
+                                </td>
+                                <td>
+                                    @Model.VanBanDi.CHUCVUNGUOIKY
+                                </td>
+                                <td></td>
+                            </tr>
+                            @*Hàng 7 - 1*@
+                            @{var stt = 2; }
+                            @if (Model.VanBanDi.ListNguoiKy != null && Model.VanBanDi.ListNguoiKy.Count > 0)
+                            {
+                                foreach (var item in Model.VanBanDi.ListNguoiKy)
+                                {
+                                    <tr style="height: 15px;"></tr>
+                                    <tr>
+                                        <td>
+                                            <label class="lbl">Người ký @stt:</label>
+                                        </td>
+                                        <td>
+                                            @item.FullName
+                                            @if (!string.IsNullOrEmpty(item.FullName))
+                                            {
+                                                nguoiky_vb += ", " + item.FullName;
+                                            }
+                                        </td>
+                                        <td>
+                                            <label class="lbl">Chức vụ:</label>
+                                        </td>
+                                        <td>
+                                            @item.ChucVu
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    stt++;
+                                }
+                            }
+                            <tr style="height: 15px;"></tr>
+                            @*Hàng 8*@
+                            <tr>
+                                <td>
+                                    <label class="lbl">Ngày ban hành:</label>
+                                </td>
+                                <td>
+                                    @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYBANHANH))
+                                </td>
+                                <td>
+                                    <label class="lbl">Đơn vị ban hành:</label>
+                                </td>
+                                <td>
+                                    @Model.VanBanDi.DONVIBANHANH
+                                </td>
+                            </tr>
+                            <tr style="height: 15px;"></tr>
+                            @*Hàng 9*@
+                            <tr>
+                                <td>
+                                    <label class="lbl">Trích yếu:</label>
+                                </td>
+                                <td colspan="4">
+                                    @Model.VanBanDi.TRICHYEU
+                                </td>
+                            </tr>
+                            <tr style="height: 15px;"></tr>
+                            @if (Model.ListTaiLieuDinhKem != null && Model.ListTaiLieuDinhKem.Count > 0)
+                            {
+                                @*Hàng 10*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Tài liệu đính kèm:</label>
+                                    </td>
+                                    <td colspan="3">
+                                        <div style="margin-left:10px; width:500px;">
+                                            @{Html.RenderPartial("../Common/UploadFile", Model.ListTaiLieuDinhKem, new ViewDataDictionary { { "detail", 1 } });}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                                }
+                                                @*Hàng 11*@
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Số bản sao: @Model.VanBanDi.SOBANSAO</label>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        Số tờ:
+                                                        @Model.VanBanDi.SOTO
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                @*Hàng 12*@
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Ngày có hiệu lực:</label>
+                                                    </td>
+                                                    <td>
+                                                        @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYCOHIEULUC))
+                                                    </td>
+                                                    <td>
+                                                        <label class="lbl">Ngày hết hiệu lực:</label>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYHETHIEULUC))
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                @*Hàng 13*@
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Người soạn thảo:</label>
+                                                    </td>
+                                                    <td>
+                                                        @Model.VanBanDi.NGUOISOAN
+                                                    </td>
+                                                    <td>
+                                                        <label class="lbl">Đơn vị soạn thảo:</label>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        @Model.VanBanDi.DONVISOANTHAO
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </section>
+                                    <h3>Thông tin khác</h3>
+                                    <section>
+                                        <div id="tab_thongtinkhac">
+                                            <table class="edit-table" style="width:95.5%">
+                                                @*Hàng 1*@
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Nhận văn bản:</label>
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                                                            <select name="HINHTHUCTIEPNHAN" id="HINHTHUCTIEPNHAN">
+                                                                <option value='1'>Để xử lý</option>
+                                                                <option value='2'>Để biết</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <label class="lbl">Số trả lời:</label>
+                                                    </td>
+                                                    <td>
+                                                        @Model.VanBanDi.SOTRALOI
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                @*Hàng 2*@
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Lĩnh vực:</label>
+                                                    </td>
+                                                    <td>
+                                                        @Model.VanBanDi.LINHVUCVANBAN
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                @*Hàng 3*@
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Nơi lưu trữ:</label>
+                                                    </td>
+                                                    <td>
+                                                        @Model.VanBanDi.NOILUUTRU
+                                                    </td>
+                                                    <td colspan="3">
+                                                        @Model.VanBanDi.NOILUUTRU_KHAC
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                @*Hàng 4*@
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Thông tin liên quan công việc:</label>
+                                                    </td>
+                                                    <td colspan="4">
+                                                        @Model.VanBanDi.DIEUKHOANLIENQUANCONGVIEC
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                @*Hàng 5*@
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Ghi chú:</label>
+                                                    </td>
+                                                    <td colspan="4">
+                                                        @Model.VanBanDi.GHICHU
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </section>
+                                    <h3>Nội dung văn bản</h3>
+                                    <section>
+                                        <div id="tab_noidungvanban">
+                                            <table class="edit-table" style="width:95.5%">
+                                                @*Hàng 1*@
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Nội dung văn bản:</label>
+                                                    </td>
+                                                    <td colspan="4">
+                                                        @Html.Raw(Model.VanBanDi.NOIDUNGVANBAN)
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </section>
+                                    <h3>Bút phê lãnh đạo</h3>
+                                    <section>
+                                        <div id="tab_butphelanhdao">
+                                            @*Hiển thị danh sách thông tin bút phê của lãnh đạo*@
+                                        </div>
+                                    </section>
+                                    <h3>Đơn vị nhận, theo dõi văn bản</h3>
+                                    <section>
+                                        <div id="tab_donvinhan_theodoi_vb">
+                                            <table class="edit-table" style="width:95.5%">
+                                                @*Hàng 1*@
+                                                <tr>
+                                                    <td width="200px">
+                                                        <label class="lbl">Đơn vị theo dõi chính:</label>
+                                                    </td>
+                                                    <td colspan="4">
+                                                        @Model.VanBanDi.DONVITHEODOICHINH
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                @*Hàng 2*@
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Người theo dõi chính:</label>
+                                                    </td>
+                                                    <td colspan="4">
+                                                        @Model.VanBanDi.NGUOITHEODOICHINH
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                @*Hàng 3*@
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <h3 class="group-tittle" style="margin-bottom:10px;text-transform:none;">
+                                                            VB nhận trong cơ quan
+                                                        </h3>
+                                                        <table class="edit-table" style="width:95.5%">
+                                                            <tr>
+                                                                <td>
+                                                                    <label class="lbl">Đơn vị:</label>
+                                                                </td>
+                                                                <td colspan="4">
+                                                                    @{ string donvi_in = ""; int i = 0;}
+                                                                    @if (Model.VanBanDi.ListDonViNhanTrongCoQuan != null && Model.VanBanDi.ListDonViNhanTrongCoQuan.Count > 0)
+                                                                    {
+                                                                        foreach (var item in Model.VanBanDi.ListDonViNhanTrongCoQuan)
+                                                                        {
+                                                                            i++;
+                                                                            if (Model.VanBanDi.ListDonViNhanTrongCoQuan.Count > i)
+                                                                            {
+                                                                                donvi_in += item.TEN_DONVI + ", ";
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                donvi_in += item.TEN_DONVI;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    <span><b>@donvi_in</b></span>
+                                                                </td>
+                                                            </tr>
+                                                            @*<tr style="height: 15px;"></tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <label class="lbl">Phòng ban:</label>
+                                                                    </td>
+                                                                    <td colspan="4">
+                                                                        @Html.TextBox("PHONGBANNHANVB", "", new { @style = "width:750px;height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONPHONGBANNHAN">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaPhongBanNhan()">Xóa</a>
+                                                                        <input type="hidden" id="PHONGBANNHAN" name="PHONGBANNHAN" value="" />
+                                                                    </td>
+                                                                </tr>*@
+                                                            <tr style="height: 15px;"></tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <label class="lbl">Cá nhân:</label>
+                                                                </td>
+                                                                <td colspan="4">
+                                                                    @{ string canhan = ""; i = 0;}
+                                                                    @if (Model.VanBanDi.ListCaNhanNhanTrongCoQuan != null && Model.VanBanDi.ListCaNhanNhanTrongCoQuan.Count > 0)
+                                                                    {
+                                                                        foreach (var item in Model.VanBanDi.ListCaNhanNhanTrongCoQuan)
+                                                                        {
+                                                                            i++;
+                                                                            if (Model.VanBanDi.ListCaNhanNhanTrongCoQuan.Count > i)
+                                                                            {
+                                                                                canhan += item.FullName + ", ";
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                canhan += item.FullName;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    <span><b>@canhan</b></span>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                @*Hàng 4*@
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <h3 class="group-tittle" style="margin-bottom:10px;text-transform:none;">
+                                                            VB nhận trong cơ quan
+                                                        </h3>
+                                                        <table class="edit-table" style="width:95.5%">
+                                                            <tr>
+                                                                <td>
+                                                                    <label class="lbl">Đơn vị nhận:</label>
+                                                                </td>
+                                                                <td colspan="4">
+                                                                    @{ string donvi_out = ""; i = 0;}
+                                                                    @if (Model.VanBanDi.ListDonViNhanNgoaiCoQuan != null && Model.VanBanDi.ListDonViNhanNgoaiCoQuan.Count > 0)
+                                                                    {
+                                                                        foreach (var item in Model.VanBanDi.ListDonViNhanNgoaiCoQuan)
+                                                                        {
+                                                                            i++;
+                                                                            if (Model.VanBanDi.ListDonViNhanNgoaiCoQuan.Count > i)
+                                                                            {
+                                                                                donvi_out += item.TENDONVI + ", ";
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                donvi_out += item.TENDONVI;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    <span><b>@donvi_out</b></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="height: 15px;"></tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <label class="lbl">Đơn vị khác:</label>
+                                                                </td>
+                                                                <td colspan="4">
+                                                                    @Model.VanBanDi.COQUANNGOAI_KHAC
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div>
+                                    @if (Model.VanBanDi.WF_ID.HasValue)
+                                    {
+                                        WorkFlowModel wf_model = new WorkFlowModel();
+                                        wf_model.LstSteps = Model.LstSteps;
+                                        wf_model.TRANGTHAI_ID = Model.VanBanDi.TRANGTHAI.Value;
+                                        wf_model.WF_ID = Model.VanBanDi.WF_ID.Value;
+                                        wf_model.ENTITY_ID = Web.Common.LOAITAILIEU.VANBANDI;
+                                        wf_model.ENTITY_ITEM_ID = Model.VanBanDi.ID;
+                                        wf_model.CALLBACK_FUNCTION = "UpdateFinalState";
+                                        wf_model.ENTITY_NAME = "Văn bản đi";
+                                        Html.RenderPartial("~/Areas/WorkFlowArea/Views/WorkFlow/_WFActions.cshtml", wf_model);
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="VANBANDI_ID" value="@Model.VanBanDi.ID" />
+                    <input type="hidden" id="NGUOIKY" value="@nguoiky_vb" />
+                    <script type="text/javascript">
+                        function UpdateFinalState() {
+                            var id = $("#VANBANDI_ID").val();
+                            var nguoiky_vanban = $("#NGUOIKY").val();
+                            $.ajax({
+                                url: "/VanBanDiArea/VanBanDi/UpdateFinalState",
+                                type: 'POST',
+                                data: { vanbandi_id: id, nguoiky_vanban: nguoiky_vanban },
+                                success: function (data) {
+                                    location.reload();
+                                },
+                                error: function (data) {
+
+                                }
+                            });
+
+
+                        }
+
+                        $(document).ready(function () {
+                            $("#vb_di_tabs").steps({
+                                headerTag: "h3",
+                                bodyTag: "section",
+                                transitionEffect: "slideLeft",
+                                enableFinishButton: false,
+                                enablePagination: true,
+                                enableAllSteps: true,
+                                titleTemplate: "#title#",
+                                cssClass: "tabcontrol"
+                            });
+                        });
+                    </script>

@@ -1,0 +1,64 @@
+﻿@using Web.Common
+@using Web.FwCore;
+@model Web.Areas.VanBanDenArea.Models.VanBanDenSearchModel
+@*<fieldset>*@
+<div class="panel panel-default">
+    @*<legend>*@
+    @*<h3>Tìm kiếm thông tin văn bản đến:</h3>*@
+    <div class="panel-heading" role="tab" id="headingOne" style="height: 51px;">
+        <h4 class="panel-title">
+            <a class="" aria-controls="collapseOne" aria-expanded="false" href="#collapseOne" data-toggle="collapse" role="button">
+                Tìm kiếm nâng cao
+            </a>
+        </h4>
+    </div>
+    @*</legend>*@
+    <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" role="tabpanel" style="">
+        @Html.AntiForgeryToken()
+        @using (Ajax.BeginForm("FindVanBanDen", "VanBanDen", new { SearchType = "Trangthai" }, new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearh" }))
+        {
+            @Html.Partial("_VanBanDenSearchCore");
+        }
+    </div>
+
+    @*</fieldset>*@
+</div>
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $(function () {
+            $(".datepicker").datepicker({ dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true, yearRange: "-20:+20" });
+        });
+    });
+    $(document).on("keypress", function (e) {
+        if (e.which == 13) {
+            SearchVanBanDen();
+        }
+    });
+    function SearchVanBanDen() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("FindVanBanDen", "VanBanDen")',
+            cache: false,
+            data: {
+
+            },
+            dataType: "html",
+            success: function (data) {
+                if ($("#SearchResultContent").length > 0) {
+                    $("#SearchResultContent").html(data);
+                } else {
+                    $("#SearchResultContentDelete").html(data);
+                }
+            }
+        });
+    }
+</script>

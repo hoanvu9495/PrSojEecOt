@@ -1,0 +1,70 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Business.CommonBusiness;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using Model.eAita
+@{
+    List<LuuTruToaNhaBO> lstThuMuc = new List<LuuTruToaNhaBO>();
+    UserInfoBO user = (UserInfoBO)SessionManager.GetUserInfo();
+    if (ViewData["Search"] == "0")
+    {
+        lstThuMuc = (List<LuuTruToaNhaBO>)SessionManager.GetValue("ListThuMuc");
+        if (lstThuMuc != null && lstThuMuc.Count > 0)
+        {
+            foreach (var i in lstThuMuc)
+            {
+                <tr class="folder-item">
+                    <td data-fid="@("F_"+i.ID)" style="width:450px">
+                        <div style="width:100%;float:left" class="TENTHUMUC">
+                            <span data-loai="tang" class="folder item" title="@i.TENTOANHA" data-pid="@i.ID" data-loaded="false">@i.TENTOANHA</span>
+                        </div>
+                    </td>
+                    <td>@i.TENNGUOITAO</td>
+                    <td>@String.Format("{0:dd/M/yyyy}", @i.NGAYTAO)</td>
+                    <td></td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">
+                    <span style="color:red;font-size:18px">
+                        Thư mục lưu trữ rỗng
+                    </span>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        List<TmThuMucChuaSoHoaBO> ListThuMuc = (List<TmThuMucChuaSoHoaBO>)SessionManager.GetValue("ListThuMucSearch");
+        if (ListThuMuc != null && ListThuMuc.Count > 0)
+        {
+            foreach (var i in ListThuMuc)
+            {
+                <tr class="folder-item">
+                    <td data-fid="@("F_"+i.ID)" style="width:450px">
+                        <div style="width:100%;float:left" class="TENTHUMUC">
+                            <span class="filearchive" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        </div>
+                    </td>
+                    <td>@i.TENNGUOITAO</td>
+                    <td>@String.Format("{0:dd/M/yyyy}", @i.NGAYTAO)</td>
+                    <td></td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">
+                    <span style="color:red;font-size:18px">
+                        Không tìm thấy bất kỳ tài liệu nào
+                    </span>
+                </td>
+            </tr>
+        }
+    }
+}

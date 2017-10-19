@@ -1,0 +1,149 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Web.Areas.DMPhongBanArea.Models.DMPhongBanEditViewModel
+<style type="text/css">
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #EDIT_ID {
+        display: none;
+    }
+</style>
+@using (Ajax.BeginForm("SavePhongBan", "DMPhongBan", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "EditSuccess"
+}, new { id = "frmPhongBanEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table>
+            <tr style="height:20px"></tr>
+            @Html.TextBox("DM_PHONGBAN_ID", Model.PhongBan.DM_PHONGBAN_ID, new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "EDIT_ID", @readonly = "readonly" })
+
+            <tr>
+                <td>
+                    <label class="lbl" for="EDIT_PHONGBAN" style=" width: 150px;">Tên phòng ban:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("TENPHONGBAN", @Model.PhongBan.TENPHONGBAN, new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "EDIT_PHONGBAN" })
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px;"></td>
+                <td>
+                    <span class="lb-Check" id="EDIT_PHONGBAN_ERROR" style="margin-left: 0px; color: red;">Tên phòng ban đã tồn tại</span>
+                    <span class="lb-Check" id="EDIT_PHONGBAN_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập tên phòng ban </span>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl" style=" width: 150px;">Đơn vị</label>
+                </td>
+                <td>
+                    <div class="input-field4  clearfix" style="width: 233px;">
+                        @Html.DropDownList("DM_DONVI_ID", new SelectList(Model.listDonVi, "Value", "Text", Model.PhongBan.DM_DONVI_ID), "[--- Đơn vị ---]", new { @style = "width: 100%", @id = "DM_DONVI_ID" })
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px;"></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label class="lbl" style=" width: 150px;">Trạng Thái:<span style="color: red;">*</span></label>
+                </td>
+
+                <td>
+                    <div style="float:left; width:40%">
+                        @Html.RadioButton("TRANGTHAI", "true", (Model.PhongBan.TRANGTHAI == true), new { @id = "EDIT_ISACTIVE_HL", @class = "css-checkbox" })
+                        <label class="css-label" for="EDIT_ISACTIVE_HL">Được sử dụng</label>
+                    </div>
+                    <div style="float:left; width:60%">
+                        @Html.RadioButton("TRANGTHAI", "false", (Model.PhongBan.TRANGTHAI == false), new { @id = "EDIT_ISACTIVE_KHL", @class = "css-checkbox" })
+                        <label class="css-label" for="EDIT_ISACTIVE_KHL">Không được sử dụng</label>
+                    </div>
+
+                </td>
+
+            </tr>
+
+        </table>
+    </div>
+    <div style="margin-top: 15px; text-align:center;">
+        <input type="button" value="Lưu" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+        <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+    </div>
+}
+
+<script type="text/javascript">
+    var tontai = false;
+    var donvi = $("#EDIT_PHONGBAN").val();
+    function OnClose() {
+        $("#PreparePhongBan").dialog("close");
+    }
+    $("#EDIT_PHONGBAN").blur(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#EDIT_PHONGBAN_NULL").show();
+        } else {
+            $("#EDIT_PHONGBAN_NULL").hide();
+        }
+    });
+    
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function EditSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Sửa phòng ban thành công',
+        });
+        $("#PreparePhongBan").dialog("close");
+        reloadGrid();
+    }
+    $("#btnSave").click(function () {
+        if (($("#EDIT_PHONGBAN").val().trim() == null || $("#EDIT_PHONGBAN").val().trim() == "") || tontai == true) {
+            $("#EDIT_PHONGBAN").focus();
+            $("#EDIT_PHONGBAN_NULL").show();
+            return false;
+        } else {
+            $("#EDIT_PHONGBAN_NULL").hide();
+        }
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("validatePhongBan", "DMPhongBan")',
+            data: {
+                tenphongban: $("#EDIT_PHONGBAN").val()
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                if (data == "existed") {
+                    if (donvi != $("#EDIT_PHONGBAN").val()) {
+                        $("#EDIT_PHONGBAN_ERROR").show();
+                        $("#EDIT_PHONGBAN").focus();
+                        return false;
+                    }
+
+                } else {
+                    $("#frmPhongBanEdit").submit();
+                    return true;
+                }
+            }, error: function () {
+                alert("co loi");
+            }
+        });
+
+    });
+
+</script>

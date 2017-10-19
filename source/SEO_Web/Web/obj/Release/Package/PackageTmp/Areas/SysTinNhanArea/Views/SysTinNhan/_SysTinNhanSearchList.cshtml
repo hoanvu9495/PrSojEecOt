@@ -1,0 +1,151 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Areas.SysTinNhanArea.Models;
+@{
+    var listTinNhan = new List<SysTinNhanBO>();
+    if (ViewBag.Search == SysTinNhanConstantModel.NO_SEARCH)
+    {
+        listTinNhan = (List<SysTinNhanBO>)SessionManager.GetValue("ListTinNhan");
+    }
+    else
+    {
+        listTinNhan = (List<SysTinNhanBO>)SessionManager.GetValue("ListTinNhanSearch");
+    }
+    var grid = new WebGrid(
+        listTinNhan,
+        rowsPerPage: 10,
+        canPage: true,
+        canSort: true,
+        ajaxUpdateContainerId: "grid",
+        ajaxUpdateCallback: "gridCallBack",
+        selectionFieldName: "selectedRow");
+}
+<style type="text/css">
+    .center {
+        text-align: center;
+    }
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .head th:first-child {
+        width: 10px;
+    }
+
+    table.webGrid tr td:nth-child(2) {
+        width: 65%;
+    }
+
+    table.webGrid tr td:nth-child(2),
+    table.webGrid tr td:nth-child(3) {
+        text-align: left;
+        padding-left: 10px;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .no-bold {
+        font-weight: normal;
+    }
+</style>
+@if (listTinNhan.Count > 0)
+{
+    <div id="grid">
+        <div id="HeaderGrid">
+            <div style="margin:20px 0 10px 10px;">
+                <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">
+                    @(listTinNhan == null ? "0" : listTinNhan.Count.ToString()) &nbsp; kết quả
+                </label>
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item =>
+                    item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column("TIEUDE", "Tiêu đề", format: (item) =>
+                    {
+                        if (item.IS_READ == true)
+                        {
+                            return new MvcHtmlString("<a href='javascript:void(0)' onclick='changeStatus(" + item.ID + ",event)' title='Chi tiết tin nhắn' style='text-align:left' class='read' id='" + item.ID + "'>" + item.TIEUDE + "</a>");
+                        }
+                        return new MvcHtmlString("<a href='javascript:void(0)' onclick='changeStatus(" + item.ID + ",event)' title='Chi tiết tin nhắn' style='text-align:left' class='not-read' id=" + item.ID + ">" + item.TIEUDE + "</a>");
+
+                    }),
+                grid.Column("TEN_NGUOIGUI", "Người gửi", format: (item) =>
+                 {
+                     return new MvcHtmlString(item.TEN_NGUOIGUI);
+                 }),
+                grid.Column("NGAYGUI_TEXT", "Ngày gửi", format: (item) =>
+                {
+                    return new MvcHtmlString(item.NGAYGUI_TEXT);
+                }),
+                  grid.Column("IS_READ", "Trạng thái", format: (item) =>
+                  {
+                      if (item.IS_READ)
+                      {
+                          return SysTinNhanConstantModel.IS_READ_TEXT;
+                      }
+                      return SysTinNhanConstantModel.NOT_READ_TEXT;
+                  })
+                ))
+    </div>
+}
+else
+{
+    <div id="grid" style="height:400px;overflow:auto">
+        <div id="HeaderGrid">
+            <label style="text-align:center;color:red">
+                @if (ViewBag.Search == SysTinNhanConstantModel.NO_SEARCH)
+                {
+                    <text>Hiện tại chưa có thông báo nào.</text>
+                }
+                else
+                {
+                    <text>Không tìm thấy kết quả.</text>
+                }
+            </label>
+        </div>
+    </div>
+}
+
+
+<script type="text/javascript">
+    $(function () {
+        gridCallBack();
+    });
+    function gridCallBack() {
+        $("#grid .webGrid tr td:nth-child(2) > a[class=not-read]").each(function (e) {
+            $(this).parents('tr').addClass('bold');
+        });
+        $("#grid .webGrid tr td:nth-child(2) > a[class=read]").each(function (e) {
+            $(this).parents('tr').addClass('no-bold');
+        });
+    }
+
+    function changeStatus(id, event) {
+        var eventID = $(event.currentTarget).attr('id');
+        $.ajax({
+            url: '@Url.Action("ChangeStatus")',
+            type: 'GET',
+            data: { 'id': id },
+            dataType: 'json',
+            success: function (result) {
+                if (result.success == true) {
+                    location.href = result.url;
+                }
+            }, error: function (result) {
+                alert(result.responseText);
+            }
+        });
+    }
+</script>

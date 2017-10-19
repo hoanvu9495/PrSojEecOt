@@ -1,0 +1,438 @@
+﻿/*Hiển thị tổ hợp môn*/
+/*#tableKetQua3
+    {
+        overflow: auto;
+        max-height: 350px;
+    }*/
+.center
+{
+    text-align: center;
+}
+
+#reportTHM tr:nth-child(even)
+{
+    background: none repeat scroll 0% 0% #EFEFEF;
+}
+/*------------------*/
+section#thm
+{
+    position: relative;
+    /*border: 1px solid #000;*/
+    padding-top: 35px;
+    background: #E8E8E8;
+}
+
+section.positioned
+{
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: 800px;
+    box-shadow: 0 0 15px #333;
+}
+
+.container5
+{
+    overflow-y: auto;
+    height: 250px;
+}
+
+table#reportTHM
+{
+    border-spacing: 0;
+    width: 100%;
+}
+
+    table#reportTHM td + td
+    {
+        border-left: 1px solid white;
+    }
+
+    table#reportTHM td, th
+    {
+        border-bottom: 1px solid #eee;
+        /*background: #ddd;*/
+        color: #000;
+        padding: 8px 5px;
+    }
+
+    table#reportTHM th
+    {
+        height: 0;
+        line-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        color: transparent;
+        /*border: none;*/
+        white-space: nowrap;
+    }
+
+        table#reportTHM th div
+        {
+            position: absolute;
+            background: transparent;
+            color: black;
+            padding: 10px 10px;
+            top: 0;
+            margin-left: -25px;
+            line-height: normal;
+            border-left: 1px solid white;
+            height: 20px;
+            /*border: 1px solid #C0C0C0;*/
+        }
+
+        table#reportTHM th:first-child div
+        {
+            border: none;
+        }
+
+    table#reportTHM tbody tr:hover
+    {
+        background: none repeat scroll 0 0 #f9f9f9 !important;
+    }
+
+/*View kết quả*/
+/*#tableKetQua3
+    {
+        overflow: auto;
+        max-height: 350px;
+    }*/
+.themclass
+{
+    color: red;
+}
+
+.anclass
+{
+    display: none;
+}
+
+.tdcentertest
+{
+    text-align: center;
+}
+
+#tablekq tr:nth-child(even)
+{
+    background: none repeat scroll 0% 0% #EFEFEF;
+}
+/*------------------*/
+section#idketquab3
+{
+    position: relative;
+    /*border: 1px solid #000;*/
+    padding-top: 35px;
+    background: #E8E8E8;
+}
+
+section.positioned
+{
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: 800px;
+    box-shadow: 0 0 15px #333;
+}
+
+.container4
+{
+    overflow-y: auto;
+    height: 350px;
+}
+
+table#tablekq
+{
+    border-spacing: 0;
+    width: 100%;
+}
+
+    table#tablekq td + td
+    {
+        border-left: 1px solid white;
+    }
+
+    table#tablekq td, th
+    {
+        border-bottom: 1px solid #eee;
+        /*background: #ddd;*/
+        color: #000;
+        padding: 8px 5px;
+    }
+
+    table#tablekq th
+    {
+        height: 0;
+        line-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        color: transparent;
+        /*border: none;*/
+        white-space: nowrap;
+    }
+
+        table#tablekq th div
+        {
+            position: absolute;
+            background: transparent;
+            color: black;
+            padding: 10px 10px;
+            top: 0;
+            margin-left: -25px;
+            line-height: normal;
+            border-left: 1px solid white;
+            height: 20px;
+            /*border: 1px solid #C0C0C0;*/
+        }
+
+        table#tablekq th:first-child div
+        {
+            border: none;
+        }
+
+    table#tablekq tbody tr:hover
+    {
+        background: none repeat scroll 0 0 #f9f9f9 !important;
+    }
+/*Xem chi tiết bươc 3*/
+/*#tabledetail3
+    {
+        overflow: auto;
+        max-height: 300px;
+    }*/
+
+table.tableinfo
+{
+    width: 100%;
+}
+
+    table.tableinfo tr td
+    {
+        padding: 5px;
+    }
+
+        table.tableinfo tr td.weight
+        {
+            font-weight: bold;
+            width: 245px;
+        }
+
+.btnDetail
+{
+    background: url('/Content/Images/CumThi/btnDetail.png') no-repeat scroll 0% 0% transparent;
+    display: block;
+    width: 24px;
+    height: 27px;
+    margin: 0px auto;
+}
+
+#mytableChitietb3 thead tr th span div
+{
+    padding-right: 20px;
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+}
+
+#mytableChitietb3 tr th.headerSortUp, .tableinfo thead tr th.headerSortDown
+{
+    background: #acc8dd;
+}
+
+#mytableChitietb3 thead tr th.headerSortUp span div
+{
+    background-image: url('/Content/Images/arrow-up-tree.png');
+}
+
+#mytableChitietb3 thead tr th.headerSortDown span div
+{
+    background-image: url('/Content/Images/arrow-down-tree.png');
+}
+
+#mytableChitietb3 tr:nth-child(even)
+{
+    background: none repeat scroll 0% 0% #EFEFEF;
+}
+/*-------------------*/
+section#ptvB3
+{
+    position: relative;
+    /*border: 1px solid #000;*/
+    padding-top: 40px;
+    background: #E8E8E8;
+}
+
+section.positioned
+{
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: 800px;
+    box-shadow: 0 0 15px #333;
+}
+
+.container2
+{
+    overflow-y: auto;
+    height: 200px;
+}
+
+table#mytableChitietb3
+{
+    border-spacing: 0;
+    width: 100%;
+}
+
+    table#mytableChitietb3 td + td
+    {
+        border-left: 1px solid white;
+    }
+
+    table#mytableChitietb3 td, th
+    {
+        border-bottom: 1px solid #eee;
+        /*background: #ddd;*/
+        color: #000;
+        padding: 10px 25px;
+    }
+
+    table#mytableChitietb3 th
+    {
+        height: 0;
+        line-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        color: transparent;
+        /*border: none;*/
+        white-space: nowrap;
+    }
+
+        table#mytableChitietb3 th span div
+        {
+            position: absolute;
+            background: transparent;
+            color: black;
+            padding: 15px 45px;
+            top: 0;
+            height: 28px;
+            margin-left: -25px;
+            line-height: normal;
+            border-left: 1px solid white;
+            /*border: 1px solid #C0C0C0;*/
+        }
+
+        table#mytableChitietb3 th:first-child span div
+        {
+            border: none;
+        }
+
+    table#mytableChitietb3 tbody tr:hover
+    {
+        background: none repeat scroll 0 0 #f9f9f9 !important;
+    }
+/*Số lượng thí sinh theo phòng*/
+.classred
+{
+    color: red;
+}
+
+.anclass2
+{
+    display: none;
+}
+
+#tblSoLuongTSPhong tr:nth-child(even)
+{
+    background: none repeat scroll 0% 0% #EFEFEF;
+}
+
+.drag-hover
+{
+    background: #b0ccff;
+}
+
+.s-dragable
+{
+    cursor: move;
+}
+/*----------------*/
+
+section#sltsPhong
+{
+    position: relative;
+    /*border: 1px solid #000;*/
+    padding-top: 35px;
+    background: #E8E8E8;
+}
+
+section.positioned
+{
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: 800px;
+    box-shadow: 0 0 15px #333;
+}
+
+.container1
+{
+    overflow-y: auto;
+    height: 330px;
+}
+
+table#tblSoLuongTSPhong
+{
+    border-spacing: 0;
+    width: 100%;
+}
+
+    table#tblSoLuongTSPhong td + td
+    {
+        border-left: 1px solid white;
+    }
+
+    table#tblSoLuongTSPhong td, th
+    {
+        border-bottom: 1px solid #eee;
+        /*background: #ddd;*/
+        color: #000;
+        padding: 10px 25px;
+    }
+
+    table#tblSoLuongTSPhong th
+    {
+        height: 0;
+        line-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        color: transparent;
+        /*border: none;*/
+        white-space: nowrap;
+    }
+
+        table#tblSoLuongTSPhong th div
+        {
+            position: absolute;
+            background: transparent;
+            color: black;
+            padding: 10px 10px;
+            top: 0;
+            margin-left: -25px;
+            line-height: normal;
+            border-left: 1px solid white;
+            height: 36px;
+            /*border: 1px solid #C0C0C0;*/
+        }
+
+        table#tblSoLuongTSPhong th:first-child div
+        {
+            border: none;
+        }
+
+.header
+{
+    font-weight: bold;
+}
+
+table#tblSoLuongTSPhong tbody tr:hover
+{
+    background: none repeat scroll 0 0 #f9f9f9 !important;
+}

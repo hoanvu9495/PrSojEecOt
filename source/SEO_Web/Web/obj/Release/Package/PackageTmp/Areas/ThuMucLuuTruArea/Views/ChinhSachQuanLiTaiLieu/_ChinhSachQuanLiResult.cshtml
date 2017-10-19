@@ -1,0 +1,340 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@{
+    List<TM_CHINHSACH_QLTL> lstLoaiVanBan = new List<TM_CHINHSACH_QLTL>();
+
+    lstLoaiVanBan = (List<TM_CHINHSACH_QLTL>)SessionManager.GetValue("ListChinhSach");
+    
+    
+    var grid = new WebGrid(lstLoaiVanBan,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+
+}
+@Html.AntiForgeryToken()
+
+@if (lstLoaiVanBan.Count > 0)
+{
+
+    <div id="grid">
+        <div id="HeaderGrid">
+            <div style="margin:20px 0px 10px 10px;">
+                <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">@(lstLoaiVanBan == null ? "0" : lstLoaiVanBan.Count.ToString()) &nbsp; kết quả</label>
+               
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                                grid.Column("TENCHINHSACH", "Chính sách"),
+                                 grid.Column("MOTA", "Mô tả"),
+                                  
+                   grid.Column("TRANGTHAI", format: (item) => item.TRANGTHAI == true ? new MvcHtmlString(string.Format(
+                                                                         "<label class='switch switch-left-right'>" +
+                                     "<input class='switch-input' type='checkbox' checked = 'checked' data-id = '" + item.ID + "'/>" +
+                             "<span class='switch-label' data-on='Bật' data-off='Tắt'></span>" +
+                             "<span class='switch-handle'></span>" +
+                                 "</label>")) : new MvcHtmlString(string.Format(
+                                                                                 "<label class='switch switch-left-right'>" +
+                                     "<input class='switch-input' type='checkbox' data-id = '" + item.ID + "' />" +
+                                     "<span class='switch-label' data-on='Bật' data-off='Tắt'></span>" +
+                                     "<span class='switch-handle'></span>" +
+                                 "</label>")), header: "Trạng thái"),                                    
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                   "<a href='javascript:void(0)' onclick='EditChinhSach(" + item.ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                    "<a href='javascript:void(0)' onclick='RemoveChinhSach(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+
+                 )
+    )
+
+        @if (lstLoaiVanBan.Count == 0)
+        {
+
+            <div id="Empty" style="color: red;">
+                Không tìm thấy dữ liệu phù hợp
+            </div>
+        }
+    </div>
+}
+else
+{
+    
+    <div id="Empty" style="color: red;">
+        Chưa có chính sách quản lý tài liệu nào được tạo
+    </div>
+}
+<div class="modal fade" id="CreateChinhSach" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<style>
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .head th:first-child, th:nth-child(5), th:nth-child(6) {
+        width: 10px;
+    }
+    .webGrid th{
+        text-align:center !important;
+    }
+    
+    .webGrid tbody tr td:nth-child(4) {
+        text-align:center !important;
+        width:30px
+    }
+    .webGrid tbody tr td:nth-child(2), .webGrid tbody tr td:nth-child(3) {
+        text-align: left !important;
+    }
+    .switch {
+        position: relative;
+        display: block;
+        vertical-align: top;
+        width: 100px;
+        height: 30px;
+        padding: 3px;
+        margin: 0 10px 10px 0;
+        border-radius: 18px;
+        cursor: pointer;
+    }
+
+    .switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    .switch-label {
+        position: relative;
+        display: block;
+        height: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #ffb84d;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+    }
+
+        .switch-label:before, .switch-label:after {
+            position: absolute;
+            top: 50%;
+            margin-top: -.5em;
+            line-height: 1;
+            -webkit-transition: inherit;
+            -moz-transition: inherit;
+            -o-transition: inherit;
+            transition: inherit;
+        }
+
+        .switch-label:before {
+            content: attr(data-off);
+            right: 11px;
+            color: #fff;
+            text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .switch-label:after {
+            content: attr(data-on);
+            left: 11px;
+            color: #FFFFFF;
+            text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+        }
+
+    .switch-input:checked ~ .switch-label {
+        background: #34A7C1;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-input:checked ~ .switch-label:before {
+            opacity: 0;
+        }
+
+        .switch-input:checked ~ .switch-label:after {
+            opacity: 1;
+        }
+
+    .switch-handle {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+        background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+        border-radius: 100%;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-handle:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -6px 0 0 -6px;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+            background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+            border-radius: 6px;
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+        }
+
+    .switch-input:checked ~ .switch-handle {
+        left: 74px;
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+    /* Transition
+        ========================== */
+    .switch-label, .switch-handle {
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+    }
+</style>
+<script type="text/javascript">
+    $('.grid tbody').on('hover', function () {
+        $(this).toggleClass('clickable');
+    });
+    
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("AddFormChinhSach", "ChinhSachQuanLiTaiLieu")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#CreateChinhSach").html(data);
+                $("#CreateChinhSach").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+    function EditChinhSach(ID) {
+        $.ajax({
+            url: '@Url.Action("EditChinhSach", "ChinhSachQuanLiTaiLieu")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#CreateChinhSach").html(data);
+                $("#CreateChinhSach").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function RemoveChinhSach(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa chính sách quản lý này này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveChinhSach", "ChinhSachQuanLiTaiLieu")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Xóa chính sách quản lý thành công thành công!',
+                                });
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } 
+                }
+            }
+        });
+    }
+    $(function () {
+        $(".switch-input").change(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ChangeStatus", "ChinhSachQuanLiTaiLieu")',
+                data: {
+                    CHINHSACH_ID: $(this).attr("data-id"),
+                    TRANGTHAI: $(this).is(":checked")
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {                    
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: data
+                    });
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+    });
+</script>

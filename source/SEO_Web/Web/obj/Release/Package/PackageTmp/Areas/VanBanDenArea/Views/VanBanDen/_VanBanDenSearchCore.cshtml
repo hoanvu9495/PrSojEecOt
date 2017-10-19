@@ -1,0 +1,253 @@
+﻿@using Web.Common
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@model Web.Areas.VanBanDenArea.Models.VanBanDenSearchModel
+@{
+    VanBanDenSearchBO searchModel = new VanBanDenSearchBO();
+    if (Model.DataSearch != null)
+    {
+        searchModel = Model.DataSearch;
+    }
+
+}
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/van_ban_den/van_ban_den.css">
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+
+<style>
+    .e-input {
+        padding-left: 10px;
+    }
+
+    .ms-drop {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+            width: 100%;
+    }
+    /*.wid-100{
+        width:100%;
+    }*/
+    .ms-parent{
+        width:100%;
+    }
+    .ms-choice > span{
+        width:100%;
+    }
+    .lbl{
+        padding-left:20px;
+    }
+</style>
+<div>
+    <center>
+        <table style="width:80%;">
+            <tr style="height: 10px;">
+                <input type="hidden" name="Type" value="@Model.TYPE" />
+            </tr>
+            <tr>
+                <td width="160">
+                    <label class="lbl">Trích yếu:</label>
+                </td>
+                <td colspan="3">
+                    @Html.TextBox("TRICHYEU", searchModel.TRICHYEU, new { @placeholder = "Tìm theo nội dung trích yếu", id = "TRICHYEU", @class = "form-control wid-100" })
+                </td>
+            </tr>
+            <tr style="height: 10px;"></tr>
+            <tr>
+                <td width="160px">
+                    <label class="lbl">Số/Ký hiệu:</label>
+                </td>
+                <td>
+                    @Html.TextBox("SOKYHIEU", searchModel.SOKYHIEU, new { @placeholder = "Tìm theo số ký hiệu", id = "SOKYHIEU",  @class = "form-control wid-100" })
+                </td>
+                <td width="160px">
+                    <label class="lbl">Hình thức văn bản:</label>
+                </td>
+                <td>
+                    @Html.DropDownList("LOAIVANBAN_ID", Model.ListLoaiVanBan, new { @class = "",@style="width:100%",  @multiple = "multiple" })
+
+
+                    @*<div class="input-field4 clearfix fix-width">
+                    </div>*@
+                </td>
+            </tr>
+            <tr style="height: 10px;"></tr>
+            <tr>
+                <td width="160px">
+                    <label class="lbl">Sổ văn bản:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix fix-width">
+                        @Html.DropDownList("SOVANBANDEN_ID", Model.ListSoVanBanDen, new { @style = "width:100%", @multiple = "multiple" })
+                    </div>
+                </td>
+                <td width="160px">
+                    <label class="lbl">Số đến:</label>
+                </td>
+                <td>
+                    @Html.TextBox("SODEN", "", new { @placeholder = "Tìm theo số đến của văn bản", id = "SODEN", @style = "width:100%", @class = "form-control" })
+                </td>
+            </tr>
+            <tr style="height: 10px;"></tr>
+            @*<tr>
+                <td width="160px">
+                    <label class="lbl">Đơn vị ban hành:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix fix-width">
+                        @Html.DropDownList("COQUANBANHANH_ID", Model.ListCoQuanBanHanh, new { @class = "width_100", @style="width:100%", @multiple = "multiple" })
+                    </div>
+                </td>
+                <td width="160px">
+                    <label class="lbl">Đơn vị nhận hồ sơ:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix fix-width">
+                        @Html.DropDownList("DONVINHANHOSO_ID", Model.ListDonViNhanHoSo, new { @class = "width_100", @style = "width:100%", @multiple = "multiple" })
+                    </div>
+                </td>
+            </tr>*@
+            <tr>
+                <td width="160px">
+                    <label class="lbl">Độ khẩn:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix fix-width">
+                        @Html.DropDownList("DOKHAN_ID", Model.ListDoKhan, new { @class = "width_100 ",@style="width:100%",@multiple = "multiple" })
+                    </div>
+                </td>
+                <td width="160px" class="label_trang_thai">
+                    <label class="lbl">Đánh dấu:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix fix-width ">
+                        @Html.DropDownList("MARKITEM", Model.ListDanhDau, new { @class = "width_100", @style="width:100%", @multiple = "multiple" })
+
+
+                      
+                    </div>
+                </td>
+                @*<td width="160px">
+                        <label class="lbl">Người tạo:</label>
+                    </td>
+                    <td>
+                        @Html.TextBox("NGUOITAO", "", new { @placeholder = "Tìm theo account người tạo", id = "NGUOITAO", @style = "width: 60%;", maxlength = "320", @class = "e-input" })
+                    </td>*@
+            </tr>
+            <tr style="height: 10px;"></tr>
+            <tr>
+                <td width="160px">
+                    <label class="lbl">Ngày văn bản đến:</label>
+                </td>
+                <td>
+                    @Html.TextBox("fromdate_NGAYDEN", string.Format("{0:dd/MM/yyyy}", searchModel.NGAYVBDEN_START), new { @placeholder = "Từ ngày", @style = "width:100%", @class = "form-control datepicker" })
+
+                </td>
+                <td></td>
+                <td>@Html.TextBox("todate_NGAYDEN", string.Format("{0:dd/MM/yyyy}", searchModel.NGAYVBDEN_END), new { @placeholder = "Đến ngày", @style = "width:100%", @class = "form-control mf10 datepicker" })</td>
+            </tr>
+            <tr style="height: 10px;"></tr>
+            <tr>
+                <td width="160px">
+                    <label class="lbl">Ngày văn bản:</label>
+                </td>
+                <td >
+                    @Html.TextBox("fromdate_NGAYVANBAN", string.Format("{0:dd/MM/yyyy}", searchModel.NGAYVB_START), new { @placeholder = "Từ ngày", @style = "width:100%", @class = "form-control datepicker" })
+                </td>
+
+                <td></td>
+                <td>
+                    @Html.TextBox("todate_NGAYVANBAN", string.Format("{0:dd/MM/yyyy}", searchModel.NGAYVB_END), new { @placeholder = "Đến ngày", @style = "width:100%", @class = "form-control mf10 datepicker" })
+                </td>
+            </tr>
+            <tr style="height: 10px;"></tr>
+            <tr>
+                
+                <td colspan="4" align="center">
+
+                    <button id="btnSearch" type="button" class="btn btn-labeled btn-primary">
+                        <span class="btn-label">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </span>
+                        Tìm kiếm
+                    </button>
+                    @*<a class="" style="background-color: #336699;height: 35px;border: none;width: 100px;color: white; line-height:35px;float:left; display:block;margin-left:10px;margin-top:15px;" aria-controls="collapseOne" aria-expanded="false" href="#collapseOne" data-toggle="collapse" role="button">
+                            Đóng
+                        </a>*@
+                    <a aria-expanded="false" href="#collapseOne" data-toggle="collapse" role="button" class="btn btn-labeled btn-danger">
+                        <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>
+                        Đóng
+                    </a>
+                </td>
+            </tr>
+            <tr style="height:10px;"></tr>
+        </table>
+    </center>
+</div>
+<script>
+    
+    function pageFunction(){
+        $("#btnSearch").click(function () {
+            $("#txtQuickSearch").val($("#TRICHYEU").val());
+            $("#frmSearh").submit();
+        });
+        $('#TRICHYEU').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                $("#txtQuickSearch").val($(this).val());
+                $("#frmSearh").submit();
+            }
+        });
+        $('#SODEN').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                $("#txtQuickSearch").val($("#TRICHYEU").val());
+                $("#frmSearh").submit();
+            }
+        });
+        $('#SOKYHIEU').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                $("#txtQuickSearch").val($("#TRICHYEU").val());
+                $("#frmSearh").submit();
+            }
+        });
+        $("#LOAIVANBAN_ID").multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "Chọn hình thức văn bản"
+        });
+
+        $("#SOVANBANDEN_ID").multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "Chọn sổ văn bản"
+        });
+
+        $("#COQUANBANHANH_ID").multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "Chọn đơn vị ban hành"
+        });
+        $("#DONVINHANHOSO_ID").multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "Chọn đơn vị nhận hồ sơ"
+        });
+        $("#DOKHAN_ID").multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "Chọn mức độ khẩn"
+        });
+        $("#MARKITEM").multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "Trạng thái đánh dấu"
+        });
+    }
+    loadScript("Scripts/multiple-select.js", pageFunction);
+</script>       

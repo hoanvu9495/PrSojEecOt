@@ -1,0 +1,154 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Model.eAita.HSCV_DOMAT
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #EDIT_ID {
+        display: none;
+    }
+</style>
+@using (Ajax.BeginForm("SaveDoMat", "HscvDoMat", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmDoMatEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cập nhật độ mật</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr style="height: 20px;"></tr>
+
+                    @Html.TextBox("ID", Model.ID, new { @style = "width: 233px;", maxlength = "50", @class = "e-input", @id = "EDIT_ID", @readonly = "readonly" })
+
+
+                    <tr>
+                        <td style="width: 120px">
+                            <label class="lbl" style=" width: 120px;">Tên độ mật:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("DOMAT", Model.DOMAT, new { @style = "width: 233px;", maxlength = "50", @class = "e-input", @id = "EDIT_DOMAT" })
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="EDIT_DOMAT_HTML" style="margin-left: 0px; color: red;">Độ mật không được chứa thẻ HTML </span>
+                            <span class="lb-Check" id="EDIT_DOMAT_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập tên độ mật </span>
+                            <span class="lb-Check" id="EDIT_DOMAT_ERROR" style="margin-left: 0px; color: red;">Tên độ mật đã tồn tại</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" style=" width: 120px;">Trạng Thái:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" style="width: 233px;">
+                                @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text = "Có sử dụng", Value = "true" },
+                        new SelectListItem{ Text = "Không sử dụng", Value = "false" }
+                    })
+                                </div>
+</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnSave">Cập nhật</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+
+
+}
+<script type="text/javascript">
+    var tontai = false;
+    var donvi = $("#EDIT_DOMAT").val();
+    function OnClose() {
+        $("#PrepareDoMat").dialog("close");
+    }
+    $("#EDIT_DOMAT").blur(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#EDIT_DOMAT_NULL").show();
+        } else {
+            $("#EDIT_DOMAT_NULL").hide();
+        }
+    });
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function updateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Cập nhật độ mật thành công',
+        });
+        $("#PrepareDoMat").modal("hide");
+        reloadGrid();
+    }
+    $(function () {
+        $("#btnSave").click(function () {
+            if (($("#EDIT_DOMAT").val().trim() == null || $("#EDIT_DOMAT").val().trim() == "") || tontai == true) {
+                $("#EDIT_DOMAT").focus();
+                $("#EDIT_DOMAT_NULL").show();
+                return false;
+            } else {
+
+                $("#EDIT_DOMAT_NULL").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#EDIT_DOMAT").val())) {
+                $("#EDIT_DOMAT_HTML").show();
+                $("#EDIT_DOMAT").focus();
+                return false;
+            } else {
+                $("#EDIT_DOMAT_HTML").hide();
+            }
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("validateDoMat", "HscvDoMat")',
+                data: {
+                    domat: $("#EDIT_DOMAT").val()
+                },
+                cache: false,
+                dataType: "html",
+                success: function (data) {
+                    if (data == "existed") {
+
+                        if (donvi != $("#EDIT_DOMAT").val()) {
+                            $("#EDIT_DOMAT_ERROR").show();
+                            return false;
+                        } else {
+                            $("#frmDoMatEdit").submit();
+                            return true;
+                        }
+
+                    } else {
+                        $("#frmDoMatEdit").submit();
+                        return true;
+                    }
+                }, error: function () {
+                    alert("co loi");
+                }
+            });
+        });
+    });
+
+</script>

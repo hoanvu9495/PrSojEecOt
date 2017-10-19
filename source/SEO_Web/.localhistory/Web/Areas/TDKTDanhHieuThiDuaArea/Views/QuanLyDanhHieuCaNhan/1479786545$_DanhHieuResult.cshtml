@@ -1,0 +1,94 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common;
+@using Web.Areas.TDKTDanhHieuThiDuaArea.Models;
+    @{
+        List<TDKT_DANHHIEUCANHAN> LstDanhHieus = new List<TDKT_DANHHIEUCANHAN>();
+        if (ViewData["Search"] == "0")
+        {
+            LstDanhHieus = (List<TDKT_DANHHIEUCANHAN>)SessionManager.GetValue("DanhHieus");
+        }
+        if (ViewData["Search"] == "1")
+        {
+            LstDanhHieus = (List<TDKT_DANHHIEUCANHAN>)SessionManager.GetValue("DanhHieusSearch");
+        }
+        PermissionModel PermissionModel = (PermissionModel)SessionManager.GetValue("PermissionModel");
+        var grid = new HiNetGridView(LstDanhHieus,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                              );
+    }
+    <style>
+        .head th {
+            text-align: center;
+        }
+        .textGrid{
+            text-align: left !important;
+        }
+    </style>
+    @Html.AntiForgeryToken()
+    <div id="grid">
+        <h3 class="group-tittle mt10"><span>Danh sách danh hiệu cá nhân (@(LstDanhHieus == null ? "0" : LstDanhHieus.Count.ToString()))</span></h3>
+        <table style="width: 100%; margin-top:20px">
+            <tr>
+                <td>
+                    <div class="SearchResult clearfix" style="">
+                        <div id="SearchResultContent">
+                            <div style="height:auto;min-height:300px;">
+                                @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                         grid.Column("DANHHIEUTHIDUA", "Tên danh hiệu", format: item =>
+                         {
+                             return new MvcHtmlString(string.Format(
+                                                                            "<a href='/TDKTDanhHieuThiDuaArea/QuanLyDanhHieuCaNhan/ViewDetail/" + item.ID + "'>" + item.DANHHIEUTHIDUA + "</a>"));
+                }, style: "textGrid"),
+                         grid.Column("YEAR", "Áp dụng cho năm"),                
+                         grid.CusColumn(format: (item) =>
+                    {
+                        if (PermissionModel.HasRoleTaoMoiDanhHieuThiDuaCaNhan)
+                        {
+                            return new MvcHtmlString(string.Format(
+                                                                            "<a href='/TDKTDanhHieuThiDuaArea/QuanLyDanhHieuCaNhan/Edit/" + item.ID + "'  class='btnEdit' title = 'Chỉnh sửa'></a>"));
+                        }
+                        else
+                        {
+                            return "";
+                        }
+                    }
+                    , header: "Sửa"),
+                         grid.CusColumn(format: (item) =>
+                    {
+                        if (PermissionModel.HasRoleTaoMoiDanhHieuThiDuaCaNhan)
+                        {
+                            return new MvcHtmlString(string.Format(
+                                            "<a href='javascript:void(0)' onclick='DeleteDanhHieu(" + item.ID + ")'  class='btnDelete' title = 'Xóa'></a>"));
+                        }
+                        else
+                        {
+                            return "";
+                        }
+                    }
+                                                , header: "Xóa")
+                )
+                )
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+
+    </div>

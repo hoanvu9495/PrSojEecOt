@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Model.eAita;
+@using StackExchange.Profiling;
+@{
+    UserInfoBO user = ((UserInfoBO)SessionManager.GetUserInfo());
+    if (user == null)
+    {
+        user = new UserInfoBO();
+    }
+
+    MvcHtmlString token = null;
+    try
+    {
+        token = Html.AntiForgeryToken();
+    }
+    catch { }
+}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Hệ thống Quản lý Điều hành tác nghiệp</title>
+    <link rel="icon" type="image/png" href="~/Content/Images/QuocHuy.png" />
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/Custom/js")
+
+    @*add JQuery UI*@
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    @*end Add JQuery UI*@
+
+    @Styles.Render("~/bundles/Custom/css")
+    @Scripts.Render("~/Scripts/js")
+
+    @Scripts.Render("~/Scripts/jQueryForm")
+    @Scripts.Render("~/Scripts/CommonJS")
+    <script src="~/Scripts/Common.js"></script>
+    <script src="~/Scripts/datepicker-vi.js"></script>
+    <script src="~/Scripts/jquery.steps.min.js"></script>
+    <link href="~/Content/Custom/css/style.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/frame.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/jquery.confirm.css" rel="stylesheet" />
+    <link href="~/Content/Custom/notifit/notifit.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/multiple-select.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/van_ban_den/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/tiny_mce/tinymce.min.js"></script>
+    <script src="~/Content/Custom/notifit/notifit.js"></script>
+    <script src="~/Content/Custom/js/jquery.confirm.js"></script>
+    <script src="~/Scripts/multiple-select.js"></script>
+    <script>
+        __RequestVerificationToken = '@token';
+        __ShowAjaxProcessing = true;
+        $(document).on({
+            ajaxStart: function () {
+                if (__ShowAjaxProcessing) {
+                    $("#_AjaxLoading").dialog("open");
+                }
+                __ShowAjaxProcessing = true;
+            },
+            ajaxStop: function () {
+                $("#_AjaxLoading").dialog("close");
+                $("input[name=__RequestVerificationToken]").remove();
+                $("form").append(__RequestVerificationToken);
+            }
+        });
+
+
+        $(document).ready(function () {
+            $('.dropdown-menu').hover(
+                    function () {
+                        $(this).children('.sub-menu').slideDown(200);
+                    },
+                    function () {
+                        $(this).children('.sub-menu').slideUp(200);
+                    }
+                );
+            $(window).resize(function () {
+                $(".content-main").css({ "min-height": $(window).height() - $(".top-main").height() - $(".footer-main").height() - 28 });
+            });
+            $(".content-main").css({ "min-height": $(window).height() - $(".top-main").height() - $(".footer-main").height() - 28 });
+
+            $.ajaxSetup({
+                data: {
+                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+                }
+            });
+
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                if (xhr.responseText.indexOf(atob('PCEtLUxPR19JTl9QQUdFLS0+')) > 0) {
+                    event.preventDefault();
+                    console.log("login")
+                    window.location.href = "/Account/Login";
+                }
+                if (xhr.responseText.indexOf(atob('PCEtLU1BSU5UQUlOX1BBR0UtLT4=')) > 0) {
+                    event.preventDefault();
+                    console.log("maintain")
+                    window.location.href = "/Home/ServerMaintenance";
+                }
+            });
+
+            $("#_AjaxLoading").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 200,
+                dialogClass: 'noTitleStuff',
+                height: 45,
+                resizable: false,
+                show: {
+                    effect: "fade",
+                    duration: 200
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 200
+                }
+            });
+
+            ////active url dc chon
+            $("input[name=__RequestVerificationToken]").remove();
+            $("form").append(__RequestVerificationToken);
+
+        });
+
+        function DisableAjaxProcessing() {
+            __ShowAjaxProcessing = false;
+        }
+
+    </script>
+    <script src="~/Content/Custom/css/van_ban_den/collapse.js"></script>
+    <script src="~/Content/Custom/css/van_ban_den/modal.js"></script>
+    <script src="~/Content/Custom/css/van_ban_den/dropdown.js"></script>
+
+
+    <!--[if IE 7]>
+        <link rel="stylesheet" type="text/css" href="../../Content/fixed_ie7.css" />
+    <![endif]-->
+    <!--[if IE 8]>
+        <link rel="stylesheet" type="text/css" href="../../Content/fixed_ie8.css" />
+    <![endif]-->
+    @*    <link href="@Url.Content("~/Content/themes/smas/common-1.1.css")" rel="stylesheet" type="text/css" />
+
+    *@
+    @*<style>
+            @@font-face {
+                font-family: 'Open Sans';
+                src: url('/Content/Custom/Font/OpenSans-Regular.ttf');
+                src: local('/Content/Custom/Font/OpenSans-Regular'), url('/Content/Custom/Font/OpenSans-Regular.woff') format('woff'), url('/Content/Custom/Font/OpenSans-Regular.ttf') format('truetype'), url('/Content/Custom/Font/OpenSans-Regular.svg') format('svg');
+                font-weight: normal;
+                font-style: normal;
+            }
+        </style>*@
+</head>
+
+<body>
+    <div id="_AjaxLoading">
+        Đang xử lý...
+    </div>
+    <div id="_GlobalMessage">
+    </div>
+    @*<div class="top-main">
+            <div class="wrap">
+                <div class="logo">
+                    <div class="header-text">Hệ thống quản lý Y tế dự phòng - Quản lý dịch bệnh</div>
+                    <div>
+                        @Html.Partial("_InfoBox")
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <div style="float:left;width:100%; overflow:hidden">
+        <div class="f-page">
+            @RenderSection("HeaderPopup", required: false)
+            @*@{Html.RenderPartial("GetTopMenu");}*@
+            @RenderSection("LeftMenu", required: true)
+            <!--Tab-->
+            @RenderBody()
+            @Html.AntiForgeryToken()
+            <div class="status">
+                <ul>
+                    <li><img src="~/Content/Images/ico-b1.png" alt="">@user.Username</li>
+                    <li><img src="~/Content/Images/ico-b4.png" alt=""><a href="/" title="Quay lại trang chủ">Trang chủ</a></li>
+                    <li><img src="~/Content/Images/ico-b5.png" alt=""><a id="Logout" href="/account/logout">Đăng xuất</a></li>
+                </ul>
+                <input type="hidden" id="globalCoSoID" value="@user.CoSoID" />
+                <input type="hidden" id="globalUserName" value="@user.Username" />
+                <input type="hidden" id="globalFullName" value="@user.Fullname" />@*sau nay set ve FullName*@
+            </div>
+        </div>
+    </div>
+    <script src="~/Content/Custom/notifit/notifit.js"></script>
+    <script src="~/Content/Custom/js/jquery.confirm.js"></script>
+    <script src="~/Content/Custom/js/jquery.printElement.js"></script>    
+    <script src="~/Content/Custom/lobibox-master/dist/js/lobibox.js"></script>
+    @*<script src="~/Nodejs/socket.io-client/socket.io.js"></script>
+    <script src="~/Nodejs/main.js"></script>*@
+</body>
+</html>

@@ -1,0 +1,76 @@
+﻿
+
+    #block--table-container-1 > table {
+        width: 100%;
+    }
+
+        #block--table-container-1 > table.webGrid tr td {
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        #block--table-container-1 > table.webGrid tr th:first-child {
+            width: 60%;
+        }
+
+        #block--table-container-1 > table.webGrid tr th:nth-child(2) {
+            width: 15%;
+        }
+
+        #block--table-container-1 > table.webGrid tr th:nth-child(3) {
+            width: 20%;
+        }
+
+        #block--table-container-1 > table.webGrid tr th:last-child {
+            width: 5%;
+        }
+
+        #block--table-container-1 > table.webGrid tbody tr td:last-child {
+            text-align: center;
+        }
+
+
+
+
+
+.ms-parent ul li {
+    width: 100% !important;
+    height: 20px;
+}
+
+    .ms-parent ul li label span {
+        margin: 0 0 0 5px;
+        line-height: 20px;
+    }
+
+.lb-Check {
+    /*display:inline;*/
+}
+
+.tabcontrol > .content {
+    height: 405px;
+}
+
+#vb_di_tabs {
+    border-bottom: 1px solid #e2e2e2;
+    border-left: 1px solid #e2e2e2;
+    border-radius: 5px;
+}
+
+#block--form-button-container {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom:10px;
+}
+
+
+
+.RemoveFile {
+    background-image: none;
+}
+
+#ProcessWorkFlowModal .modal-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}

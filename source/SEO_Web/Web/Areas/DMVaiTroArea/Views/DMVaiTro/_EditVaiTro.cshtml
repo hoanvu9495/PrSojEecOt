@@ -1,0 +1,150 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.DBTool;
+@model DM_VAITRO
+@using (Ajax.BeginForm("SaveVaiTro", "DMVaiTro", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "EditSuccess"
+}, new { id = "frmVaiTroEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table>
+            <tr class="height_20"></tr>
+            <tr>
+                <td>
+                    <label class="lbl6" >Mã vai trò:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("MA_VAITRO", Model.MA_VAITRO, new {  @class = "e-input width_222", @id = "EDIT_MAVAITRO", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span class="lb-Check2" id="MAVAITRONull_Edit" >Bạn nhập mã vai trò </span>
+                    <span class="lb-Check" id="FINDEDITMAVAITRO" >Mã vai trò bạn nhập đã được sử dụng </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl6" >Tên vai trò:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("TEN_VAITRO", Model.TEN_VAITRO, new { @class = "e-input width_222", @id = "EDIT_TENVAITRO", @maxlength = "100" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span class="lb-Check2" id="TENVAITRONull_EDIT" >Bạn nhập tên vai trò </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl6">Trạng thái:</label>
+                </td>
+                <td>
+                    <div class="float-width-40">
+                        @Html.RadioButton("TRANGTHAI", "1", (Model.TRANGTHAI == 1), new { @id = "EDIT_ISACTIVE_HL", @class = "css-checkbox" })
+                        <label class="css-label" for="EDIT_ISACTIVE_HL">Hiệu lực</label>
+                    </div>
+                    <div class="float-width">
+                        @Html.RadioButton("TRANGTHAI", "0", (Model.TRANGTHAI == 0), new { @id = "EDIT_ISACTIVE_KHL", @class = "css-checkbox" })
+                        <label class="css-label" for="EDIT_ISACTIVE_KHL">Không hiệu lực</label>
+                    </div>
+                </td>
+            </tr>
+            <tr class="height_20"></tr>
+        </table>
+    </div>
+    <input type="hidden" name="DM_VAITRO_ID" value="@Model.DM_VAITRO_ID" />
+    <div class="margin-top-10 center">
+        <input type="submit" value="Lưu" id="btnEdit" class="btnSearch" />
+        <input type="button" value="Đóng" onclick="OnClose()" class="btnSearch"/>
+    </div>
+}
+<script type="text/javascript">
+    $("#EDIT_MAVAITRO").focusout(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#MAVAITRONull_Edit").show();
+        } else {
+            $("#MAVAITRONull_Edit").hide();
+        }
+        $("#EDIT_MAVAITRO").val($("#EDIT_MAVAITRO").val().trim());
+    });
+    $("#EDIT_TENVAITRO").focusout(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#TENVAITRONull_Edit").show();
+        } else {
+            $("#TENVAITRONull_Edit").hide();
+        }
+        $("#EDIT_TENVAITRO").val($("#EDIT_TENVAITRO").val().trim());
+    });
+
+    $("#EDIT_MAVAITRO").change(function () {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("FindEditMa", "DMVaiTro")',
+            cache: false,
+            data: {
+                MAVAITRO: "@Model.MA_VAITRO",
+                input: $("#EDIT_MAVAITRO").val()
+            },
+            success: function (data) {
+                if (data > 0) {
+                    $("#FINDEDITMAVAITRO").show();
+                    $("#EDIT_MAVAITRO").focus();
+                } else {
+
+                    $("#FINDEDITMAVAITRO").hide();
+                    $("#EDIT_TENVAITRO").focus();
+                }
+            }
+        });
+    });
+    $("#btnEdit").click(function () {
+        if (($("#EDIT_MAVAITRO").val().trim() == null || $("#EDIT_MAVAITRO").val().trim() == "")) {
+            $("#MAVAITRONull_Edit").show();
+            $("#EDIT_MAVAITRO").focus();
+            return false;
+        }
+        if (!$("#FINDEDITMAVAITRO").is(":hidden")) {
+            $("#EDIT_MAVAITRO").focus();
+            $("#EDIT_MAVAITRO").select();
+            return false;
+        }
+        if (($("#EDIT_TENVAITRO").val().trim() == null || $("#EDIT_TENVAITRO").val().trim() == "")) {
+            $("#TENVAITRONull_Edit").show();
+            $("#EDIT_TENVAITRO").focus();
+            return false;
+        }
+
+
+        $("#frmVaiTroEdit").submit();
+        return true;
+    });
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function EditSuccess() {
+        //CommonJS.alert("Sửa vai trò thành công");
+        $("#PrepareVaiTro").dialog("close");
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Cập nhật vai trò thành công!',
+        });
+        reloadGrid();
+    }
+    function OnClose() {
+        $("#PrepareVaiTro").dialog("close");
+    }
+
+</script>

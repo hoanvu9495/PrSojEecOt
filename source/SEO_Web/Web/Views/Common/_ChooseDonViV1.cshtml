@@ -1,0 +1,168 @@
+﻿@using Web.FwCore
+@using Business.Business
+@using Business.CommonBusiness
+@using Web.Models
+@model Web.Models.ChonNguoiDungModel
+<style type="text/css">
+    .tree_ul {
+        list-style: none;
+    }
+
+    .tree_li {
+        padding-top: 10px;
+    }
+
+
+    .tree_ul, .tree_li, .tree_div {
+        float: left;
+        padding-left: 10px;
+    }
+
+    .left_tree_ul {
+        padding-left: 45px;
+    }
+
+    .tree_ul, .tree_li {
+        width: 100%;
+    }
+
+    .pop_expand {
+        width: 15px;
+        height: 15px;
+    }
+
+    .pop_collapse {
+        width: 15px;
+        height: 15px;
+        display: none;
+    }
+
+    .root_tree {
+        background: rgba(0, 0, 0, 0) url('/Content/Images/folder-horizontal.png') no-repeat scroll 15px 1px;
+    }
+
+        .root_tree label {
+            margin-left: 30px;
+        }
+</style>
+<div class="modal fade" id="donvi_dialog_@Model.INDEX" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel_pb_@Model.INDEX">
+                    @(string.IsNullOrEmpty(Model.TITLE) ? "Lựa chọn đơn vị" : Model.TITLE)
+                </h4>
+            </div>
+            <div class="modal-body" id="modal_body_pb_@Model.INDEX" style="height:400px; overflow-x:hidden; overflow-y:scroll">
+                <table width="100%">
+                    <tbody>
+                        <tr>
+                            <td width="30%">
+                                <label class="lbl-title">Tên đơn vị:</label>
+                            </td>
+                            <td>
+                                <input class="e-input" id="KEYWORD_DONVI_@Model.INDEX" maxlength="255" name="KEYWORD_DONVI" style="width: 90%;" type="text" value="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div style="text-align: center; margin-top:5px;">
+                                    <input type="button" value="Tra cứu" id="btnSearchDonVi_@Model.INDEX" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="width:100%; margin:auto;">
+                    <div id="donvi_result_dialog_@Model.INDEX" style="overflow-x: hidden;">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSave_choose_donvi_ids_@Model.INDEX">Chọn</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $("#" + '@Model.ID_CLICK').click(function () {
+        var keyword = $("#KEYWORD_DONVI_" + '@Model.INDEX').val();
+        var ids = $("#" + '@Model.VALUE_ID').val();
+        $.ajax({
+            type: "POST",
+            url: '/Common/ListUnit',
+            cache: false,
+            data: {
+                COSO_ID: '@Model.COSO_ID',
+                DONVI_ID: '@Model.DONVI_ID',
+                TEXT_ID: '@Model.TEXT_ID',
+                VALUE_ID: '@Model.VALUE_ID',
+                IS_MULTICHOICE: '@Model.IS_MULTICHOICE',
+                IDS: ids,
+                KEYWORD: keyword,
+                CALLBACK_FUNCTION: '@Model.CALLBACK_FUNCTION',
+                INDEX: '@Model.INDEX',
+            },
+            success: function (data) {
+                $("#donvi_result_dialog_" + '@Model.INDEX').html(data);
+            }
+        });
+        $("#donvi_dialog_" + '@Model.INDEX').modal("show");
+    });
+
+    $('#KEYWORD_DONVI_' + '@Model.INDEX').on('keyup', function (event) {
+        if (event.keyCode === 13) {
+            var keyword = $("#KEYWORD_DONVI_" + '@Model.INDEX').val();
+            var ids = $("#" + '@Model.VALUE_ID').val();
+            $.ajax({
+                type: "POST",
+                url: '/Common/ListUnit',
+                cache: false,
+                data: {
+                    COSO_ID: '@Model.COSO_ID',
+                    DONVI_ID: '@Model.DONVI_ID',
+                    TEXT_ID: '@Model.TEXT_ID',
+                    VALUE_ID: '@Model.VALUE_ID',
+                    IS_MULTICHOICE: '@Model.IS_MULTICHOICE',
+                    IDS: ids,
+                    KEYWORD: keyword,
+                    CALLBACK_FUNCTION: '@Model.CALLBACK_FUNCTION',
+                    INDEX: '@Model.INDEX',
+                },
+                success: function (data) {
+                    $("#donvi_result_dialog_" + '@Model.INDEX').html(data);
+                }
+            });
+        }
+    });
+    $("#btnSearchDonVi_" + '@Model.INDEX').click(function () {
+        var keyword = $("#KEYWORD_DONVI_" + '@Model.INDEX').val();
+        var ids = $("#" + '@Model.VALUE_ID').val();
+        $.ajax({
+            type: "POST",
+            url: '/Common/ListUnit',
+            cache: false,
+            data: {
+                COSO_ID: '@Model.COSO_ID',
+                DONVI_ID: '@Model.DONVI_ID',
+                TEXT_ID: '@Model.TEXT_ID',
+                VALUE_ID: '@Model.VALUE_ID',
+                IS_MULTICHOICE: '@Model.IS_MULTICHOICE',
+                IDS: ids,
+                KEYWORD: keyword,
+                CALLBACK_FUNCTION: '@Model.CALLBACK_FUNCTION',
+                INDEX: '@Model.INDEX',
+            },
+            success: function (data) {
+                $("#donvi_result_dialog_" + '@Model.INDEX').html(data);
+            }
+        });
+    });
+
+</script>

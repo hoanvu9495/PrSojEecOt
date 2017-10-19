@@ -1,0 +1,6 @@
+﻿@model Web.Models.CongViecToolBarViewModel
+@if (!string.IsNullOrEmpty(Model.Title))
+{
+    var url = string.Format("/CongViecArea/CongViec/Create?preTitle={0}&content={1}&itemType={2}&itemID={3}", Model.Title, Model.Content, Model.ItemType, Model.ItemID);
+    <button style="margin-bottom: 10px;" onclick="location.href='@url'" type="button" class="b_btn b_btn-default">Tạo công việc</button>
+}

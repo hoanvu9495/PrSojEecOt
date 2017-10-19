@@ -1,0 +1,46 @@
+﻿@model Web.Areas.QLLoaiVanBan.Models.LoaiVbViewModel
+@{
+    ViewBag.Title = "CreateLoaiVanBan";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+@section HeaderPopup
+{
+    <h1>@ViewBag.Title<a href="/QLGiangVienArea/QLGiangVien" title="Đóng lại"></a></h1>
+}
+
+<div class="SearchCriterial clearfix hot-news-list-2 mgt20">
+    <h3 class="group-tittle mt10">
+        Thêm mới loại văn bản
+    </h3>
+    <form action='@Url.Action("CreateLoaiVanBan","QLLoaiVanBan")' method="post">
+        @Html.AntiForgeryToken()
+        <center>
+            <div class="cont-bc">
+                <table style="width:80%; margin:auto;">
+                    <tr style="height:20px"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl-title">Tên loại văn bản:<span style="color: red;">*</span></label>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBox("TENLOAIVB", Model.TENLOAIVB, new { @style = "width: 675px;", maxlength = "255", @class = "e-input", @id = "TENLOAIVANBAN" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="color: red;">@Html.ValidationMessageFor(o => o.TENLOAIVB)</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <div class="btn-bc">
+                <div>
+                    <input type="submit" value="Lưu thông tin" id="btnSave" class="btn btn-submit" style="border: 0 none;" />
+                    <a href="/QLLoaiVanBan/QLLoaiVanBan/" class="btn btn-success" style="min-height: auto; padding: 9px 0px">Quay lại</a>
+                </div>
+            </div>
+
+        </center>
+    </form>
+</div>

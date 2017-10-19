@@ -1,0 +1,134 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common
+
+@using Web.Areas.MarkItemArea.Models;
+@using Web.Common;
+@model Web.Areas.VanBanDenArea.Models.SoVanBanDenViewModel
+@{
+    ViewBag.Title = "Quản lý sổ văn bản đến";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                    <h2>Danh sách sổ văn bản đến</h2>
+                    <a class="btn btn-success btn-sm" href="javascript:OnCreate()" style="float: right">
+                        <span>Thêm mới</span>
+                    </a>
+                </header>
+                <div style="padding: 0px">
+                    @foreach (var nhomso in Model.ListNhomSoVanBan)
+                    {
+                        <div>
+                           @* <div class="alert alert-info no-margin fade in">                                
+                                @nhomso.NHOMSOVANBAN
+                            </div>*@
+                                @{
+                        Model.IdNhomSo = nhomso.ID;
+                                }
+                                @Html.Partial("_SoVanBanDenSearchResult", Model)
+                        
+                        </div>
+                    }
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+
+<div id="CreateSoVanBan" title="Thêm mới sổ văn bản đến" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" id="formCreate">
+
+        </div>
+    </div>
+
+</div>
+<div id="PrepareVaiTro" title="Cập nhật thông tin sổ văn bản" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" id="formEdit">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("Create", "SoVanBanDen")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#formCreate").html("");
+                $("#formCreate").html(data);
+                $("#CreateSoVanBan").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function EditVaiTro(ID) {
+        $.ajax({
+            url: '@Url.Action("Edit", "SoVanBanDen")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#formEdit").html("");
+                $("#formEdit").html(data);
+                $("#PrepareVaiTro").modal("show");
+
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function DeleteSoVanBan(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa sổ văn bản đến này?',
+            'buttons': {
+                'Đồng ý': {
+                    'class': 'btn-confirm-yes btn-primary',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "SoVanBanDen")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID},
+                            success: function (data) {
+                                if (data.Type == "SUCCESS") {
+                                    NotiSuccess("Xóa thành công");
+                                    setTimeout('location.reload()', 400);
+                                } else {
+                                    NotiError(data.Message);
+                                }
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Hủy bỏ': {
+                    'class': 'btn-danger',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+</script>

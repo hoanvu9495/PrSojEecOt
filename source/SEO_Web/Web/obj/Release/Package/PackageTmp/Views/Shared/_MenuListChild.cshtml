@@ -1,0 +1,13 @@
+﻿@using Business.CommonBusiness;
+@model List<dmChucNangBO>
+<ul class="admin-menu">
+    @if (Model.Count > 0)
+    {
+        foreach (dmChucNangBO menu in Model)
+        {
+            <li class="menu" style="z-index:10">
+                <a href="@menu.URL" id="ico-@menu.TT_HIENTHI" data-parent="@menu.DM_CHUCNANG_ID">@menu.TEN_CHUCNANG</a>
+            </li>
+        }
+    }
+</ul>

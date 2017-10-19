@@ -1,0 +1,146 @@
+﻿@using Web.Common
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@model NguoiDungBO
+
+<style type="text/css">
+    .lbl {
+        display: inline-block;
+        width: 140px;
+    }
+
+    .ms-drop {
+        /*width: 233px;*/
+         width: 100% !important;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+         width: 100% !important;
+    }
+    .width_100 {
+        width: 100% !important;
+    }
+    .create-lbl{
+        margin-top:7px;
+        font-size:13px;
+    }
+</style>
+<div class="modal-dialog" style="width:600px" role="document">
+    <div class="modal-content">
+        @using (Ajax.BeginForm("ResetPassword", "NguoiDung", new AjaxOptions
+        {
+            HttpMethod = "POST",
+            OnFailure = "failure",
+            OnSuccess = "success"
+        }, new { id = "frmNguoiDungReset" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Reset mật khẩu <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+            </div>
+            <div class="modal-body" id="modal_body">
+                <div style="width:100%; margin:auto;">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class=" col-sm-4">
+                                <label class="create-lbl">Tên đăng nhập:<span style="color: red;">*</span></label>
+                            </div>
+                            <div class="col-sm-5">
+                                @Html.TextBox("TENDANGNHAP", Model.TENDANGNHAP, new { @class = "form-control", maxlength = 50, @readonly = "readonly", })
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-sm-4">
+
+                                <label class="create-lbl">Mật khẩu mới:<span style="color: red;">*</span></label>
+                            </div>
+                            <div class=" col-sm-5">
+                                @Html.Password("MATKHAUMOI", "", new { maxlength = 100, @class = "form-control required" })
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                   
+                </div>
+                
+                <input type="hidden" name="DM_NGUOIDUNG_ID" value="@Model.DM_NGUOIDUNG_ID" />
+            </div>
+
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-primary" id="btnSaveReset" style="border-radius: 3px;">
+                    Lưu
+                </button>
+                <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+            </div>
+
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    
+    });
+    function Close() {
+        $("#ResetMatKhau").dialog("close");
+    }
+    function failure(xhr) {
+        alert(xhr.responseText);
+    }
+    $("#btnSaveReset").click(function () {
+
+        
+        var err = 0;
+        var pass = requiredFieldForFormId("frmNguoiDungReset");
+        if (!pass) {
+            err++;
+        }
+     
+        if (err==0) {
+            $("#frmNguoiDungReset").submit();
+            return true;
+        } else {
+            NotiError("Có lỗi, vui lòng kiểm tra lại");
+            return false;
+        }
+        
+        
+    });
+
+    
+
+    function success(rs) {
+        
+        if (rs.Status) {
+            NotiSuccess("Cập nhật thành công");
+
+            OnCloseLog();
+            ReloadPage();
+        } else {
+            NotiError(rs.Message);
+        }
+        
+
+    }
+    function OnCloseLog() {
+        $("#reset_dialog_modal").html("");
+        $("#reset_dialog_modal").modal("hide");
+    }
+    loadScript("Scripts/jquery.unobtrusive-ajax.min.js");
+</script>

@@ -1,0 +1,39 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@model Web.Areas.ThuMucLuuTruArea.Models.ThongKeThuMucModel
+@{
+    List<TmGiaHanThuMucBO> lstGiaHan = Model.lstGiaHan;
+    var grid = new WebGrid(lstGiaHan,
+                             rowsPerPage: 10,
+                             canPage: true,
+                             canSort: false,
+                             ajaxUpdateContainerId: "grid",
+                              selectionFieldName: "selectedRow"
+                             );
+}
+@grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column("TENTHUMUC", "Tên thư mục", format: (item) => new MvcHtmlString(string.Format("<a href='javascript:void(0)'>" + item.TENTHUMUC + "</a>"))),
+                        grid.Column("DUONGDAN", "Đường dẫn"),
+                                        grid.Column("HANCU", "Hạn cũ", format: (item) => string.Format("{0:dd-MM-yyyy}", item.HANCU)),
+                                        grid.Column("NGAYGIAHAN", "Hạn mới", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYGIAHAN)),
+                            grid.Column("NGUOIGUI", "Người trình"),
+                            grid.Column("TRANGTHAI", "Trạng thái", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == GiaHanTaiLieuModel.GIAHAN ? "<span style='color:red'>Chờ duyệt</span>" : item.TRANGTHAI == GiaHanTaiLieuModel.KHONGDUYET ? "<span style='color:green'>Trả lại</span>" : item.TRANGTHAI == GiaHanTaiLieuModel.DUYET ? "Đã duyệt" : "Không rõ")))
+                 )
+    )
+<div class="modal fade" id="GiaHanThuMuc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<style>
+    .webGrid td:nth-child(2), .webGrid td:nth-child() {
+        text-align: left !important;
+    }
+</style>

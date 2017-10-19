@@ -1,0 +1,109 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using Web.Areas.MarkItemArea.Models;
+@using Web.Common;
+@model Web.Areas.VanBanDiArea.Models.VBDiIndexViewModel
+@{
+
+    List<VanBanDiBO> lstVanBanDi = new List<VanBanDiBO>();
+
+    string CheckSearch = ViewData["Search"].ToString();
+    if (CheckSearch == "0")
+    {
+        lstVanBanDi = (List<VanBanDiBO>)SessionManager.GetValue("ListVanBanDiTheoLuongCongViec" + Model.State_ID);
+    }
+    if (CheckSearch == "1")
+    {
+        lstVanBanDi = (List<VanBanDiBO>)SessionManager.GetValue("ListVanBanDiTheoLuongCongViec" + Model.State_ID + "Search");
+    }
+
+    var grid = new WebGrid(lstVanBanDi,
+                          rowsPerPage: 10,
+                          canPage: true,
+                          canSort: true,
+                          ajaxUpdateContainerId: "grid",
+                           selectionFieldName: "selectedRow",
+                           ajaxUpdateCallback: "searchSuccess"
+                          );
+}
+<style>
+    .dropdown-toggle {
+        padding-left: 24px;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .lbl-trichyeu a {
+        float: left;
+    }
+</style>
+
+@Html.AntiForgeryToken()
+<div id="grid">
+    <h3 class="group-tittle" style="margin-bottom:10px;">
+        Danh sách văn bản đi @Model.TenTrangThai (@(lstVanBanDi == null ? "0" : lstVanBanDi.Count.ToString()))
+    </h3>
+    @*<div style="float:left;margin-left:15px;">*@
+
+    @*</div>*@
+    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                //grid.Column(format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format("<input class='global_checkbox " + ((item.IS_READ == true) ? "is_read" : "is_unread") + "' type='checkbox' name='ids' value='" + item.ID + "'>"))),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format("<span style='cursor:pointer' onclick=\"javascript:singleMarkItem(" + item.ID + ",'" + item.IS_FAVORITE + "'," + LOAITAILIEU.VANBANDI + ",'" + LOAITAILIEU.FAVORITE + "')\" class='" + ((item.IS_FAVORITE == true) ? "favorite" : "notset_favorite") + "' ></span>"))),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format("<span style='cursor:pointer' onclick=\"javascript:singleMarkItem(" + item.ID + ",'" + item.IS_IMPORTANT + "'," + LOAITAILIEU.VANBANDI + ",'" + LOAITAILIEU.IMPORTANT + "')\" class='" + ((item.IS_IMPORTANT == true) ? "important" : "notset_important") + "' ></span>"))),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format((item.HAS_FILE == true) ? "<span title='Có tệp đính kèm' class='btnAttFile'></span>" : ""))),
+                //grid.Column(format: (item) => new MvcHtmlString("<input type='checkbox' value='"+item.ID+"' class='itemcheckbox' name='chkItem'>"), header: "", style: "center"),
+                grid.Column("NGAYBANHANH", format: (item) => new MvcHtmlString(item.NGAYBANHANH != null ? bool.Parse(item.IS_READ.ToString()) == false ? ("<b>" + string.Format("{0:dd/MM/yyyy}", item.NGAYBANHANH) + "</b>") : string.Format("{0:dd/MM/yyyy}", item.NGAYBANHANH) : ""), header: "Ban hành"),
+                //grid.Column(format: (item) => new MvcHtmlString(item.TRANGTHAI == 0 ? "<span style='color:red; text-align:center;'>Không hiệu lực</span>" : "<span style='color:green;text-align:center;'>Hiệu lực</span>"), header: "Trạng thái", style: "center"),
+                grid.Column("SODITHEOSO", format: (item) => new MvcHtmlString(item.SODITHEOSO != null ? string.Format((bool.Parse(item.IS_READ.ToString()) == false ? ("<b>" + item.SODITHEOSO.ToString() + "</b>") : item.SODITHEOSO.ToString())) : ""), header: "Số đi"),
+                grid.Column("SOHIEU", format: (item) => new MvcHtmlString(item.SOHIEU != null ? string.Format((bool.Parse(item.IS_READ.ToString()) == false ? ("<b>" + item.SOHIEU + "</b>") : item.SOHIEU)) : ""), header: "Số hiệu"),
+                grid.Column("TRICHYEU", format: (item) => new MvcHtmlString(string.Format(
+                                                        "<a href='/vanbandiarea/vanbandi/detail/" + item.ID + "' title = 'Xem chi tiết'>" + (bool.Parse(item.IS_READ.ToString()) == false ? ("<b>" + item.TRICHYEU + "</b>") : item.TRICHYEU) + "</a>")), header: "Trích yếu", style: "lbl-trichyeu"),
+                grid.Column("DONVIBANHANH", format: (item) => new MvcHtmlString(item.DONVIBANHANH != null ? string.Format((bool.Parse(item.IS_READ.ToString()) == false ? ("<b>" + item.DONVIBANHANH + "</b>") : item.DONVIBANHANH)) : ""), header: "Đơn vị ban hành"),
+                grid.Column("TRANGTHAI_XULY", format: (item) => (item.IS_READ == false) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.TRANGTHAI_XULY + "</span>")) : item.TRANGTHAI_XULY, header: "Trạng thái xử lý"),
+                //grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                //        "<a href='/vanbandiarea/vanbandi/detail/" + item.ID + "' class='btnView' title = 'Xem chi tiết'></a>")), header: "Xem"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                        "<a href='/vanbandiarea/vanbandi/edit/" + item.ID + "' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                "<a href='javascript:void(0)' onclick='DeleteVanBanDi(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+                )
+    )
+    @if (lstVanBanDi.Count == 0)
+    {
+        <div id="Empty" style="color: red;">
+            Không có văn bản đi @Model.TenTrangThai
+        </div>
+    }
+</div>

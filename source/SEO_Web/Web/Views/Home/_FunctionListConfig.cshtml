@@ -1,0 +1,129 @@
+﻿@using Web.Models
+@model DrashboardFunctionViewModel
+@Html.AntiForgeryToken()
+@using (Ajax.BeginForm("SaveFunctionListConfig", "Home", new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                OnFailure = "configFunctionListFailure",
+                OnSuccess = "configFunctionListSuccess",
+            }, new { id = "frmSaveFunctionListConfig" }))
+            {
+    <div class="modal-dialog" style="width:400px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tùy chọn chức năng hiển thị - Hàng @Model.ROW</h4>
+            </div>
+            <div class="modal-body" style="float:left; width:95%; border-bottom: 1px solid #e5e5e5;margin-bottom:10px;">
+                <div style="clear:both;">
+                    <div style="float: left;width: 100%;">
+                        <input class="css-checkbox" id="TT_ALL" name="CN_ITEM" type="checkbox">
+                        <label for="TT_ALL" class="css-label2 font-bold">Chọn tất cả (@(Model.ListAllChucNang.Count + " chức năng"))</label>
+                        <div class="pq-label-fix" style="max-height:300px;min-height:300px; width:100%; overflow-y:auto;">
+                            @if (Model.ListAllChucNang != null && Model.ListAllChucNang.Count > 0)
+                            {
+                                var lstt = "";
+                                var lstt_checked = "";
+                                foreach (var tt in Model.ListAllChucNang)
+                                {
+                                    lstt += tt.ID + ",";
+                                    if (Model.ListChucNangInRow != null && Model.ListChucNangInRow.Contains(tt.ID))
+                                    {
+                                        lstt_checked += tt.ID + ",";
+                                        <input class="css-checkbox homefunction" value="@tt.ID" id="TT_ITEM_@tt.ID" name="TT_ITEM" type="checkbox" checked="checked">
+                                    }
+                                    else
+                                    {
+                                        <input class="css-checkbox homefunction" value="@tt.ID" id="TT_ITEM_@tt.ID" name="TT_ITEM" type="checkbox">
+                                    }
+                                    <label style="font-weight:normal" for="TT_ITEM_@tt.ID" class="css-label2" title="@tt.MOTACHUCNANG">@tt.TENCHUCNANG</label>
+                                }
+                                <input type="hidden" value="@lstt_checked" name="ALL_VAL_SELECT_TT" id="ALL_VAL_SELECT_TT" />
+                                <input type="hidden" value="@lstt" name="ALL_VAL_TT" id="ALL_VAL_TT" />
+                            }
+                            else
+                            {
+                                <input type="hidden" value="" name="ALL_VAL_SELECT_TT" id="ALL_VAL_SELECT_TT" />
+                                <input type="hidden" value="" name="ALL_VAL_TT" id="ALL_VAL_TT" />
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="@Model.ROW" name="HANG_HIENTHI" id="HANG_HIENTHI" />
+                <button type="submit" class="btn btn-primary" id="btnSaveConfigFunctionInRow">Lưu</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        var _listChecked = "";
+        $("input[name=TT_ITEM]:checked").each(function () {
+            _listChecked += $(this).val() + ",";
+        });
+        if (_listChecked == $("#ALL_VAL_TT").val()) {
+            $("#TT_ALL").prop("checked", true);
+            $("#TT_ALL").prop("indeterminate", false);
+        }
+        else {
+            if ($("#ALL_VAL_SELECT_TT").val().trim().length > 0) {
+                $("#TT_ALL").prop("checked", true);
+                $("#TT_ALL").prop("indeterminate", true);
+            } else {
+                $("#TT_ALL").prop("checked", false);
+                $("#TT_ALL").prop("indeterminate", false);
+            }
+        }
+    });
+    //Bắt đầu Cấu hình cột hiển thị
+    function configFunctionListFailure() {
+        //alert("configFailure");
+    }
+    function configFunctionListSuccess() {
+        $(".user-config-layout").modal('hide');
+        window.location = "/home/index"
+    }
+    $(".homefunction").change(function () {
+        var listChecked = "";
+        $("input[name=TT_ITEM]:checked").each(function () {
+            listChecked += $(this).val() + ",";
+        });
+        $("#ALL_VAL_SELECT_TT").val(listChecked);
+        if (listChecked == $("#ALL_VAL_TT").val()) {
+            $("#TT_ALL").prop("checked", true);
+            $("#TT_ALL").prop("indeterminate", false);
+        }
+        else {
+            if ($("#ALL_VAL_SELECT_TT").val().trim().length > 0) {
+                $("#TT_ALL").prop("checked", true);
+                $("#TT_ALL").prop("indeterminate", true);
+            } else {
+                $("#TT_ALL").prop("checked", false);
+                $("#TT_ALL").prop("indeterminate", false);
+            }
+        }
+    });
+    $("#TT_ALL").change(function () {
+        if ($("#TT_ALL").is(":checked"))
+        {
+            var listChecked = "";
+            $("#TT_ALL").prop("checked", true);
+            $("#TT_ALL").prop("indeterminate", false);
+            $("input[name=TT_ITEM]").prop("checked", true);
+            $("input[name=TT_ITEM]:checked").each(function () {
+                listChecked += $(this).val() + ",";
+            });
+            $("#ALL_VAL_SELECT_TT").val(listChecked);
+        }
+        else {
+            $("#TT_ALL").prop("checked", false);
+            $("#TT_ALL").prop("indeterminate", false);
+            $("input[name=TT_ITEM]").prop("checked", false);
+        }
+    });
+</script>

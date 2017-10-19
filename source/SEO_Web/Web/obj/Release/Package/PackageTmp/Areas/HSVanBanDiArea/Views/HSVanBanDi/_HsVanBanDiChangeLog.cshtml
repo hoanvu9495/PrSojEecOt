@@ -1,0 +1,164 @@
+﻿@using Web.Areas.HSVanBanDiArea.Models;
+@using System.Globalization;
+@model List<VBDiChangeLogViewModel>
+@{
+    //var count = 1;
+}
+<link href="~/Content/ACE/css/bootstrap.min.css" rel="stylesheet" />
+<style type="text/css">
+    .nav-stacked a{
+        outline:none;
+    }
+    #table--changelog-vanbandi {
+        width: 100%;
+    }
+
+        #table--changelog-vanbandi tr td {
+            text-align: left;
+            padding: 5px;
+        }
+
+    .container {
+        width: 100%;
+        overflow-y: scroll;
+    }
+
+    .tab-container {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .badge {
+        background-color: #3A7Ab7;
+    }
+
+    .tabs-left {
+    }
+
+    .nav-tabs {
+        float: left;
+        border-bottom: 0;
+        width: 30%;
+    }
+
+        .nav-tabs li {
+            float: none;
+            margin: 0;
+            border-top-left-radius: 4px;
+        }
+
+            .nav-tabs li a {
+                margin-right: 0;
+                border: 0;
+                /*background: #eee;*/
+                background: #fff;
+                border: 1px solid #eee;
+                font-weight: bold;
+                color: #444;
+                border-radius: 4px 0 0 4px;
+            }
+
+                .nav-tabs li a:hover {
+                    /*background-color: #3A7Ab7;*/
+                    background: #eee;
+                }
+
+        .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+            border: 0;
+            color: #444;
+            background: #eee;
+            /*background-color: #3A7Ab7;*/
+            border-radius: 4px 0 0 4px;
+        }
+
+    .tab-content {
+        margin: 0;
+        float: right;
+        width: 70%;
+        background: #eee;
+    }
+
+        .tab-content .tab-pane {
+            display: none;
+            padding: 1.6rem;
+            overflow-y: auto;
+            font-weight: 100;
+        }
+
+        .tab-content .active {
+            display: block;
+        }
+
+    .list-group {
+        width: 100%;
+    }
+
+        .list-group .list-group-item {
+            height: 50px;
+        }
+
+            .list-group .list-group-item h4, .list-group .list-group-item span {
+                line-height: 11px;
+            }
+</style>
+<script src="~/Content/Custom/lobibox-master/bootstrap/dist/js/bootstrap.min.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="tab-container">
+            <div class="tabs-left">
+                <ul class="nav nav-tabs nav-stacked">
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            <li class="active">
+                                <a href="#log-@i" data-toggle="tab">
+                                    @Html.Raw(string.Format("{0:dd/MM/yyyy h:mm:ss}", Model[i].EditDate.Value) + "<br/> Người sửa : " + Model[i].EditorName)
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="#log-@i" data-toggle="tab">
+                                    @Html.Raw(string.Format("{0:dd/MM/yyyy h:mm:ss}", Model[i].EditDate.Value) + "<br/> Người sửa : " + Model[i].EditorName)
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+                <div class="tab-content">
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            <div class="tab-pane active" id="log-@i">
+                                @if (string.IsNullOrEmpty(Model[i].EditContent))
+                                {
+                                    @Html.Raw("<b>Chưa cập nhật</b>.")
+                                }
+                                else
+                                {
+                                    @Html.Raw(Model[i].EditContent)
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="tab-pane" id="log-@i">
+                                @if (string.IsNullOrEmpty(Model[i].EditContent))
+                                {
+                                    @Html.Raw("<b>Chưa cập nhật</b>.")
+                                }
+                                else
+                                {
+                                    @Html.Raw(Model[i].EditContent)
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

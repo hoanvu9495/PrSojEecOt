@@ -1,0 +1,163 @@
+﻿@using Web.Models
+@model Web.Areas.VanBanDenArea.Models.VanBanDenViewModel
+
+<div style="width:80%; margin:auto" id="collapseNhanVaXuLy" class="panel-collapse collapse" aria-expanded="false">
+    <table id="tbl_create_vanbanden">
+        @*Thời hạn xử lý*@
+        <tr>
+            <td>
+                <label class="lbl-title">Thời hạn xử lý:</label>
+            </td>
+            <td colspan="2">
+                Từ ngày @Html.TextBox("THOIHANXULY_BATDAU", string.Format("{0:dd/MM/yyyy}", Model.VanBanDen.THOIHANXULY_BATDAU), new { @style = "width: 100px;", maxlength = "10", @class = "e-input datepicker", @id = "THOIHANXULY_BATDAU" })
+                Đến ngày @Html.TextBox("THOIHANXULY_KETTHUC", string.Format("{0:dd/MM/yyyy}", Model.VanBanDen.THOIHANXULY_KETTHUC), new { @style = "width: 100px;", maxlength = "10", @class = "e-input datepicker", @id = "THOIHANXULY_KETTHUC" })
+            </td>
+
+        </tr>
+        <tr>
+            <td class="height_20"></td>
+            <td>
+                <span id="ERR_THOIHANXULY" style="color: red"></span>
+            </td>
+        </tr>
+        @*End*@
+        @*Đơn vị nhận hồ sơ*@
+        <tr>
+            <td>
+                <label class="lbl-title">Đơn vị nhận hồ sơ:</label>
+            </td>
+            <td>
+                <div class="input-field4 clearfix fix-width">
+                    @Html.DropDownList("DONVINHANHOSO_ID", Model.ListDonViNhanHoSo, "Không chọn", new { @class = "width_100", @style = "padding-right:30px;  width:300px", @multiple = "multiple" })
+                </div>
+            </td>
+        </tr>
+        <tr style="height: 20px;"></tr>
+        @*End*@
+        @*Nguoi xu ly chinh*@
+        <tr>
+            <td>
+                <label class="lbl-title">Người xử lý chính:</label>
+            </td>
+            <td>
+                <div id="ShowTextChonNguoiXuLy" style="float:left; margin-right:20px">
+                    @if(Model.VanBanDen.NGUOI_XU_LY_ID.HasValue) { @Model.VanBanDen.DM_NGUOIDUNG2.TENDANGNHAP }
+                </div>
+                <input type="hidden" id="ValueNguoiXuLyChinh" name="ValueNguoiXuLyChinh" value="@Model.VanBanDen.NGUOI_XU_LY_ID" />
+                <a href="javascript:void(0)" id="CLICK_TO_CHOOSE_USER_XULY_ID">
+                    <img border="0" src="~/Content/Images/van_ban_den/icon_book.gif" /> Chọn
+                </a>
+            </td>
+        </tr>
+        <tr style="height: 20px;"></tr>
+        <tr></tr>
+        @*End nguoi xu ly chinh*@
+        @*Don vi phoi hop xu ly*@
+        
+        <tr>
+                <td>
+                    <label class="lbl-title">Đơn vị phối hợp xử lý:</label>
+                </td>
+                <td>
+                    <fieldset>
+                        <table>
+                            <tr>
+                                <td>
+                                    <label class="lbl-title">Đơn vị:</label>
+                                </td>
+                                <td>
+                                    <div class="input-field4 clearfix fix-width">
+                                        @Html.DropDownList("DONVIPHOIHOPXULY_IDS", Model.ListDonViPhoiHop, new { @class = "width_100", @style = "padding-right:30px;  width:300px", @multiple = "multiple" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="height: 20px;"></tr>
+                            @*<tr>
+                                <td>
+                                    <label class="lbl-title">Phòng ban:</label>
+                                </td>
+                                <td>
+                                    <span id="ADD_DEPARTMENT_TEXT_ID">@Model.PhongBanPhoiHopText</span>
+                                    <input type="hidden" id="ADD_DEPARTMENT_ID" name="ADD_DEPARTMENT_ID" value="@Model.PhongBanPhoiHopValue" />
+                                    <a href="javascript:void(0)" id="CLICK_TO_CHOOSE_DEPARTMENT_PHOIHOP_ID">
+                                        <img border="0" src="~/Content/Images/van_ban_den/Add.gif" /> Chọn phòng ban
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr style="height: 20px;"></tr>*@
+                            <tr>
+                                <td>
+                                    <label class="lbl-title">Cá nhân:</label>
+                                </td>
+                                <td>
+                                    <span id="ADD_USER_TEXT_ID">@Model.NguoiPhoiHopText</span>
+                                    <input type="hidden" id="ADD_USER_ID" name="ADD_USER_ID" value="@Model.NguoiPhoiHopValue" />
+                                    <a href="javascript:void(0)" id="CLICK_TO_CHOOSE_USER_PHOIHOP_ID">
+                                        <img border="0" src="~/Content/Images/van_ban_den/Add.gif" /> Chọn cá nhân
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr style="height: 20px;"></tr>
+                        </table>
+                    </fieldset>
+                    
+                </td>
+            
+        </tr>
+        @*End don vi phoi hop xu ly*@
+
+    </table>
+</div>
+<script>
+    $("#DONVIPHOIHOPXULY_IDS").multipleSelect({
+        multiple: true,
+        filter: true,
+        placeholder: "Chọn đơn vị phối hợp xử lý"
+    });
+</script>
+@{
+    #region Tạo model Người xu ly văn bản
+    ChonNguoiDungModel nguoixuly = new ChonNguoiDungModel();
+    nguoixuly.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoixuly.DONVI_ID = 0;
+    nguoixuly.PHONGBAN_ID = 0;
+    nguoixuly.TEXT_ID = "ShowTextChonNguoiXuLy";
+    nguoixuly.VALUE_ID = "ValueNguoiXuLyChinh";
+    nguoixuly.ID_CLICK = "CLICK_TO_CHOOSE_USER_XULY_ID";
+    nguoixuly.IS_MULTICHOICE = 0;
+    nguoixuly.INDEX = 1;
+    nguoixuly.TITLE = "Chọn người xử lý văn bản";
+    nguoixuly.SHOW_CHUC_VU_ID = "CHUCVU";
+    //nguoiky.CALLBACK_FUNCTION = "";
+    #endregion
+    
+    #region Tạo model Người phối hợp
+    ChonNguoiDungModel nguoiphoihop = new ChonNguoiDungModel();
+    nguoiphoihop.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoiphoihop.DONVI_ID = 0;
+    nguoiphoihop.PHONGBAN_ID = 0;
+    nguoiphoihop.TEXT_ID = "ADD_USER_TEXT_ID";
+    nguoiphoihop.VALUE_ID = "ADD_USER_ID";
+    nguoiphoihop.ID_CLICK = "CLICK_TO_CHOOSE_USER_PHOIHOP_ID";
+    nguoiphoihop.IS_MULTICHOICE = 1;
+    nguoiphoihop.INDEX = 2;
+    nguoiphoihop.TITLE = "Chọn người phối hợp xử lý văn bản";
+    nguoiphoihop.SHOW_CHUC_VU_ID = "CHUCVU";
+    //nguoiky.CALLBACK_FUNCTION = "";
+    #endregion
+    #region Tạo model phòng ban
+    ChonNguoiDungModel phongban = new ChonNguoiDungModel();
+    phongban.COSO_ID = Model.UserInfo.CoSoID.Value;
+    phongban.DONVI_ID = 0;
+    phongban.TEXT_ID = "ADD_DEPARTMENT_TEXT_ID";
+    phongban.VALUE_ID = "ADD_DEPARTMENT_ID";
+    phongban.ID_CLICK = "CLICK_TO_CHOOSE_DEPARTMENT_PHOIHOP_ID";
+    phongban.IS_MULTICHOICE = 1;
+    phongban.INDEX = 1;
+    phongban.TITLE = "Chọn phòng ban";
+    //nguoiky.CALLBACK_FUNCTION = "";
+    #endregion
+    }
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoixuly);}
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiphoihop);}
+@{ Html.RenderPartial("../Common/_ChoosePhongBanV1", phongban);}

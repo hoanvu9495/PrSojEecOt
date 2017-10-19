@@ -1,0 +1,149 @@
+﻿@using Web.Areas.ThuMucLuuTruArea.Models;
+@model Model.eAita.TM_YEUCAU_CHIASE
+@using (Ajax.BeginForm("SaveTrinhCucTruong", "YeuCauChiaSe", new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnFailure = "failure",
+        OnSuccess = "createSuccess"
+    }, new { id = "frmCreateYeuCauChiaSe" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">
+                    Trình cục trưởng yêu cầu chia sẻ thông tin
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="loading">Đang trình Cục trưởng....</div>
+                <input type="hidden" name="YEUCAU_ID" id="YEUCAU_ID" value="@ViewData["YEUCAU_ID"]" />
+                <table>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Ghi chú :<span style="color:red">*</span></td>
+                        <td>
+                            <textarea class="e-input" name="COMMENT" style="width:400px;height:60px" id="COMMENT_TEXT" maxlength="500" placeholder="Nhập lý do cho yêu cầu chia sẻ này">@(Model.LYDO == null ? "" : Model.LYDO)</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><span style="color:red;display:none" id="LYDO_NULL">Bạn chưa nhập lý do cho yêu cầu chia sẻ này</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                @if (Model.ID > 0)
+                {
+                    <input type="submit" class="btn btn-success" value="Gửi Cục trưởng" id="btnSendSharing" />
+                }
+                else
+                {
+                    <input type="button" class="btn btn-success" value="Gửi Cục trưởng" id="btnSendSharing" />
+                }
+                <button class="close-modal btn btn-default" type="button" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.ID > 0)
+{
+    <script>
+        function failure(xhr, error) {
+            notif({
+                type: 'error',
+                position: 'bottom',
+                msg: 'Đã có lỗi xảy ra!',
+            });
+        }
+        function createSuccess() {
+            notif({
+                type: 'success',
+                position: 'bottom',
+                msg: 'Đã trình cục trưởng thành công yêu cầu chia sẻ',
+            });
+            $("#loading").hide();
+            $("#TrinhDuyetYeuCau").modal('hide');
+            reloadGrid();
+        }
+        $(function () {
+            $("#COMMENT").blur(function () {
+                if ($("#COMMENT_TEXT").val().trim() == "") {
+                    $("#COMMENT_TEXT").focus();
+                    $("#COMMENT_TEXT_NULL").show();
+
+                } else {
+                    $("#COMMENT_TEXT_NULL").hide();
+                }
+            });
+            $("#btnSendSharing").click(function () {
+                $("#TRANGTHAI").val("@YeuCauChiaSeConstant.DATRINH");
+                if ($("#COMMENT_TEXT").val().trim() == "") {
+                    $("#COMMENT_TEXT").focus();
+                    $("#LYDO_NULL").show();
+                    return false;
+                } else {
+                    $("#LYDO_NULL").hide();
+                }
+                $("#loading").show();
+                return true;
+            });
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(function () {
+            $("#COMMENT_TEXT").val($("#LYDO").val());
+            $("#COMMENT").blur(function () {
+                if ($("#COMMENT_TEXT").val().trim() == "") {
+                    $("#COMMENT_TEXT").focus();
+                    $("#COMMENT_TEXT_NULL").show();
+                } else {
+                    $("#COMMENT_TEXT_NULL").hide();
+                }
+            });
+
+            $("#btnSendSharing").click(function () {
+                $("#TRANGTHAI").val("@YeuCauChiaSeConstant.DATRINH");
+                if ($("#COMMENT_TEXT").val().trim() == "") {
+                    $("#COMMENT_TEXT").focus();
+                    $("#LYDO_NULL").show();
+                    return false;
+                } else {
+                    $("#LYDO_NULL").hide();
+                }
+                $("#COMMENT").val($("#COMMENT_TEXT").val());
+                document.getElementById("frmCreateYeuCau").submit();
+                $("#loading").show();
+                return true;
+            });
+        });
+    </script>
+}
+<style>
+    #loading, #including {
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        background: #000 url('/Content/Images/loadajax.gif') no-repeat 50% 4px;
+        bottom: 50%;
+        color: #fff;
+        text-align: center;
+        line-height: 166px;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0.7;
+        border-radius: 5px;
+        filter: alpha(opacity=70);
+        font-size: 12px;
+        text-shadow: none;
+        display: none;
+    }
+</style>

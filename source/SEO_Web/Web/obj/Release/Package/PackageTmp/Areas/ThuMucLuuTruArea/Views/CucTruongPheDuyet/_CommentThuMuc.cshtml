@@ -1,0 +1,128 @@
+﻿@{
+    var trinhduyet = ViewData["PheDuyet"] == "1" ? true : false;
+}
+<style>
+    #MOTA {
+        margin-left: 10%;
+    }
+</style>
+@using (Ajax.BeginForm("UpdateApprove", "ThuMucLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "createSuccess"
+}, new { id = "frmCreateThuMuc" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Phê duyệt thư mục</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr style="height:15px"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl-title">Chuyển trạng thái</label>
+                        </td>
+                        <td style="margin-left:10%">
+                            <div class="input-field4 clearfix fix-width" style="margin-left:10%">
+                                <select class="width_100" id="TRANGTHAI2" name="TRANGTHAI">
+                                    @if (trinhduyet)
+                                    {
+                                        <option value="4">Phê duyệt</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="3">Trả về </option>
+                                    }
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr style="height:15px"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl-title">Nội dung<span style="color:red">*</span></label>
+                        </td>
+                        <td>
+                            @if (trinhduyet)
+                            {
+                                <textarea id="MOTA" name="MOTA" class="e-input" placeholder="Nhập nội dung phê duyệt." style="width:400px;height:150px;resize:vertical" maxlength="500"></textarea>
+                            }
+                            else
+                            {
+                                <textarea id="MOTA" name="MOTA" class="e-input" placeholder="Nhập lý do trả về." style="width:400px;height:150px;resize:vertical" maxlength="500"></textarea>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span id="NOIDUNG_NULL" style="display:none;color:red">Vui lòng nhập nội dung</span>
+                            <span id="MOTA_HTML" style="display:none;color:red">Nội dung không được chứa ký tự HTML</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div style="margin-top: 15px; text-align: center;">
+                                <input type="hidden" value="@ViewData["THUMUC_ID"]" name="THUMUC_ID" />
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+
+                <input type="submit" value="Xác nhận" id="btnXacNhan" class="btn btn-success" >
+                <input type="button" value="Hủy" data-dismiss="modal" class="btn btn-default" >
+            </div>
+        </div>
+
+    </div>
+
+}
+<script>
+    function createSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Chuyển trạng thái thư mục thành công',
+        });
+        $("#ApprovalComment").modal("hide");
+        $('.checkbox1').each(function () { //lặp qua từng checkboxcheckbox
+            this.checked = false; //deselect all checkboxes with class "checkbox1"
+        });
+        $("#selectAll").attr("checked", false);
+        reloadTable();
+        reloadGrid();
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $("#btnXacNhan").click(function () {
+        if ($("#MOTA").val().trim() == "") {
+            $("#NOIDUNG_NULL").show();
+            return false;
+        } else {
+            $("#NOIDUNG_NULL").hide();
+        }
+
+        if (/<[a-z][\s\S]*>/i.test($("#MOTA").val().trim())) {
+            $("#MOTA").select();
+            $("#MOTA_HTML").show();
+            return false;
+        } else {
+            $("#MOTA_HTML").hide();
+        }
+        return true;
+    });
+
+</script>

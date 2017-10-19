@@ -1,0 +1,354 @@
+﻿@using Web.Areas.CongViecArea.Models;
+@using Web.Common;
+@model ThongKeCongViecViewModel
+@{
+
+    var listCongViecChuaBatDau = Model.ListCongViec.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_CHUABATDAU).ToList();
+    var listCongViecDangThucHien = Model.ListCongViec.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DANGTHUCHIEN).ToList();
+    var listCongViecDaHoanThanh = Model.ListCongViec.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DAHOANTHANH).ToList();
+    var listCongViecDaHuyBo = Model.ListCongViec.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DAHUYBO).ToList();
+    var listCongViecDangTamDung = Model.ListCongViec.Where(x => x.TRANGTHAI_ID == CongViecConstant.TRANGTHAI_DANGTAMDUNG).ToList();
+    DateTime currentDate = string.Format("{0:dd/MM/yyyy}", DateTime.Now).ToDateTimeNotNull();
+
+}
+<style type="text/css">
+    #table--congviec-statistic thead tr:first-child th {
+        text-transform: uppercase;
+    }
+
+    #table--congviec-statistic thead tr th {
+        border: 1px solid #fff;
+    }
+
+    #table--congviec-statistic tbody tr td:first-child {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+</style>
+<table class="webGrid" id="table--congviec-statistic">
+    <thead>
+        <tr class="head">
+            <th scope="col" rowspan="2">
+                công việc
+            </th>
+            <th scope="col" colspan="2">
+                chưa bắt đầu
+            </th>
+            <th scope="col" colspan="3">
+                đang thực hiện
+            </th>
+            <th scope="col" colspan="3">
+                đã hoàn thành
+            </th>
+            <th scope="col" rowspan="2">
+                đã hủy bỏ
+            </th>
+            <th scope="col" rowspan="2">
+                đang tạm dừng
+            </th>
+            <th scope="col" rowspan="2">
+                tổng cộng
+            </th>
+        </tr>
+        <tr class="head">
+            <th>Trong hạn</th>
+            <th>Quá hạn</th>
+            <th>Trước hạn</th>
+            <th>Trong hạn</th>
+            <th>Quá hạn</th>
+            <th>Trước hạn</th>
+            <th>Trong hạn</th>
+            <th>Quá hạn</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @{
+                var listCongViecXuLyChinhChuaBatDau = listCongViecChuaBatDau.Where(x => x.ListDonViXuLyChinh.Count > 0 || x.ListNguoiXuLyChinh.Count > 0).ToList();
+                var listCongViecXuLyChinhDangThucHien = listCongViecDangThucHien.Where(x => x.ListDonViXuLyChinh.Count > 0 || x.ListNguoiXuLyChinh.Count > 0).ToList();
+                var listCongViecXuLyChinhDaHoanThanh = listCongViecDaHoanThanh.Where(x => x.ListDonViXuLyChinh.Count > 0 || x.ListNguoiXuLyChinh.Count > 0).ToList();
+                var listCongViecXuLyChinhDaHuyBo = listCongViecDaHuyBo.Where(x => x.ListDonViXuLyChinh.Count > 0 || x.ListNguoiXuLyChinh.Count > 0).ToList();
+                var listCongViecXuLyChinhDangTamDung = listCongViecDangTamDung.Where(x => x.ListDonViXuLyChinh.Count > 0 || x.ListNguoiXuLyChinh.Count > 0).ToList();
+                int tronghan_xulychinh_chuabatdau = listCongViecXuLyChinhChuaBatDau.Where(x => x.HANKETTHUC < currentDate).Count();
+                int quahan_xulychinh_chuabatdau = listCongViecXuLyChinhChuaBatDau.Where(x => x.HANKETTHUC > currentDate).Count();
+
+                int truochan_xulychinh_dangthuchien = listCongViecXuLyChinhDangThucHien.Where(x => x.NGAYBATDAUXULY < x.HANKETTHUC).Count();
+                int tronghan_xulychinh_dangthuchien = listCongViecXuLyChinhDangThucHien.Where(x => x.NGAYBATDAUXULY == x.HANKETTHUC).Count();
+                int quahan_xulychinh_dangthuchien = listCongViecXuLyChinhDangThucHien.Where(x => x.NGAYBATDAUXULY > x.HANKETTHUC).Count();
+
+                int truochan_xulychinh_dahoanthanh = listCongViecXuLyChinhDaHoanThanh.Where(x => x.NGAYHOANTHANH < x.HANKETTHUC).Count();
+                int tronghan_xulychinh_dahoanthanh = listCongViecXuLyChinhDaHoanThanh.Where(x => x.NGAYHOANTHANH == x.HANKETTHUC).Count();
+                int quahan_xulychinh_dahoanthanh = listCongViecXuLyChinhDaHoanThanh.Where(x => x.NGAYHOANTHANH > x.HANKETTHUC).Count();
+                int xulychinh_dahuybo = listCongViecXuLyChinhDaHuyBo.Count();
+                int xulychinh_dangtamdung = listCongViecXuLyChinhDangTamDung.Count();
+                int sum_xulychinh = quahan_xulychinh_chuabatdau + tronghan_xulychinh_chuabatdau + truochan_xulychinh_dangthuchien + tronghan_xulychinh_dangthuchien + quahan_xulychinh_dangthuchien +
+                    truochan_xulychinh_dahoanthanh + tronghan_xulychinh_dahoanthanh + quahan_xulychinh_dahoanthanh +
+                    xulychinh_dahuybo + xulychinh_dangtamdung;
+            }
+            <td>
+                Xử lý chính
+            </td>
+            <td>
+                @tronghan_xulychinh_chuabatdau
+            </td>
+            <td>
+                @quahan_xulychinh_chuabatdau
+            </td>
+            <td>
+                @truochan_xulychinh_dangthuchien
+            </td>
+            <td>
+                @tronghan_xulychinh_dangthuchien
+            </td>
+            <td>
+                @quahan_xulychinh_dangthuchien
+            </td>
+            <td>
+                @truochan_xulychinh_dahoanthanh
+            </td>
+            <td>
+                @tronghan_xulychinh_dahoanthanh
+            </td>
+            <td>
+                @quahan_xulychinh_dahoanthanh
+            </td>
+            <td>
+                @xulychinh_dahuybo
+            </td>
+            <td>
+                @xulychinh_dangtamdung
+            </td>
+            <td>
+                @sum_xulychinh
+            </td>
+        </tr>
+        <tr>
+            @{
+                var listCongViecThamGiaChuaBatDau = listCongViecChuaBatDau.Where(x => x.ListNguoiThamGiaXuLy.Count > 0 || x.ListDonViPhoiHop.Count > 0).ToList();
+                var listCongViecThamGiaDangThucHien = listCongViecDangThucHien.Where(x => x.ListNguoiThamGiaXuLy.Count > 0 || x.ListDonViPhoiHop.Count > 0).ToList();
+                var listCongViecThamGiaDaHoanThanh = listCongViecDaHoanThanh.Where(x => x.ListNguoiThamGiaXuLy.Count > 0 || x.ListDonViPhoiHop.Count > 0).ToList();
+                var listCongViecThamGiaDaHuyBo = listCongViecDaHuyBo.Where(x => x.ListNguoiThamGiaXuLy.Count > 0 || x.ListDonViPhoiHop.Count > 0).ToList();
+                var listCongViecThamGiaDangTamDung = listCongViecDangTamDung.Where(x => x.ListNguoiThamGiaXuLy.Count > 0 || x.ListDonViPhoiHop.Count > 0).ToList();
+
+                int tronghan_thamgia_chuabatdau = listCongViecThamGiaChuaBatDau.Where(x => x.HANKETTHUC < currentDate).Count();
+                int quahan_thamgia_chuabatdau = listCongViecThamGiaChuaBatDau.Where(x => x.HANKETTHUC > currentDate).Count();
+
+                int truochan_thamgia_dangthuchien = listCongViecThamGiaDangThucHien.Where(x => x.NGAYBATDAUXULY < x.HANKETTHUC).Count();
+                int tronghan_thamgia_dangthuchien = listCongViecThamGiaDangThucHien.Where(x => x.NGAYBATDAUXULY == x.HANKETTHUC).Count();
+                int quahan_thamgia_dangthuchien = listCongViecThamGiaDangThucHien.Where(x => x.NGAYBATDAUXULY > x.HANKETTHUC).Count();
+
+                int truochan_thamgia_dahoanthanh = listCongViecThamGiaDaHoanThanh.Where(x => x.NGAYHOANTHANH < x.HANKETTHUC).Count();
+                int tronghan_thamgia_dahoanthanh = listCongViecThamGiaDaHoanThanh.Where(x => x.NGAYHOANTHANH == x.HANKETTHUC).Count();
+                int quahan_thamgia_dahoanthanh = listCongViecThamGiaDaHoanThanh.Where(x => x.NGAYHOANTHANH > x.HANKETTHUC).Count();
+                int thamgia_dahuybo = listCongViecThamGiaDaHuyBo.Count();
+                int thamgia_dangtamdung = listCongViecThamGiaDangTamDung.Count();
+                int sum_thamgia = quahan_thamgia_chuabatdau + tronghan_thamgia_chuabatdau + truochan_thamgia_dangthuchien + tronghan_thamgia_dangthuchien + quahan_thamgia_dangthuchien +
+                    truochan_thamgia_dahoanthanh + tronghan_thamgia_dahoanthanh + quahan_thamgia_dahoanthanh +
+                    thamgia_dahuybo + thamgia_dangtamdung;
+            }
+            <td>
+                tham gia
+            </td>
+            <td>
+                @tronghan_thamgia_chuabatdau
+            </td>
+            <td>
+                @quahan_thamgia_chuabatdau
+            </td>
+            <td>
+                @truochan_thamgia_dangthuchien
+            </td>
+            <td>
+                @tronghan_thamgia_dangthuchien
+            </td>
+            <td>
+                @quahan_thamgia_dangthuchien
+            </td>
+            <td>
+                @truochan_thamgia_dahoanthanh
+            </td>
+            <td>
+                @tronghan_thamgia_dahoanthanh
+            </td>
+            <td>
+                @quahan_thamgia_dahoanthanh
+            </td>
+            <td>
+                @thamgia_dahuybo
+            </td>
+            <td>
+                @thamgia_dangtamdung
+            </td>
+            <td>
+                @sum_thamgia
+            </td>
+        </tr>
+        <tr>
+            @{
+                var listCongViecGiaoViecChuaBatDau = listCongViecChuaBatDau.Where(x => x.NGUOIGIAOVIEC_ID.HasValue).ToList();
+                var listCongViecGiaoViecDangThucHien = listCongViecDangThucHien.Where(x => x.NGUOIGIAOVIEC_ID.HasValue).ToList();
+                var listCongViecGiaoViecDaHoanThanh = listCongViecDaHoanThanh.Where(x => x.NGUOIGIAOVIEC_ID.HasValue).ToList();
+                var listCongViecGiaoViecDaHuyBo = listCongViecDaHuyBo.Where(x => x.NGUOIGIAOVIEC_ID.HasValue).ToList();
+                var listCongViecGiaoViecDangTamDung = listCongViecDangTamDung.Where(x => x.NGUOIGIAOVIEC_ID.HasValue).ToList();
+
+                int tronghan_giaoviec_chuabatdau = listCongViecGiaoViecChuaBatDau.Where(x => x.HANKETTHUC < currentDate).Count();
+                int quahan_giaoviec_chuabatdau = listCongViecGiaoViecChuaBatDau.Where(x => x.HANKETTHUC > currentDate).Count();
+
+                int truochan_giaoviec_dangthuchien = listCongViecGiaoViecDangThucHien.Where(x => x.NGAYBATDAUXULY < x.HANKETTHUC).Count();
+                int tronghan_giaoviec_dangthuchien = listCongViecGiaoViecDangThucHien.Where(x => x.NGAYBATDAUXULY == x.HANKETTHUC).Count();
+                int quahan_giaoviec_dangthuchien = listCongViecGiaoViecDangThucHien.Where(x => x.NGAYBATDAUXULY > x.HANKETTHUC).Count();
+
+                int truochan_giaoviec_dahoanthanh = listCongViecGiaoViecDaHoanThanh.Where(x => x.NGAYHOANTHANH < x.HANKETTHUC).Count();
+                int tronghan_giaoviec_dahoanthanh = listCongViecGiaoViecDaHoanThanh.Where(x => x.NGAYHOANTHANH == x.HANKETTHUC).Count();
+                int quahan_giaoviec_dahoanthanh = listCongViecGiaoViecDaHoanThanh.Where(x => x.NGAYHOANTHANH > x.HANKETTHUC).Count();
+                int giaoviec_dahuybo = listCongViecGiaoViecDaHuyBo.Count();
+                int giaoviec_dangtamdung = listCongViecGiaoViecDangTamDung.Count();
+                int sum_giaoviec = quahan_giaoviec_chuabatdau + tronghan_giaoviec_chuabatdau + truochan_giaoviec_dangthuchien + tronghan_giaoviec_dangthuchien + quahan_giaoviec_dangthuchien +
+                    truochan_giaoviec_dahoanthanh + tronghan_giaoviec_dahoanthanh + quahan_giaoviec_dahoanthanh +
+                    giaoviec_dahuybo + giaoviec_dangtamdung;
+            }
+            <td>
+                giao việc
+            </td>
+            <td>
+                @tronghan_giaoviec_chuabatdau
+            </td>
+            <td>
+                @quahan_giaoviec_chuabatdau
+            </td>
+            <td>
+                @truochan_giaoviec_dangthuchien
+            </td>
+            <td>
+                @tronghan_giaoviec_dangthuchien
+            </td>
+            <td>
+                @quahan_giaoviec_dangthuchien
+            </td>
+            <td>
+                @truochan_giaoviec_dahoanthanh
+            </td>
+            <td>
+                @tronghan_giaoviec_dahoanthanh
+            </td>
+            <td>
+                @quahan_giaoviec_dahoanthanh
+            </td>
+            <td>
+                @giaoviec_dahuybo
+            </td>
+            <td>
+                @giaoviec_dangtamdung
+            </td>
+            <td>
+                @sum_giaoviec
+            </td>
+        </tr>
+        <tr>
+            @{
+                var listCongViecTheoDoiChuaBatDau = listCongViecChuaBatDau.Where(x => x.ListNguoiTheoDoi.Count > 0).ToList();
+                var listCongViecTheoDoiDangThucHien = listCongViecDangThucHien.Where(x => x.ListNguoiTheoDoi.Count > 0).ToList();
+                var listCongViecTheoDoiDaHoanThanh = listCongViecDaHoanThanh.Where(x => x.ListNguoiTheoDoi.Count > 0).ToList();
+                var listCongViecTheoDoiDaHuyBo = listCongViecDaHuyBo.Where(x => x.ListNguoiTheoDoi.Count > 0).ToList();
+                var listCongViecTheoDoiDangTamDung = listCongViecDangTamDung.Where(x => x.ListNguoiTheoDoi.Count > 0).ToList();
+
+                int tronghan_theodoi_chuabatdau = listCongViecTheoDoiChuaBatDau.Where(x => x.HANKETTHUC < currentDate).Count();
+                int quahan_theodoi_chuabatdau = listCongViecTheoDoiChuaBatDau.Where(x => x.HANKETTHUC > currentDate).Count();
+
+                int truochan_theodoi_dangthuchien = listCongViecTheoDoiDangThucHien.Where(x => x.NGAYBATDAUXULY < x.HANKETTHUC).Count();
+                int tronghan_theodoi_dangthuchien = listCongViecTheoDoiDangThucHien.Where(x => x.NGAYBATDAUXULY == x.HANKETTHUC).Count();
+                int quahan_theodoi_dangthuchien = listCongViecTheoDoiDangThucHien.Where(x => x.NGAYBATDAUXULY > x.HANKETTHUC).Count();
+
+                int truochan_theodoi_dahoanthanh = listCongViecTheoDoiDaHoanThanh.Where(x => x.NGAYHOANTHANH < x.HANKETTHUC).Count();
+                int tronghan_theodoi_dahoanthanh = listCongViecTheoDoiDaHoanThanh.Where(x => x.NGAYHOANTHANH == x.HANKETTHUC).Count();
+                int quahan_theodoi_dahoanthanh = listCongViecTheoDoiDaHoanThanh.Where(x => x.NGAYHOANTHANH > x.HANKETTHUC).Count();
+                int theodoi_dahuybo = listCongViecTheoDoiDaHuyBo.Count();
+                int theodoi_dangtamdung = listCongViecTheoDoiDangTamDung.Count();
+                int sum_theodoi = quahan_theodoi_chuabatdau + tronghan_theodoi_chuabatdau + truochan_theodoi_dangthuchien + tronghan_theodoi_dangthuchien + quahan_theodoi_dangthuchien +
+                    truochan_theodoi_dahoanthanh + tronghan_theodoi_dahoanthanh + quahan_theodoi_dahoanthanh +
+                    theodoi_dahuybo + theodoi_dangtamdung;
+            }
+            <td>
+                theo dõi
+            </td>
+            <td>
+                @tronghan_theodoi_chuabatdau
+            </td>
+            <td>
+                @quahan_theodoi_chuabatdau
+            </td>
+            <td>
+                @truochan_theodoi_dangthuchien
+            </td>
+            <td>
+                @tronghan_theodoi_dangthuchien
+            </td>
+            <td>
+                @quahan_theodoi_dangthuchien
+            </td>
+            <td>
+                @truochan_theodoi_dahoanthanh
+            </td>
+            <td>
+                @tronghan_theodoi_dangthuchien
+            </td>
+            <td>
+                @quahan_theodoi_dangthuchien
+            </td>
+            <td>
+                @theodoi_dahuybo
+            </td>
+            <td>
+                @theodoi_dangtamdung
+            </td>
+            <td>
+                @sum_theodoi
+            </td>
+        </tr>
+        <tr>
+            @{
+                int sum_chuabatdau_tronghan = tronghan_xulychinh_chuabatdau + tronghan_thamgia_chuabatdau + tronghan_giaoviec_chuabatdau + tronghan_theodoi_chuabatdau;
+                int sum_chuabatdau_quahan = quahan_xulychinh_chuabatdau + quahan_thamgia_chuabatdau + quahan_giaoviec_chuabatdau + quahan_theodoi_chuabatdau;
+                int sum_dangthuchien_truochan = truochan_xulychinh_dangthuchien + truochan_thamgia_dangthuchien + truochan_giaoviec_dangthuchien + truochan_theodoi_dangthuchien;
+                int sum_dangthuchien_tronghan = tronghan_xulychinh_dangthuchien + tronghan_thamgia_dangthuchien + tronghan_giaoviec_dangthuchien + tronghan_theodoi_dangthuchien;
+                int sum_dangthuchien_quahan = quahan_xulychinh_dangthuchien + quahan_thamgia_dangthuchien + quahan_theodoi_dangthuchien + quahan_giaoviec_dangthuchien;
+                int sum_dahoanthanh_truochan = truochan_xulychinh_dahoanthanh + truochan_thamgia_dahoanthanh + truochan_giaoviec_dahoanthanh + truochan_theodoi_dahoanthanh;
+                int sum_dahoanthanh_tronghan = tronghan_xulychinh_dahoanthanh + tronghan_thamgia_dahoanthanh + tronghan_theodoi_dahoanthanh + tronghan_giaoviec_dahoanthanh;
+                int sum_dahoanthanh_quahan = quahan_xulychinh_dahoanthanh + quahan_thamgia_dahoanthanh + quahan_theodoi_dahoanthanh + quahan_giaoviec_dahoanthanh;
+                int sum_dahuybo = xulychinh_dahuybo + giaoviec_dahuybo + thamgia_dahuybo + theodoi_dahuybo;
+                int sum_dangtamdung = xulychinh_dangtamdung + giaoviec_dangtamdung + thamgia_dangtamdung + theodoi_dangtamdung;
+                int sum = sum_xulychinh + sum_thamgia + sum_theodoi + sum_giaoviec;
+            }
+            <td>
+                tổng cộng
+            </td>
+            <td>
+                @sum_chuabatdau_tronghan
+            </td>
+            <td>
+                @sum_chuabatdau_quahan
+            </td>
+            <td>
+                @sum_dangthuchien_truochan
+            </td>
+            <td>
+                @sum_dangthuchien_tronghan
+            </td>
+            <td>
+                @sum_dangthuchien_quahan
+            </td>
+            <td>
+                @sum_dahoanthanh_truochan
+            </td>
+            <td>
+                @sum_dahoanthanh_tronghan
+            </td>
+            <td>
+                @sum_dahoanthanh_quahan
+            </td>
+            <td>@sum_dahuybo</td>
+            <td>@sum_dangtamdung</td>
+            <td>@sum</td>
+        </tr>
+    </tbody>
+</table>

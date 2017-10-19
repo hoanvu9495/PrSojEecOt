@@ -1,0 +1,238 @@
+﻿@using Web.Common
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@model  Web.Areas.DMChucNangArea.Models.DMChucNangEditViewModel
+@using (Ajax.BeginForm("SaveChucNang", "ChucNang", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "success"
+}, new { id = "frmChucNangEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table>
+            <tr class="height_20"></tr>
+            <tr>
+                <td>
+                    <label class="lbl4">Mã chức năng:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("MA_CHUCNANG", Model.ChucNang.MA_CHUCNANG, new { @class = "e-input width_222", maxlength = "10", @id = "EDIT_MACHUCNANG" })
+                </td>
+                <td>
+                    <label class="lbl2">Tên chức năng:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("TEN_CHUCNANG", Model.ChucNang.TEN_CHUCNANG, new { @class = "e-input width_222", maxlength = "100", @id = "EDIT_TENCHUCNANG" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span class="lb-Check2" id="EDIT_MACHUCNANG_NULL">Bạn nhập mã chức năng </span>
+                    <span class="lb-Check2" id="EDIT_MACHUCNANG_ER">Mã chức năng đã được sử dụng </span>
+                </td>
+                <td></td>
+                <td>
+                    <span class="lb-Check2" id="EDIT_TENCHUCNANG_NULL">Bạn nhập tên chức năng </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl4">Chức năng cha:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix width_233">
+                        @Html.DropDownList("CHUCNANG_CHA", @Model.ListChucNangCha, "[--- Tất cả ---]", new { @class = "width_100", id = "EDIT_CHUCNANGCHA" })
+                    </div>
+                </td>
+                <td>
+                    <label class="lbl2">Trạng thái:</label>
+                </td>
+                <td>
+                    <div class="float-width-40">
+                        @Html.RadioButton("TRANGTHAI", "1", (Model.ChucNang.TRANGTHAI == 1), new { @id = "EDIT_ISACTIVE_HL", @class = "css-checkbox" })
+                        <label class="css-label" for="EDIT_ISACTIVE_HL">Hiệu lực</label>
+                    </div>
+                    <div class="float-width">
+                        @Html.RadioButton("TRANGTHAI", "0", (Model.ChucNang.TRANGTHAI == 0), new { @id = "EDIT_ISACTIVE_KHL", @class = "css-checkbox" })
+                        <label class="css-label" for="EDIT_ISACTIVE_KHL">Không hiệu lực</label>
+                    </div>
+                </td>
+            </tr>
+            <tr class="height_20"></tr>
+            <tr>
+                <td>
+                    <label class="lbl4">Thứ tự hiển thị:</label>
+                </td>
+                <td>
+                    @Html.TextBox("TT_HIENTHI", @Model.ChucNang.TT_HIENTHI, new { @class = "e-input width_222", maxlength = 3, @id = "EDIT_TT_HIENTHI" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span class="lb-Check2" id="EDIT_HIENTHI_ER">Bạn phải nhập số</span>
+                    <span class="lb-Check2" id="EDIT_HIENTHI_SOAM">Bạn không được nhập số âm</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl4">Địa chỉ URL:<span class="color-red">*</span></label>
+                </td>
+                <td colspan="3">
+                    @Html.TextBox("URL", Model.ChucNang.URL, new { @class = "e-input width_615", maxlength = "300", @id = "EDIT_URL" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td colspan="3">
+                    <span class="lb-Check2" id="EDIT_URL_NULL">Bạn nhập URL </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <input type="hidden" name="DM_CHUCNANG_ID" value="@Model.ChucNang.DM_CHUCNANG_ID" />
+    <div class="margin-left-10 center">
+        <input type="button" value="Lưu" id="btnSaveEDIT" class="btnSearch" />
+        <input type="button" value="Đóng" onclick="Close()" class="btnSearch" />
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#EDIT_CHUCNANGCHA").val("@Model.ChucNang.CHUCNANG_CHA");
+
+        $("#btnSaveEDIT").click(function () {
+            if (($("#EDIT_MACHUCNANG").val() == null || $("#EDIT_MACHUCNANG").val() == "")) {
+                $("#EDIT_MACHUCNANG_NULL").show();
+                $("#EDIT_MACHUCNANG").focus();
+                return false;
+            }
+            if (!$("#EDIT_MACHUCNANG_ER").is(":hidden")) {
+                $("#EDIT_MACHUCNANG").focus();
+                return false;
+            }
+            if (($("#EDIT_TENCHUCNANG").val() == null || $("#EDIT_TENCHUCNANG").val() == "")) {
+                $("#EDIT_TENCHUCNANG_NULL").show();
+                $("#EDIT_TENCHUCNANG").focus();
+                return false;
+            }
+            /*if ($("#EDIT_CHUCNANGCHA").val().length == 0 || $("#EDIT_CHUCNANGCHA").val() == "-1") {
+                $("#EDIT_CHUCNANGCHA_NULL").show();
+                $("#EDIT_CHUCNANGCHA").focus();
+                return false;
+            }*/
+            if (($("#EDIT_URL").val() == null || $("#EDIT_URL").val() == "")) {
+                $("#EDIT_URL_NULL").show();
+                $("#EDIT_URL").focus();
+                return false;
+            }
+            if ($("#EDIT_TT_HIENTHI").val() != "") {
+                if (isNaN($("#EDIT_TT_HIENTHI").val())) {
+                    $("#EDIT_HIENTHI_ER").show();
+                    $("#EDIT_TT_HIENTHI").focus();
+                    return false;
+                } else {
+                    if ($("#EDIT_TT_HIENTHI").val() == "-0") {
+                        $("#EDIT_HIENTHI_ER").show();
+                        $("#EDIT_TT_HIENTHI").focus();
+                        return false;
+                    }
+                }
+                if ($("#EDIT_TT_HIENTHI").val() < 0) {
+                    $("#EDIT_HIENTHI_SOAM").show();
+                    $("#EDIT_TT_HIENTHI").focus();
+                    return false;
+                }
+            }
+            $("#frmChucNangEdit").submit();
+            return true;
+        });
+
+        $("#EDIT_MACHUCNANG").focusout(function () {
+            if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+                $("#EDIT_MACHUCNANG_NULL").show();
+                //$(this).focus();
+            } else {
+                $("#EDIT_MACHUCNANG_NULL").hide();
+            }
+            $("#EDIT_MACHUCNANG").val($("#EDIT_MACHUCNANG").val().trim());
+        });
+        $("#EDIT_MACHUCNANG").change(function () {
+            if ($("#EDIT_MACHUCNANG").val() != "") {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("FindMa","DMChucNang")',
+                    cache: false,
+                    data: {
+                        CHUCNANG_ID: "@Model.ChucNang.DM_CHUCNANG_ID",
+                        MACHUCNANG: $("#EDIT_MACHUCNANG").val()
+                    },
+                    success: function (data) {
+                        if (data > 0) {
+                            $("#EDIT_MACHUCNANG_ER").show();
+                            $("#EDIT_MACHUCNANG").focus();
+                        } else {
+                            $("#EDIT_MACHUCNANG_ER").hide();
+                            $("#EDIT_TENCHUCNANG").focus();
+                        }
+                    }
+
+                });
+            }
+
+        });
+        $("#EDIT_TENCHUCNANG").focusout(function () {
+            if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+                $("#EDIT_TENCHUCNANG_NULL").show();
+                //$(this).focus();
+            } else {
+                $("#EDIT_TENCHUCNANG_NULL").hide();
+            }
+            $("#EDIT_TENCHUCNANG").val($("#EDIT_TENCHUCNANG").val().trim());
+        });
+        $("#EDIT_URL").focusout(function () {
+            if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+                $("#EDIT_URL_NULL").show();
+            } else {
+                $("#EDIT_URL_NULL").hide();
+            }
+            $("#EDIT_URL").val($("#EDIT_URL").val().trim());
+        });
+    });
+    $("#EDIT_TT_HIENTHI").focusout(function () {
+        $("#EDIT_TT_HIENTHI").val($("#EDIT_TT_HIENTHI").val().trim());
+        if ($("#EDIT_TT_HIENTHI").val() != "") {
+            if (isNaN($("#EDIT_TT_HIENTHI").val())) {
+                $("#EDIT_HIENTHI_ER").show();
+            } else {
+                if ($("#EDIT_TT_HIENTHI").val() == "-0") {
+                    $("#EDIT_HIENTHI_ER").show();
+                } else {
+                    $("#EDIT_HIENTHI_ER").hide();
+                }
+            }
+            if ($("#EDIT_TT_HIENTHI").val() < 0) {
+                $("#EDIT_HIENTHI_SOAM").show();
+            } else {
+                $("#EDIT_HIENTHI_SOAM").hide();
+            }
+        } else {
+            $("#EDIT_HIENTHI_ER").hide();
+            $("#EDIT_HIENTHI_SOAM").hide();
+        }
+    });
+    function Close() {
+        $("#PrepareChucNang").dialog("close");
+    }
+    function failure(xhr) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function success() {
+        CommonJS.alert("Sửa chức năng thành công");
+        $("#PrepareChucNang").dialog("close");
+        reloadGrid();
+    }
+
+</script>

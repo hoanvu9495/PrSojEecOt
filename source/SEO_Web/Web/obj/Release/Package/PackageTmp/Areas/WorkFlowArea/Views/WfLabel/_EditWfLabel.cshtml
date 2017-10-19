@@ -1,0 +1,137 @@
+﻿@using Web.Areas.WorkFlowArea.Models;
+@model WfLabelEditViewModel
+
+
+<link href="~/Content/Custom/css/multiple-select.css" rel="stylesheet" />
+<script src="~/Scripts/multiple-select.js"></script>
+<style type="text/css">
+    .table-responsive {
+        overflow: visible !important;
+    }
+
+    .ms-choice {
+        background: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .ms-drop ul li.multiple input[type=checkbox] {
+        margin: 0 !important;
+    }
+
+    .ms-drop ul li.multiple label span {
+        margin: 0 5px;
+    }
+</style>
+<form id="form--wf-label" method="post" action="/WorkFlowArea/WfLabel/SaveWfLabel" onsubmit="return validateWfLabel()">
+    <div class="table-responsive">
+        <input type="hidden" name="WF_BUOCCHUYENTRANGTHAI_ID" value="@Model.wfStepTransitionId" />
+        <input type="hidden" name="WF_QUYTRINH_ID" value="@Model.wfProcedureId" />
+        <div class="col-sm-6 pull-right" style="padding:10px 0; text-align:right;">
+            <a href="javascript:void(0)" class="btn btn-success" onclick="getRow()">
+                <i class="glyphicon glyphicon-plus bigger-110"></i>&nbsp;Thêm nhãn
+            </a>
+        </div>
+        <table class="table table-condensed table-hover table-bordered table-striped" id="table--wf-label">
+            <thead>
+                <tr>
+                    <th>
+                        <b>Tên nhãn <span class="text-danger">(*)</span></b>
+                    </th>
+                    <th>
+                        <b>Vai trò <span class="text-danger">(*)</span></b>
+                    </th>
+                    <th>
+                        <b>
+                            Loại xử lý
+                        </b>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.listWfLabelBOs.Count; i++)
+                {
+                    var wfLabelB0 = Model.listWfLabelBOs[i];
+                    <tr class="row--wf-label">
+                        <td>
+                            <div class="form-group" style="margin:0">
+                                <input type="hidden" name="WF_LABEL_ID" value="@wfLabelB0.ID" />
+                                <input type="text" class="form-control LABEL_TEXT required" placeholder="Tên nhãn" value="@wfLabelB0.LABEL_TEXT" name="LABEL_TEXT_@i">
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <center>
+                                <div class="form-group" style="margin:0">
+                                    <div style="width:250px;">
+                                        @Html.DropDownList("DM_VAITRO_ID_" + i, wfLabelB0.listDmVaiTros, new { @multiple = "multiple", Class = "select--label-role form-control required" })
+                                        <div class="note-error">
+                                            <span class="error mes-note-error"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </center>
+                        </td>
+                        <td>
+                            <div class="col-sm-6" style="height: 34px; padding: 5px 0;">
+                                <input type="radio" class="css-checkbox" id="IS_MAIN_PROCESS_@i" value="true" name="IS_MAIN_PROCESS_@i" @(wfLabelB0.IS_MAIN_PROCESS == true ? "checked" : "")>
+                                <label for="IS_MAIN_PROCESS_@i" class="css-label">Xử lý chính</label>
+                            </div>
+                            <div class="col-sm-6" style="height: 34px; padding: 5px 0;">
+                                <input type="radio" class="css-checkbox" id="IS_JOIN_PROCESS_@i" value="false" name="IS_MAIN_PROCESS_@i" @(wfLabelB0.IS_MAIN_PROCESS != true ? "checked" : "")>
+                                <label for="IS_JOIN_PROCESS_@i" class="css-label">Tham gia xử lý</label>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+
+<script>
+    $.each($('.select--label-role'), function (index, item) {
+        $('#DM_VAITRO_ID_' + index).multipleSelect({
+            multiple: true,
+            placeholder: 'Chọn vai trò',
+            filter: true
+        });
+    });
+    function getRow() {
+        var rowIndex = $('#table--wf-label tbody tr').index($('.row--wf-label:last')) + 1;
+        $.ajax({
+            url: '/WorkFlowArea/WfLabel/GetWorkFlowLabelRow/GetWorkFlowLabelRow',
+            type: 'post',
+            dataType: 'html',
+            data: { rowIndex: rowIndex },
+            success: function (result) {
+                $('#table--wf-label tbody').append(result);
+                $('#DM_VAITRO_ID_' + rowIndex).multipleSelect({
+                    multiple: true,
+                    placeholder: 'Chọn vai trò',
+                    filter: true
+                });
+            }
+        });
+    };
+
+    function validateWfLabel() {
+        var err = 0;
+        var valid_Required = requiredFieldForFormId('form--wf-label');
+        if (!valid_Required) {
+            err += 1;
+        }
+        if (err == 0) {
+            return true;
+        } else {
+            NotiError("Có lỗi, Vui lòng kiểm tra lại");
+            return false;
+        }
+        return true;
+    }
+</script>

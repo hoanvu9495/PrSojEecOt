@@ -1,0 +1,190 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@{
+    List<WF_QUYTRINH_BO> lstWorkFlow = new List<WF_QUYTRINH_BO>();
+
+    string CheckSearch = ViewData["Search"].ToString();
+    if (ViewData["Search"] == "0")
+    {
+        lstWorkFlow = (List<WF_QUYTRINH_BO>)SessionManager.GetValue("ListWorkFlow");
+    }
+    if (ViewData["Search"] == "1")
+    {
+        lstWorkFlow = (List<WF_QUYTRINH_BO>)SessionManager.GetValue("ListWorkFlowSearch");
+    }
+    var grid = new WebGrid(lstWorkFlow,
+                          rowsPerPage: 10,
+                          canPage: true,
+                          canSort: false,
+                          ajaxUpdateContainerId: "grid",
+                           selectionFieldName: "selectedRow"
+                          );
+}
+<style type="text/css">
+    .btnEdit {
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAAbRJREFUOE+VkF0oQ2Ecxo9yoaEMJbMQKbQtJXEhI2qkpJRbLlAulHuuccGFGqVQtrML24qZzcaW5XNMkSHJpIhtp+2cbShDj3erXbk4x1tv79fzPL/3/6cogeO2sVEhUPpXZiore9WIxXDLZPv/DnG6r2dW2tsxl5mJpdxcuEpLcadUSgUH4WYUvttjXO4dYJqisJifD1tBAQQFxC/GPkPbrfCvSfHi7EYwDiwqFJjLydnmDXg/HZ/knF0IbsrxYszDKwlh1qXw3V/y0wNX6qzvsz74TeVgrHV4Xs1AyK5ExCoBN0+JeenwjiCwUQlut4eQi8A6OhAwy/Ckz1bzmmNHw2ZmqwFhh4pQm8BYapJ01lr8w2t+82gL313NyXpj+/2EWoWIqxffe7X8dSfSQyezA6yXxsf5BMKk+2+HgwjvtJFeVAzx0pMBFwvL3A2N6L0JMZ8BnKMTrL2eEWROiDymKS/8W4g92vAROAR+noV9PUUolEjiVFo6SA34Yr0tgskpoVwuh0gkUv3bqNVqqzUajdVoNJ7TNB0l+y+dTgeDwQC9Xp9cE+fEPXmPkPlAPBaylvwC6PAHISLJskYAAAAASUVORK5CYII=') /*/Content/Images/Edit.png*/ no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .webGrid {
+        margin: 0;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .btnDelete {
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAOwgAADsIBFShKgAAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAF1SURBVDhPY2AYNGCajbPS27Ur75zOy2oj5Kh6BgaVO+VlB0q5uJLgav+/fvL/74p5//90Vf//nxf+P5OBVQ/doGIGBvmnMVH/94QE3gXKcaPLc9/MSnz4vzj6/w83jf9/dQX/T+dkyocpOijAu/uznc1/FwaGSLwuNAQ674miwP9H4hz/Hwmx/p/EwlRxk435/3Uuzv9AjdKEvAeXn8fK2HWFnen/OWbG/0cYGH4DJdiI1gxSuImZcdIZRob/1xkY/t9kZfzvzMCgS7QBOxkZ950GarzCxAhyNtcdPpb/HyQ4QGzCYDNQ8ymg5vtAW4GqFWA6Pqnz/N8txXkNrwkLmZiKzjEx/L/KwfQ/npmxFV3xf13+/0B/qOM05AE78/8r3Mz/d/OyfsamKIyBQf++DM8frAasUFEquGeg/v+tFDi69HHZclyI/ZwSA4MchvxGN6fmj8Wp///76YMMUMHn12XsLOuxyv9dOef/qQDHj4SDmooqAEYcfqcE+Y6PAAAAAElFTkSuQmCC') /*/Content/Images/Delete.png*/ no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .center {
+        text-align: center;
+    }
+</style>
+@Html.AntiForgeryToken()
+<div id="grid">
+    @grid.GetHtml(
+                        tableStyle: "table table-bordered",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                                        grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                "<a href='/#workflowarea/workflowstate/transition/" + item.ID + "' title = 'Chi tiết luồng xử lý'>" + item.TENWF + "</a>")), header: "Tên luồng xử lý"),
+                        grid.Column("TENNHOMQUYTRINH", "Nhóm quy trình"),
+                                grid.Column("MOTAWF", "Mô tả"),
+                        grid.Column(format: (item) => new MvcHtmlString(item.TRANGTHAI == 0 ? "<span style='color:red; text-align:center;'>Không hiệu lực</span>" : "<span style='color:green;text-align:center;'>Hiệu lực</span>"), header: "Trạng thái", style: "center"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                        "<a href='javascript:EditWorkFlow(" + item.ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                        "<a href='javascript:void(0)' onclick='DeleteWorkFlow(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+                )
+    )
+    @if (lstWorkFlow.Count == 0)
+    {
+        <div id="Empty" style="color: red;">
+            Không tìm thấy dữ liệu phù hợp
+        </div>
+    }
+</div>
+
+
+<div id="CreateLuongXuLy" title="Thêm mới luồng xử lý" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content" id="formCreate">
+
+        </div>
+    </div>
+
+</div>
+<div id="PrepareWorkFlow" title="Sửa luồng xử lý" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content" id="formEdit">
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function EditWorkFlow(WF_ID) {
+        $.ajax({
+            url: '/WorkFlowArea/WorkFlow/Create/' + WF_ID,
+            type: 'post',
+            cache: false,
+            data: {
+            },
+            success: function (data) {
+                $("#formEdit").html("");
+                $("#formCreate").html("");
+
+                $("#formEdit").html(data);
+                $("#PrepareWorkFlow").modal("show");
+
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function OnCreate() {
+        $.ajax({
+            url: '/WorkFlowArea/WorkFlow/Create/0',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#formEdit").html("");
+                $("#formCreate").html("");
+                $("#formCreate").html(data);
+                $("#CreateLuongXuLy").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    $(document).ready(function () {
+        $('.grid tbody').on('hover', function () {
+            $(this).toggleClass('clickable');
+        })
+
+    });
+    function DeleteWorkFlow(id) {
+        $.confirm({
+            'title': 'Xóa luồng xử lý',
+            'message': 'Bạn muốn xóa luồng xử lý này không?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-default',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "WorkFlow")',
+                            type: 'post',
+                            cache: false,
+                            data: {
+                                id: id
+                            },
+                            success: function (data) {
+                                if (data.Type == 'SUCCESS') {
+                                    NotiSuccess(data.Message);
+                                } else {
+                                    NotiError(data.Message);
+                                }
+                            },
+                            error: function (xhr) {
+                                CommonJS.alert(xhr.responseText);
+                            }
+                        });
+                    }
+                },
+                'Hủy': {
+                    'class': 'btn-info',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+
+</script>

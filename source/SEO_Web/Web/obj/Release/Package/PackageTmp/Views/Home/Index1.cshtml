@@ -1,0 +1,242 @@
+﻿@using Business.CommonBusiness;
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Web.Models;
+@{
+    UserInfoBO user = ((UserInfoBO)SessionManager.GetUserInfo());
+    //List<ChucNangBO> lstRootMenu = user == null ? new List<ChucNangBO>() : user.ListCN.ToList();//.Where(x => x.CHUCNANG_CHA == null)
+    List<ChucNangBO> lstCN = user == null ? new List<ChucNangBO>() : user.ListCNFull.ToList();
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .content-logo-img {
+        margin: 50px 0 0 250px;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+     <div class="right-all-page" style="border:0px;background:none;">
+         <div id="menu-child">
+             <div class="menu-left">
+                 <div class="btnAddNew">
+                     <a href="javascript:void(0)">
+                         <span>Mới</span>
+                     </a>
+                 </div>
+             </div>
+             <div class="menu-right">
+                 <div class="btn-group" role="group">
+                     <div class="dropdown-toggle btnHienThi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer; padding:0px;">
+                         <a href="javascript:void(0)">
+                             <span>Hiển thị</span>
+                         </a>
+                     </div>
+                     <div id="dropdown-menu-display" class="dropdown-menu">
+                         <ul>
+                             <li><a href="javascript:void(0)">Logout</a></li>
+                             <li><a href="javascript:void(0)">Settings display</a></li>
+                         </ul>
+                     </div>
+                 </div>
+             </div>
+            
+         </div>
+     </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+   
+    <div id="block-search-form">
+        <form method="post" action="" id="search-form">
+            <input type="text" placeholder="" value="" name="" id=""/>
+            <input type="submit" value="search" name="" id="" />
+        </form>
+    </div>
+    <div class="menu-left-content block">
+        <ul class="admin-menu">
+            @if (lstCN != null)
+            {
+                var i = 1;
+                foreach (ChucNangBO menu in lstCN)
+                {
+                    if (menu.IS_HIDDEN == 1) { continue; }
+                    <li class="menu has-child" style="z-index:10">
+                        <a href="javascript:openMenu( @menu.DM_CHUCNANG_ID,@user.RoleID,@user.UserID)" id="ico-@menu.TT_HIENTHI" data-parent="@menu.DM_CHUCNANG_ID">@menu.TEN_CHUCNANG</a>
+                        <ul class="admin-menu-child">
+                            <li><a href="">Văn bản xử lý chính</a></li>
+                            <li><a href="">Văn bản tham gia xử lý</a></li>
+                            <li><a href="">Văn bản trình duyệt</a></li>
+                            <li><a href="">Văn bản ký</a></li>
+                            <li><a href="">Văn bản chờ phê duyệt</a></li>
+                        </ul>
+                    </li>
+                    i++;
+                    if (i > 6)
+                    {
+                        i = 1;
+                    }
+                }
+            }
+        </ul>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+   
+    <div class="right-content clearfix">
+        <div class="tbl-sub-menu" id="nhapsolieu" style="width: calc(100% - 200px); float:left; border-right:1px solid #ddd;">
+
+            <div class="column" id="column1">
+                <div class="dragbox" id="item1">
+                    <h2><a href="">Handle 1</a></h2>
+                    <div class="dragbox-content">
+                        <a href="http://hinet.com.vn">hinet jsc</a><br />
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum velit ultricies orci pharetra elementum. In massa mauris, varius sed tempus a, iaculis sed erat. Ut sollicitudin tellus mollis arcu laoreet semper. Suspendisse ut felis odio. Aliquam auctor, tortor sit amet suscipit elementum, nunc ante dictum lectus, ac accumsan justo nunc sed velit. Sed sollicitudin varius tortor vitae varius. Aliquam interdum, nisl consectetur laoreet commodo, metus massa sagittis nisl, non venenatis lacus mi nec tortor. Ut malesuada auctor dolor, id pulvinar est malesuada sed. Aliquam sed posuere orci.
+                    </div>
+                </div>
+                <div class="dragbox" id="item2">
+                    <h2><a href="">Handle 2</a></h2>
+                    <div class="dragbox-content">
+                        Phasellus porttitor adipiscing lacus ac tempus. Vivamus gravida augue metus, eu cursus nisl. Etiam arcu eros, placerat sed rhoncus at, porta et elit. Aenean pharetra ante neque. Aenean id egestas orci. Suspendisse potenti. Nunc at magna leo, sed porta erat. Proin eget neque turpis, vel blandit massa. Donec vel tortor magna. Curabitur id nibh magna, nec hendrerit nibh.
+                    </div>
+                </div>
+                <div class="dragbox" id="item3">
+                    <h2><a href="">Handle 3</a></h2>
+                    <div class="dragbox-content">
+                        Proin porttitor euismod condimentum. Integer suscipit nibh nec augue facilisis ut commodo nisi ornare. Nam sed mauris vitae justo convallis placerat. Curabitur viverra, ipsum id volutpat sollicitudin, mi nisi condimentum nulla, nec dapibus velit libero eget orci. Nam purus lectus, imperdiet pharetra pulvinar ac, sodales sit amet sem. Ut vel mollis ante. Vivamus consectetur varius risus eu hendrerit. Sed scelerisque euismod leo, quis accumsan justo venenatis eu. Ut risus lorem, aliquet id fermentum nec, auctor ut enim. Ut pretium elementum turpis vel dignissim.
+                    </div>
+                </div>
+            </div>
+            <div class="column" id="column2">
+                <div class="dragbox" id="item4">
+                    <h2><a href="">Handle 4</a></h2>
+                    <div class="dragbox-content">
+                        Nullam metus magna, tristique vel ultrices a, molestie quis dolor. Curabitur porta porta ullamcorper. Duis varius velit et dui auctor pretium bibendum urna gravida. Sed euismod dui in tellus euismod euismod. Nam convallis ornare fermentum. Aliquam libero augue, ullamcorper vitae lacinia at, vestibulum et risus. Praesent accumsan ultrices purus eu consequat. Phasellus posuere lobortis malesuada. Curabitur ac orci eu dui vulputate porttitor. Sed a urna et odio vulputate euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In volutpat, tortor eu dapibus vestibulum, risus metus eleifend ipsum, quis lobortis elit dolor vel ligula. Aliquam ultrices nunc in elit bibendum pharetra. Ut non ante sagittis arcu imperdiet posuere. Duis consectetur massa sit amet enim scelerisque consequat et eget magna. Curabitur tristique molestie sem quis vulputate. Sed eleifend urna neque. Nam placerat eros non augue consequat vestibulum.
+                    </div>
+                </div>
+                <div class="dragbox" id="item5">
+                    <h2><a href="">Handle 5</a></h2>
+                    <div class="dragbox-content">
+                        Nam rhoncus sodales libero, et facilisis nisi volutpat et. Nullam tellus eros, consequat eget tristique ultricies, rhoncus vitae magna. Duis nec scelerisque orci. Nullam a enim est, et eleifend nunc. Proin dui eros, vulputate eget consectetur quis, ultrices ac sem. Nulla aliquam metus eu magna placerat placerat. Suspendisse eget tellus turpis, et ultricies nisi. Etiam in diam mi, sed tincidunt eros. Phasellus convallis aliquam arcu, vitae fringilla quam pharetra sed. In at augue at nibh placerat feugiat at id elit. Curabitur sit amet quam ut turpis molestie blandit in vel nulla.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script type="text/javascript">
+  
+    $(function () {
+     
+        $('.column').sortable({
+            connectWith: '.column',
+            handle: 'h2',
+            cursor: 'move',
+            placeholder: 'placeholder',
+            forcePlaceholderSize: true,
+            opacity: 0.4,
+            stop: function (event, ui) {
+                $(ui.item).find('h2').click();
+                var sortorder = '';
+                $('.column').each(function () {
+                    var itemorder = $(this).sortable('toArray');
+                    var columnId = $(this).attr('id');
+                    sortorder += columnId + '=' + itemorder.toString() + '&';
+                });
+              
+            }
+        })
+        .disableSelection();
+    });
+</script>
+
+<script>
+    function openMenu(menuID, role, userid) {
+        localStorage.setItem("currentMenuID", menuID);
+        if ($("a[data-parent=" + menuID + "]").parent().hasClass("menu")) {
+            $(".admin-menu-active").removeClass("admin-menu-active");
+            var active = $("ul li a[data-parent=" + menuID + "]");
+            active.addClass("admin-menu-active");
+            var url_loader = "/Common/LoadChucNang";
+            $.ajax({
+                type: 'POST',
+                url: url_loader,
+                cache: false,
+                data: {
+                    parent: menuID,
+                    role: role,
+                    userid: userid
+                },
+                success: function (data) {
+                    var str = "";
+                    var j = 1;
+                    $.each(data, function (i, type) {
+                        //console.log(type);
+                        str += '<div class="item-mn">';
+                        str += '<a class="mn-1-' + j + '" href="' + type.URL + '"><span>' + type.TEN_CHUCNANG + '</span></a>';
+                        str += '</div>';
+                        j++;
+                        if (j > 6) {
+                            j = 1;
+                        }
+                    });
+                    $("#nhapsolieu").html(str);
+                }
+
+            });
+        }
+
+    }
+</script>
+<script type="text/javascript">
+    var tday = new Array("Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy");
+    function GetClock() {
+        var d = new Date();
+        var nday = d.getDay(), nmonth = d.getMonth(), ndate = d.getDate(), nyear = d.getYear();
+        if (nyear < 1000) nyear += 1900;
+        var d = new Date();
+        var nhour = d.getHours(), nmin = d.getMinutes(), nsec = d.getSeconds(), ap;
+        var _nmonth = parseInt(nmonth) + 1;
+      
+        if (nmin <= 9) nmin = "0" + nmin;
+        if (nsec <= 9) nsec = "0" + nsec;
+        document.getElementById('servertime').innerHTML = "" + tday[nday] + ", " + /*tmonth[nmonth]*/ ndate + "/" + _nmonth + "/" + nyear + " | " + nhour + ":" + nmin + ":" + nsec /*+ ap*/ + "";
+    }
+
+    window.onload = function () {
+        GetClock();
+        setInterval(GetClock, 1000);
+    }
+</script>
+<script>
+    CommonJS.ClearAllCache();
+
+    $(document).ready(
+       function () {
+           $("#DwnloadPopup").dialog({
+               autoOpen: false,
+               modal: true,
+               width: 700,
+               height: 520,
+               resizable: false,
+               show: {
+                   effect: "blind",
+                   duration: 200
+               },
+               hide: {
+                   effect: "blind",
+                   duration: 200
+               }
+           });
+       });
+
+    function DownloadClick() {
+        $("#DwnloadPopup").dialog("open");
+    };
+</script>
+

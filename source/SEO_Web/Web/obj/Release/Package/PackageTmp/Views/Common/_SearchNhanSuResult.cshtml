@@ -1,0 +1,317 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common;
+@using Business.Business;
+@using Web.Models;
+@model Web.Models.ChonNguoiDungModel
+
+@Html.AntiForgeryToken()
+@{
+    List<COSO> LstCoSo = new List<COSO>();
+    LstCoSo = (List<COSO>)SessionManager.GetValue("LstCoSo");
+
+    List<DM_DONVI> LstDonVi = new List<DM_DONVI>();
+    LstDonVi = (List<DM_DONVI>)SessionManager.GetValue("LstDonVi");
+
+    List<DM_PHONGBAN> LstPhongBan = new List<DM_PHONGBAN>();
+    LstPhongBan = (List<DM_PHONGBAN>)SessionManager.GetValue("LstPhongBan");
+
+    string[] LstNguoiDungSearch = (string[])SessionManager.GetValue("LstNguoiDungSearch");
+
+    List<DM_NGUOIDUNG> LstNguoiDung = new List<DM_NGUOIDUNG>();
+    LstNguoiDung = Model.LstNguoiDung;
+}
+<style>
+    /*.wfm {
+        width: 500px;
+    }*/
+
+    .tree_ul {
+        list-style: none;
+    }
+
+    .tree_li {
+        padding-top: 10px;
+    }
+
+
+    .tree_ul, .tree_li, .tree_div {
+        float: left;
+        padding-left: 10px;
+    }
+
+    .left_tree_ul {
+        padding-left: 45px;
+    }
+
+    .tree_ul, .tree_li {
+        width: 100%;
+    }
+
+    .expand {
+        width: 15px;
+        height: 15px;
+    }
+
+    .collapse {
+        width: 15px;
+        height: 15px;
+        display: none;
+    }
+
+    .root_tree {
+        background: rgba(0, 0, 0, 0) url('/Content/Images/folder-horizontal.png') no-repeat scroll 15px 1px;
+    }
+
+        .root_tree label {
+            margin-left: 30px;
+        }
+</style>
+
+
+<div class="wfm">
+    <ul class="tree_ul">
+        @foreach (var coso in LstCoSo)
+        {
+            <li class="tree_li">
+                <div class="tree_div">
+                    <img alt="" class="expand" src="/Content/Images/Minus.png" />
+                    <img alt="" class="collapse" src="/Content/Images/Plus.png" />
+                </div>
+                <div class="tree_div">
+                    @*<input id="Checkbox1" type="checkbox" />*@
+                    @if (Model.IS_MULTICHOICE == 1)
+                    {
+                        <input id="Checkbox1" type="checkbox" />
+                    }
+                </div>
+                <div class="tree_div root_tree">
+                    <a href="javascript:void(0)" class="parent_check_box_@Model.INDEX">
+                        <label>@coso.TENCOSO</label>
+                    </a>
+                </div>
+                <ul class="tree_ul">
+                    @foreach (var donvi in LstDonVi)
+                    {
+                        int tmp_count_dv = LstNguoiDung.Where(x => x.DM_DONVI_ID == donvi.ID).Count();
+                        int tmp_search_count_dv = Model.LstNguoiDungSearch.Where(x => x.DM_DONVI_ID == donvi.ID).Count();
+                        if ((tmp_count_dv > 0) && (donvi.COSO_ID == coso.COSO_ID))
+                        {
+                            <li class="tree_li" style="@(tmp_search_count_dv > 0 ? "display:block" : "display:none")">
+                                <div class="tree_div">
+                                    <img alt="" class="expand" src="/Content/Images/minus.png" />
+                                    <img alt="" class="collapse" src="/Content/Images/Plus.png" />
+                                </div>
+                                <div class="tree_div">
+                                    @if (Model.IS_MULTICHOICE == 1)
+                                    {
+                                        <input id="Checkbox2" type="checkbox" />
+                                    }
+                                </div>
+                                <div class="tree_div root_tree">
+                                    <a href="javascript:void(0)" class="parent_check_box_@Model.INDEX">
+                                        <label>@donvi.TEN_DONVI</label>
+                                    </a>
+                                </div>
+                                <ul class="tree_ul">
+                                    @foreach (var phongban in LstPhongBan)
+                                    {
+                                        int tmp_count_pb = LstNguoiDung.Where(x => x.DM_PHONGBAN_ID == phongban.DM_PHONGBAN_ID).Count();
+                                        int tmp_search_count_pb = Model.LstNguoiDungSearch.Where(x => x.DM_PHONGBAN_ID == phongban.DM_PHONGBAN_ID).Count();
+                                        if ((tmp_count_pb > 0) && (phongban.DM_DONVI_ID == donvi.ID))
+                                        {
+                                            <li class="tree_li" style="@(tmp_search_count_pb > 0 ? "display:block" : "display:none")">
+                                                <div class="tree_div">
+                                                    <img alt="" class="expand" src="/Content/Images/minus.png" />
+                                                    <img alt="" class="collapse" src="/Content/Images/Plus.png" />
+                                                </div>
+                                                <div class="tree_div">
+                                                    @*<input id="Checkbox3" type="checkbox" />*@
+                                                    @if (Model.IS_MULTICHOICE == 1)
+                                                    {
+                                                        <input id="Checkbox3" type="checkbox" />
+                                                    }
+                                                </div>
+                                                <div class="tree_div root_tree">
+                                                    <a href="javascript:void(0)" class="parent_check_box_@Model.INDEX">
+                                                        <label>
+                                                            @phongban.TENPHONGBAN
+                                                        </label>
+                                                    </a>
+                                                </div>
+                                                <ul class="tree_ul left_tree_ul">
+                                                    @foreach (var nguoidung in LstNguoiDung)
+                                                    {
+                                                        if (nguoidung.DM_PHONGBAN_ID == phongban.DM_PHONGBAN_ID)
+                                                        {
+                                                            int tmp_check = Array.IndexOf(Model.IDS, nguoidung.DM_NGUOIDUNG_ID.ToString());
+                                                            int tmp_check_display;
+                                                            if (LstNguoiDungSearch == null)
+                                                            {
+                                                                tmp_check_display = -1;
+                                                            }
+                                                            else
+                                                            {
+                                                                tmp_check_display = Array.IndexOf(LstNguoiDungSearch, nguoidung.DM_NGUOIDUNG_ID.ToString());
+                                                            }
+                                                            <li class="tree_li" style="@(tmp_check_display > -1 ? "display:block" : "display:none")">
+                                                                <div class="tree_div">
+                                                                </div>
+                                                                <div class="tree_div">
+                                                                    @if (Model.IS_MULTICHOICE == 1)
+                                                                    {
+                                                                        <input @(tmp_check > -1 ? "checked" : "") id="nguoi_dung_@nguoidung.DM_NGUOIDUNG_ID" type="checkbox" value="@nguoidung.DM_NGUOIDUNG_ID" class="checkbox_chon_nguoi_dung" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input @(tmp_check > -1 ? "checked" : "") type="radio" id="nguoi_dung_@nguoidung.DM_NGUOIDUNG_ID" value="@nguoidung.DM_NGUOIDUNG_ID" class="checkbox_chon_nguoi_dung" name="radio_chon_nguoi_dung">
+                                                                    }
+                                                                    @*<input @(tmp_check > -1 ? "checked" : "") id="nguoi_dung_@nguoidung.DM_NGUOIDUNG_ID" type="checkbox" value="@nguoidung.DM_NGUOIDUNG_ID" class="checkbox_chon_nguoi_dung" />*@
+                                                                </div>
+                                                                <div class="tree_div">
+                                                                    <a href="javascript:void(0)" class="label_item_@Model.INDEX">
+                                                                        <label id="label_nguoi_dung_@nguoidung.DM_NGUOIDUNG_ID">@nguoidung.TENDANGNHAP</label><span id="chuc_vu_nguoi_dung_@nguoidung.DM_NGUOIDUNG_ID" style="margin-left: 15px; font-weight: bold;"> @(Model.DictChucVu.ContainsKey((int)nguoidung.DM_NGUOIDUNG_ID) ? Model.DictChucVu[(int)nguoidung.DM_NGUOIDUNG_ID] : "")</span>
+                                                                    </a>
+                                                                </div>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                    }
+                                    @foreach (var nguoidung in LstNguoiDung)
+                                    {
+                                        if (nguoidung.DM_DONVI_ID == donvi.ID && nguoidung.DM_PHONGBAN_ID.HasValue == false)
+                                        {
+                                            int tmp_check = Array.IndexOf(Model.IDS, nguoidung.DM_NGUOIDUNG_ID.ToString());
+
+                                            int tmp_check_display;
+                                            if (LstNguoiDungSearch == null)
+                                            {
+                                                tmp_check_display = -1;
+                                            }
+                                            else
+                                            {
+                                                tmp_check_display = Array.IndexOf(LstNguoiDungSearch, nguoidung.DM_NGUOIDUNG_ID.ToString());
+                                            }
+                                            <li class="tree_li left_tree_ul" style="@(tmp_check_display > -1 ? "display:block" : "display:none")">
+                                                <div class="tree_div">
+                                                </div>
+                                                <div class="tree_div">
+                                                    @*<input @(tmp_check > -1 ? "checked" : "") class="checkbox_chon_nguoi_dung" id="nguoi_dung_@nguoidung.DM_NGUOIDUNG_ID" type="checkbox" value="@nguoidung.DM_NGUOIDUNG_ID" />*@
+                                                    @if (Model.IS_MULTICHOICE == 1)
+                                                    {
+                                                        <input @(tmp_check > -1 ? "checked" : "") id="nguoi_dung_@nguoidung.DM_NGUOIDUNG_ID" type="checkbox" value="@nguoidung.DM_NGUOIDUNG_ID" class="checkbox_chon_nguoi_dung" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input @(tmp_check > -1 ? "checked" : "") type="radio" id="nguoi_dung_@nguoidung.DM_NGUOIDUNG_ID" value="@nguoidung.DM_NGUOIDUNG_ID" class="checkbox_chon_nguoi_dung" name="radio_chon_nguoi_dung">
+                                                    }
+                                                </div>
+                                                <div class="tree_div">
+                                                    <a href="javascript:void(0)" class="label_item_@Model.INDEX">
+                                                        <label id="label_nguoi_dung_@nguoidung.DM_NGUOIDUNG_ID">@nguoidung.TENDANGNHAP</label><span id="chuc_vu_nguoi_dung_@nguoidung.DM_NGUOIDUNG_ID" style="margin-left: 15px; font-weight: bold;"> @(Model.DictChucVu.ContainsKey((int)nguoidung.DM_NGUOIDUNG_ID) ? Model.DictChucVu[(int)nguoidung.DM_NGUOIDUNG_ID] : "")</span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+    @*<div style="margin-top: 15px; text-align: center;">*@
+
+</div>
+
+<div style="text-align: center; margin-top:5px;">
+    <input type="submit" value="Chọn và đóng" id="btnSave_choose_nguoi_dung_ids_@Model.INDEX" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white; margin-top:20px;margin-bottom:20px" />
+</div>
+
+<script type="text/javascript" language="javascript">
+    $(".expand").click(function () {
+        $(this).toggle();
+        $(this).next().toggle();
+        $(this).parent().parent().children().last().toggle();
+    });
+    $(".collapse").click(function () {
+        $(this).toggle();
+        $(this).prev().toggle();
+        $(this).parent().parent().children().last().toggle();
+    });
+
+    $("#nhan_su_dialog_" + '@Model.INDEX' + " input[type='checkbox']").click(function () {
+        if ($(this).attr("checked") == false || $(this).attr("checked") == undefined) {
+            $(this).parent().find("input[type='checkbox']").each(function () {
+                $(this).removeAttr("checked");
+            });
+            $(this).parent().parent().find("input[type='checkbox']").each(function () {
+                $(this).removeAttr("checked");
+            });
+        }
+        else {
+            $(this).parent().parent().find("input[type='checkbox']").each(function () {
+                $(this).attr("checked", "checked");
+            });
+        }
+    });
+
+    $("#btnSave_choose_nguoi_dung_ids_" + '@Model.INDEX').click(function () {
+        var textValue = "";
+        var idsValue = "";
+        var chuc_vu = "";
+        $("#nhan_su_dialog_" + '@Model.INDEX' + " .checkbox_chon_nguoi_dung").each(function () {
+            if (this.checked) {
+                textValue += $("#label_nguoi_dung_" + $(this).val()).html() + ", ";
+                idsValue += $(this).val() + ",";
+                chuc_vu = $("#chuc_vu_nguoi_dung_" + $(this).val()).html()
+            }
+        });
+        textValue = textValue.substr(0, textValue.length - 2);
+        idsValue = idsValue.substr(0, idsValue.length - 1);
+        if ($("#" + '@Model.TEXT_ID').attr("type") == "text") {
+            $("#" + '@Model.TEXT_ID').val(textValue);
+        } else {
+            $("#" + '@Model.TEXT_ID').html(textValue);
+        }
+
+        if ($("#" + '@Model.SHOW_CHUC_VU_ID').length > 0) {
+            if ($("#" + '@Model.SHOW_CHUC_VU_ID').attr("type") == "text") {
+                $("#" + '@Model.SHOW_CHUC_VU_ID').val(chuc_vu);
+            } else {
+                $("#" + '@Model.SHOW_CHUC_VU_ID').html(chuc_vu);
+            }
+        }
+        $("#" + '@Model.VALUE_ID').val(idsValue);
+        $("#" + '@Model.VALUE_ID').change();
+        var call_back_function = '@Model.CALLBACK_FUNCTION';
+        if (call_back_function.length > 0) {
+            var cb_fn = window[call_back_function];
+            cb_fn();
+        }
+        $("#nhan_su_dialog_" + '@Model.INDEX').dialog("close");
+
+    });
+
+    $(".label_item_" + '@Model.INDEX').click(function () {
+        if ($(this).parent().parent().find("input").attr("checked") == "checked") {
+            $(this).parent().parent().find("input").attr("checked", false);
+        } else {
+            $(this).parent().parent().find("input").attr("checked", true);
+        }
+    });
+    $(".parent_check_box_" + '@Model.INDEX').click(function () {
+        if ($(this).parent().parent().find("input").attr("checked") == "checked") {
+            $(this).parent().parent().find("input").attr("checked", false);
+        } else {
+            $(this).parent().parent().find("input").attr("checked", true);
+        }
+    });
+</script>

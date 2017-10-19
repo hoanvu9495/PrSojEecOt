@@ -1,0 +1,597 @@
+﻿@using Model.eAita;
+@using Web.Common;
+@using StackExchange.Profiling;
+@model Web.Models.LoginViewModel
+@{
+    ViewBag.Title = "Đăng nhập hệ thống";
+    Layout = null;
+    var resetValText = ViewData["Message"] == null ? true : false;
+}
+@{
+    //string s = (string)ViewData["ShowCaptcha"];
+}
+<!DOCTYPE html>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<html>
+
+<head>
+    <title>@ViewBag.Title</title>
+    <link rel="icon" type="image/png" href="~/Content/Images/QuocHuy.png" />
+    <link href="@Url.Content("~/Content/Custom/css/style.css")" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/Common.js"></script>
+    <script>
+        $(document).ready(function () {
+            @*var CAPDONVI = "@Model.CAPDONVI";
+            var TINH = "@Model.TINH";
+            var HUYEN = "@Model.HUYEN";
+            var XA = "@Model.XA";
+            var DONVI = "@Model.DONVI";
+            if (CAPDONVI > 0) $("#CAPDONVI").val(CAPDONVI);
+            else $("#CAPDONVI").val("@PHANCAPDONVI.CAPTW");
+            LoadKhuVuc();
+            setTimeout(function () {
+                if (DONVI > 0) {
+                    $("#DONVITW_ID").val(DONVI);
+                }
+            }, 500);
+            setTimeout(function () {
+                if (TINH > 0) {
+
+                    $("#TINH_ID").val(TINH);
+                    $("#TINH_ID").change();
+                    setTimeout(function () {
+                        if (HUYEN > 0) {
+                            $("#HUYEN_ID").val(HUYEN);
+                            $("#HUYEN_ID").change();
+                            setTimeout(function () {
+                                $("#XA_ID").val(XA);
+                            }, 500);
+                        }
+                    }, 500);
+                }
+
+            }, 500);
+        });*@
+            var CAPDONVI = localStorage.getItem("CAPDONVI");
+            var TINH = localStorage.getItem("TINH");
+            var HUYEN = localStorage.getItem("HUYEN");
+            var XA = localStorage.getItem("XA");
+            var DONVI = localStorage.getItem("DONVI");
+            if (CAPDONVI > 0) $("#CAPDONVI").val(CAPDONVI);
+            else $("#CAPDONVI").val("@PHANCAPDONVI.CAPTW");
+            LoadKhuVuc();
+            setTimeout(function () {
+                if (DONVI > 0) {
+                    $("#DONVITW_ID").val(DONVI);
+                }
+            }, 500);
+            setTimeout(function () {
+                if (TINH > 0) {
+
+                    $("#TINH_ID").val(TINH);
+                    $("#TINH_ID").change();
+                    setTimeout(function () {
+                        if (HUYEN > 0) {
+                            $("#HUYEN_ID").val(HUYEN);
+                            $("#HUYEN_ID").change();
+                            setTimeout(function () {
+                                $("#XA_ID").val(XA);
+                            }, 500);
+                        }
+                    }, 500);
+                }
+
+            }, 500);
+        });
+        function LoadKhuVuc() {
+            $("#capDonViNull").hide();
+            // ẩn hết lựa chọn tỉnh, quận/huyện, phường/xã
+            $(".khuvuc").hide();
+            // chọn đơn vị
+            var selectedKhuVuc = $("#CAPDONVI").val();
+            //if (selectedKhuVuc > 0)
+            //{
+            //    $("#cosoyte").show();
+            //}
+            if (selectedKhuVuc == "@PHANCAPDONVI.CAPTW" || selectedKhuVuc == "@PHANCAPDONVI.CAPBVTW") { // tuyến TW // tuyến bệnh viện TW
+                $("#donvicaptw").show();
+                var tuyen = $("#CAPDONVI").val();
+                var url_loader = "/Common/LoadDonViTW";
+
+                // sử dụng ajax để load đơn vị
+                if (tuyen == "@PHANCAPDONVI.CAPTW" || tuyen == "@PHANCAPDONVI.CAPBVTW")
+                    $.ajax({
+                        url: url_loader,
+                        type: 'POST',
+                        data: { HINHTHUC: tuyen },
+                        success: function (data) {
+                            var items = "<option value='-1'>[--- Chọn Đơn Vị ---]</option>";
+                            $.each(data, function (i, type) {
+                                items += "<option value='" + type.COSO_ID + "'>" + type.TENCOSO + "</option>";
+                            });
+
+                            $("#DONVITW_ID").html(items);
+                        },
+                        error: function (data) {
+                            alert("ERROR");
+                        }
+                    });
+            }
+            if (selectedKhuVuc == "@PHANCAPDONVI.CAPTINH" || selectedKhuVuc == "@PHANCAPDONVI.CAPBVTINH") { // tuyến Tỉnh // tuyến bệnh viện tỉnh
+                $("#khuvuc1").show();
+            }
+            if (selectedKhuVuc == "@PHANCAPDONVI.CAPHUYEN" || selectedKhuVuc == "@PHANCAPDONVI.CAPBVHUYEN") { // tuyến huyện // tuyến bệnh viện huyện
+                $("#khuvuc1").show();
+                $("#khuvuc2").show();
+            }
+            if (selectedKhuVuc == "@PHANCAPDONVI.CAPXA") { // tuyến xã
+                $("#khuvuc1").show();
+                $("#khuvuc2").show();
+                $("#khuvuc3").show();
+            }
+            if (selectedKhuVuc == "@PHANCAPDONVI.CAPQTHT") { // cấp quản trị hệ thống
+                ////
+            }
+            //if (selectedKhuVuc == 2) { // tuyến TW
+            //    $("#donvicaptw").show();
+            //}
+            //else if (selectedKhuVuc == 1) { // tuyến tỉnh
+            //    $("#khuvuc1").show();
+            //} else if (selectedKhuVuc == 3) { // tuyến huyện
+            //    $("#khuvuc1").show();
+            //    $("#khuvuc2").show();
+            //} else if (selectedKhuVuc == 4) { // tuyến xã
+            //    $("#khuvuc1").show();
+            //    $("#khuvuc2").show();
+            //    $("#khuvuc3").show();
+            //    //$("#cosoyte").show();
+            //}
+            //else if (selectedKhuVuc == 5) { // cơ sở tiêm dịch vụ
+            //    $("#khuvuc1").show();
+            //    $("#cosoyte").show();
+            //}
+        }
+        // load đơn vị sau khi chọn xã
+        function LoadDonVi() {
+            // lấy tỉnh, huyện, xã đã được chọn
+            var tinh_id = $("#TINH_ID").val();
+            var huyen_id = $("#HUYEN_ID").val();
+            var xa_id = $("#XA_ID").val();
+            var url_loader = "/Common/LoadDonVi";
+
+            // sử dụng ajax để load đơn vị
+            $.ajax({
+                url: url_loader,
+                type: 'POST',
+                data: { TINH_ID: tinh_id, HUYEN_ID: huyen_id, XA_ID: xa_id },
+                success: function (data) {
+                    var items = "<option value='-1'>[--- Chọn Đơn Vị ---]</option>";
+                    $.each(data, function (i, type) {
+                        items += "<option value='" + type.COSO_ID + "'>" + type.TENCOSO + "</option>";
+                    });
+
+                    $("#DONVI_ID").html(items);
+                },
+                error: function (data) {
+                    alert("Địa phương này không có đơn vị nào.");
+                }
+            });
+
+        }
+    </script>
+    <style>
+        body {
+            background: #f9fbfc url(/Content/Images/db-bg-login.jpg) no-repeat center top;
+            background-size: 100% auto;
+        }
+
+        div.top-main {
+            height: auto;
+            background-image: url("/Content/Images/header-image.png");
+        }
+
+        div.header-text {
+            padding: 20px;
+            color: white;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .ErrorMsgStyle {
+            font-size: 12px;
+            color: red;
+            margin: 0 0 4px 104px;
+        }
+
+        div.content-main {
+            /*padding-top: 50px;*/
+            background: none;
+        }
+
+        .left-login-panel {
+            width: 415px;
+            float: left;
+            display: block;
+            height: 500px;
+            padding-left: 50px;
+            margin-right: 146px;
+        }
+
+        .right-login-panel {
+            background: white;
+            width: 477px;
+            overflow: auto;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 7px #999;
+            margin-top: 70px;
+        }
+
+            .right-login-panel #title h2 {
+                font-size: 20px;
+                font-weight: bold;
+                color: #2d3d4b;
+                position: relative;
+                display: block;
+                background: url(/Content/Images/ico-log.png) no-repeat left top;
+                padding-bottom: 15px;
+                text-shadow: 2px 2px #fff;
+                border-bottom: 1px #d2d2d2 solid;
+                padding-left: 37px;
+                padding-top: 5px;
+                margin-top: 0px;
+            }
+
+
+
+        span.input-label {
+            display: inline-block;
+            width: 170px;
+            margin-right: 20px;
+            font-size: 14px;
+        }
+
+        div.input-error {
+            color: red;
+            display: none;
+            font-size: 11px;
+            margin-left: 103px;
+        }
+
+        div.logo-main {
+            margin-top: 120px;
+            margin-left: 34px;
+        }
+
+            div.logo-main img.logo-img {
+                width: 500px;
+            }
+
+        span.required {
+            color: red;
+        }
+
+        #LoginButton {
+            text-align: center;
+            padding: 8px 30px 6px;
+            background: #2e3192;
+            color: #fff;
+            font-size: 16px;
+            border: 1px solid #2e3192;
+            display: inline-block;
+            border-radius: 4px;
+            width: 250px;
+            height: 40px;
+            font-weight: bold;
+            text-transform: uppercase;
+            float: right;
+        }
+
+        .change-password {
+            margin-top: 5px;
+            margin-right: 3px;
+            clear: both;
+            float: right;
+        }
+
+            .change-password a {
+                text-decoration: none;
+                color: #575757;
+                transition: all 0.4s ease;
+            }
+
+                .change-password a:hover {
+                    color: #2e3192;
+                    text-decoration: underline !important;
+                }
+
+        div.footer-main {
+            border-top: 1px solid #e9e9e9;
+            background: #4a5966;
+            opacity: .9;
+        }
+
+            div.footer-main h2 {
+                background: url(/Content/Images/logo-viettel.png) no-repeat;
+                padding-left: 113px;
+                color: #eee;
+                font-size: 12px;
+                font-weight: normal;
+            }
+    </style>
+</head>
+<body class="body_login">
+    <!--LOG_IN_PAGE-->
+    <form action="Login" method="post" id="FormLogin">
+        <div class="content-main">
+            <div>
+                <div class="left-login-panel">
+                    <div class="logo-main">
+                        <img class="logo-img" src="/Content/Images/logo-2.png" />
+                    </div>
+                </div>
+                <div class="right-login-panel">
+                    <div>
+                        <div id="title">
+                            <h2>Đăng nhập hệ thống</h2>
+                        </div>
+                        @*<div class="input-field mb10">
+                                <span class="input-label">Cấp đơn vị<span class="required">*</span></span>
+                                @Html.DropDownList("CAPDONVI", Model.ListCapDonVi, "[--- Chọn cấp đơn vị ---]", new { onchange = "LoadKhuVuc()" })
+                                <div class="input-error" id="capDonViNull">(*) Bạn chưa chọn cấp đơn vị</div>
+                            </div>
+                            <div class="input-field mb10 khuvuc" id="khuvuc1">
+                                <span class="input-label">Tỉnh/TP<span class="required">*</span></span>
+                                @Html.DropDownList("TINH_ID", Model.ListCity, "[--- Chọn Tỉnh/Thành Phố ---]", new { onchange = "LoadDiaDiem('TINH_ID', 'HUYEN_ID', 'XA_ID', 1);" })
+                                <div class="input-error" id="tinhNull">(*) Bạn chưa chọn Tỉnh</div>
+                            </div>
+                            <div class="input-field mb10 khuvuc" id="khuvuc2">
+                                <span class="input-label">Quận/Huyện<span class="required">*</span></span>
+                                <select id="HUYEN_ID" onchange="LoadDiaDiem('TINH_ID', 'HUYEN_ID', 'XA_ID', 2);">
+                                    <option value="-1">[--- Chọn Quận/Huyện ---]</option>
+                                </select>
+                                <div class="input-error" id="huyenNull">(*) Bạn chưa chọn Quận/Huyện</div>
+                            </div>
+                            <div class="input-field mb10 khuvuc" id="khuvuc3">
+                                <span class="input-label">Xã<span class="required">*</span></span>
+                                <select id="XA_ID" onchange="LoadDonVi();">
+                                    <option value="-1">[--- Chọn Phường/Xã ---]</option>
+                                </select>
+                                <div class="input-error" id="xaNull">(*) Bạn chưa chọn Xã</div>
+                            </div>
+                            <div class="input-field mb10 khuvuc" id="cosoyte">
+                                <span class="input-label">Cơ sở tiêm chủng<span class="required">*</span></span>
+                                <select id="DONVI_ID" name="coso">
+                                    <option value="-1">[--- Chọn Cơ sở ---]</option>
+                                </select>
+                                <div class="input-error" id="donviNull">(*) Bạn chưa chọn cơ sở tiêm chủng</div>
+                            </div>
+                            <div class="input-field mb10 khuvuc" id="donvicaptw">
+                                <span class="input-label">Đơn vị<span class="required">*</span></span>
+                                <select id="DONVITW_ID" name="donvitw">
+                                    <option value="-1">[--- Chọn Đơn vị ---]</option>
+                                </select>
+                                <div class="input-error" id="donviNull">(*) Bạn chưa chọn cơ sở tiêm chủng</div>
+                            </div>*@
+                        <div class="input-field mb10">
+                            <span class="input-label">Cấp đơn vị<span class="required">*</span></span>
+                            @Html.DropDownList("CAPDONVI", Model.ListCapDonVi, "[--- Chọn cấp đơn vị ---]", new { onchange = "LoadKhuVuc()" })
+                            <div class="input-error" id="capDonViNull">(*) Bạn chưa chọn cấp đơn vị</div>
+                        </div>
+                        <div class="input-field mb10 khuvuc" id="khuvuc1">
+                            <span class="input-label">Tỉnh/TP<span class="required">*</span></span>
+                            @Html.DropDownList("TINH_ID", Model.ListCity, "[--- Chọn Tỉnh/Thành Phố ---]", new { onchange = "LoadDiaDiem('TINH_ID', 'HUYEN_ID', 'XA_ID', 1);" })
+                            <div class="input-error" id="tinhNull">(*) Bạn chưa chọn Tỉnh</div>
+                        </div>
+                        <div class="input-field mb10 khuvuc" id="khuvuc2">
+                            <span class="input-label">Quận/Huyện<span class="required">*</span></span>
+                            <select id="HUYEN_ID" name="HUYEN_ID" onchange="LoadDiaDiem('TINH_ID', 'HUYEN_ID', 'XA_ID', 2);">
+                                <option value="-1">[--- Chọn Quận/Huyện ---]</option>
+                            </select>
+                            <div class="input-error" id="huyenNull">(*) Bạn chưa chọn Quận/Huyện</div>
+                        </div>
+                        <div class="input-field mb10 khuvuc" id="khuvuc3">
+                            <span class="input-label">Xã<span class="required">*</span></span>
+                            <select id="XA_ID" name="xaid">
+                                @*onchange="LoadDonVi();"*@
+                                <option value="-1">[--- Chọn Phường/Xã ---]</option>
+                            </select>
+                            <div class="input-error" id="xaNull">(*) Bạn chưa chọn Xã</div>
+                        </div>
+                        @*<div class="input-field mb10 khuvuc" id="cosoyte">
+                            <span class="input-label">Cơ sở tiêm chủng<span class="required">*</span></span>
+                            <select id="DONVI_ID" name="coso">
+                                <option value="-1">[--- Chọn Cơ sở ---]</option>
+                            </select>
+                            <div class="input-error" id="donviNull">(*) Bạn chưa chọn cơ sở tiêm chủng</div>*@
+                    </div>
+                    <div class="input-field mb10 khuvuc" id="donvicaptw">
+                        <span class="input-label">Đơn vị<span class="required">*</span></span>
+                        <select id="DONVITW_ID" name="donvitw">
+                            <option value="-1">[--- Chọn Đơn vị ---]</option>
+                        </select>
+                        <div class="input-error" id="donviNull">(*) Bạn chưa chọn cơ sở tiêm chủng</div>
+                    </div>
+                    <div class="input-field mb10">
+                        <span class="input-label">Tên đăng nhập<span class="required">*</span></span>
+                        @Html.TextBox("username", "", new { @class = "txt-login e-input", id = "username", style = "width:250px" })
+                        <div class="input-error" id="userNameNull">(*) Bạn chưa nhập tên đăng nhập</div>
+                    </div>
+                    <div class="input-field mb10">
+                        <span class="input-label">Mật khẩu<span class="required">*</span></span>
+                        @Html.TextBox("password", "", new { @class = "txt-login e-input", id = "password", type = "password", autocomplete = "on", style = "width:250px" })
+                        @*<input type="password" class="txt-login" name="password" autocomplete="on" />*@
+                        <div class="input-error" id="passNull">(*) Bạn chưa nhập mật khẩu</div>
+                    </div>
+                    <div class="input-field mb10">
+                        <span class="input-label"></span>
+                        <input type="checkbox" id="remember_me" name="remember_me" /> Nhớ tài khoản
+                    </div>
+
+                    @if (ViewData["ShowCaptcha"] != null)
+                    {           <div style="margin-left: 124px; margin-top: 15px;">
+                        <div id="PanelImage">
+                            <img id="ImgCaptcha" src="/Account/GetCaptcha" style="border: solid 1px #808080;" />
+                            <img id="refreshCaptcha" src="~/Content/Images/refresh.png" style="cursor:pointer; width: 24px; height: 24px; margin-bottom: 8px; margin-left: 8px;" />
+                        </div>
+                    </div>
+
+                        <div class="input-field mb10">
+                            <span class="input-label">Mã xác nhận:</span>
+                            @Html.TextBox("captcha", "", new { @class = "txt-login e-input", style = "width:250px", id = "captcha" })
+                            <div class="input-error" id="confirmCodeNull">(*) Bạn chưa nhập mã xác nhận</div>
+                        </div>
+
+                    }
+                    <div class="input-field mb10">
+                        @if (resetValText == false)
+                        {
+                            <div style="display:block; color:red; float:left; margin-left:204px" id="resetValText">@ViewData["Message"]</div>
+                        }
+                        else
+                        {
+                            <div class="input-error" style="display:none;" id="resetValText">@ViewData["Message"]</div>
+                        }
+                    </div>
+                    <div style="margin-left: 20px; margin-top: 7px;">
+                        <input type="button" value="Đăng nhập" onclick="LoginClick();" id="LoginButton" />
+                    </div>
+                    <div class="change-password">
+                        <a href="#">Đổi mật khẩu</a> |
+                        <a href="#">Liên hệ đổi mật khẩu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="clean"></div>
+        <div class="footer-main">
+            <h2>
+                Trung Tâm Giải pháp CNTT & Viễn thông Viettel | Tập Đoàn Viễn Thông Quân Đội <br />
+                Điện thoại: (84) – 4 – 6265.8543 | Fax: (84) – 4 – 6265.8542<br />
+                Địa chỉ: Số 1 Trần Hữu Dực , Mỹ Đình, Từ Liêm, Hà Nội
+            </h2>
+        </div>
+    </form>
+    <script>
+        $(document).ready(function () {
+
+            $(window).resize(function () {
+                $(".content-main").css({ "min-height": $(window).height() - $(".top-main").height() - $(".footer-main").height() - 28 });
+            });
+            $(".content-main").css({ "min-height": $(window).height() - $(".top-main").height() - $(".footer-main").height() - 28 });
+
+
+            $("#username").keypress(function (event) {
+                $("#resetValText").hide();
+                if (event.which == 13) {
+                    $("#LoginButton").click();
+                }
+            });
+            $("#password").keypress(function (event) {
+                $("#resetValText").hide();
+                if (event.which == 13) {
+                    $("#LoginButton").click();
+                }
+            });
+            $("#captcha").keypress(function (event) {
+                $("#resetValText").hide();
+                if (event.which == 13) {
+                    $("#LoginButton").click();
+                }
+            });
+
+            sessionStorage.clear();
+        });
+
+        function LoginClick() {
+            //if ($("#CAPDONVI").val() < 1) {
+            //    $("#capDonViNull").show();
+            //    $("#CAPDONVI").focus();
+            //    return false;
+            //}
+            //if ($("#TINH_ID").val() < 1) {
+            //    $("#tinhNull").show();
+            //    $("#TINH_ID").focus();
+            //    return false;
+            //}
+            //if ($("#HUYEN_ID").val() < 1) {
+            //    $("#huyenNull").show();
+            //    $("#HUYEN_ID").focus();
+            //    return false;
+            //}
+            //if ($("#XA_ID").val() < 1) {
+            //    $("#xaNull").show();
+            //    $("#XA_ID").focus();
+            //    return false;
+            //}
+            //if ($("#CAPDONVI").val() > 0) {
+            //    if ($("#DONVI_ID").val() < 1) {
+            //        $("#donviNull").show();
+            //        $("#DONVI_ID").focus();
+            //        return false;
+            //    }
+            //}
+            localStorage.removeItem("currentMenuID");
+            if (($("#username").val() == null || $("#username").val() == "")) {
+                $("#userNameNull").show();
+                $("#username").focus();
+                return false;
+            }
+            if (($("#password").val() == null || $("#password").val() == "")) {
+                $("#passNull").show();
+                $("#password").focus();
+                return false;
+            }
+            if ($("#captcha").length && ($("#captcha").val() == null || $("#captcha").val() == "")) {
+                $("#confirmCodeNull").show();
+                $("#captcha").focus();
+                return false;
+            }
+            localStorage.setItem("CAPDONVI", $("#CAPDONVI").val());
+            localStorage.setItem("TINH", $("#TINH_ID").val());
+            localStorage.setItem("HUYEN", $("#HUYEN_ID").val());
+            localStorage.setItem("XA", $("#XA_ID").val());
+            localStorage.setItem("DONVI", $("#DONVITW_ID").val());
+            $("#FormLogin").submit();
+            return true;
+        }
+
+        $("#refreshCaptcha").click(
+            function () {
+                $("#ImgCaptcha").attr("src", "/Account/GetCaptcha?time=" + new Date().getTime());
+            }
+            );
+        $("#username").focusout(function () {
+
+            if (($("#username").val() == null || $("#username").val() == "")) {
+                $("#userNameNull").show();
+                //$("#username").focus();
+            } else {
+                if (!$('#userNameNull').is(':hidden'))
+                    $("#userNameNull").hide();
+            }
+
+        });
+        $("#captcha").focusout(function () {
+
+            if (($("#captcha").val() != null && $("#captcha").val() != "")) {
+                $("#confirmCodeNull").hide();
+            }
+        });
+
+        $("#password").focusout(function () {
+
+            if (($("#password").val() == null || $("#password").val() == "")) {
+                $("#passNull").show();
+                //$("#password").focus();
+            } else {
+                if (!$('#passNull').is(':hidden'))
+                    $("#passNull").hide();
+            }
+
+        });
+    </script>
+    @*@MiniProfiler.RenderIncludes()*@
+</body>
+</html>

@@ -1,0 +1,286 @@
+﻿body {
+    font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+    font-size: 13px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+}
+
+#header {
+    height: 49px;
+    width: 100%;
+}
+
+    #header #logo-group {
+        height: 49px;
+        width: 184px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+#logo img {
+    width: 110px;
+    height: auto;
+    padding-left: 3px;
+    vertical-align: middle;
+}
+
+#logo {
+    display: inline-block;
+    line-height: 49px;
+}
+
+#activity {
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    cursor: default !important;
+    display: inline-block;
+    font-weight: 700;
+    height: 30px;
+    width: 30px;
+    padding: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    background-color: #f8f8f8;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#f8f8f8),to(#f1f1f1));
+    background-image: -webkit-linear-gradient(top,#f8f8f8,#f1f1f1);
+    background-image: -moz-linear-gradient(top,#f8f8f8,#f1f1f1);
+    background-image: -ms-linear-gradient(top,#f8f8f8,#f1f1f1);
+    background-image: -o-linear-gradient(top,#f8f8f8,#f1f1f1);
+    background-image: linear-gradient(top,#f8f8f8,#f1f1f1);
+    border: 1px solid #bfbfbf;
+    color: #c4bab6;
+    font-size: 19px;
+    margin: 10px 0 0;
+    position: relative;
+}
+
+#mobile-profile-img {
+    list-style: none;
+    display: inline-block;
+    padding-right: 10px;
+    padding-left: 0px;
+    position: relative;
+    top: -8px;
+}
+
+    #mobile-profile-img a.userdropdown img {
+        width: 30px;
+        margin-top: 5px;
+        margin-left: 2px;
+        border-radius: 3px;
+        border: 1px solid #797979 !important;
+        padding: 3px 2px;
+    }
+
+#header > :first-child, aside {
+    width: 240px;
+}
+
+#main {
+    margin-left: 240px;
+}
+#left-panel{
+    padding-top:0px;
+    position:relative;
+    background: #474544;
+    position:absolute;
+    display:inline-block;
+}
+#left-panel .login-info {
+    background: #57889c;
+    border-right: 1px solid rgba(255,255,255, 0.5);
+    border-bottom: 0px;
+    box-shadow: inherit;
+}
+
+.login-info {
+    display: block;
+    font-size: 12px;
+    height: 39px;
+    color: #fff;
+    border: solid transparent;
+    border-width: 1px 0;
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,.1), inset 0 -1px 0 rgba(0,0,0,.07);
+    width: 100%;
+    margin: 0 !important;
+    border-bottom: 1px solid #525151;
+    vertical-align: middle;
+}
+
+img.online {
+    border-left-color: #40ac2b !important;
+}
+
+img.away, img.busy, img.offline, img.online {
+    border-left: 3px solid #fff;
+}
+
+.login-info img {
+    width: 25px;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 1px;
+    margin-right: 5px;
+    margin-left: 0;
+    border-left: 3px solid #fff;
+}
+
+.login-info a span {
+    text-transform: capitalize;
+    font-size: 14px;
+    display: inline-block;
+    text-decoration: none;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+.login-info a {
+    color: #fff;
+}
+
+.login-info > span {
+    height: 38px;
+    display: block;
+    padding: 0 10px;
+    border-bottom: 1px solid #1A1817;
+}
+
+#menu-left-ls ul {
+    width: 100%;
+    list-style: none;
+    padding-left: 0px;
+    margin-left: 0px;
+    padding: 0;
+    margin: 0;
+    font-size: 13px;
+    line-height: .5em;
+    list-style: none;
+    position: relative;
+}
+
+#menu-left-ls li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    background-color:white;
+}
+
+    #menu-left-ls li a {
+        color: #000;
+        width: 100%;
+        border-bottom: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        padding: 13px 11px 13px 10px;
+        display: block;
+        font-size: 14px;
+        line-height: normal;
+        font-weight: 400;
+        text-decoration: none !important;
+        position: relative;
+    }
+
+#menu-left-ls a span {
+    width: 100%;
+}
+
+.minifyme {
+    border-bottom: 1px solid #302F2F;
+    background: #454545;
+    color: #A8A8A8;
+    text-align: center;
+    padding: 0;
+    width: 36px;
+    height: 28px;
+    display: block;
+    position: absolute;
+    right: 0;
+    border-radius: 5px 0 0 5px;
+    cursor: pointer;
+    margin-top: 7px;
+    font-size: 19px;
+    transition: all .1s linear 0s;
+}
+
+nav ul span.menu-item-parent {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+#main {
+    padding: 0;
+    padding-bottom: 52px;
+    min-height: 500px;
+    position: relative;
+}
+#ribbon {
+    background: #57889c;
+    min-height: 40px;
+    padding: 0 13px;
+    position: relative;
+    height:39px;
+    border-bottom:1px solid #ccc
+}
+.ribbon-button-alignment {
+    padding:10px 0px;
+    display: inline-block;
+}
+.btn.btn-ribbon {
+    background-color: #707070;
+    background-image: -moz-linear-gradient(top,#777,#666);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#777),to(#666));
+    background-image: -webkit-linear-gradient(top,#777,#666);
+    background-image: -o-linear-gradient(top,#777,#666);
+    background-image: linear-gradient(to bottom,#777,#666);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff777777', endColorstr='#ff666666', GradientType=0);
+    color: #fff;
+    padding: 0 5px;
+    line-height: 20px;
+    vertical-align: middle;
+    height: 20px;
+    display: block;
+    border: none;
+    float: left;
+    margin: 0 8px 0 0;
+    cursor: pointer;
+}
+
+
+#ribbon .breadcrumb {
+   margin-top:10px;
+    display: inline-block;
+    margin: 0;
+    padding: 11px 34px 11px 0!important;
+    background: 0 0;
+    vertical-align: top;
+}
+
+#ribbon .breadcrumb, #ribbon .breadcrumb a {
+    color: #BBB!important;
+    text-decoration: none!Important;
+}
+.jarviswidget {
+    margin: 0 0 30px;
+    position: relative;
+    -moz-border-radius: 0;
+    -khtml-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    padding: 0;
+}
+.jarviswidget {
+    margin: 0 0 30px;
+    position: relative;
+    -moz-border-radius: 0;
+    -khtml-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    padding: 0;
+}

@@ -1,0 +1,50 @@
+﻿@using Web.Common
+@using Web.FwCore;
+@{
+    var dataModel = SessionManager.GetValue("SeachFormData");
+}
+<div class="">
+
+    <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" role="tabpanel" style="">
+        @Html.AntiForgeryToken()
+        @using (Ajax.BeginForm("SearchVBDenSapDenHan", "VBDChuaXuLySapDenHan", new AjaxOptions()
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnFailure = "failure",
+            OnSuccess = "searchSuccess",
+
+        }
+        , new { id = "frmSearh" }))
+        {
+            @Html.Partial("~/Areas/VanBanDenArea/Views/VanBanDen/_VanBanDenSearchCore.cshtml", dataModel);
+        }
+    </div>
+</div>
+<script type="text/javascript">
+
+
+
+    $(function () {
+        $(".datepicker").datepicker({ dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true, yearRange: "-20:+20" });
+    });
+
+    function failure() {
+    }
+
+    function searchSuccess(rs) {
+        $('#countTotal').html('(' + rs.Count + ')');
+        for (var i = 0; i < rs.ListItem.length; i++) {
+            if (rs.ListItem[i].NGAYDEN != null) {
+                var str = rs.ListItem[i].NGAYDEN;
+                rs.ListItem[i].NGAYDEN = ConvertToDateISO(str);
+            }
+        };
+        currentPage = 1;
+        loadData(rs.ListItem);
+        GenPaging(1, rs.TotalPage, "paging1", GetDataPage);
+
+    }
+
+    loadScript("Scripts/jquery.unobtrusive-ajax.min.js");
+</script>

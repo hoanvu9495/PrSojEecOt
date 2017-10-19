@@ -1,0 +1,116 @@
+﻿@using (Ajax.BeginForm("SaveToaNha", "QuanLyLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmThuMucCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm mới tòa nhà</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td style="width:100px">
+                            Tên tòa nhà:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" class="e-input" style="width:233px" name="TENTOANHA" id="TENTOANHA" placeholder="Nhập tên tòa nhà" maxlength="255">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TENTOANHA_NULL">Tên tòa nhà không được để trống</span>
+                            <span style="color: red; display: none" id="TENTOANHA_ERROR">Tên tòa nhà đã tồn tại</span>
+                            <span style="color: red; display: none" id="TENTOANHA_HTML">Tên tòa nhà không được chứa ký tự HTML(<>)</span>
+                        </td>
+                    </tr>
+                   
+                    <tr>
+                        <td>
+                            Trạng thái:
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix">
+                                <select name="TRANGTHAI">
+                                    <option value="true">Sử dụng</option>
+                                    <option value="false">Không sử dụng</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnSave">Thêm mới</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+ 
+}>
+<script>
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Đã thêm mới tòa nhà!',
+        });
+
+        $("#CreateToaNha").modal("hide");
+        reloadGrid();
+
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $(function () {
+        $("#btnSave").click(function () {
+            if ($("#TENTOANHA").val().trim() == "") {
+                $("#TENTOANHA").focus();
+                $("#TENTOANHA_NULL").show();
+                return false;
+            } else {
+                $("#TENTOANHA_NULL").hide();
+                if (/<[a-z][\s\S]*>/i.test($("#TENTOANHA").val())) {
+                    $("#TENTOANHA").focus();
+                    $("#TENTOANHA_HTML").show();
+                    return false;
+                } else {
+                    $("#TENTOANHA_HTML").hide();
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("ValidateToaNha", "QuanLyLuuTru")',
+                        data: {
+                            ToaNha: $("#TENTOANHA").val()
+
+                        },
+                        cache: false,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.length > 0) {
+                                $("#TENTOANHA").select();
+                                $("#TENTOANHA_ERROR").show();
+                                return false;
+                            } else {
+                                $("#TENTOANHA_ERROR").hide();
+                                $("#frmThuMucCreate").submit();
+                            }
+                        }, error: function (xrt) {
+                            alert(xrt.responseText);
+                        }
+                    });
+                }
+
+            }
+        });
+    });
+</script>

@@ -1,0 +1,153 @@
+﻿@using Web.Models
+@model Web.Models.LuaChonThuMucModel
+@using Web.Common
+<div class="modal fade" id="ChooFolder" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close closeModal" aria-hidden="true">×</button>
+                <h4 class="modal-title">@Model.TITLE</h4>
+            </div>
+            <div class="container"></div>
+            <div class="modal-body" style="height:400px;overflow:scroll">
+                <div style="width:100%; margin:auto;">
+                    <div id="loading">Đang lấy thư mục lưu trữ....</div>
+                    <div id="CHONTHUMUC" style="overflow-x: hidden;">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnAccept">Xác nhận</button>
+                <button type="button" class="btn btn-default closeModal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .tree_ul {
+        list-style: none;
+    }
+
+    .tree_li {
+        padding-top: 10px;
+    }
+
+
+    .tree_ul, .tree_li, .tree_div {
+        float: left;
+        padding-left: 10px;
+    }
+
+    .left_tree_ul {
+        padding-left: 45px;
+    }
+
+    .tree_ul, .tree_li {
+        width: 100%;
+    }
+
+    .pop_expand {
+        width: 15px;
+        height: 15px;
+    }
+
+    .pop_collapse {
+        width: 15px;
+        height: 15px;
+        display: none;
+    }
+
+    .root_tree {
+        background: rgba(0, 0, 0, 0) url('/Content/Images/folder-horizontal.png') no-repeat scroll 15px 1px;
+    }
+
+        .root_tree label {
+            margin-left: 30px;
+        }
+
+    #loading {
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        background: #000 url('/Content/Images/loadajax.gif') no-repeat 50% 4px;
+        bottom: 50%;
+        color: #fff;
+        text-align: center;
+        line-height: 166px;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0.7;
+        border-radius: 5px;
+        filter: alpha(opacity=70);
+        font-size: 12px;
+        text-shadow: none;
+        display: none;
+    }
+</style>
+<script>
+    function CreateFolder(ID) {
+        var html_ele = "";
+        html_ele += '<ul class="tree_ul" class="tree_first_folder">';
+        html_ele += '<li class="tree_li" style="display:block">';
+        html_ele += '<div class="tree_div">';
+        html_ele += '<img alt="" class="pop_expand" src="/Content/Images/minus.png" style="display:inline ;">';
+        html_ele += '<img alt="" class="pop_collapse" src="/Content/Images/Plus.png" style="display:none ;">';
+        html_ele += '</div><div class="tree_div"></div>';
+        html_ele += ' <div class="tree_div " data-id="' + ID + '" id="TREEROOT_' + ID + '">';
+        html_ele += '<a href="javascript:void(0)" class="parent_check_box_0">';
+        html_ele += '<label><span id="TENTHUMUC_' + ID + '"></span><input type="text" style="width:233px" placeholder="Nhập tên thư mục" data-id="' + ID + '" class="TENTHUMUC" id="TENTHUMUC_' + ID + '" class="e-input">';
+        html_ele += '<span style="display:none;color:red" id="THUMUC_ERROR">Thư mục này đã tồn tại</span>';
+        html_ele += '<span style="display:none;color:red" id="THUMUC_HTML">Tên thư mục không được chứa các ký tự dạng thẻ HTML</span>';
+        html_ele += '<span style="display:none;color:red" id="THUMUC_INVALID">Tên thư mục không được chứa các ký tự dạng sau: \/:?*"<>|</span>';
+        html_ele += '</label></a></div></li>';
+        html_ele += '</ul>';
+        return html_ele;
+    }
+    function createSuccess() {
+        var ID = $("#PARENT_ID").val();
+        $(".@Model.ID_CLICK").click();
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Thêm mới thư mục thành công!',
+        });
+        $("#CREATE_NAME").val("");
+        $("#btnClose").click();
+    }
+
+    //$(function () {
+
+    //});
+
+    $('#ChooFolder .closeModal').on('click', function () {
+        $(this).closest(".modal").modal("hide");
+    });
+    function getFolder(obj) {
+        var ID = $(obj).attr("data-id");
+        $.ajax({
+            type: "POST",
+            url: '/Common/GetListThuMuc',
+            cache: false,
+            data: {
+                COSO_ID: '@Model.COSO_ID',
+                DONVI_ID: '@Model.DONVI_ID',
+                USER_ID: '@Model.USER_ID',
+                TITLE: '@Model.TITLE',
+                ID: ID
+            },
+            beforeSend: function () {
+                $("#loading").show();
+            },
+            success: function (data) {
+                $("#loading").hide();
+                $("#CHONTHUMUC").html(data);
+            },
+            error: function (err) {
+                alert(err.responseText);
+            }
+        });
+        $("#btnAccept").attr("data-id", ID);
+        $("#myModal").modal("show");
+        $("#ChooFolder").modal("show");
+    }
+</script>

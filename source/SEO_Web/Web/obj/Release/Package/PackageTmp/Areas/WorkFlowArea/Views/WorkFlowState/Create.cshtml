@@ -1,0 +1,406 @@
+﻿@model Web.Areas.WorkFlowArea.Models.WorkFlowStateCreateViewModel
+@{
+    ViewBag.Title = "Quản lý Trạng thái trong luồng xử lý";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<style type="text/css">
+    .SearchCriterial {
+        margin: 0;
+    }
+
+    .SearchResult {
+        margin: 0;
+        padding: 0;
+    }
+
+    .btnDelete {
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAA6lBMVEUAAAAAAACWPEPLbmp/AADcd3btralpAAVzAAC8VFF1CgrZamGXCQLBEA1EAAAxAACSBAIAAACeBQHEAAAAAACyAwFDAAC5AQEAAACzAQEAAAC7GgmhAgJfAwEtAAC7DQVWAADfHAyoJCIAAADHEgciAACxRkIAAACmBwTKUEH8invLAADUAgH/blfcDgTwGAjkIRDKAADfBQHiFwjyJwziEgX/6+TOAgDVCALZBgP/LQ/XCgngBwPUCwP/c1v4RijUBwLOAwHeMCftGgn9LRH9qJ7lXFrMAQDxc2X/Ti/XAADZBQH9qZzzPjwnky4vAAAAKnRSTlMACyKGJMDcLh/dYuFvu1kkeBuK+waSLb4KviDWcoUn8y/8cC/OHoMkr/FKr1sqAAAAfElEQVQYGY3BUxLDAABAwZfatlLbto37X6fRNP3qdJd/GCxGNCazAxif6i0rEtvZLiARnOvN0QXulweNtzsY+WYLP7rAdhcM8SV8uT8i6KKNZqzd4SPe6ydgmESTmkzTSOYZVMuViCybQ5HfHwooiiVk5eutgqqK4lnjhzfngAu9KAHeCQAAAABJRU5ErkJggg==') /*/Content/Images/Delete.png*/ no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    #frmSaveWorkFlowState .form-group {
+        margin: 0;
+    }
+</style>
+@{
+    var sotrangthai = 0;
+    var sothutu = 0;
+    var step_trangthai = "";
+}
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+                @using (Ajax.BeginForm("SaveWorkFlowState", "WorkFlowState", new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "POST",
+                    OnFailure = "failure",
+                    OnSuccess = "updateSuccess"
+                }, new { id = "frmSaveWorkFlowState", onsubmit = "return validateSaveWorkFlowState()" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h3 class="group-tittle mt10" style="margin-left:20px;">Thông tin luồng xử lý</h3>
+                    <div style="margin-left:20px;">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>
+                                    <label class="lbl">Tên luồng xử lý:</label>
+                                </td>
+                                <td>
+                                    <span style="margin-left:10px;font-weight:bold;"> @Model.WF_QUYTRINH.TENWF</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="lbl">Nhóm luồng xử lý:</label>
+                                </td>
+                                <td>
+                                    <div class="input-field4  clearfix" style="width: 233px;">
+                                        @Html.DropDownListFor(m => m.WF_QUYTRINH.NHOMQUYTRINH_ID, Model.ListNhomQuyTrinh, "[--- Tất cả ---]", new { @id = "NHOMQUYTRINH_ID", @style = "width: 100%;margin-left:10px;cursor:default;", @disabled = "disabled" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Trạng thái:</label>
+                                </td>
+                                <td>
+                                    @if (Model.WF_QUYTRINH.IS_ACTIVE.HasValue && Model.WF_QUYTRINH.IS_ACTIVE.Value)
+                                    {
+                                        <span style="margin-left:10px;">Có hiệu lực</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: red; margin-left: 10px;">Không có hiệu lực</span>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <h3 class="group-tittle mt10" style="margin-bottom:10px; margin-left:20px">Danh sách trạng thái</h3>
+
+                    <div style="margin-left:20px;">
+                        <a href="javascript:void(0)" class="btn btn-primary" onclick="AddTrangThai()">
+                            Thêm trạng thái
+                        </a>
+                        <div style="margin:10px auto;"></div>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td colspan="3" valign="top">
+                                    <table class="table table-bordered" id="tbl_TrangThai">
+                                        <thead>
+                                            <tr class="head">
+                                                <th scope="col">
+                                                    STT
+                                                </th>
+                                                <th scope="col" width="250px">
+                                                    Tên trạng thái <span class="text-danger">(*)</span>
+                                                </th>
+                                                <th scope="col" width="200px">
+                                                    Mã trạng thái <span class="text-danger">(*)</span>
+                                                </th>
+                                                <th scope="col" width="300px">
+                                                    Mô tả
+                                                </th>
+                                                <th scope="col" width="100px">
+                                                    Lưu ý kiến chỉ đạo
+                                                </th>
+                                                <th scope="col" width="100px">
+                                                    Kết thúc
+                                                </th>
+                                                <th scope="col">
+                                                    Xóa
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.ListTrangThai != null && Model.ListTrangThai.Count > 0)
+                                            {
+                                                var thutu = 1;
+                                                foreach (var item in Model.ListTrangThai)
+                                                {
+                                                    step_trangthai += item.THUTU_HT.ToString() + ",";
+                                                    <tr id="trangthai_@thutu" class="tr_trangthai" data-id="@thutu">
+                                                        <td class="center">@thutu</td>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <input class="e-input required" type="text" value="@item.TENTRANGTHAI" name="TENTRANGTHAI_@thutu" id="TENTRANGTHAI_@thutu" style="width: 250px;" />
+                                                                <div class="note-error">
+                                                                    <span class="error mes-note-error"></span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <input class="e-input required" type="text" value="@item.MATRANGTHAI" name="MATRANGTHAI_@thutu" id="MATRANGTHAI_@thutu" style="width:250px;" />
+                                                                <div class="note-error">
+                                                                    <span class="error mes-note-error"></span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input class="e-input" type="text" value="@item.MOTA" name="MOTA_@thutu" id="MOTA_@thutu" style="width: 300px;" />
+                                                        </td>
+                                                        <td>
+                                                            <center>
+                                                                <input type="radio" class="css-checkbox RADIO_MESSAGE" id="IS_MESSAGE_@thutu" value="true" name="IS_MESSAGE_@thutu" @(item.IS_MESSAGE == true ? "checked" : "")>
+                                                                <label for="IS_MESSAGE_@thutu" class="css-label" style="margin:0 35px;padding:0"></label>
+                                                            </center>
+                                                        </td>
+                                                        <td>
+                                                            <center>
+                                                                <input type="radio" class="css-checkbox RADIO_FINISH" id="IS_FINISH_@thutu" value="true" name="IS_FINISH_@thutu" @(item.IS_FINISH == true ? "checked" : "")>
+                                                                <label for="IS_FINISH_@thutu" class="css-label" style="margin:0 35px;padding:0"></label>
+                                                            </center>
+                                                        </td>
+                                                        <td>
+                                                            <a href="javascript:void(0)" onclick="DeleteTrangThai(@thutu,@item.ID,1)" class="btnDelete" title="Xóa trạng thái này"></a>
+                                                        </td>
+                                                    </tr>
+                                                    thutu++;
+                                                    sotrangthai++;
+                                                    sothutu++;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                sotrangthai = 1;
+                                                sothutu = 1;
+                                                step_trangthai = "1,";
+                                                <tr id="trangthai_1" class="tr_trangthai" data-id="1">
+                                                    <td class="center">1</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input class="e-input required" type="text" name="TENTRANGTHAI_1" id="TENTRANGTHAI_1" style="width: 250px;" />
+                                                            <div class="note-error">
+                                                                <span class="error mes-note-error"></span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input class="e-input required" type="text" name="MATRANGTHAI_1" id="MATRANGTHAI_1" style="width: 250px;" />
+                                                            <div class="note-error">
+                                                                <span class="error mes-note-error"></span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input class="e-input" type="text" name="MOTA_1" id="MOTA_1" style="width: 300px;" />
+                                                    </td>
+                                                    <td>
+                                                        <center>
+                                                            <input type="radio" class="css-checkbox RADIO_FINISH" id="IS_FINISH_1" value="true" name="IS_FINISH">
+                                                            <label for="IS_FINISH_1" class="css-label" style="margin:0 35px;padding:0"></label>
+                                                        </center>
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:void(0)" onclick="DeleteTrangThai(1,0,0)" class="btnDelete" title="Xóa trạng thái này"></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <div>
+                            <input type="hidden" value="@sotrangthai" id="SoLuongTrangThai" name="SoLuongTrangThai" />
+                            <input type="hidden" value="@sothutu" id="SoThuTuTrangThai" name="SoThuTuTrangThai" />
+                            <input type="hidden" value="@step_trangthai" id="StepTrangThai" name="StepTrangThai" />
+                            <input type="hidden" value="@Model.WF_QUYTRINH.ID" id="WF_ID" name="WF_ID" />
+                        </div>
+                        <div style="margin-top: 15px;margin-bottom:25px; text-align: center;">
+                            <button type="submit" class="btn btn-primary" id="btnSave">Lưu</button>
+                            <button type="button" class="btn btn-default" onclick="OnCloSe()">Quay lại</button>
+                            <a href="/#WorkFlowArea/workflowstate/transition/@Model.WF_QUYTRINH.ID" class="btn btn-success">
+                                Quản lý các bước chuyển trạng thái
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<script src="~/Scripts/jquery.tablednd.0.7.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#frmWorkFlowSateCreate').on('submit', function () {
+            $.each($('.RADIO_FINISH'), function (index, item) {
+                $(this).attr('name', 'IS_FINISH_' + index);
+            });
+            return true;
+        });
+
+        // Initialise the table
+        try {
+            $("#tbl_TrangThai").tableDnD({
+                onDrop: function (table, row) {
+                    var step_trangthai = "";
+                    $(".tr_trangthai").each(function () {
+                        step_trangthai += $(this).attr("data-id") + ",";
+                    });
+                    $("#StepTrangThai").val(step_trangthai);
+                }
+            });
+        } catch (err) {
+            return false;
+        }
+    });
+
+    function DeleteTrangThai(thutu, id, xoa) {
+        var TENTRANGTHAI = $("#TENTRANGTHAI_" + thutu).val();
+        var MATRANGTHAI = $("#MATRANGTHAI_" + thutu).val();
+        var MOTA = $("#MOTA_" + thutu).val();
+        var SoLuongTrangThai = $("#SoLuongTrangThai").val();
+
+        var step_trangthai = "";
+        if (TENTRANGTHAI.length > 0 || MATRANGTHAI.length > 0 || MOTA.length > 0) {
+            $.confirm({
+                'title': 'Xóa trạng thái',
+                'message': 'Bạn muốn xóa trạng thái này không?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            if (xoa == "1") {
+                                $.ajax({
+                                    url: '@Url.Action("DeleteState", "WorkFlowState")',
+                                    type: 'post',
+                                    cache: false,
+                                    data: { id: id },
+                                    success: function (data) {
+                                        if (data.Type == 'SUCCESS') {
+                                            NotiSuccess(data.Message);
+                                        } else {
+                                            NotiError(data.Message);
+                                        }
+                                    },
+                                    error: function (xhr) {
+                                        alert(xhr.responseText);
+                                    }
+                                });
+                            } else {
+                                $("#trangthai_" + thutu).remove();
+                                $("#SoLuongTrangThai").val(parseInt(SoLuongTrangThai) - 1);
+                                var i = 1;
+                                $(".tr_trangthai").each(function () {
+                                    step_trangthai += $(this).attr("data-id") + ",";
+                                    $(this).find("td").first().html(i);
+                                    i++;
+                                });
+                            }
+                        }
+                    },
+                    'Hủy': {
+                        'class': 'btn-info',
+                        'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+        }
+        else {
+            $("#trangthai_" + thutu).remove();
+            $("#SoLuongTrangThai").val(parseInt(SoLuongTrangThai) - 1);
+            var i = 1;
+            $(".tr_trangthai").each(function () {
+                step_trangthai += $(this).attr("data-id") + ",";
+                $(this).find("td").first().html(i);
+                i++;
+            });
+        }
+        $("#StepTrangThai").val(step_trangthai);
+
+    }
+    function AddTrangThai() {
+        var SoLuongTrangThai = $("#SoLuongTrangThai").val();
+        var SoThuTuTrangThai = $("#SoThuTuTrangThai").val();
+        var SoThuTuTrangThaiMoi = parseInt(SoThuTuTrangThai) + 1;
+        var SoLuongTrangThaiMoi = parseInt(SoLuongTrangThai) + 1;
+        $("#SoLuongTrangThai").val(SoLuongTrangThaiMoi);
+        $("#SoThuTuTrangThai").val(SoThuTuTrangThaiMoi);
+        $("#StepTrangThai").val($("#StepTrangThai").val() + SoThuTuTrangThaiMoi + ",");
+        var string_tr_trangthai = "";
+        string_tr_trangthai += "<tr id='trangthai_" + SoThuTuTrangThaiMoi + "'  class='tr_trangthai' data-id='" + SoThuTuTrangThaiMoi + "' style='cursor: move;'>";
+        string_tr_trangthai += "<td class='center'>" + SoLuongTrangThaiMoi + "</td>";
+        string_tr_trangthai += "<td>";
+        string_tr_trangthai += "<div class='form-group'>";
+        string_tr_trangthai += "<input class='e-input required' type='text' name='TENTRANGTHAI_" + SoThuTuTrangThaiMoi + "' id='TENTRANGTHAI_" + SoThuTuTrangThaiMoi + "' style='width: 250px;' />";
+        string_tr_trangthai += "<div class='note-error'><span class='error mes-note-error'></span></div>";
+        string_tr_trangthai += "</div>";
+        string_tr_trangthai += "</td>";
+        string_tr_trangthai += "<td>";
+        string_tr_trangthai += "<div class='form-group'>"
+        string_tr_trangthai += "<input class='e-input required' type='text' name='MATRANGTHAI_" + SoThuTuTrangThaiMoi + "' id='MATRANGTHAI_" + SoThuTuTrangThaiMoi + "' style='width:250px;'/>";
+        string_tr_trangthai += "<div class='note-error'><span class='error mes-note-error'></span></div>";
+        string_tr_trangthai += "</div>";
+        string_tr_trangthai += "</td>";
+        string_tr_trangthai += "<td>";
+        string_tr_trangthai += "<input class='e-input' type='text' name='MOTA_" + SoThuTuTrangThaiMoi + "' id='MOTA_" + SoThuTuTrangThaiMoi + "' style='width: 300px;' />";
+        string_tr_trangthai += "</td>";
+
+        string_tr_trangthai += '<td><center>';
+        string_tr_trangthai += '<input type="radio" class="css-checkbox RADIO_FINISH" id="IS_FINISH_' + SoThuTuTrangThaiMoi + '" value="true" name="IS_FINISH">';
+        string_tr_trangthai += '<label for="IS_FINISH_' + SoThuTuTrangThaiMoi + '" class="css-label"  style="margin:0 35px;padding:0"></label>';
+        string_tr_trangthai += '</center></td>';
+
+        //string_tr_trangthai += "<td><input class='css-checkbox' id='CHK_ALLOW_UPDATE_" + SoThuTuTrangThaiMoi + "' name='CHK_ALLOW_UPDATE_" + SoThuTuTrangThaiMoi + "' type='checkbox'><label for='CHK_ALLOW_UPDATE_" + SoThuTuTrangThaiMoi + "' class='css-label2' style='width:0px;padding: 0 0px 0 16px;'></label></td>";
+        string_tr_trangthai += "<td>";
+
+        string_tr_trangthai += "<a href='javascript:void(0)' onclick='DeleteTrangThai(" + SoThuTuTrangThaiMoi + ",0,0)' class='btnDelete' title='Xóa trạng thái này'></a>";
+        string_tr_trangthai += "</td>";
+        string_tr_trangthai += "</tr>";
+
+        $("#tbl_TrangThai tbody").append(string_tr_trangthai);
+        $("#tbl_TrangThai").tableDnD({
+            onDrop: function (table, row) {
+                var step_trangthai = "";
+                $(".tr_trangthai").each(function () {
+                    step_trangthai += $(this).attr("data-id") + ",";
+                });
+                $("#StepTrangThai").val(step_trangthai);
+            }
+        });
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function updateSuccess() {
+        location.reload();
+    }
+
+
+    function validateSaveWorkFlowState() {
+        var err = 0;
+        var valid_Required = requiredFieldForFormId('frmSaveWorkFlowState');
+        if (!valid_Required) {
+            err += 1;
+        }
+        if (err == 0) {
+            return true;
+        } else {
+            NotiError("Có lỗi, Vui lòng kiểm tra lại");
+            return false;
+        }
+        return true;
+    }
+    
+    $(document).ready(function () {
+        $(".RADIO_MESSAGE").click(function () {
+            $(".RADIO_MESSAGE").prop("checked", false);
+            $(this).prop("checked", true);
+        });
+        $(".RADIO_FINISH").click(function () {
+            $(".RADIO_FINISH").prop("checked", false);
+            $(this).prop("checked", true);
+        });
+    });
+</script>

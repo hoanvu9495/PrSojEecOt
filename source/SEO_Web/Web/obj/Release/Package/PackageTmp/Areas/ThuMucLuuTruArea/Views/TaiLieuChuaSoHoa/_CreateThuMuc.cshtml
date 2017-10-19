@@ -1,0 +1,113 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.ThuMucChuaSoHoaModel
+@using (Ajax.BeginForm("SaveThuMuc", "TaiLieuChuaSoHoa", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmThuMucCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm mới thư mục lưu trữ</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td style="width:100px">
+                            Tên thư mục:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="TENTHUMUC" id="TENTHUMUC" placeholder="Nhập tên thư mục" maxlength="255">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TENTHUMUC_NULL">Tên thư mục không được để trống</span>
+                            <span style="color: red; display: none" id="TENTHUMUC_ERROR">Tên thư mục đã tồn tại</span>
+                            <span style="color: red; display: none" id="TENTHUMUC_HTML">Tên thư mục không được chứa ký tự HTML(<>)</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnSave">Thêm mới</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" name="PARENT_ID" id="PARENT_ID" value="@Model.THUMUC.ID" />
+}
+<script>
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Đã thêm mới thư mục!',
+        });
+        if ($("#PARENT_ID").val() > 0) {
+            LoadDataByID($("#PARENT_ID").val());
+            $("#THEMTHUMUC").attr("data-pid", $("#PARENT_ID").val());
+            $("#THEMTAILIEU").attr("data-pid", $("#PARENT_ID").val());
+            $("#UPLOAD_FILE").show();
+            $("#THEMTHUMUC").show();
+        }
+        if ($("#PARENT_ID").val() == 0) {
+            reloadGrid();
+            reloadTable();
+        }
+        
+        $("#CreateThuMuc").modal("hide");
+        
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $(function () {
+        $("#btnSave").click(function () {
+            if ($("#TENTHUMUC").val() == null || $("#TENTHUMUC").val().trim() == "") {
+                $("#TENTHUMUC").focus();
+                $("#TENTHUMUC_NULL").show();
+                return false;
+            } else {
+                $("#TENTHUMUC_NULL").hide();
+                if (/<[a-z][\s\S]*>/i.test($("#TENTHUMUC").val())) {
+                    $("#TENTHUMUC").focus();
+                    $("#TENTHUMUC_HTML").show();
+                    return false;
+                } else {
+                    $("#TENTHUMUC_HTML").hide();
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Validate", "TaiLieuChuaSoHoa")',
+                        data: {
+                            ThuMuc: $("#TENTHUMUC").val(),
+                            Parent: $("#PARENT_ID").val()
+                        },
+                        cache: false,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.length > 0) {
+                                $("#TENTHUMUC").select();
+                                $("#TENTHUMUC_ERROR").show();
+                                return false;
+                            } else {
+                                $("#TENTHUMUC_ERROR").hide();
+                                $("#frmThuMucCreate").submit();
+                            }
+                        }, error: function (xrt) {
+                            alert(xrt.responseText);
+                        }
+                    });
+                }
+
+            }
+        });
+    });
+</script>

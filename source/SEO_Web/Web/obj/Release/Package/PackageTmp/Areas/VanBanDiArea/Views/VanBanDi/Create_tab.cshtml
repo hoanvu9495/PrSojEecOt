@@ -1,0 +1,1226 @@
+﻿@using Web.Models
+@using Web.Areas.VanBanDiArea.Models
+@model VBDiCreateViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutTwoCol.cshtml";
+}
+@section HeaderPopup
+{
+    <h1>[eAita] Điều hành tác nghiệp > Quản lý văn bản đi > <span class='hsBar'>Thêm mới văn bản đi</span><a href="/vanbandiarea/vanbandi" title="Đóng lại"></a></h1>
+}
+<style>
+    .nhieunguoiky {
+        display: none;
+    }
+</style>
+<link href="/Content/Custom/css/multiple-select.css" rel="stylesheet" />
+<script src="/Scripts/multiple-select.js"></script>
+@section LeftMenu
+{
+    <div id='cssmenu'>
+        <ul>
+            <li><a href='#'>Thêm văn bản</a></li>
+            <li class='active has-sub'>
+                <a href='#'>Products</a>
+                <ul>
+                    <li class='has-sub'>
+                        <a href='#'>Product 1</a>
+                        <ul>
+                            <li><a href='#'>Sub Product</a></li>
+                            <li><a href='#'>Sub Product</a></li>
+                        </ul>
+                    </li>
+                    <li class='has-sub'>
+                        <a href='#'>Product 2</a>
+                        <ul>
+                            <li><a href='#'>Sub Product</a></li>
+                            <li><a href='#'>Sub Product</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href='#'>About</a></li>
+            <li><a href='#'>Contact</a></li>
+        </ul>
+    </div>
+}
+<div id="contentPanel">
+    <div class="hsContent">
+        @using (Html.BeginForm("Create", "VanBanDi", FormMethod.Post, new { enctype = "multipart/form-data", Id = "frmVanBanDiCreate" }))
+        {
+            @Html.AntiForgeryToken()
+            @*<div class="hsBar">Thêm mới văn bản đi</div>*@
+            <div id="vb_di_tabs">
+                <ul>
+                    <li><a id="vbdi-tab1" href="#tabs-1">Thông tin chính <span style="color: red;">*</span></a></li>
+                    <li><a id="vbdi-tab2" href="#tabs-2">Thông tin khác</a></li>
+                    <li><a id="vbdi-tab3" href="#tabs-3">Nội dung văn bản</a></li>
+                    <li><a id="vbdi-tab4" href="#tabs-4">Bút phê lãnh đạo</a></li>
+                    <li><a id="vbdi-tab5" href="#tabs-5">Đơn vị nhận, theo dõi văn bản</a></li>
+                </ul>
+                @*<h3>Thông tin chính <span style="color: red;">*</span></h3>*@
+                <div id="tabs-1">
+                    <section>
+                        <div id="tab_thongtinchinh" style="height:470px; padding:10px 0;overflow-y:auto;overflow-x: hidden;">
+                            <table class="edit-table" style="width:95.5%">
+                                @*Hàng 1*@
+                                <tr>
+                                    <td style="width:150px;">
+                                        <label class="lbl">Nhóm sổ văn bản:<span style="color: red;">*</span></label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                                            @if (Model.ListNhomSoVanBan != null && Model.ListNhomSoVanBan.Count == 1)
+                                        {
+                                            @Html.DropDownList("NHOMSOVANBAN_ID", Model.ListNhomSoVanBan, new { @class = "create-phanloai", @style = "width: 100%" })
+                                        }
+                                        else
+                                        {
+                                            @Html.DropDownList("NHOMSOVANBAN_ID", Model.ListNhomSoVanBan, "[--- Chọn nhóm sổ văn bản ---]", new { @class = "create-phanloai", @style = "width: 100%" })
+                                        }
+                                        </div>
+                                    <td>
+                                        <label class="lbl">Sổ văn bản:<span style="color: red;">*</span></label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                                            <select name="SOVANBAN_ID" id="SOVANBAN_ID">
+                                                <option value=''>[--- Chọn sổ văn bản ---]</option>
+                                                @if (Model.ListSoVanBan != null && Model.ListSoVanBan.Count > 0)
+                                            {
+                                                foreach (var item in Model.ListSoVanBan)
+                                                {
+                                                <option data-sovb="@item.SOVBTHEOSO" value="@item.ID">@item.TENSO</option>
+                                                }
+                                            }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr style="height: 15px;">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="NHOMSOVANBAN_ID_NULL">Bạn hãy chọn nhóm sổ văn bản</span>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="SOVANBAN_ID_NULL">Bạn hãy chọn sổ văn bản</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 2*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Độ khẩn:</label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                                            @Html.DropDownList("DOKHAN_ID", Model.ListDoKhanVanBan, new { @class = "create-phanloai", @style = "width: 100%" })
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <label class="lbl">Mức độ quan trọng:</label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                                            @Html.DropDownList("MUCDOQUANTRONG_ID", Model.ListMucDoQuanTrongVanBan, new { @class = "create-phanloai", @style = "width: 100%" })
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 3*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Loại văn bản:<span style="color: red;">*</span></label>
+                                    </td>
+                                    <td colspan="4">
+                                        <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                                            <select name="LOAIVANBAN_ID" id="LOAIVANBAN_ID">
+                                                <option value=''>[--- Chọn loại văn bản ---]</option>
+                                                @if (Model.ListLoaiVanBan != null && Model.ListLoaiVanBan.Count > 0)
+                                            {
+                                                foreach (var item in Model.ListLoaiVanBan)
+                                                {
+                                                <option value="@item.ID" data-id="@item.KYHIEU">@item.TENLOAIVANBAN    --- (@item.KYHIEU)</option>
+                                                }
+                                            }
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="LOAIVANBAN_ID_NULL">Bạn hãy chọn loại văn bản</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 4*@
+                                <tr>
+                                    @*<td>
+                                            <label class="lbl">Số đi tổng hợp:<span style="color: red;">*</span></label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBox("SODITONGHOP", "", new { @style = "width:223px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "10" })
+                                        </td>*@
+                                    <td>
+                                        <label class="lbl">Số đi theo sổ:<span style="color: red;">*</span></label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("SODITHEOSO", "", new { @style = "width:223px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "10" })
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr style="height: 15px;">
+                                    @*<td></td>
+                                        <td>
+                                            <span class="lb-Check" id="SODITONGHOP_NULL">Bạn hãy nhập số đi tổng hợp</span>
+                                        </td>*@
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="SODITHEOSO_NULL">Bạn hãy nhập số đi theo sổ</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 5*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Số hiệu văn bản:<span style="color: red;">*</span></label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextBox("SOHIEU", "", new { @style = "width:223px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250" }) @*<a href="javascript:TaoSoHieu()" title="Click để tạo số hiệu văn bản tự động">Tạo số hiệu văn bản</a>*@
+                                        <span style="margin-left:10px; font-style:italic;"><b>Ghi chú: </b>Số hiệu văn bản được tạo ra từ 3 thông tin (Số văn bản theo sổ, loại văn bản và đơn vị ban hành)</span>
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="SOHIEU_NULL">Bạn hãy nhập số hiệu văn bản</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 6*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Ngày ký:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextBox("NGAYKY", "", new { @style = "width:223px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input datepicker", @maxlength = "10" }) (Ví dụ: 24/10/2010)
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="NGAYKY_FORMAT">Bạn hãy nhập đúng định dạng</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 7*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Người ký:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGUOIKYACCOUNT", "", new { @style = "width:150px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250", @disabled= "disabled" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONNGUOIKY">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaNguoiKy(1)">Xóa</a>
+                                        <input type="hidden" id="NGUOIKY" name="NGUOIKY" value="" />
+                                        @*<iframe id='NGUOIKYACCOUNT_iframe' frameborder='0' style='position:absolute;top:1px;left:1px;width:0px;height:0px;'></iframe>*@
+                                    </td>
+                                    <td>
+                                        <label class="lbl">Chức vụ:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("CHUCVU", "", new { @style = "width:223px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250", @disabled= "disabled" })
+                                    </td>
+                                    <td>
+                                        <input onclick="ThemNguoiKy()" class="css-checkbox" id="CHK_NHIEUNGUOIKY" value="True" name="CHK_NHIEUNGUOIKY" type="checkbox">
+                                        <label for="CHK_NHIEUNGUOIKY" class="css-label2">Hiển thị thêm người ký</label>
+                                    </td>
+                                </tr>
+                                @*Hàng 7 - 1*@
+                                <tr class="nhieunguoiky" style="height: 15px;"></tr>
+                                <tr class="nhieunguoiky">
+                                    <td>
+                                        <label class="lbl">Người ký 2:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGUOIKYACCOUNT2", "", new { @style = "width:150px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250", @disabled = "disabled" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONNGUOIKY2">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaNguoiKy(2)">Xóa</a>
+                                        <input type="hidden" id="NGUOIKY2" name="NGUOIKY2" value="" />
+                                    </td>
+                                    <td>
+                                        <label class="lbl">Chức vụ:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("CHUCVU2", "", new { @style = "width:223px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250", @disabled = "disabled" })
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                @*Hàng 7 - 2*@
+                                <tr class="nhieunguoiky" style="height: 15px;"></tr>
+                                <tr class="nhieunguoiky">
+                                    <td>
+                                        <label class="lbl">Người ký 3:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGUOIKYACCOUNT3", "", new { @style = "width:150px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250", @disabled = "disabled" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONNGUOIKY3">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaNguoiKy(3)">Xóa</a>
+                                        <input type="hidden" id="NGUOIKY3" name="NGUOIKY3" value="" />
+                                    </td>
+                                    <td>
+                                        <label class="lbl">Chức vụ:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("CHUCVU3", "", new { @style = "width:223px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250", @disabled = "disabled" })
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                @*Hàng 7 - 3*@
+                                <tr class="nhieunguoiky" style="height: 15px;"></tr>
+                                <tr class="nhieunguoiky">
+                                    <td>
+                                        <label class="lbl">Người ký 4:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGUOIKYACCOUNT4", "", new { @style = "width:150px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250", @disabled = "disabled" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONNGUOIKY4">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaNguoiKy(4)">Xóa</a>
+                                        <input type="hidden" id="NGUOIKY4" name="NGUOIKY4" value="" />
+                                    </td>
+                                    <td>
+                                        <label class="lbl">Chức vụ:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("CHUCVU4", "", new { @style = "width:223px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250", @disabled = "disabled" })
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                @*Hàng 7 -4*@
+                                <tr class="nhieunguoiky" style="height: 15px;"></tr>
+                                <tr class="nhieunguoiky">
+                                    <td>
+                                        <label class="lbl">Người ký 5:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGUOIKYACCOUNT5", "", new { @style = "width:150px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250", @disabled = "disabled" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONNGUOIKY5">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaNguoiKy(5)">Xóa</a>
+                                        <input type="hidden" id="NGUOIKY5" name="NGUOIKY5" value="" />
+                                    </td>
+                                    <td>
+                                        <label class="lbl">Chức vụ:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("CHUCVU5", "", new { @style = "width:223px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250", @disabled = "disabled" })
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 8*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Ngày ban hành:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGAYBANHANH", "", new { @style = "width:150px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input datepicker", @maxlength = "10" }) (Ví dụ: 24/11/2010)
+                                    </td>
+                                    <td>
+                                        <label class="lbl">Đơn vị ban hành:</label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                                            <select name="DONVIBANHANH_ID" id="DONVIBANHANH_ID">
+                                                <option value=''>- Chọn đơn vị ban hành -</option>
+                                                @if (Model.ListDonViBanHanh != null && Model.ListDonViBanHanh.Count > 0)
+                                            {
+                                                foreach (var item in Model.ListDonViBanHanh)
+                                                {
+                                                <option data-madv="@item.MADONVI" value="@item.ID">@item.TENDONVI</option>
+                                                }
+                                            }
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="NGAYBANHANH_FORMAT">Bạn hãy nhập đúng định dạng</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 9*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Trích yếu:<span style="color: red;">*</span></label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextArea("TRICHYEU", "", new { @style = "width:720px;height:40px; margin-left:10px;font-size:13px;", @placeholder = "", @class = "e-input", @maxlength = "500" })
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;">
+                                    <td></td>
+                                    <td colspan="4">
+                                        <span class="lb-Check" id="TRICHYEU_NULL">Bạn hãy nhập trích yếu của văn bản</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 10*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Tài liệu đính kèm:</label>
+                                    </td>
+                                    <td colspan="3">
+                                        <div style="margin-left:10px;">
+                                            @{Html.RenderPartial("../Common/UploadFile");}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 11*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Số bản sao:</label>
+                                    </td>
+                                    <td colspan="2">
+                                        @Html.TextBox("SOBANSAO", "", new { @style = "width:100px;height:20px; margin-left:10px;", @placeholder = "", @class = "e-input", @maxlength = "3" })
+                                        Số tờ:
+                                        @Html.TextBox("SOTO", "", new { @style = "width:100px;height:20px; margin-left:10px;", @placeholder = "", @class = "e-input", @maxlength = "3" })
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="SOBANSAO_FORMAT">Nhập định dạng số</span>
+                                        <span class="lb-Check" id="SOTO_FORMAT">Nhập định dạng số</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 12*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Ngày có hiệu lực:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGAYCOHIEULUC", string.Format("{0:dd/MM/yyyy}", DateTime.Now), new { @style = "width:150px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input datepicker", @maxlength = "10" })
+                                    </td>
+                                    <td>
+                                        <label class="lbl">Ngày hết hiệu lực:</label>
+                                    </td>
+                                    <td colspan="2">
+                                        @Html.TextBox("NGAYHETHIEULUC", "", new { @style = "width:150px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input datepicker", @maxlength = "10" }) (Ví dụ: 24/11/2020)
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="NGAYCOHIEULUC_FORMAT">Bạn hãy nhập đúng định dạng</span>
+                                    </td>
+                                    <td></td>
+                                    <td colspan="2">
+                                        <span class="lb-Check" id="NGAYHETHIEULUC_FORMAT">Bạn hãy nhập đúng định dạng</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 13*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Người soạn thảo:<span style="color: red;">*</span></label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGUOISOAN", Model.UserInfo.Username, new { @style = "width:150px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250", @disabled = "disabled" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONNGUOISOAN">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaNguoiSoan()">Xóa</a>
+                                        <input type="hidden" id="NGUOISOAN_ID" name="NGUOISOAN_ID" value="@Model.UserInfo.UserID" />
+                                    </td>
+                                    <td>
+                                        <label class="lbl">Đơn vị soạn thảo:<span style="color: red;">*</span></label>
+                                    </td>
+                                    <td colspan="2">
+                                        @*@Html.TextBox("DONVISOAN", "", new { @style = "width:250px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONDONVISOAN">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaDonViSoan()">Xóa</a>
+                                            <input type="hidden" id="DONVISOAN_ID" name="DONVISOAN_ID" value="" />*@
+                                        <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                                            @Html.DropDownList("DONVISOANTHAO_ID", Model.ListDonViTrongCoQuan, "- Chọn đơn vị soạn thảo -", new { @class = "create-phanloai", @style = "width: 100%" })
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="NGUOISOAN_NULL">Bạn hãy chọn người soạn văn bản</span>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="DONVISOAN_ID_NULL">Bạn hãy chọn đơn vị soạn văn bản</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                @*<h3>Thông tin khác</h3>*@
+                <div id="tabs-2">
+                    <section>
+                        <div id="tab_thongtinkhac" style="height:470px; padding:10px 0;overflow-y:auto;overflow-x: hidden;">
+                            <table class="edit-table" style="width:95.5%">
+                                @*Hàng 1*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Nhận văn bản:</label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                                            <select name="HINHTHUCTIEPNHAN" id="HINHTHUCTIEPNHAN">
+                                                <option value='1'>Để xử lý</option>
+                                                <option value='2'>Để biết</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <label class="lbl">Số trả lời:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("SOTRALOI", "", new { @style = "width:250px; margin-left:10px; height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250" })
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 2*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Lĩnh vực:</label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                                            @Html.DropDownList("LINHVUC_ID", Model.ListLinhVucVanBan, "[--- Chọn lĩnh vực ---]", new { @class = "create-phanloai", @style = "width: 100%" })
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 3*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Nơi lưu trữ:</label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                                            @Html.DropDownList("THUMUC_ID", Model.ListLinhVucVanBan, "[--- Chọn nơi lưu trữ ---]", new { @class = "create-phanloai", @style = "width: 100%" })
+                                        </div>
+                                    </td>
+                                    <td colspan="3">
+                                        @Html.TextBox("NOILUUTRU", "", new { @style = "width:365px;height:20px; margin-left:10px;", @placeholder = "Nơi lưu trữ khác", @class = "e-input", @maxlength = "500" })
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 4*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Thông tin liên quan công việc:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextArea("DIEUKHOANLIENQUANCONGVIEC", "", new { @style = "width:700px;height:40px; margin-left:10px;", @placeholder = "", @class = "e-input", @maxlength = "500" })
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 5*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Ghi chú:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextArea("GHICHU", "", new { @style = "width:700px;height:40px; margin-left:10px;", @placeholder = "", @class = "e-input", @maxlength = "500" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                @*<h3>Nội dung văn bản</h3>*@
+                <div id="tabs-3">
+                    <section>
+                        <div id="tab_noidungvanban"  style="height:470px; padding:10px 0;overflow-y:auto;overflow-x: hidden;">
+                            <table class="edit-table" style="width:95.5%">
+                                @*Hàng 1*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Nội dung văn bản:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextArea("NOIDUNGVANBAN", "", new { @style = "width:800px;height:300px; margin-left:10px;", @placeholder = "", @class = "e-input", @maxlength = "500" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                @*<h3>Bút phê lãnh đạo</h3>*@
+                <div id="tabs-4">
+                    <section>
+                        <div id="tab_butphelanhdao" style="height:470px; padding:10px 0;overflow-y:auto;overflow-x: hidden;">
+                            <table class="edit-table" style="width:95.5%">
+                                @*Hàng 1*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Lãnh đạo bút phê:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextBox("LANHDAOBUTPHE", "", new { @style = "width:150px;height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONLANHDAO">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaLanhDao()">Xóa</a>
+                                        <input type="hidden" id="LANHDAO_ID" name="LANHDAO_ID" value="" />
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 2*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Ý kiến chỉ đạo:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextArea("YKIENCHIDAO", "", new { @style = "width:600px;height:200px; margin-left:10px;", @placeholder = "", @class = "e-input", @maxlength = "500" })
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 3*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Tính chất:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        <input class="css-checkbox" id="CHK_IS_QUANTRONG" value="True" name="CHK_IS_QUANTRONG" type="checkbox">
+                                        <label for="CHK_IS_QUANTRONG" class="css-label2">Quan trọng</label>
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 4*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Thông báo:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        <input class="css-checkbox" id="CHK_HAS_THONGBAOVANTHU" value="True" name="CHK_HAS_THONGBAOVANTHU" type="checkbox">
+                                        <label for="CHK_HAS_THONGBAOVANTHU" class="css-label2">Gửi cho Văn thư</label>
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                @*<h3>Đơn vị nhận, theo dõi văn bản</h3>*@
+                <div id="tabs-5">
+                    <section>
+                        <div id="tab_donvinhan_theodoi_vb" style="height:470px; padding:10px 0;overflow-y:auto;overflow-x: hidden;">
+                            <table class="edit-table" style="width:95.5%">
+                                @*Hàng 1*@
+                                <tr>
+                                    <td width="200px">
+                                        <label class="lbl">Đơn vị theo dõi chính:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextBox("NGUOITHEODOICHINH", "", new { @style = "width:150px;height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONNGUOITHEODOICHINH">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaNguoiTheoDoiChinh()">Xóa</a>
+                                        <input type="hidden" id="NGUOITHEODOICHINH_ID" name="NGUOITHEODOICHINH_ID" value="" />
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 2*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Người theo dõi chính:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextBox("NGUOITHEODOICHINH", "", new { @style = "width:150px;height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONNGUOITHEODOICHINH">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaNguoiTheoDoiChinh()">Xóa</a>
+                                        <input type="hidden" id="NGUOITHEODOICHINH_ID" name="NGUOITHEODOICHINH_ID" value="" />
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 3*@
+                                <tr>
+                                    <td colspan="5">
+                                        <fieldset>
+                                            <legend>
+                                                VB nhận trong cơ quan
+                                            </legend>
+                                            <table class="edit-table" style="width:95.5%">
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Đơn vị:</label>
+                                                    </td>
+                                                    <td colspan="4">
+                                                        @Html.TextBox("DONVINHANVB", "", new { @style = "width:750px;height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONDONVINHAN">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaDonViNhan()">Xóa</a>
+                                                        <input type="hidden" id="DONVINHAN" name="DONVINHAN" value="" />
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Phòng ban:</label>
+                                                    </td>
+                                                    <td colspan="4">
+                                                        @Html.TextBox("PHONGBANNHANVB", "", new { @style = "width:750px;height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONPHONGBANNHAN">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaPhongBanNhan()">Xóa</a>
+                                                        <input type="hidden" id="PHONGBANNHAN" name="PHONGBANNHAN" value="" />
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Cá nhân:</label>
+                                                    </td>
+                                                    <td colspan="4">
+                                                        @Html.TextBox("CANHANNHANVB", "", new { @style = "width:750px;height:20px;", @placeholder = "", @class = "e-input", @maxlength = "250" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONCANHANNHAN">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaCaNhanNhan()">Xóa</a>
+                                                        <input type="hidden" id="CANHANNHAN" name="CANHANNHAN" value="" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
+                                @*Hàng 4*@
+                                <tr>
+                                    <td colspan="5">
+                                        <fieldset>
+                                            <legend>
+                                                VB nhận ngoài cơ quan
+                                            </legend>
+                                            <table class="edit-table" style="width:95.5%">
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Đơn vị nhận:</label>
+                                                    </td>
+                                                    <td colspan="4">
+                                                        @Html.TextBox("COQUANNGOAINHANVB", "", new { @style = "width:750px;height:20px;", @placeholder = "", @class = "e-input", @maxlength = "500" })<a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONCOQUANNGOAINHAN">Chọn</a>|<a style="margin-left:10px;" href="javascript:XoaCoQuanNgoaiNhan()">Xóa</a>
+                                                        <input type="hidden" id="COQUANNGOAINHAN" name="COQUANNGOAINHAN" value="" />
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 15px;"></tr>
+                                                <tr>
+                                                    <td>
+                                                        <label class="lbl">Đơn vị khác:</label>
+                                                    </td>
+                                                    <td colspan="4">
+                                                        @Html.TextArea("COQUANNGOAI_KHAC", "", new { @style = "width:750px;height:40px;", @placeholder = "", @class = "e-input", @maxlength = "500" })
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top:15px;">
+                <input type="button" value="Lưu văn bản" id="btnSave" style="background-color: #336699; height: 25px; border: none; width: 100px; color: white;" />
+                <input type="button" value="Hủy bỏ" onclick="OnClose()" style="background-color: #336699; height: 25px; border: none; width: 100px; color: white;" />
+            </div>
+                                                }
+    </div>
+</div>
+
+
+@*<script src="~/Scripts/common_custom.js"></script>
+    <script src="~/Scripts/autocomplete_custom.js"></script>*@
+<script type="text/javascript">
+    //var userarray = ["admin_cuc, Lãnh đạo", "namdv, Đặng Văn Nam", "duynt, Nguyễn Trọng Duy", "tulq, Lê Quang Tú"];
+    //var usernamearray = ["admin_cuc", "namdv", "duynt", "tulq"];
+    //$("#DONVIBANHANH_ID").multipleSelect({
+    //    single: false,
+    //    filter: true,
+    //});
+    $("#vb_di_tabs").tabs();
+    $(document).ready(function () {
+
+        //$("#NGUOIKYACCOUNT").keypress(function () {
+        //    autocompleteuser(document.getElementById('NGUOIKYACCOUNT'), userarray, usernamearray, null, null, document.getElementById('NGUOIKYACCOUNT_iframe'));
+        //});
+        
+        //$("#vb_di_tabs").steps({
+        //    headerTag: "h3",
+        //    bodyTag: "section",
+        //    transitionEffect: "slideLeft",
+        //    enableFinishButton: false,
+        //    enablePagination: true,
+        //    enableAllSteps: true,
+        //    titleTemplate: "#title#",
+        //    cssClass: "tabcontrol"
+        //});
+        $(".datepicker").datepicker({ dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true, yearRange: "-50:+20" });
+        tinymce.init({
+            selector: '#NOIDUNGVANBAN',
+            language: 'vi_VN',
+            width: '100%',
+            height: 330,
+            plugins: [
+                    "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+            toolbar2: "cut copy paste pastetext | bullist numlist | outdent indent | undo redo | link unlink code | forecolor backcolor",
+            toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | insertdatetime preview | print fullscreen | ltr rtl | pagebreak restoredraft",
+            menubar: false,
+            convert_urls: false,
+            paste_data_images: true,
+            toolbar_items_size: 'small'
+        });
+        tinymce.init({
+            selector: '#YKIENCHIDAO',
+            language: 'vi_VN',
+            width: '100%',
+            height: 200,
+            plugins: [
+                    "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+            toolbar2: "cut copy paste pastetext | bullist numlist | outdent indent | undo redo | link unlink code | forecolor backcolor",
+            toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | insertdatetime preview | print fullscreen | ltr rtl | pagebreak restoredraft",
+            menubar: false,
+            convert_urls: false,
+            paste_data_images: true,
+            toolbar_items_size: 'small'
+        });
+
+
+        $('#cssmenu li.active').addClass('open').children('ul').show();
+        $('#cssmenu li.has-sub>a').on('click', function () {
+            $(this).removeAttr('href');
+            var element = $(this).parent('li');
+            if (element.hasClass('open')) {
+                element.removeClass('open');
+                element.find('li').removeClass('open');
+                element.find('ul').slideUp(200);
+            }
+            else {
+                element.addClass('open');
+                element.children('ul').slideDown(200);
+                element.siblings('li').children('ul').slideUp(200);
+                element.siblings('li').removeClass('open');
+                element.siblings('li').find('li').removeClass('open');
+                element.siblings('li').find('ul').slideUp(200);
+            }
+        });
+        $("#NHOMSOVANBAN_ID").change(function () {
+            var id = $("#NHOMSOVANBAN_ID").val();
+            if (id.length > 0 && parseInt(id) > 0) {
+                $.ajax({
+                    url: "/VanBanDiArea/VanBanDi/GetListSoVanBanByNhomSo",
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (data) {
+                        $('#SOVANBAN_ID').html(data);
+                    },
+                    error: function (data) {
+                        $('#SOVANBAN_ID').html("<option value=''>[--- Chọn sổ văn bản ---]</option>");
+                    }
+                });
+                $("#NHOMSOVANBAN_ID_NULL").hide();
+            }
+            else {
+                $('#SOVANBAN_ID').html("<option value=''>[--- Chọn sổ văn bản ---]</option>");
+                $("#NHOMSOVANBAN_ID_NULL").show();
+            }
+
+        });
+        $("#SOVANBAN_ID").change(function () {
+            var item = $("#SOVANBAN_ID").val().trim().length;
+            if (item <= 0) {
+                $("#SOVANBAN_ID_NULL").show();
+            }
+            else {
+                $("#SOVANBAN_ID_NULL").hide();
+                var sovanban = $("#SOVANBAN_ID option:selected").attr("data-sovb");
+                $("#SODITHEOSO").val(parseInt(sovanban) + 1);
+            }
+            TaoSoHieu();
+        });
+        $("#LOAIVANBAN_ID").change(function () {
+            var item = $("#LOAIVANBAN_ID").val().trim().length;
+            if (item <= 0) {
+                $("#LOAIVANBAN_ID_NULL").show();
+            }
+            else {
+                $("#LOAIVANBAN_ID_NULL").hide();
+            }
+            TaoSoHieu();
+        });
+        //$("#SODITONGHOP").keyup(function () {
+        //    var item = $("#SODITONGHOP").val().trim().length;
+        //    if (item <= 0) {
+        //        $("#SODITONGHOP_NULL").show();
+        //    }
+        //    else { $("#SODITONGHOP_NULL").hide(); }
+        //});
+        $("#SODITHEOSO").keyup(function () {
+            var item = $("#SODITHEOSO").val().trim().length;
+            if (item <= 0) {
+                $("#SODITHEOSO_NULL").show();
+            }
+            else { $("#SODITHEOSO_NULL").hide(); }
+        });
+        //SOHIEU
+        $("#SOHIEU").keyup(function () {
+            var item = $("#SOHIEU").val().trim().length;
+            if (item <= 0) {
+                $("#SOHIEU_NULL").show();
+            }
+            else { $("#SOHIEU_NULL").hide(); }
+        });
+        //NGAYKY
+        $("#NGAYKY").focusout(function () {
+            if ($("#NGAYKY").val().trim().length > 0) {
+                if (checkDateTime($("#NGAYKY").val()) == false) {
+                    $("#NGAYKY_FORMAT").show();
+                } else {
+                    $("#NGAYKY_FORMAT").hide();
+                }
+            }
+        });
+
+        //NGAYBANHANH
+        $("#NGAYBANHANH").focusout(function () {
+            if ($("#NGAYBANHANH").val().trim().length > 0) {
+                if (checkDateTime($("#NGAYBANHANH").val()) == false) {
+                    $("#NGAYBANHANH_FORMAT").show();
+                } else {
+                    $("#NGAYBANHANH_FORMAT").hide();
+                }
+            }
+        });
+        //NGAYCOHIEULUC
+        $("#NGAYCOHIEULUC").focusout(function () {
+            if ($("#NGAYCOHIEULUC").val().trim().length > 0) {
+                if (checkDateTime($("#NGAYCOHIEULUC").val()) == false) {
+                    $("#NGAYCOHIEULUC_FORMAT").show();
+                } else {
+                    $("#NGAYCOHIEULUC_FORMAT").hide();
+                }
+            }
+        });
+        //NGAYHETHIEULUC
+        $("#NGAYHETHIEULUC").focusout(function () {
+            if ($("#NGAYHETHIEULUC").val().trim().length > 0) {
+                if (checkDateTime($("#NGAYHETHIEULUC").val()) == false) {
+                    $("#NGAYHETHIEULUC_FORMAT").show();
+                } else {
+                    $("#NGAYHETHIEULUC_FORMAT").hide();
+                }
+            }
+        });
+        //DONVIBANHANH
+        $("#DONVIBANHANH_ID").change(function () {
+            TaoSoHieu();
+        });
+        //TRICHYEU
+        $("#TRICHYEU").keyup(function () {
+            var item = $("#TRICHYEU").val().trim().length;
+            if (item <= 0) {
+                $("#TRICHYEU_NULL").show();
+            }
+            else { $("#TRICHYEU_NULL").hide(); }
+        });
+        $("#btnSave").click(function () {
+            //validate data
+            //NHOMSOVANBAN_ID
+            if (validate_element($("#NHOMSOVANBAN_ID"), $("#NHOMSOVANBAN_ID_NULL"), "", "", "0") == 0) {
+                SelectTab(1);
+                $("#NHOMSOVANBAN_ID").focus();
+                return false;
+            }
+            //SOVANBAN_ID
+            if (validate_element($("#SOVANBAN_ID"), $("#SOVANBAN_ID_NULL"), "", "", "0") == 0) {
+                SelectTab(1);
+                $("#SOVANBAN_ID").focus();
+                return false;
+            }
+            //LOAIVANBAN_ID
+            if (validate_element($("#LOAIVANBAN_ID"), $("#LOAIVANBAN_ID_NULL"), "", "", "0") == 0) {
+                SelectTab(1);
+                $("#LOAIVANBAN_ID").focus();
+                return false;
+            }
+            //SODITONGHOP
+            //if (validate_element($("#SODITONGHOP"), $("#SODITONGHOP_NULL"), "", "", "0") == 0) {
+            //    SelectTab(1);
+            //    $("#SODITONGHOP").focus();
+            //    return false;
+            //}
+            //SODITHEOSO
+            if (validate_element($("#SODITHEOSO"), $("#SODITHEOSO_NULL"), "", "", "0") == 0) {
+                SelectTab(1);
+                $("#SODITHEOSO").focus();
+                return false;
+            }
+            //SOHIEUVANBAN
+            if (validate_element($("#SOHIEU"), $("#SOHIEU_NULL"), "", "", "0") == 0) {
+                SelectTab(1);
+                $("#SOHIEU").focus();
+                return false;
+            }
+            //NGAYKY
+            if ($("#NGAYKY").val().trim().length > 0) {
+                if (checkDateTime($("#NGAYKY").val()) == false) {
+                    SelectTab(1);
+                    $("#NGAYKY_FORMAT").show();
+                    $("#NGAYKY").focus();
+                    return false;
+                }
+                else {
+                    $("#NGAYKY_FORMAT").hide();
+                }
+            }
+            //NGAYBANHANH
+            if ($("#NGAYBANHANH").val().trim().length > 0) {
+                if (checkDateTime($("#NGAYBANHANH").val()) == false) {
+                    SelectTab(1);
+                    $("#NGAYBANHANH_FORMAT").show();
+                    $("#NGAYBANHANH").focus();
+                    return false;
+                }
+                else {
+                    $("#NGAYBANHANH_FORMAT").hide();
+                }
+            }
+            //TRICHYEU
+            if (validate_element($("#TRICHYEU"), $("#TRICHYEU_NULL"), "", "", "0") == 0) {
+                SelectTab(1);
+                $("#TRICHYEU").focus();
+                return false;
+            }
+            //SOBANSAO
+            if ($("#SOBANSAO").val().trim().length > 0) {
+                if ($.isNumeric($("#SOBANSAO").val()) == false) {
+                    SelectTab(1);
+                    $("#SOBANSAO_FORMAT").show();
+                    $("#SOBANSAO").focus();
+                    return false;
+                }
+                else {
+                    $("#SOBANSAO_FORMAT").hide();
+                }
+            }
+            //SOTO
+            if ($("#SOTO").val().trim().length > 0) {
+                if ($.isNumeric($("#SOTO").val()) == false) {
+                    SelectTab(1);
+                    $("#SOTO_FORMAT").show();
+                    $("#SOTO").focus();
+                    return false;
+                }
+                else {
+                    $("#SOTO_FORMAT").hide();
+                }
+            }
+            //NGAYCOHIEULUC
+            if ($("#NGAYCOHIEULUC").val().trim().length > 0) {
+                if (checkDateTime($("#NGAYCOHIEULUC").val()) == false) {
+                    SelectTab(1);
+                    $("#NGAYCOHIEULUC_FORMAT").show();
+                    $("#NGAYCOHIEULUC").focus();
+                    return false;
+                }
+                else {
+                    $("#NGAYCOHIEULUC_FORMAT").hide();
+                }
+            }
+            //NGAYHETHIEULUC
+            if ($("#NGAYHETHIEULUC").val().trim().length > 0) {
+                if (checkDateTime($("#NGAYHETHIEULUC").val()) == false) {
+                    SelectTab(1);
+                    $("#NGAYHETHIEULUC_FORMAT").show();
+                    $("#NGAYHETHIEULUC").focus();
+                    return false;
+                }
+                else {
+                    $("#NGAYHETHIEULUC_FORMAT").hide();
+                }
+            }
+            //NGUOISOAN
+            if (validate_element($("#NGUOISOAN"), $("#NGUOISOAN_NULL"), "", "", "0") == 0) {
+                SelectTab(1);
+                return false;
+            }
+            //DONVISOAN
+            if (validate_element($("#DONVISOANTHAO_ID"), $("#DONVISOAN_ID_NULL"), "", "", "0") == 0) {
+                SelectTab(1);
+                $("#DONVISOANTHAO_ID").focus();
+                return false;
+            }
+            //submit form tao van ban di
+            $("#frmVanBanDiCreate").submit();
+        });
+    });
+    function SelectTab(tab_id) {
+        //var tab_current = $("li[aria-selected='true'] a").attr("id");
+        //var current_id = tab_current.split('-')[2];
+        //if (tab_id != current_id) {
+        //    $("#vb_di_tabs-t-" + tab_id).click();
+        //}
+        //vbdi-tab
+        $("#vbdi-tab" + tab_id).click();
+    }
+    function ThemNguoiKy() {
+        var is_show = $("input[id='CHK_NHIEUNGUOIKY']:checked").length;
+        if (is_show > 0) {
+            $(".nhieunguoiky").show("slow");
+        }
+        else {
+            $(".nhieunguoiky").hide();
+        }
+    }
+    function TaoSoHieu() {
+        //alert("Số hiệu văn bản được tạo ra từ 3 thông tin (Số văn bản, loại văn bản và đơn vị ban hành)!");
+        var so_vanban = $("#SODITHEOSO").val();
+        var loai_vanban = $("#LOAIVANBAN_ID option:selected").attr("data-id");
+        var donvi_banhanh = $("#DONVIBANHANH_ID option:selected").attr("data-madv");
+        var sohieu_vanban = "";
+        if (so_vanban !== undefined) {
+            sohieu_vanban += so_vanban + "/";
+        }
+        if (loai_vanban !== undefined) {
+            sohieu_vanban += loai_vanban + "-";
+        }
+        if (donvi_banhanh !== undefined) {
+            sohieu_vanban += donvi_banhanh;
+        }
+        $("#SOHIEU").val(sohieu_vanban);
+    }
+
+    function XoaNguoiKy(stt) {
+        var hasValue = false;
+        if (parseInt(stt) > 1) {
+            hasValue = $("#NGUOIKYACCOUNT" + stt).val().length > 0;
+        }
+        else {
+            hasValue = $("#NGUOIKYACCOUNT").val().length > 0;
+        }
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa người ký này?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            if (parseInt(stt) > 1) {
+                                $("#NGUOIKYACCOUNT" + stt).val("");
+                                $("#NGUOIKY" + stt).val("");
+                            }
+                            else {
+                                $("#NGUOIKYACCOUNT").val("");
+                                $("#NGUOIKY").val("");
+                            }
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+    function XoaNguoiSoan() {
+        var hasValue = $("#NGUOISOAN").val().length > 0;
+
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa người soạn này?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#NGUOISOAN").val("");
+                            $("#NGUOISOAN_ID").val("");
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+</script>
+@{
+    #region Tạo model Người ký văn bản
+    ChonNguoiDungModel nguoiky = new ChonNguoiDungModel();
+    nguoiky.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoiky.DONVI_ID = 0;
+    nguoiky.PHONGBAN_ID = 0;
+    nguoiky.TEXT_ID = "NGUOIKYACCOUNT";
+    nguoiky.VALUE_ID = "NGUOIKY";
+    nguoiky.ID_CLICK = "CHONNGUOIKY";
+    nguoiky.IS_MULTICHOICE = 0;
+    nguoiky.INDEX = 1;
+    nguoiky.TITLE = "Chọn người ký văn bản";
+    nguoiky.SHOW_CHUC_VU_ID = "CHUCVU";
+    //nguoiky.CALLBACK_FUNCTION = "";
+
+    ChonNguoiDungModel nguoiky_2 = new ChonNguoiDungModel();
+    nguoiky_2.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoiky_2.DONVI_ID = 0;
+    nguoiky_2.PHONGBAN_ID = 0;
+    nguoiky_2.TEXT_ID = "NGUOIKYACCOUNT2";
+    nguoiky_2.VALUE_ID = "NGUOIKY2";
+    nguoiky_2.ID_CLICK = "CHONNGUOIKY2";
+    nguoiky_2.IS_MULTICHOICE = 0;
+    nguoiky_2.INDEX = 2;
+    nguoiky_2.TITLE = "Chọn người ký văn bản";
+    nguoiky_2.SHOW_CHUC_VU_ID = "CHUCVU2";
+    //nguoiky_2.CALLBACK_FUNCTION = "";
+
+    ChonNguoiDungModel nguoiky_3 = new ChonNguoiDungModel();
+    nguoiky_3.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoiky_3.DONVI_ID = 0;
+    nguoiky_3.PHONGBAN_ID = 0;
+    nguoiky_3.TEXT_ID = "NGUOIKYACCOUNT3";
+    nguoiky_3.VALUE_ID = "NGUOIKY3";
+    nguoiky_3.ID_CLICK = "CHONNGUOIKY3";
+    nguoiky_3.IS_MULTICHOICE = 0;
+    nguoiky_3.INDEX = 3;
+    nguoiky_3.TITLE = "Chọn người ký văn bản";
+    nguoiky_3.SHOW_CHUC_VU_ID = "CHUCVU3";
+    //nguoiky_3.CALLBACK_FUNCTION = "";
+
+    ChonNguoiDungModel nguoiky_4 = new ChonNguoiDungModel();
+    nguoiky_4.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoiky_4.DONVI_ID = 0;
+    nguoiky_4.PHONGBAN_ID = 0;
+    nguoiky_4.TEXT_ID = "NGUOIKYACCOUNT4";
+    nguoiky_4.VALUE_ID = "NGUOIKY4";
+    nguoiky_4.ID_CLICK = "CHONNGUOIKY4";
+    nguoiky_4.IS_MULTICHOICE = 0;
+    nguoiky_4.INDEX = 4;
+    nguoiky_4.TITLE = "Chọn người ký văn bản";
+    nguoiky_4.SHOW_CHUC_VU_ID = "CHUCVU4";
+    //nguoiky_4.CALLBACK_FUNCTION = "";
+
+    ChonNguoiDungModel nguoiky_5 = new ChonNguoiDungModel();
+    nguoiky_5.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoiky_5.DONVI_ID = 0;
+    nguoiky_5.PHONGBAN_ID = 0;
+    nguoiky_5.TEXT_ID = "NGUOIKYACCOUNT5";
+    nguoiky_5.VALUE_ID = "NGUOIKY5";
+    nguoiky_5.ID_CLICK = "CHONNGUOIKY5";
+    nguoiky_5.IS_MULTICHOICE = 0;
+    nguoiky_5.INDEX = 5;
+    nguoiky_5.TITLE = "Chọn người ký văn bản";
+    nguoiky_5.SHOW_CHUC_VU_ID = "CHUCVU5";
+    //nguoiky_5.CALLBACK_FUNCTION = "";
+    #endregion
+}
+
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiky);}
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiky_2);}
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiky_3);}
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiky_4);}
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiky_5);}
+
+@{
+    ChonNguoiDungModel nguoisoan = new ChonNguoiDungModel();
+    nguoisoan.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoisoan.DONVI_ID = 0;
+    nguoisoan.PHONGBAN_ID = 0;
+    nguoisoan.TEXT_ID = "NGUOISOAN";
+    nguoisoan.VALUE_ID = "NGUOISOAN_ID";
+    nguoisoan.ID_CLICK = "CHONNGUOISOAN";
+    nguoisoan.IS_MULTICHOICE = 0;
+    nguoisoan.INDEX = 6;
+    nguoisoan.TITLE = "Chọn người soạn thảo văn bản";
+    //nguoisoan.CALLBACK_FUNCTION = "";
+}
+
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoisoan);}
+

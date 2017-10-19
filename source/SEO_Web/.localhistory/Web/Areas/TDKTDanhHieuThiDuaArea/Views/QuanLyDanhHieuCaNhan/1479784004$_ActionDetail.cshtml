@@ -1,0 +1,12 @@
+﻿@using Web.Areas.TDKTDanhHieuThiDuaArea.Models;
+@{
+    PermissionModel PermissionModel = (PermissionModel)SessionManager.GetValue("PermissionModel");
+}
+<div style="text-align: center; margin-top: 38px; margin-bottom: 20px;">
+    <a style="border: medium none; color: white; padding: 7px 20px; background-color: seagreen;" href="/TDKTDanhHieuThiDuaArea/QuanLyDanhHieuCaNhan">Quay lại </a>
+    @if (PermissionModel.HasRoleTaoMoiDanhHieuThiDuaCaNhan)
+    {
+        <a style="border: medium none; color: white; padding: 7px 20px; background-color: seagreen; margin-left:10px" href="/TDKTDanhHieuThiDuaArea/QuanLyDanhHieuCaNhan/Edit/@Model.DanhHieuCaNhan.ID">Sửa</a>
+        <a href='javascript:void(0)' onclick='DeleteDanhHieu(" + item.ID + ")' style="border: medium none; color: white; padding: 7px 20px; background-color: red; margin-left:10px" title='Xóa'>Xóa</a>
+    }
+</div>

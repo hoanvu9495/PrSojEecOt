@@ -1,0 +1,74 @@
+﻿@using Web.Common
+<style type="text/css">
+    .txt {
+        width: 250px;
+    }
+
+    .btn {
+        height: 30px;
+        background: #0099CC;
+        font-weight: bold;
+        color: white;
+        border: none;
+    }
+</style>
+
+<div class="panel">
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindChucVu", "DMChucVu", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearh" }))
+    {
+        <h3 class="group-tittle mt10" style="margin-bottom:30px">Tìm kiếm chức vụ</h3>
+        <table style="margin:0 auto">
+            <tr>
+                <td>
+                    <label class="lbl">Cấp cơ sở:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix width_233">
+                        @Html.DropDownList("CAPCOSO", (List<SelectListItem>)ViewData["CapCoSo"], "[--- Tất cả ---]", new { @class = "width_100", @id = "CAPCOSO" })
+                    </div>
+                </td>
+                <td style="width:50px"></td>
+                <td>
+                    <label class="lbl">Tên chức vụ:</label>
+                </td>
+                <td>
+                    @Html.TextBox("CHUCVU", "", new { @style = "width: 200px;", @class = "e-input" })
+                </td>
+            </tr>
+            <tr style="height:20px"></tr>
+            <tr>
+                <td colspan="5" style="text-align:center">
+                    <button type="button" onclick="Search()" id="btnSearch" class="btn btn-primary">Tìm kiếm</button>
+
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+<script type="text/javascript">
+    $("#CHUCVU").change(function () {
+        $("#Keyword").val($(this).val());
+    });
+    document.onkeydown = function () {
+        if (window.event.keyCode == '13') {
+            Search();
+        }
+    }
+    function Search() {
+        $("#frmSearh").submit();
+    }
+    $(document).ready(function () {
+        $("#CHUCVU").val("@ViewData["ChucVu"]");
+    });
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+        $("#CHUCVU").val("");
+    }
+</script>

@@ -1,0 +1,230 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using Model.eAita;
+@{
+    List<TmThongKeDanhMucBO> lstMoiQuanHe = new List<TmThongKeDanhMucBO>();
+    if (ViewData["Search"] == "0")
+    {
+        lstMoiQuanHe = (List<TmThongKeDanhMucBO>)SessionManager.GetValue("ListThongKe");
+    }
+    else
+    {
+        lstMoiQuanHe = (List<TmThongKeDanhMucBO>)SessionManager.GetValue("ListThongKeSearch");
+    }
+    var grid = new WebGrid(lstMoiQuanHe,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+}
+@Html.AntiForgeryToken()
+@if (lstMoiQuanHe.Count > 0)
+{
+    <div id="grid">
+        <div id="HeaderGrid">
+            <div style="margin:20px 0px 10px 10px;">
+                <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">@(lstMoiQuanHe == null ? "0" : lstMoiQuanHe.Count.ToString()) &nbsp; kết quả</label>
+                @if (lstMoiQuanHe.Where(x => x.TRANGTHAI == DanhMucThongTinTrangThai.VANPHONG).ToList().Count > 0)
+                {
+                    <div style="float:right;margin-bottom:10px">
+                        <button class="btn-success btn" type="button" onclick="TrinhCucTruong()">Tổng hợp danh mục thông tin</button>
+                    </div>
+                }
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 htmlAttributes: new { id = "checkableGrid" },
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                 grid.Column("TRANGTHAI", "{checkall}", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == DanhMucThongTinTrangThai.VANPHONG ? "<input onclick='CheckItem()' type='checkbox' value='" + item.ID + "' name='ids' />" : ""))),
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                   //grid.Column("TENNGUOIGUI", "Người tạo"),
+                     grid.Column("TENDONVI", "Đơn vị"),
+                      grid.Column("NAM", "Năm"),
+                     grid.Column("QUY", "Quý"),
+                 grid.Column("TIEUDE", "Tiêu đề", format: (item) => new MvcHtmlString(string.Format("<a href='" + Url.Action("ChiTietDanhMucThongTin/" + item.ID, "DanhMucThongTinCuaCuc") + "' title='Chi tiết danh mục thông tin tài liệu'>" + item.TIEUDE + "</a>"))),
+                    grid.Column("NGAYTAO", "Ngày gửi", format: (item) => item.NGAYTAO == null ? "" : string.Format("{0:dd-MM-yyyy}", item.NGAYTAO)),
+                   grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                     item.TRANGTHAI == DanhMucThongTinTrangThai.VANPHONG ? "<span style='color:red'>Chờ tổng hợp</span>" : item.TRANGTHAI == DanhMucThongTinTrangThai.CUCTRUONG ? "<span style='color:blue'>Đã trình Cục Trưởng</span>" : item.TRANGTHAI == DanhMucThongTinTrangThai.PHEDUYET ? "<span style='color:green'>Đã duyệt</span>" : item.TRANGTHAI == DanhMucThongTinTrangThai.DAXULY ? "Đã xử lý" : item.TRANGTHAI == DanhMucThongTinTrangThai.DUOCCHON ? "Được chọn" : "")), header: "Trạng thái")
+                    )
+    )
+    </div>
+}
+else
+{
+    <div id="grid">
+        <div id="Empty" style="color: red;">
+            Không tìm thấy dữ liệu phù hợp
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        $("#checkableGrid th").each(function () {
+            if ($.trim($(this).text().toString().toLowerCase()) === "{checkall}") {
+                $(this).text('');
+                $("<input/>", { type: "checkbox", id: "cbSelectAll", value: "" }).appendTo($(this));
+                $(this).append("");
+            }
+        });
+        $("#cbSelectAll").click(function () {
+            var ischecked = this.checked;
+            $('#checkableGrid').find("input:checkbox").each(function () {
+                this.checked = ischecked;
+            });
+        });
+        $("input[name='ids']").click(function () {
+            var totalRows = $("#checkableGrid td :checkbox").length;
+            var checked = $("#checkableGrid td :checkbox:checked").length;
+            if (checked == totalRows) {
+                $("#checkableGrid").find("input:checkbox").each(function () {
+                    this.checked = true;
+                });
+            }
+            else {
+                $("#cbSelectAll").removeAttr("checked");
+            }
+        });
+    });
+    function ShowCheckAll() {
+        $("#checkableGrid th").each(function () {
+            if ($.trim($(this).text().toString().toLowerCase()) === "{checkall}") {
+                $(this).text('');
+                $("<input />", { type: "checkbox", id: "cbSelectAll", value: "", onclick: "CheckAll(this)" }).appendTo($(this));
+                $(this).append("");
+            }
+        });
+    }
+    function CheckItem() {
+        var totalRows = $("#checkableGrid td :checkbox").length;
+        var checked = $("#checkableGrid td :checkbox:checked").length;
+        if (checked == totalRows) {
+            $("#checkableGrid").find("input:checkbox").each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+            $("#cbSelectAll").removeAttr("checked");
+        }
+    }
+    function CheckAll(obj) {
+        var ischecked = obj.checked;
+        $('#checkableGrid').find("input:checkbox").each(function () {
+            this.checked = ischecked;
+        });
+    }
+   
+    function TrinhCucTruong() {
+        var row1 = "";
+        var QUY = "";
+        var NAM = "";
+        var flag = false;
+        $('.webGrid').find('tr').each(function () {
+            var row = $(this);
+            if (row.find('input[type="checkbox"]').is(':checked')) {
+                if(QUY == "" && NAM == ""){
+                    QUY = row.find("td").eq(4).text();
+                    NAM = row.find("td").eq(3).text();
+                } else {
+                    if (QUY != row.find("td").eq(4).text() || NAM != row.find("td").eq(3).text()) {
+                        flag = true;
+                    }
+                }
+                row1 += row.find('input[type="checkbox"]').val() + ",";
+            }
+        });
+        if(flag){
+            $.confirm({
+                'title': 'Không thể tổng hợp danh mục thông tin, tài liệu',
+                'message': 'Các danh mục thông tin, tài liệu không cùng năm hoặc quý?',
+                'buttons': {
+                    'Đóng': {
+                        'class': 'btn-info',
+                        'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+            return false;
+        }
+        if (row1 != "") {
+            location.href = "/ThuMucLuuTruArea/DanhMucThongTinCuaCuc/TongHopDanhMuc?QUY=" + QUY + "&NAM=" + NAM;
+            @*$.confirm({
+                'title': 'Xác nhận trình Cục Trưởng',
+                'message': 'Bạn có chắc chắn muốn trình những danh mục thông tin,tài liệu này?',
+                'buttons': {
+                    'Xác nhận': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $.ajax({
+                                type: "GET",
+                                url: '@Url.Action("TrinhCucTruong", "DanhMucThongTinCuaCuc")',
+                                data: {
+                                    DANHMUC: row1
+                                },
+                                cache: false,
+                                dataType: "html",
+                                success: function (data) {
+                                    notif({
+                                        type: 'success',
+                                        position: 'bottom',
+                                        msg: data,
+                                    });
+                                    reloadGrid();
+                                }, error: function () {
+                                    notif({
+                                        type: 'success',
+                                        position: 'bottom',
+                                        msg: "Trình danh mục thông tin, tài liệu lên Cục trưởng thành công.",
+                                    });
+                                    reloadGrid();
+                                }
+                            });
+                        }
+                    },
+                    'Đóng': {
+                        'class': 'btn-info',
+                        'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });*@
+
+        } else {
+            $.confirm({
+                'title': 'Xác nhận trình',
+                'message': 'Không tìm thấy danh mục thông tin, tài liệu cần trình.',
+                'buttons': {
+                    'Đóng': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+</script>
+<style>
+    .webGrid td:nth-child(6) a {
+        text-align: left !important;
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 330px !important;
+        text-overflow: ellipsis;
+    }
+
+    .webGrid td:nth-child(6) {
+        text-align: left !important;
+    }
+
+    .webGrid th {
+        text-align: center !important;
+    }
+</style>

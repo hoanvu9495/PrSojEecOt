@@ -1,0 +1,151 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+</style>
+@using (Ajax.BeginForm("SaveLoaiTaiLieu", "TmLoaiTaiLieu", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmLoaiVanBanCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm mới thuộc tính cho tài liệu</h4>
+            </div>
+            <div class="modal-body">
+                <table style="width:80%">
+                    <tr>
+                        <td style="width:100px">
+                            <label class="lbl" for="CREATE_LOAIVANBAN" style=" width: 120px;">Loại tài liệu:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("LOAITAILIEU", "", new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "CREATE_LOAITAILIEU" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="LOAITAILIEU_ER" style="margin-left: 0px; color: red;">Loại tài liệu đã tồn tại.</span>
+                            <span class="lb-Check" id="LOAITAILIEU_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập loại tài liệu </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="CREATE_STATUS" style=" width: 120px;">Trạng Thái:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div style="float:left; width:50%">
+                                @Html.RadioButton("TRANGTHAI", "true", true,new { @id = "EDIT_ISACTIVE_HL", @class = "css-checkbox" })
+                                <label class="css-label" for="EDIT_ISACTIVE_HL">Được sử dụng</label>
+                            </div>
+                            <div style="float:left; width:50%">
+                                @Html.RadioButton("TRANGTHAI", "false", new { @id = "EDIT_ISACTIVE_KHL", @class = "css-checkbox" })
+                                <label class="css-label" for="EDIT_ISACTIVE_KHL">Không được sử dụng</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td></td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnSave">Thêm mới</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+    @*<div style="margin-top: 15px; text-align:center;">
+        <input type="submit" value="Lưu" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+        <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+    </div>*@
+}
+<script type="text/javascript">
+    $(function () {
+        var isExisted = true;
+        $("#CREATE_LOAITAILIEU").blur(function () {
+            if ($("#CREATE_LOAITAILIEU").val().trim().length == 0) {
+                //$("#LOAITAILIEU_NULL").show();
+            } else {
+                $("#LOAITAILIEU_NULL").hide();
+            }
+        });
+
+        $("#CREATE_LOAIVANBAN").focusout(function () {
+
+        });
+        $("#btnSave").click(function () {
+            if ($("#CREATE_LOAITAILIEU").val().trim().length == 0) {
+                $("#CREATE_LOAITAILIEU").focus();
+                $("#LOAITAILIEU_NULL").show();
+                $("#LOAITAILIEU_ER").hide();
+                return false;
+            } else {
+                $("#LOAIVANBAN_NULL").hide();
+            }
+            var tenloaivanban = $("#CREATE_LOAITAILIEU").val();
+            if (tenloaivanban.trim().length > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("validateLoaiTaiLieu", "TmLoaiTaiLieu")',
+                    data: {
+                        TAILIEU: tenloaivanban
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        if (data == "True") {
+                            $("#CREATE_LOAITAILIEU").focus();
+                            $("#LOAITAILIEU_ER").show();
+                            $("#LOAITAILIEU_NULL").hide();
+                            return false;
+                        } else {
+                            $("#frmLoaiVanBanCreate").submit();
+                            return true;
+                        }
+                    }, error: function () {
+                        alert("Có lỗi xảy ra.");
+                    }
+                });
+            }
+
+            //$("#frmLoaiVanBanCreate").submit();
+            return false;
+        });
+    });
+    function OnClose() {
+        $("#CreateLoaiVanBan").dialog("close");
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function CreateSuccess() {
+
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Tạo mới loại tài liệu thành công!',
+        });
+        $("#CreateLoaiVanBan").modal("hide");
+        reloadGrid();
+    }
+</script>

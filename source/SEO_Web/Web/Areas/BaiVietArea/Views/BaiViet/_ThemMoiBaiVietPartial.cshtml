@@ -1,0 +1,99 @@
+﻿@using Web.FwCore;
+@model List<SelectListItem>
+
+<style>
+    .control-label{
+        font-size:small;
+        font-weight:bold;
+        margin-left:15px;
+    }
+</style>
+@using (Ajax.BeginForm("Insert", "BaiViet", new { @area = "BaiVietArea" }, new AjaxOptions()
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "ThemMoi_BaiViet_failure",
+    OnSuccess = "ThemMoi_BaiViet_Success"
+
+}, new { id = "form_themmoi_BaiViet" }))
+{
+
+    @Html.AntiForgeryToken();
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Thêm mới bài viết <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row form">
+            <div class="form-group">
+                <label class=" control-label">Tiêu đề<span class="red">(*)</span></label>
+                <div class="col-md-12">
+                    <input class="form-control required" type="text" name="TIEUDEBaiViet" />
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class=" control-label">Nội dung<span class="red">(*)</span></label>
+                <div class="col-md-12">
+                    <textarea class="form-control requiredTextArea" rows="3" type="text" id="NOIDUNGBaiViet" name="NOIDUNGBaiViet"></textarea>
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="center">
+            <button class="btn btn-primary btn-sm" id="btn-themmoi-BaiViet">Thêm mới</button>
+        </div>
+    </div>
+
+}
+
+<script>
+   
+
+    $("#btn-themmoi-BaiViet").click(function () {
+        $("#NOIDUNGBaiViet").html(CKEDITOR.instances['NOIDUNGBaiViet'].getData());
+        var err = 0;
+        err += requiredFieldForFormId("form_themmoi_BaiViet") ? 0 : 1;
+        err += checkRequireTextArea("form_themmoi_BaiViet") ? 0 : 1;
+        if (err) {
+            
+
+            NotiError("Vui lòng kiểm tra thông tin nhập<br/> Các trường (*) là bắt buộc");
+        } else {
+            $("#form_themmoi_BaiViet").submit();
+        }
+        console.log(err);
+
+        return false;
+    })
+
+    function ThemMoi_BaiViet_failure() {
+        NotiError("Không thực hiện được thao tác");
+    }
+
+    function ThemMoi_BaiViet_Success(rs) {
+        if (rs.Status) {
+            NotiSuccess("Thêm mới bài viết thành công.");
+            CloseThemMoiModal();
+            reloadData();
+        } else {
+            NotiError("Thêm mới thất bại<br/>" + rs.Message);
+        }
+    }
+    function PagefunctionCreate() {
+        CKEDITOR.replace('NOIDUNGBaiViet');
+
+    }
+    $(document).ready(function () {
+        loadScript("/js/plugin/ckeditor/ckeditor.js", PagefunctionCreate);
+    });
+  
+</script>

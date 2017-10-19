@@ -1,0 +1,28 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.TaiLieuChuaSoHoaModel
+    @Html.DropDownList("KE_ID", Model.lstToaNha, "[---Lựa chọn kệ---]", new { @style = "", @id = "KE_ID" })
+    <script>
+        $(function () {
+            $("#KE_ID").change(function () {
+
+                if ($("#KE_ID").val() != "") {
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("LoadHangByKe", "TaiLieuChuaSoHoa")',
+                        data: {
+                            KE: $("#KE_ID").val()
+                        },
+                        cache: false,
+                        dataType: "html",
+                        success: function (data) {
+                            $("#HANGLUUTRU").html(data);
+                        },
+                        error: function (xrt) {
+                            alert(xrt.responseText);
+                        }
+                    });
+                } else {
+                    $("#HANGLUUTRU").html("");
+                }
+            });
+        });
+    </script>

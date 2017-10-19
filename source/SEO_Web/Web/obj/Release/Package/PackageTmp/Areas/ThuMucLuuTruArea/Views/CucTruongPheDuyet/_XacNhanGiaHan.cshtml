@@ -1,0 +1,150 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.GiaHanTaiLieuModel
+@using Web.Areas.ThuMucLuuTruArea.Models;
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Phê duyệt / Không gia hạn thư mục</h4>
+        </div>
+        <div class="modal-body" style="height:450px;overflow:auto">
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <h3 class="group-tittle mt10" style="margin-bottom:30px">Chi tiết thư mục xin gia hạn</h3>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Tên thư mục:</td>
+                    <td>
+                        @Model.GiaHan.TENTHUMUC
+                        <input type="hidden" id="ID_HIDDEN" value="@Model.GiaHan.ID" />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Hạn cũ:</td>
+                    <td>
+                        @String.Format("{0:dd/M/yyyy}", Model.GiaHan.HANCU)
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Hạn mới:</td>
+                    <td>
+                        @String.Format("{0:dd/M/yyyy}", Model.GiaHan.NGAYGIAHAN)
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Ghi chú:</td>
+                    <td>@Model.GiaHan.GHICHU</td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Trạng thái hiện tại:</td>
+                    <td>
+                        @switch (Model.GiaHan.TRANGTHAI)
+                        {
+                            case GiaHanTaiLieuModel.KHONGDUYET:
+                                <span style="color:green">Trả về</span>
+                                break;
+                            case GiaHanTaiLieuModel.DUYET:
+                            <span style="color:#ff6a00">Đã duyệt</span>
+                                break;
+                            case GiaHanTaiLieuModel.GIAHAN:
+                            <span style="color:#ff0000">Chờ duyệt</span>
+                                break;
+                        }
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td>Ghi chú của bạn:</td>
+                    <td>@Html.TextArea("GHICHU", new { @style = "width:345px;height:60px", maxlenght = "500", @class = "e-input", @id = "GHICHU" })</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h3 class="group-tittle mt10" style="margin-bottom:30px">Lịch sử xin gia hạn tài liệu</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">@Html.Partial("_LichSuGiaHanTaiLieu")</td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            @if (Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.GIAHAN)
+            {
+                <input type="button" id="PheDuyetGiaHan" value="Phê duyệt" class="btn btn-success">
+                <input type="button" id="HuyGiaHan" value="Trả về" class="btn btn-danger">
+            }
+            <input type="button" value="Đóng" data-dismiss="modal" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#PheDuyetGiaHan").click(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ModifyGiaHanThuMuc", "CucTruongPheDuyet")',
+                data: {
+                    ID: $("#ID_HIDDEN").val(),
+                    GHICHU: $("#GHICHU").val(),
+                    TRANGTHAI: "pheduyet"
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: "Phê duyệt gia hạn thành công",
+                    });
+                    $("#GiaHanThuMuc").modal('hide');
+                    ReloadData();
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+        $("#HuyGiaHan").click(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ModifyGiaHanThuMuc", "CucTruongPheDuyet")',
+                data: {
+                    ID: $("#ID_HIDDEN").val(),
+                    GHICHU: $("#GHICHU").val(),
+                    TRANGTHAI: "huygiahan"
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: "Từ chối gia hạn thành công",
+                    });
+                    $("#GiaHanThuMuc").modal('hide');
+                    ReloadData();
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,433 @@
+﻿@using Web.Models
+@model LuaChonThuMucModel
+@using Model.eAita;
+@helper TreeView2(List<THUMUC_LUUTRU> siteMenu, long parent)
+{
+    var lstChild = siteMenu.Where(x => x.PARENT_ID == parent);
+    <ul class="tree_ul thumuc" style="display:none">
+        @foreach (var item in lstChild)
+        {
+        <li class="tree_li" style="display:block">
+            <div class="tree_div">
+                @if (Model.ListThuMuc.Where(x => x.PARENT_ID == item.ID).ToList().Count > 0)
+                    {
+                    <img alt="" class="pop_expand" src="/Content/Images/minus.png" style="display: none;">
+                    <img alt="" class="pop_collapse" src="/Content/Images/Plus.png" style="display: inline;">
+                    }
+                    else
+                    {
+                    <img alt="" class="pop_expand" src="/Content/Images/minus.png" style="display: inline; pointer-events: none; cursor: default">
+                    <img alt="" class="pop_collapse" src="/Content/Images/Plus.png" style="display: none; pointer-events: none; cursor: default">
+                    }
+            </div>
+            <div class="tree_div">
+            </div>
+            <div class="tree_div root_tree" data-id="@item.ID" data-nam="@item.NAM">
+                <a href="javascript:void(0)" class="parent_check_box_0">
+                    <label>@item.TENTHUMUC</label>
+                </a>
+            </div>
+            @if (Model.ListThuMuc.Where(x => x.PARENT_ID == item.ID).ToList().Count > 0)
+                {
+                @TreeView2(Model.ListThuMuc, item.ID)
+                }
+        </li>
+        }
+    </ul>
+}
+@helper GetTreeView(List<THUMUC_LUUTRU> siteMenu, long parentID)
+{
+    List<THUMUC_LUUTRU> lstChild = siteMenu.Where(x => x.PARENT_ID == parentID).ToList();
+    <ul class="tree_ul thumuc">
+        @foreach (var item in lstChild)
+        {
+            <li class="tree_li">
+                <div class="tree_div">
+                    @if (Model.ListThuMuc.Where(x => x.PARENT_ID == item.ID).ToList().Count > 0)
+                    {
+                        <img alt="" class="pop_expand" src="/Content/Images/minus.png" style="display: none;">
+                        <img alt="" class="pop_collapse" src="/Content/Images/Plus.png" style="display: inline;">
+                    }
+                    else
+                    {
+                        <img alt="" class="pop_expand" src="/Content/Images/minus.png" style="display: inline;pointer-events:none;cursor:default">
+                        <img alt="" class="pop_collapse" src="/Content/Images/Plus.png" style="display: none; pointer-events: none; cursor: default">
+                    }
+                </div>
+                <div class="tree_div">
+                </div>
+                <div class="tree_div root_tree" data-id="@item.ID" data-nam="@item.NAM">
+                    <a href="javascript:void(0)" class="parent_check_box_0">
+                        <label>@item.TENTHUMUC</label>
+                    </a>
+                </div>
+                @if (Model.ListThuMuc.Where(x => x.PARENT_ID == item.ID).ToList().Count > 0)
+                {
+                    @TreeView2(Model.ListThuMuc, item.ID)
+                }
+            </li>
+        }
+    </ul>
+}
+@helper GetTreeYear(List<THUMUC_LUUTRU> siteMenu, long parentID)
+{
+    List<THUMUC_LUUTRU> lstChild = siteMenu.Where(x => x.PARENT_ID == parentID).ToList();
+    var lstYear = lstChild.Select(x => x.NAM).ToList();
+    lstYear = lstYear.OrderBy(x => x.Value).ToList();
+    lstYear = lstYear.GroupBy(x => x).Select(y => y.First()).ToList();
+    foreach (var item in lstYear)
+    {
+        <ul>
+            <li class="tree_li">
+                <div class="tree_div">
+                    @if (Model.ListThuMuc.Where(x => x.NAM == item && x.PARENT_ID == parentID).ToList().Count > 0)
+                    {
+                        <img alt="" class="pop_expand" src="/Content/Images/minus.png" style="display: inline;">
+                        <img alt="" class="pop_collapse" src="/Content/Images/Plus.png" style="display:none;">
+                    }
+                    else
+                    {
+                        <img alt="" class="pop_expand" src="/Content/Images/minus.png" style="display: inline;pointer-events:none;cursor:default">
+                        <img alt="" class="pop_collapse" src="/Content/Images/Plus.png" style="display: none; pointer-events: none; cursor: default">
+                    }
+                </div>
+                <div class="tree_div">
+                </div>
+                <div class="tree_div root_tree" data-id="0" data-nam="@item">
+                    <a href="javascript:void(0)" class="parent_check_box_0">
+                        <label>@item</label>
+                    </a>
+                </div>
+                @if (Model.ListThuMuc.Where(x => x.NAM == item && x.PARENT_ID == parentID).ToList().Count > 0)
+                {
+                    @GetTreeView(Model.ListThuMuc.Where(x => x.NAM == item && x.PARENT_ID == parentID).ToList(), 0)
+                }
+            </li>
+        </ul>
+    }
+}
+<div class="wfm" style="float:left;width:92%" id="FOLDER_RESULT">
+    @GetTreeYear(Model.ListThuMuc, 0)
+</div>
+<div style="float:left;width:8%" id="abcc">
+    <ul>
+        <li><img src="/Content/themes/base/images/TM_Share_Plus.png" id="btnAddMore" title="Thêm mới thư mục" /></li>
+    </ul>
+</div>
+<div id="including">Đang thêm mới thư mục....</div>
+<style>
+    #loading, #including {
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        background: #000 url('/Content/Images/loadajax.gif') no-repeat 50% 4px;
+        bottom: 50%;
+        color: #fff;
+        text-align: center;
+        line-height: 166px;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0.7;
+        border-radius: 5px;
+        filter: alpha(opacity=70);
+        font-size: 12px;
+        text-shadow: none;
+        display: none;
+    }
+
+    li {
+        list-style-type: none !important;
+        float: left;
+    }
+
+    img:hover {
+        cursor: pointer;
+    }
+
+    .Path, .FolderName {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 233px !important;
+        text-overflow: ellipsis;
+    }
+
+    .expand-icon, li {
+        cursor: pointer !important;
+    }
+
+    label {
+        cursor: pointer;
+    }
+
+    .first_folder {
+        float: left;
+        width: 92%;
+    }
+</style>
+<script type="text/javascript" language="javascript">
+    //$(document).ready(function () {
+        
+    //});
+
+    $('#openBtn').click(function () {
+        $('#myModal').modal({
+            show: true
+        });
+    });
+    $(document).on('show.bs.modal', '.modal', function (event) {
+        var zIndex = 1040 + (10 * $('.modal:visible').length);
+        $(this).css('z-index', zIndex);
+        setTimeout(function () {
+            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+        }, 0);
+    });
+
+    $(".pop_expand").click(function () {
+        $(this).toggle();
+        $(this).next().toggle();
+        $(this).parent().parent().children().last().toggle();
+        $(this).next().show();
+    });
+    $(".pop_collapse").click(function () {
+        $(this).toggle();
+        $(this).prev().toggle();
+        $(this).parent().parent().children().last().toggle();
+    });
+    $(".label_item_0").click(function () {
+        if ($(this).parent().parent().find(".active_input").prop("checked") == false) {
+            $(this).parent().parent().find(".active_input").prop("checked", true);
+        } else {
+            $(this).parent().parent().find(".active_input").prop("checked", false);
+        }
+    });
+    //$(function () {
+        
+    //});
+
+    function GetPathUrl(pid, flag) {
+        $.ajax({
+            url: '@Url.Action("GetURLBar", "Common")',
+            type: 'GET',
+            data: {
+                pID: pid
+            },
+            dataType: "json",
+            success: function (d) {
+                var path = "";
+                var $ul = $("<ul id='Path' ></ul>");
+                if (d.length > 1) {
+                    for (var i = d.length - 1; i >= 0; i--) {
+                        path += d[i].TENTHUMUC + "<i class=\"fa fa-chevron-right\"></i>";
+                    }
+                } else if (d[0] != null) {
+                    path = d[0].TENTHUMUC;
+                } else {
+                    path = "";
+                }
+                if (FOLDER_ID > 0) {
+                    if (flag == 0) {
+                        $("#DUONGDAN").html(path);
+                    } else {
+                        $("#FolderName_@Model.ID").html(path);
+                        $("#FolderName_@Model.ID").show(500);
+                    }
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    var FOLDER_ID = 0;
+    var NAM = '@DateTime.Now.Year';
+    $("#btnCreateThuMuc").click(function () {
+        $("#PARENT_ID").val(FOLDER_ID);
+        GetPathUrl(FOLDER_ID, 0);
+    });
+    $("#btnAddMore").on('click', function () {
+        if ($("ul").hasClass("thumuc")) {
+            $(".root_tree").each(function () {//data-loaded
+                if ($(this).attr("data-id") == FOLDER_ID) {
+                    $(this).closest("li").append(CreateFolder(FOLDER_ID));
+                    return false;
+                }
+            });
+        } else {
+            //$(this).closest("div").append(CreateFolder(FOLDER_ID));
+            $("#FOLDER_RESULT").append(CreateFolder(FOLDER_ID));
+            $(this).closest("div").find(".tree_first_folder").addClass("first_folder");
+        }
+        $("#TENTHUMUC_" + FOLDER_ID).focus();
+    });
+    $(document).on('focusout', '.TENTHUMUC', function () {
+        // NAM = $(this).attr("");
+        var ID = $(this).attr("data-id");
+        var flag = true;
+        var text = $(this).val();
+        var NEW_ID = 0;
+        var this1 = $(this);
+        if (text.trim().length > 0) {
+            if (/[\\/:?*"<>|]/i.test($(this).val().trim())) {
+                $("#TENTHUMUC_" + ID).focus();
+                $("#THUMUC_INVALID").show();
+                flag = false;
+                return false;
+            } else {
+                $("#THUMUC_INVALID").hide();
+                flag = true;
+            }
+            if (/<[a-z][\s\S]*>/i.test($(this).val())) {
+                $("#TENTHUMUC_" + ID).focus();
+                $("#THUMUC_HTML").show();
+                flag = false;
+                return false;
+            } else {
+                $("#THUMUC_HTML").hide();
+                flag = true;
+            }
+            if (!FolderChecking($(this).val(), ID)) {
+                $("#THUMUC_ERROR").show();
+                $("#TENTHUMUC_" + ID).focus();
+                flag = false;
+                return false;
+            } else {
+                $("#THUMUC_ERROR").hide();
+                flag = true;
+            }
+            if (flag) {
+                $("#including").show();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SaveThuMuc", "Common")',
+                    data: {
+                        TENTHUMUC: text,
+                        PARENT_ID: ID,
+                        NAM: NAM
+                    },
+                    cache: false,
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data.Type == "SUCCESS") {
+                            notif({
+                                type: 'success',
+                                position: 'bottom',
+                                msg: 'Đã thêm mới thư mục thành công!',
+                            });
+                            NEW_ID = data.ID;
+                            $(this1).closest("div").attr("data-id", data.ID);
+                            $(this1).closest("div").attr("data-nam", NAM);
+                            $("#including").hide();
+                        } else {
+                            notif({
+                                type: 'error',
+                                position: 'bottom',
+                                msg: 'Không thể thêm mới thư mục!',
+                            });
+                            $(this1).closest("ul").remove();
+                        }
+                    }, error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+                $(this).hide();
+                $(this).attr("data-id", 0);
+                $(this).closest("div").addClass("root_tree");
+                $(this).closest("label").find("span").attr("id", "");
+                $(this).closest("div").attr("id", "");
+                $(this).closest("label").html(text);
+                $(this).remove();
+            }
+        } else {
+            $(this).closest("ul").remove();
+        }
+    });
+
+    $('.root_tree').on('click', function () {
+        $("label").css({ 'color': '' });
+        $(this).find('label').css("color", "red");
+        FOLDER_ID = $(this).attr("data-id");
+        NAM = $(this).attr("data-nam");
+    });
+    $("#btnAccept").on('click', function () {
+        if ($(this).attr("data-id") == '@Model.ID') {
+            if (FOLDER_ID > 0) {
+                $("#FOLDER_ID_@Model.ID").val(FOLDER_ID);
+                GetPathUrl(FOLDER_ID, 1);
+            }
+            $("#ChooFolder").modal("hide");
+        }
+        $("#ChooFolder").modal("hide");
+    });
+    $("#btnSaveFolder").click(function () {
+        if (($("#CREATE_NAM").val().trim() == null || $("#CREATE_NAM").val().trim() == "")) {
+            $("#NAM_NULL").show();
+            $("#CREATE_NAM").focus();
+            return false;
+        } else {
+            $("#NAM_NULL").hide();
+        }
+        if (($("#CREATE_NAME").val().trim() == null || $("#CREATE_NAME").val().trim() == "")) {
+            $("#CREATE_NAME").focus();
+            $("#TENTHUMUC_NULL").show();
+            return false;
+        } else {
+            $("#TENTHUMUC_NULL").hide();
+        }
+        if (/<[a-z][\s\S]*>/i.test($("#CREATE_NAME").val())) {
+            $("#CREATE_NAME").focus();
+            $("#TENTHUMUC_ERROR").show();
+            return false;
+        } else {
+            $("#TENTHUMUC_ERROR").hide();
+        }
+        if (/[\\/:?*"<>|]/i.test($("#CREATE_NAME").val().trim())) {
+            $("#CREATE_NAME").focus();
+            $("#TENTHUMUC_INVALID").show();
+            return false;
+        } else {
+            $("#TENTHUMUC_INVALID").hide();
+        }
+        if (/<[a-z][\s\S]*>/i.test($("#CREATE_NAME").val())) {
+            $("#CREATE_NAME").focus();
+            $("#TENTHUMUC_ERROR").show();
+            return false;
+        } else {
+            $("#TENTHUMUC_ERROR").hide();
+        }
+        if (!FolderChecking($("#CREATE_NAME").val(), FOLDER_ID)) {
+            $("#TENTHUMUC_ER").show();
+            $("#CREATE_NAME").focus();
+            return false;
+        } else {
+            $("#TENTHUMUC_ER").hide();
+        }
+        $("#frmCreateThuMuc").submit();
+        return true;
+    });
+    function FolderChecking(thumuc, parent) {
+        var exist = false;
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("FolderChecking", "Common")',
+            data: {
+                name: thumuc,
+                parentID: parent
+            },
+            cache: false,
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data == "true") {
+                    exist = false;
+                } else {
+                    exist = true;
+                }
+            }, error: function (xrt) {
+
+            }
+        });
+        return exist;
+    }
+</script>

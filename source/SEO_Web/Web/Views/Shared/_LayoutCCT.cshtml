@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- #CSS Links -->
+    <!-- Basic Styles -->
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/font-awesome.min.css">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/smartadmin-production-plugins.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/smartadmin-production.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/smartadmin-skins.min.css">
+    <link href="~/css/your_style.css" rel="stylesheet" />
+
+    <link href="~/Content/Common.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/jquery.confirm.css" rel="stylesheet" />
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" href="/img/favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/img/favicon/favicon.ico" type="image/x-icon">
+    <!-- #GOOGLE FONT -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+    @*<link href="~/Content/ChiCucThue/StyleLayout.css" rel="stylesheet" />*@
+    <script src="~/js/libs/jquery-2.1.1.min.js"></script>
+    <script src="/js/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Content/Custom/js/jquery.confirm.js"></script>
+    <script src="~/Scripts/validateProvider.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/Content/Custom/Common.js"></script>
+    
+    <script src="/js/app.min.js"></script>
+</head>
+@using Web.FwCore;
+@using Business.Business;
+@using Business.CommonBusiness;
+@using System.Web.Script.Serialization;
+@using Web.FwCore;
+@using Model.DBTool;
+@using StackExchange.Profiling;
+@using Web.Common;
+@{
+    UserInfoBO user = ((UserInfoBO)SessionManager.GetUserInfo());
+    var leftPanel = "0px";
+    var mainStyle = "0px";
+    var LstChucNang = user.ListCN;
+    var LstThaoTac = user.ListThaoTac;
+}
+<body>
+    <header id="header">
+        <input type="hidden" id="globalCoSoID" value="2">
+        <input type="hidden" id="globalUserName" value="@user.Username" />
+        <input type="hidden" id="globalFullName" value="@user.Fullname" />
+        <div id="logo-group">
+            <!-- PLACE YOUR LOGO HERE -->
+            <span id="logo">
+                <a href="/#reportvanbanarea/reportvanban/ThongKeVBDiDen">
+                    <img src="/img/logo.png" alt="SmartAdmin">
+                </a>
+            </span>
+            <!-- END LOGO PLACEHOLDER -->
+        </div>
+
+        <!-- #PROJECTS: projects dropdown -->
+        <!-- end projects dropdown -->
+        <!-- #TOGGLE LAYOUT BUTTONS -->
+        <!-- pulled right: nav area -->
+        <div class="pull-right">
+            <!-- Note: The activity badge color changes when clicked and resets the number to 0
+                     Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
+            <span id="activity" class="activity-dropdown">
+                <i class="fa fa-bell" style="color: red"></i>
+                <b class="badge" id="totalNotificationForUser"></b>
+            </span>
+        
+
+            <!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
+          
+            <!-- END AJAX-DROPDOWN -->
+
+                <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+                    <li class="">
+                        <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown" aria-expanded="false">
+                            @*<img src="img/avatars/sunny.png" alt="John Doe" class="online">*@
+                            <img src="/@user.ImagesUrl" alt="@user.Fullname" class="online" style="background:white;width:30px;height:30px" onerror="this.src='/../../Content/Images/Avatar/users_woman-512.png'" />
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            @*<li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i>Setting</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#ajax/profile.html" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-user"></i><u>P</u>rofile</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut"><i class="fa fa-arrow-down"></i><u>S</u>hortcut</a>
+                        </li>*@
+                            @*<li class="divider"></li>*@
+                            <li>
+                                <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i>Toàn màn hình</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="javascript:resetPassword();" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-refresh"></i>Đổi mật khẩu</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/Account/Login" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i><strong><u>Đ</u>ăng xuất</strong></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+  
+            <div class="ajax-dropdown">
+
+                <!-- notification content -->
+                <div class="ajax-notifications custom-scroll">
+                </div>
+                <!-- end notification content -->
+                <!-- footer: refresh area -->
+                <!-- end footer -->
+
+            </div>
+
+        </div>
+        @*<aside id="top-panel" class="menu-on-top" style="margin-top: 50px">
+            <nav>
+                <ul>
+                    <li class="">
+                        <a href="/DMVaiTroArea/DMVaiTro/Index" title=""><i class=""></i><span class="menu-item-parent">Quản lý vài trò</span></a>
+                        <ul>
+                            <li class="">
+                                <a href="" title="">
+                                    <i class="fa fa-chevron-right"></i>
+                                    <span class="menu-item-parent">Tên thao tác</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </nav>
+        </aside>*@
+
+    </header>
+    <aside id="left-panel" style="padding-top:@leftPanel">
+        <!-- User info -->
+        <div class="login-info">
+            <span style="line-height:39px">
+                <!-- User image size is adjusted inside CSS, it should stay as is -->
+                @*<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">*@
+                <a href="javascript:void(0);" id="show-shortcut">
+                    @*<img src="/img/avatars/sunny.png" alt="me" class="online" />*@
+                    <img src="/@user.ImagesUrl" alt="@user.Fullname" class="online" style="background:white;width:24px;height:24px" onerror="this.src='/../../Content/Images/Avatar/users_woman-512.png'" />
+                    <span>
+                        @user.Fullname
+                    </span>
+                    <i class="fa fa-angle-down"></i>
+                </a>
+
+            </span>
+        </div>
+        <!-- end user info -->
+        <!-- NAVIGATION : This navigation is also responsive
+
+        To make this navigation dynamic please make sure to link the node
+        (the reference to the nav > ul) after page load. Or the navigation
+        will not initialize.
+        -->
+        <nav id="menu-left-ls">
+            <ul class="">
+                <li class="">
+                    <a href="/DMVaiTroArea/DMVaiTro/Index" title=""><i class=""></i><span class="menu-item-parent">Quản lý vài trò</span></a>
+                    <ul class="">
+                        <li class="">
+                            <a href="" title="">
+                                <i class="fa fa-chevron-right"></i>
+                                <span >Tên thao tác</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+
+        <span class="minifyme" data-action="minifyMenu"><i class="fa fa-arrow-circle-left hit"></i></span>
+    </aside>
+    <div id="main" role="main" style="margin-top:@mainStyle">
+        <!-- RIBBON -->
+        <div id="ribbon">
+
+            <span class="ribbon-button-alignment">
+                <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh" rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true" data-reset-msg="Would you like to RESET all your saved widgets and clear LocalStorage?"><i class="fa fa-refresh"></i></span>
+            </span>
+
+            <!-- breadcrumb -->
+            <ol class="breadcrumb">
+                <!-- This is auto generated -->
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- You can also add more buttons to the
+            ribbon for further usability
+
+            Example below:
+
+            <span class="ribbon-button-alignment pull-right" style="margin-right:25px">
+                <a href="#" id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa fa-grid"></i> Change Grid</a>
+                <span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> Add</span>
+                <button id="search" class="btn btn-ribbon" data-title="search"><i class="fa fa-search"></i> <span class="hidden-mobile">Search</span></button>
+            </span> -->
+
+        </div>
+        <!-- END RIBBON -->
+        <!-- #MAIN CONTENT -->
+        <div id="content">
+            @RenderBody()
+
+        </div>
+
+        <!-- END #MAIN CONTENT -->
+
+    </div>
+   
+
+</body>
+</html>

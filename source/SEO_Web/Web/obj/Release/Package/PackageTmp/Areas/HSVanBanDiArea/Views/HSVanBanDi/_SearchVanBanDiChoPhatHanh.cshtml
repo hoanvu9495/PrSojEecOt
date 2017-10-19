@@ -1,0 +1,390 @@
+﻿@using Web.Common;
+@model Web.Areas.HSVanBanDiArea.Models.VBDiIndexViewModel
+
+<style type="text/css">
+    .hide {
+        display: none;
+    }
+
+    #searchPanel .lbl-search {
+        line-height: 30px !important;
+        text-align: left;
+        padding: 0 0 0 10px;
+    }
+
+    #fromSearch > table {
+        margin: 0 auto;
+    }
+
+    #searchPanel {
+        display: none;
+    }
+
+    .width-100 {
+        width: 100%;
+    }
+
+    .ms-choice {
+        /*background: none;*/
+    }
+
+        .ms-choice > span {
+            top: 5px;
+            left: 0;
+            width: 100%;
+            padding: 0;
+        }
+
+            .ms-choice > span.placeholder {
+                color: #000;
+            }
+
+    .ms-drop {
+        left: 0;
+        border-radius: 0;
+    }
+
+        .ms-drop input[type=checkbox] {
+            vertical-align: unset;
+            margin: 0 5px 0 0;
+        }
+
+        .ms-drop input[type=radio] {
+            margin: 0 5px 0 0;
+        }
+
+    .height-15 {
+        height: 15px;
+    }
+
+    #btnSearchVanBanDi, #btnCloseSearchVanBanDi {
+        background-color: #016897;
+        padding: 8px 0;
+        border: none;
+        width: 100px;
+        color: white;
+    }
+
+    #markitem_panel {
+        width: 233px;
+    }
+    /*#searchPanel .mf10{
+        width:262px;
+    }*/
+    #block--select-SOVANBAN_ID, #block--select-NHOMSOVANBAN_ID,
+    #QUERY_NGAYKY_FROM, #QUERY_NGAYKY_TO,
+    #QUERY_NGAYBANHANH_FROM, #QUERY_NGAYBANHANH_TO,
+    #block--LOAIVANBAN_ID, #block--select-VANBANLIENQUAN,
+    #block--select-TRANGTHAI {
+        width: 233px;
+        margin-left: 10px;
+    }
+
+    #QUERY_TUKHOA {
+        width: 98%;
+    }
+
+    #frmSearch {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    #block--search-buttons {
+        text-align: center;
+    }
+</style>
+<div id="searchPanel">
+    <h3 class="group-tittle">
+        Tìm kiếm văn bản đi
+    </h3>
+    <div>
+        @Html.AntiForgeryToken()
+        @using (Ajax.BeginForm("AdvancedSearchVanBanDiChoPhatHanh", "HSVanBanDi", new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            OnFailure = "failure",
+            OnSuccess = "searchSuccess",
+            UpdateTargetId = "grid",
+        }, new { id = "frmSearch" }))
+        {
+            <table>
+                <tr class="height-15"></tr>
+                <tr>
+                    <td>
+                        <label class="lbl-search">
+                            Từ khóa :
+                        </label>
+                    </td>
+                    <td colspan="3">
+                        @Html.TextBox("QUERY_TUKHOA", "", new { @class = "e-input mf10 width-100", @placeholder = "Từ khóa tìm kiếm" })
+                    </td>
+                </tr>
+                <tr class="height-15"></tr>
+                <tr>
+                    <td>
+                        <label class="lbl-search">
+                            Ngày ban hành:
+                        </label>
+                    </td>
+                    <td>
+                        @Html.TextBox("QUERY_NGAYBANHANH_FROM", "", new { @placeholder = "Từ ngày", @class = "e-input mf10 vbdi_datepicker" })
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.TextBox("QUERY_NGAYBANHANH_TO", "", new { @placeholder = "Đến ngày", @class = "e-input mf10 vbdi_datepicker" })
+                    </td>
+                </tr>
+                <tr class="height-15"></tr>
+                <tr>
+                    <td>
+                        <label class="lbl-search">
+                            Ngày ký :
+                        </label>
+                    </td>
+                    <td>
+                        @Html.TextBox("QUERY_NGAYKY_FROM", "", new { @placeholder = "Từ ngày", @class = "e-input mf10 vbdi_datepicker" })
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.TextBox("QUERY_NGAYKY_TO", "", new { @placeholder = "Đến ngày", @class = "e-input mf10 vbdi_datepicker" })
+                    </td>
+                </tr>
+                <tr class="height-15"></tr>
+                <tr>
+                    <td>
+                        <label class="lbl-search">
+                            Nhóm sổ văn bản:
+                        </label>
+                    </td>
+                    <td>
+                        <div class="input-field4 clearfix" id="block--select-NHOMSOVANBAN_ID">
+                            @Html.DropDownList("QUERY_NHOMSOVANBAN_ID", Model.ListNhomSoVanBan, "[--- Chọn nhóm sổ văn bản ---]", new { @class = "create-phanloai width-100", })
+                        </div>
+                    </td>
+                    <td>
+                        <label class="lbl-search">
+                            Sổ văn bản:
+                        </label>
+                    </td>
+                    <td>
+                        <div class="input-field4 clearfix" id="block--select-SOVANBAN_ID">
+                            <select multiple="multiple" name="QUERY_SOVANBAN_ID" id="QUERY_SOVANBAN_ID">
+                                @*@if (Model.ListSoVanBan != null && Model.ListSoVanBan.Count > 0)
+                                    {
+                                        foreach (var item in Model.ListSoVanBan)
+                                        {
+                                            <option data-sovb="@item.SOVBTHEOSO" value="@item.ID">@item.TENSO</option>
+                                        }
+                                    }*@
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="height-15"></tr>
+                <tr>
+                    <td>
+                        <label class="lbl-search">Loại văn bản:</label>
+                    </td>
+                    <td>
+                        <div class="input-field4 clearfix" id="block--LOAIVANBAN_ID">
+                            <select multiple="multiple" name="QUERY_LOAIVANBAN_ID" id="QUERY_LOAIVANBAN_ID">
+                                @if (Model.ListLoaiVanBan != null && Model.ListLoaiVanBan.Count > 0)
+                                {
+                                    foreach (var item in Model.ListLoaiVanBan)
+                                    {
+                                        <option value="@item.ID">@item.TENLOAIVANBAN</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <label class="lbl-search">
+                            Đánh dấu:
+                        </label>
+                    </td>
+                    <td>
+                        <div class="input-field clearfix mf10 float-left">
+                            <div class="input-field4 clearfix" id="markitem_panel">
+                                <select multiple="multiple" name="QUERY_MARK" id="QUERY_MARK">
+                                    <option value="@LOAITAILIEU.CONS_READ">
+                                        Đã đọc
+                                    </option>
+                                    <option value="@LOAITAILIEU.CONS_UNREAD">
+                                        Chưa đọc
+                                    </option>
+                                    <option value="@LOAITAILIEU.CONS_FAVORITE">
+                                        Có gắn dấu sao
+                                    </option>
+                                    <option value="@LOAITAILIEU.CONS_UNFAVORITE">
+                                        Không gắn dấu sao
+                                    </option>
+                                    <option value="@LOAITAILIEU.CONS_IMPORTANT">
+                                        Quan trọng
+                                    </option>
+                                    <option value="@LOAITAILIEU.CONS_UNIMPORTANT">
+                                        Không quan trọng
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="height-15"></tr>
+                <tr>
+                    <td>
+                        <label class="lbl-search">Trạng thái:</label>
+                    </td>
+                    <td>
+                        <div class="input-field4 clearfix" id="block--select-TRANGTHAI">
+                            @Html.DropDownList("QUERY_TRANGTHAI", Model.ListTrangThaiVanBanDi, new { @multiple = "multiple" })
+                        </div>
+
+                    </td>
+                    <td>
+                        <label class="lbl-search">
+                            Văn bản liên quan:
+                        </label>
+                    </td>
+                    <td>
+                        @Html.TextBox("QUERY_VANBANLIENQUAN", "", new { @class = "e-input mf10 width-100", @placeholder = "Số hiệu văn bản liên quan" })
+                        @*<div class="input-field4 clearfix" id="block--select-VANBANLIENQUAN">
+                                @Html.DropDownList("QUERY_VANBANLIENQUAN", Model.ListVanBanLienQuan, new { @multiple = "multiple" })
+                            </div>*@
+                    </td>
+                </tr>
+                <tr class="height-15"></tr>
+            </table>
+            <div id="block--search-buttons">
+                @*<input type="hidden" value="" name="LST_LOAIVANBAN_ID" id="LST_LOAIVANBAN_ID" />
+                    <input type="hidden" value="" name="LST_SOVANBAN_ID" id="LST_SOVANBAN_ID" />
+                    <input type="hidden" value="" name="mark_item" id="mark_item" />
+                    <input type="hidden" id="reload" name="reload" value="0" />*@
+                <input type="submit" value="Tìm kiếm" id="btnSearchVanBanDi" />
+                <input type="button" value="Đóng" id="btnCloseSearchVanBanDi" />
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    var isFullScreen = false;
+    $(function () {
+        $("#QUERY_LOAIVANBAN_ID").multipleSelect({
+            single: false,
+            filter: true,
+            placeholder: "[--- Chọn Loại văn bản ---]",
+            position: 'top'
+        });
+
+        $('#QUERY_MARK').multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "[--- Hình thức đánh dấu ---]",
+            position: 'top'
+        });
+
+        $('#QUERY_TRANGTHAI').multipleSelect({
+            multiple: true,
+            filter: true,
+            position: 'top',
+            placeholder: "[--- Trạng thái xử lý---]"
+        });
+
+        //$('#QUERY_VANBANLIENQUAN').multipleSelect({
+        //    multiple: true,
+        //    filter: true,
+        //    position: 'top',
+        //    placeholder: "[--- Chọn văn bản liên quan---]"
+        //});
+        $('#QUERY_NHOMSOVANBAN_ID').multipleSelect({
+            single: true,
+            filter: true
+        });
+        multiSelectSetting('#QUERY_SOVANBAN_ID');
+
+        $(".vbdi_datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true, yearRange: "-50:+20",
+            showWeek: false, weekHeader: "Tuần",
+            language: 'vi'
+        });
+    });
+
+    $('.vbdi_search_grid').click(function () {
+        var gridFilter = $('#grid .webGrid #row--grid-filter');
+        var leftMenu = $('#main-page #menu-middle-left');
+        var searchPanel = $('#searchPanel');
+
+        if (isFullScreen) {
+            gridFilter.hide();
+            leftMenu.show();
+            leftMenu.next('.right-all-page').css('width', '100%').css('width', '-=245px');
+            isFullScreen = false;
+        } else {
+            leftMenu.hide();
+            leftMenu.next('.right-all-page').css('width', '100%');
+            searchPanel.find('#frmSearch').css({ 'width': '70%', 'margin': '0 15%' });
+            searchPanel.find('#frmSearch').children('table').css('margin', '0 auto');
+            if (searchPanel.is(':hidden')) {
+                gridFilter.show();
+            }
+            isFullScreen = true;
+        }
+    });
+
+    $(".vbdi_search, #btnCloseSearchVanBanDi").click(function () {
+        $("#searchPanel").toggle();
+        var gridFilter = $('#grid .webGrid #row--grid-filter');
+        var formSearch = $('#searchPanel #frmSearch');
+        if (formSearch.is(':visible')) {
+            if (isFullScreen) {
+                gridFilter.hide();
+            }
+        } else {
+            if (isFullScreen) {
+                gridFilter.show();
+            }
+        }
+    });
+
+    $('#QUERY_NHOMSOVANBAN_ID').multipleSelect({
+        single: true,
+        filter: true,
+        onClick: function (item) {
+            var selectValue = parseInt(item.value);
+            if (!isNaN(selectValue) && parseInt(selectValue) > 0) {
+                $.ajax({
+                    url: "@Url.Action("GetListSoVbByNhomSo")",
+                    dataType: 'text',
+                    type: 'POST',
+                    data: { nhom_so_id: selectValue },
+                    success: function (data) {
+                        $('#QUERY_SOVANBAN_ID').html(data);
+                        multiSelectSetting('#QUERY_SOVANBAN_ID');
+                    },
+                    error: function (data) {
+                        $('#table--save-notebook #SOVANBAN_ID').html("<option value=''>[--- Chọn sổ văn bản ---]</option>");
+                        multiSelectSetting('#QUERY_SOVANBAN_ID');
+                    }
+                });
+            } else {
+                $('#QUERY_SOVANBAN_ID').html("<option value=''>[--- Chọn sổ văn bản ---]</option>");
+                multiSelectSetting('#QUERY_SOVANBAN_ID');
+            }
+
+        }
+    });
+    function failure() {
+    }
+    function searchSuccess() {
+    }
+
+    function multiSelectSetting(cssID) {
+        $(cssID).multipleSelect({
+            single: true,
+            filter: true,
+        });
+    }
+</script>

@@ -1,0 +1,317 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.eAita
+@model  Web.Areas.DMThaoTacArea.Models.DMThaoTacEditViewModel
+
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+<script type="text/javascript" src="/Scripts/multiple-select.js"></script>
+<script src="~/Scripts/autoNumeric.min.js"></script>
+<style>
+    .color-red {
+        color: red;
+    }
+
+    .lbl3 {
+        margin-top: 7px;
+    }
+
+    .ms-drop {
+        /*width: 233px;*/
+        width: 100%;
+    }
+
+    .ms-choice > span {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+        width: 100%;
+    }
+
+    .width_100 {
+        width: 100% !important;
+    }
+</style>
+
+@using (Ajax.BeginForm("SaveThaoTac", "DMThaoTac", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "EditSuccess"
+}, new { id = "frmThaoTacEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Sửa thao tác <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body">
+
+        <div class=" row">
+            <div class="col-sm-2">
+                <label class="lbl3">Thao tác<span class="color-red">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.TextBox("THAOTAC", Model.ThaoTac.THAOTAC, new { maxlength = "300", @class = "form-control required", @id = "CREATE_THAOTAC" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-2">
+                <label class="lbl3">Tên thao tác<span class="color-red">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.TextBox("TEN_THAOTAC", Model.ThaoTac.TEN_THAOTAC, new { maxlength = "250", @class = "form-control required", @id = "CREATE_TENTHAOTAO" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class=" row">
+            <div class="col-sm-2">
+                <label class="lbl3">Chức năng cấp 1<span class="color-red">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.DropDownList("CHUCNANGCAP1", @Model.ListChucNangCap1, new { @class = "width_100 ", id = "CREATE_CHUCNANGCAP1" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            @* <div class="col-sm-2">
+                    <label class="lbl3">Chức năng cấp 2<span class="color-red">*</span></label>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        @Html.DropDownList("CHUCNANGCAP2", @Model.ListChucNangCap2, new { @class = "width_100 ", id = "CREATE_CHUCNANGCAP2" })
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+
+        <div class=" row">
+            <div class="col-sm-2">
+                <label class="lbl3">Trạng thái<span class="color-red">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <select name="TRANGTHAI" id="TRANGTHAI" style="width: 100%;">
+                        @if (Model.ThaoTac.TRANGTHAI.HasValue && Model.ThaoTac.TRANGTHAI == 1)
+                        {
+                            <option value="1" selected>Hiệu lực</option>
+                            <option value="0">Không hiệu lực</option>
+                        }
+                        else
+                        {
+                            <option value="1">Hiệu lực</option>
+                            <option value="0" selected>Không hiệu lực</option>
+                        }
+                    </select>
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label class="lbl3">Thứ tự hiển thị<span class="color-red">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.TextBox("TT_HIENTHI", Model.ThaoTac.TT_HIENTHI, new { @class = "form-control required", maxlength = 3, @id = "CREATE_TT_HIENTHI" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" row">
+            <div class="col-sm-2">
+                <label class="lbl3">Hiển thị ở menu<span class="color-red">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @{
+    var check = (Model.ThaoTac.IS_HIENTHI.HasValue && (Model.ThaoTac.IS_HIENTHI == true) ? "checked" : "");
+                    }
+                    <input type="checkbox" id="IS_HIENTHI" name="IS_HIENTHI" @check />
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label class="lbl3">Menu Link<span class="color-red">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.TextBox("MENU_LINK", Model.ThaoTac.MENU_LINK, new { maxlength = "250", @class = "form-control required", @id = "CREATE_MENULINK" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer center">
+        <div class="margin-top-15 center">
+            <input type="hidden" name="DM_THAOTAC_ID" value="@Model.ThaoTac.DM_THAOTAC_ID" />
+            <button type="button" class="btn btn-primary" id="btnSave_Edit" style="border-radius: 3px;">
+                Lưu
+            </button>
+            <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+
+
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function EditSuccess(rs) {
+        //CommonJS.alert("Sửa thao tác thành công");
+        //$("#PrepareThaoTac").dialog("close");
+        //reloadGrid();
+        if (rs) {
+            NotiSuccess("Thay đổi thao tác thành công");
+        }
+        //CommonJS.alert("Tạo mới người dùng thành công");
+        //$("#CreateNguoiDung").dialog("close");
+        OnCloseLog();
+        //window.location.reload();
+        reloadGrid();
+    }
+    function OnCloseLog() {
+        $("#create_user").html("");
+        $("#nhan_su_dialog").modal("hide");
+    }
+    function OnClose() {
+        $("#PrepareThaoTac").dialog("close");
+    }
+    function Active(obj, enable) {
+        if (enable) {
+            $("#" + obj).next().children("button").removeClass("disabled")
+        } else {
+            $("#" + obj).next().children("button").addClass("disabled")
+        }
+    }
+
+
+    function pageFunction() {
+        $("#btnSave_Edit").click(function () {
+            var err = 0;
+            var requir = requiredFieldForFormId("frmThaoTacEdit");
+            if (!requir) {
+                err++;
+            }
+            var cap1 = checkRequireElement("frmThaoTacEdit", "CREATE_CHUCNANGCAP1");
+            if (!cap1) {
+                err++;
+            }
+            //var cap2 = checkRequireElement("frmThaoTacEdit", "CREATE_CHUCNANGCAP2");
+            //if (!cap2) {
+            //    err++;
+            //}
+            if (err == 0) {
+                $("#frmThaoTacEdit").submit();
+                return true;
+            } else {
+                NotiError("Có lỗi. Vui lòng kiêm tra lại");
+                return false;
+            }
+
+
+        });
+        @*$("#CREATE_CHUCNANGCAP1").change(function () {
+            if ($("#CREATE_CHUCNANGCAP1").val() > 0) {
+                Active("CREATE_CHUCNANGCAP2", false);
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("FindData","DMThaoTac")',
+                    cache: false,
+                    async: false,
+                    data: { CHUCNANGCHA: $("#CREATE_CHUCNANGCAP1").val() },
+                    success: function (data) {
+                        var items = "";
+                        $.each(data, function (i, type) {
+                            items += "<option value='" + type.DM_CHUCNANG_ID + "'>" + type.TEN_CHUCNANG + "</option>";
+                        });
+                        $("#CREATE_CHUCNANGCAP2").html(items);
+
+                    },
+                    error: function (data) {
+                        alert("Không có chức năng cấp 2 nào.");
+                    }, complete: function () {
+                        Active("CREATE_CHUCNANGCAP2", true);
+                        $("#CREATE_CHUCNANGCAP2").multipleSelect({
+                            multiple: false,
+                            filter: false,
+                            single: true,
+                            placeholder: "Chọn chức năng"
+
+                        });
+                    }
+                });
+
+            } else {
+                $("#CREATE_CHUCNANGCAP2").html("");
+            }
+        });*@
+
+        $("#CREATE_CHUCNANGCAP1").multipleSelect({
+            multiple: false,
+            filter: false,
+            single: true,
+
+            placeholder: "Chọn chức năng"
+        });
+
+        //$("#CREATE_CHUCNANGCAP2").multipleSelect({
+        //    multiple: false,
+        //    filter: false,
+        //    single: true,
+        //    placeholder: "Chọn chức năng"
+
+        //});
+        $("#TRANGTHAI").multipleSelect({
+            multiple: false,
+            filter: false,
+            single: true,
+        });
+
+        $("#CREATE_TT_HIENTHI").autoNumeric({
+            decimalPlacesOverride: 0, minimumValue: 0, maximumValue: 1000, wEmpty: 'zero'
+        });
+    }
+
+    $(document).ready(function () {
+        loadScript("/Scripts/jquery.unobtrusive-ajax.min.js", function () {
+            loadScript("/Scripts/multiple-select.js", function () {
+                loadScript("/Scripts/autoNumeric.min.js", pageFunction);
+            });
+        });
+    })
+
+
+</script>

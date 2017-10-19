@@ -1,0 +1,638 @@
+﻿@{
+    ViewBag.Title = "Chi tiết yêu cầu chia sẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeModel
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@using Business.CommonBusiness;
+<div id="menu-toolbar">
+    <div class="left-all-page" style="width:350px">
+        <div id="smart-dms" class="block">
+            <h1>Chi tiết yêu cầu chia sẻ</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border: 0px; background: none; width: calc(100% - 350px)">
+        <div id="menu-child">
+            <div class="menu-left">
+            </div>
+            <div class="menu-right" style="">
+                <button style="margin-bottom: 10px" type="button" onclick="location.href = '@Url.Action("Index", "ThuMucLuuTru" )'" class="b_btn b_btn-default vbdi_search">Quản lý tài liệu</button>
+                <button style="margin-bottom: 10px" type="button" onclick="location.href = '@Url.Action("DanhSachYeuCauChiaSe", "CucTruongPheDuyet")'" class="b_btn b_btn-default vbdi_search">Yêu cầu chia sẻ</button>
+                @*<div class="btn-group" role="group" style="margin-bottom: 10px;">
+                        <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Yêu cầu chia sẻ
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("Danhsachyeucauduocchiase", "ThuMucLuuTru")">Xử lý yêu cầu chia sẻ</a></li>
+                            <li><a href="@Url.Action("Danhsachyeucauchiase", "ThuMucLuuTru")">Danh sách yêu cầu chia sẻ</a></li>
+                        </ul>
+                    </div>*@
+                <div class="btn-group" role="group" style="margin-bottom: 10px;margin-right:20px">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chia sẻ tài liệu
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("DanhSachTaiLieuDaChiaSe", "ThuMucLuuTru")">Đang chia sẻ</a></li>
+                        <li><a href="@Url.Action("DanhSachTaiLieuDuocChiaSe", "ThuMucLuuTru")">Được chia sẻ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+    <div class="right-content clearfix" style="margin-top:20px">
+        <div class="SearchResult">
+            <div class="folder-content" style="margin-top:-30px">
+                <div id="treeview" style="margin: 0 auto;width:70%;">
+                    <table class="YeuCau" style="width:100%">
+                        <tr>
+                            <td colspan="2">
+                                <h3 class="group-tittle mt10" style="margin-top:28px ;margin-bottom:20px">Chi tiết yêu cầu chia sẻ tài liệu</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:200px;font-weight:bold">Đơn vị yêu cầu:</td>
+                            <td>
+                                <span style="font-weight:bold">@Model.YEUCAUBO.TENDONVI</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 200px; font-weight: bold">Ngày yêu cầu:</td>
+                            <td>
+                                <span style="font-weight:bold">@string.Format("{0:dd-MM-yyyy}", Model.YEUCAU.NGAYYEUCAU)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">Lý do yêu cầu:</td>
+                            <td>
+                                <span>@Model.YEUCAU.LYDO</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 200px; font-weight: bold">Trạng thái:</td>
+                            <td>
+                                @{
+                                    string UnitUnAccept = "";
+                                    var ListLog = Model.ListLichSu.Where(x => x.TRANGTHAI2 == YeuCauChiaSeConstant.DONVITUCHOI).ToList();
+                                    ListLog = ListLog.GroupBy(x => x.TENDONVI).Select(y => y.First()).ToList();
+                                }
+                                @switch (Model.YEUCAU.TRANGTHAI)
+                                {
+                                    case YeuCauChiaSeConstant.DATRINH:
+                                        <span style="color:red;">Chờ duyệt</span>
+                                        break;
+                                    case YeuCauChiaSeConstant.DADUYET:
+                                    <span style="color:green">Đồng ý</span>
+                                        break;
+                                    case YeuCauChiaSeConstant.CHUYENYEUCAU:
+                                    <span style="color:blue">Đã chuyển yêu cầu</span>
+                                        break;
+                                    case YeuCauChiaSeConstant.TRAVE:
+                                    <span style="color:red">Từ chối</span>
+                                        break;
+                                    case YeuCauChiaSeConstant.DONVIOK:
+                                    <span style="color:green">Đã chia sẻ</span>
+                                        break;
+                                    case YeuCauChiaSeConstant.DONVITUCHOI:
+                                        foreach (var item in ListLog)
+                                        {
+                                            UnitUnAccept += item.TENDONVI + ",";
+                                        }
+                                        <span style="color:red">@UnitUnAccept từ chối chia sẻ</span>
+                                        break;
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="tblResult">
+                        <div>
+                            <h3 class="group-tittle mt10" style="margin-top:28px ;margin-bottom:20px">Danh sách tài liệu xin chia sẻ</h3>
+                        </div>
+                        <table class="webGrid tblFixed">
+
+                            <thead>
+                                @if (Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DATRINH || Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DONVITUCHOI)
+                                {
+                                    <tr class="head">
+                                        <th rowspan="2">
+                                            Đơn vị
+                                        </th>
+                                        <th rowspan="2">
+                                            Tên danh mục
+                                        </th>
+                                        <th rowspan="2">
+                                            Tên tài liệu
+                                        </th>
+                                        <th rowspan="2">
+                                            Ghi chú
+                                        </th>
+                                        <th style="width:70px">
+                                            Đồng ý
+                                        </th>
+                                        <th style="width:70px">
+                                            Trả về
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align:center">
+                                            <input type="checkbox" name="" id="acceptAll" checked />
+                                        </th>
+                                        <th style="text-align:center">
+                                            <input type="checkbox" name="" id="unacceptAll" />
+                                        </th>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr class="head">
+                                        <th>
+                                            Đơn vị
+                                        </th>
+                                        <th>
+                                            Tên danh mục
+                                        </th>
+                                        <th>
+                                            Tên tài liệu
+                                        </th>
+                                        <th>
+                                            Ghi chú
+                                        </th>
+                                        <th style="width:70px">
+                                            Đồng ý
+                                        </th>
+                                        <th style="width:70px">
+                                            Trả về
+                                        </th>
+                                    </tr>
+                                }
+                            </thead>
+                            <tbody>
+                                @if (Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DATRINH || Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DONVITUCHOI)
+                                {
+                                    var ListDonVi = Model.ListChiTiet.GroupBy(x => x.DONVI_ID).Select(y => y.First()).ToList();
+                                    foreach (var dv in ListDonVi)
+                                    {
+                                        var ListParent = Model.ListChiTiet.Where(x => x.ISTHUMUC.HasValue && x.ISTHUMUC.Value && x.DONVI_ID == dv.DONVI_ID).ToList();
+                                        foreach (var item in ListParent)
+                                        {
+                                            var ListChild = Model.ListChiTiet.Where(x => x.PARENT_ID == item.DANHMUC_ID && x.DONVI_ID == dv.DONVI_ID).ToList();
+                                            <tr>
+                                                <td>
+                                                    @item.TENDONVI
+                                                </td>
+                                                <td>
+                                                    <span title="@item.TENTAILIEU">@item.TENTAILIEU</span>
+                                                </td>
+                                                <td></td>
+                                                <td>@item.GHICHU</td>
+                                                @if (item.TRANGTHAI != YeuCauChiaSeConstant.DADUYET)
+                                                {
+                                                    if (item.TRANGTHAI == YeuCauChiaSeConstant.TRAVE)
+                                                    {
+                                                        <td></td>
+                                                        <td><a class="checkbox-item"></a></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <input class="checkitem checkparent checkparent_@item.ID" data-id="@item.ID" checked type="checkbox" />
+                                                        </td>
+                                                        <td>
+                                                            <input class="uncheckitem uncheckparent uncheckparent_@item.ID" data-id="@item.ID" type="checkbox" />
+                                                        </td>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <a class="checkbox-item"></a>
+                                                    </td>
+                                                    <td><a class="uncheckbox-item"></a></td>
+                                                }
+                                            </tr>
+                                            foreach (var ele in ListChild)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        &nbsp;
+                                                    </td>
+                                                    <td></td>
+                                                    <td style="text-align:left !important">
+                                                        <span title="@ele.TENTAILIEU">@ele.TENTAILIEU</span>
+                                                    </td>
+                                                    <td>@ele.GHICHU</td>
+                                                    @if (ele.TRANGTHAI != YeuCauChiaSeConstant.DADUYET)
+                                                    {
+                                                        if (ele.TRANGTHAI == YeuCauChiaSeConstant.TRAVE)
+                                                        {
+                                                            <td></td>
+                                                            <td>
+                                                                <a class="checkbox-item"></a>
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>
+                                                                <input class="checkitem checkchild_@item.ID checkchild checkchild_@ele.ID" data-id="@ele.ID" type="checkbox" checked />
+                                                            </td>
+                                                            <td>
+                                                                <input class="uncheckitem uncheckchild_@item.ID uncheckchild uncheckchild_@ele.ID" data-id="@ele.ID" type="checkbox" />
+                                                            </td>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <a class="checkbox-item"></a>
+                                                        </td>
+                                                        <td><a class="uncheckbox-item"></a></td>
+                                                    }
+                                                </tr>
+                                            }
+                                        }
+                                        var ListUnknow = Model.ListChiTiet.Where(x => x.DONVI_ID == dv.DONVI_ID && x.PARENT_ID.HasValue && !ListParent.Select(y => y.DANHMUC_ID).Contains(x.PARENT_ID.Value)).ToList();
+                                        foreach(var un in ListUnknow){
+                                            <tr>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                                <td>Tài liệu chung</td>
+                                                <td style="text-align:left !important">
+                                                    <span title="@un.TENTAILIEU">@un.TENTAILIEU</span>
+                                                </td>
+                                                
+                                                <td>@un.GHICHU</td>
+                                                @if (un.TRANGTHAI != YeuCauChiaSeConstant.DADUYET)
+                                                {
+                                                    if (un.TRANGTHAI == YeuCauChiaSeConstant.TRAVE)
+                                                    {
+                                                        <td></td>
+                                                        <td><a class="checkbox-item"></a></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <input class="checkitem checkparent checkparent_@un.ID" data-id="@un.ID" checked type="checkbox" />
+                                                        </td>
+                                                        <td>
+                                                            <input class="uncheckitem uncheckparent uncheckparent_@un.ID" data-id="@un.ID" type="checkbox" />
+                                                        </td>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <a class="checkbox-item"></a>
+                                                    </td>
+                                                    <td><a class="uncheckbox-item"></a></td>
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    var ListDonVi = Model.ListChiTiet.GroupBy(x => x.DONVI_ID).Select(y => y.First()).ToList();
+                                    foreach (var dv in ListDonVi)
+                                    {
+                                        var ListParent = Model.ListChiTiet.Where(x => x.ISTHUMUC.HasValue && x.ISTHUMUC.Value && x.DONVI_ID == dv.DONVI_ID).ToList();
+                                        foreach (var item in ListParent)
+                                        {
+                                            var ListChild = Model.ListChiTiet.Where(x => x.PARENT_ID == item.DANHMUC_ID && x.DONVI_ID == dv.DONVI_ID).ToList();
+                                            <tr>
+                                                <td>
+                                                    @item.TENDONVI
+                                                </td>
+                                                <td>
+                                                    <span title="@item.TENTAILIEU">@item.TENTAILIEU</span>
+                                                </td>
+                                                <td></td>
+                                                <td>@item.GHICHU</td>
+                                                @if (item.TRANGTHAI != YeuCauChiaSeConstant.DADUYET)
+                                                {
+                                                    if (item.TRANGTHAI == YeuCauChiaSeConstant.TRAVE)
+                                                    {
+                                                        <td></td>
+                                                        <td><a class="checkbox-item"></a></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <input class="checkitem checkparent checkparent_@item.ID" data-id="@item.ID" checked type="checkbox" />
+                                                        </td>
+                                                        <td>
+                                                            <input class="uncheckitem uncheckparent uncheckparent_@item.ID" data-id="@item.ID" type="checkbox" />
+                                                        </td>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <a class="checkbox-item"></a>
+                                                    </td>
+                                                    <td><a class="uncheckbox-item"></a></td>
+                                                }
+                                            </tr>
+                                            foreach (var ele in ListChild)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        &nbsp;
+                                                    </td>
+                                                    <td></td>
+                                                    <td style="text-align:left !important">
+                                                        <span title="@ele.TENTAILIEU">@ele.TENTAILIEU</span>
+                                                    </td>
+                                                    <td>@ele.GHICHU</td>
+                                                    @if (ele.TRANGTHAI != YeuCauChiaSeConstant.DADUYET)
+                                                    {
+                                                        if (ele.TRANGTHAI == YeuCauChiaSeConstant.TRAVE)
+                                                        {
+                                                            <td></td>
+                                                            <td>
+                                                                <a class="checkbox-item"></a>
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>
+                                                                <input class="checkitem checkchild_@item.ID checkchild checkchild_@ele.ID" data-id="@ele.ID" type="checkbox" checked />
+                                                            </td>
+                                                            <td>
+                                                                <input class="uncheckitem uncheckchild_@item.ID uncheckchild uncheckchild_@ele.ID" data-id="@ele.ID" type="checkbox" />
+                                                            </td>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <a class="checkbox-item"></a>
+                                                        </td>
+                                                        <td><a class="uncheckbox-item"></a></td>
+                                                    }
+                                                </tr>
+                                            }
+                                        }
+                                        var ListUnknow = Model.ListChiTiet.Where(x => x.DONVI_ID == dv.DONVI_ID && x.PARENT_ID.HasValue && !ListParent.Select(y => y.DANHMUC_ID).Contains(x.PARENT_ID.Value)).ToList();
+                                        foreach(var un in ListUnknow){
+                                            <tr>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                                <td>Tài liệu chung</td>
+                                                <td style="text-align:left !important">
+                                                    <span title="@un.TENTAILIEU">@un.TENTAILIEU</span>
+                                                </td>
+                                                
+                                                <td>@un.GHICHU</td>
+                                                @if (un.TRANGTHAI != YeuCauChiaSeConstant.DADUYET)
+                                                {
+                                                    if (un.TRANGTHAI == YeuCauChiaSeConstant.TRAVE)
+                                                    {
+                                                        <td></td>
+                                                        <td><a class="checkbox-item"></a></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <input class="checkitem checkparent checkparent_@un.ID" data-id="@un.ID" checked type="checkbox" />
+                                                        </td>
+                                                        <td>
+                                                            <input class="uncheckitem uncheckparent uncheckparent_@un.ID" data-id="@un.ID" type="checkbox" />
+                                                        </td>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <a class="checkbox-item"></a>
+                                                    </td>
+                                                    <td><a class="uncheckbox-item"></a></td>
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="width:60%;margin-left:20%;text-align:center;margin-top:20px" class="YeuCau">
+                        @if (Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DATRINH || Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DONVITUCHOI)
+                        {
+                            <button class="btn btn-success" id="btnSend" type="button">Xác nhận</button>
+                        }
+                        <button class="btn btn-default" type="button" onclick="location.href='@Url.Action("Index")'">Quay lại</button>
+                    </div>
+                    <div style="margin: 0 auto;width:100%;">
+                        <h3 class="group-tittle mt10" style="margin-top:28px ;margin-bottom:20px">Lịch sử yêu cầu chia sẻ tài liệu</h3>
+                        @Html.Partial("_LichSuChiaSe")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    <div class="modal fade" id="TrinhDuyetYeuCau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+    <input type="hidden" id="LYDO" value="@Model.YEUCAU.LYDO" />
+</div>
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+    .tblDanhMuc .webGrid th:nth-child(4), .tblDanhMuc .webGrid th:nth-child(5) {
+        text-align: left !important;
+    }
+
+    .webGrid th {
+        text-align: center !important;
+    }
+
+    .checkbox-item {
+        background: url('/Content/themes/base/images/TM_DANHMUC_Checkbox.png') no-repeat;
+        display: block;
+        width: 26px;
+        height: 26px;
+        margin-left: 23px;
+    }
+</style>
+<script>
+    $(function () {
+        $(".checkchild").click(function () {
+            var ID = $(this).attr("data-id");
+            if (this.checked) {
+                $(".uncheckchild_" + ID).prop("checked", false);
+            }
+            var totalRows = $(".checkchild").length;
+            var checked = $(".checkchild:checked").length;
+            if (checked != totalRows) {
+                $("#unacceptAll").prop('checked', false);
+            } else {
+                $("#unacceptAll").prop('checked', true);
+            }
+        });
+        $(".uncheckchild").click(function () {
+            var ID = $(this).attr("data-id");
+            if (this.checked) {
+                $(".checkchild_" + ID).prop("checked", false);
+            }
+            var totalRows = $(".uncheckchild").length;
+            var checked = $(".uncheckchild:checked").length;
+            if (checked != totalRows) {
+                $("#acceptAll").prop('checked', false);
+            } else {
+                $("#acceptAll").prop('checked', true);
+            }
+        });
+        $("#acceptAll").click(function () {
+            $(".checkitem").prop("checked", this.checked);
+            $(".uncheckitem").prop("checked", !this.checked);
+            $("#unacceptAll").prop("checked", !this.checked);
+        });
+        $("#unacceptAll").click(function () {
+            $(".checkitem").prop("checked", !this.checked);
+            $(".uncheckitem").prop("checked", this.checked);
+            $("#acceptAll").prop("checked", !this.checked);
+        });
+        $(".checkparent").click(function () {
+            var ID = $(this).attr("data-id");
+            $(".checkchild_" + ID).prop("checked", this.checked);
+            $(".uncheckchild_" + ID).prop("checked", !this.checked);
+            $(".uncheckchild_" + ID).prop("checked", !this.checked);
+            var totalRows = $(".checkchild").length;
+            var checked = $(".checkchild:checked").length;
+            if (this.checked) {
+                $("#unacceptAll").prop('checked', false);
+                $(".uncheckparent_" + ID).prop('checked', false);
+
+            }
+            if (checked != totalRows) {
+                $("#acceptAll").prop('checked', false);
+            } else {
+                $("#unacceptAll").prop('checked', false);
+                $("#acceptAll").prop('checked', true);
+            }
+        });
+        $(".uncheckparent").click(function () {
+            var ID = $(this).attr("data-id");
+            $(".checkchild_" + ID).prop("checked", !this.checked);
+            $(".checkparent_" + ID).prop("checked", !this.checked);
+            $(".uncheckchild_" + ID).prop("checked", this.checked);
+            if (this.checked) {
+                $("#acceptAll").prop('checked', false);
+            }
+            var totalRows = $(".uncheckchild").length;
+            var checked = $(".uncheckchild:checked").length;
+            if (checked != totalRows) {
+                $("#unacceptAll").prop('checked', false);
+            } else {
+                $("#acceptAll").prop('checked', false);
+                $("#unacceptAll").prop('checked', true);
+            }
+        });
+        $("#btnSend").click(function () {
+            var Accept = "";
+            var UnAccept = "";
+            var selectAll = 0;
+            var trangthai = "";
+            $("input.checkitem:checkbox:checked").each(function () {
+                selectAll = 1;
+                trangthai += $(this).attr("data-id") + ",";
+            });
+            Accept = trangthai;
+            selectAll = 0;
+            trangthai = "";
+            $("input.uncheckitem:checkbox:checked").each(function () {
+                selectAll = 1;
+                trangthai += $(this).attr("data-id") + ",";
+            });
+            UnAccept = trangthai;
+            if(Accept.trim() != ""){
+                ChuyenTiep(Accept, UnAccept);
+            } else {
+                $.confirm({
+                    'title': 'Xác nhận từ chối',
+                    'message': 'Bạn có chắc chắn từ chối những mục đã được chọn?',
+                    'buttons': {
+                        'Xác nhận': {
+                            'class': 'btn-confirm-yes',
+                            'action': function () {
+                                $.ajax({
+                                    url: '@Url.Action("XacNhanTuChoi")',
+                                    type: 'post',
+                                    cache: false,
+                                    data: {
+                                        ID: '@Model.YEUCAU.ID',
+                                        TUCHOI:UnAccept
+                                    },
+                                    success: function (data) {
+                                        notif({
+                                            type: 'success',
+                                            position: 'bottom',
+                                            msg: data,
+                                        });
+                                        location.reload();
+                                    },
+                                    error: function (err) {
+                                        CommonJS.alert(err.responseText);
+                                    }
+                                });
+                            }
+                        },
+                        'Đóng': {
+                            'class': 'btn-info',
+                            'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                        }
+                    }
+                });
+            }
+            
+        });
+    });
+    function ChuyenTiep(DONGY, TRAVE) {
+        $.ajax({
+            url: '@Url.Action("GuiDonVi", "CucTruongPheDuyet")',
+            type: 'POST',
+            cache: false,
+            data: {
+                DONGY: DONGY, TRAVE: TRAVE,
+                ID: '@Model.YEUCAU.ID',
+                DONVI: '@Model.YEUCAUBO.TENDONVI'
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#TrinhDuyetYeuCau").html(data);
+                    $("#TrinhDuyetYeuCau").modal("show");
+                } else {
+                    $.confirm({
+                        'title': 'Có lỗi xảy ra',
+                        'message': 'Yêu cầu chia sẻ này không tồn tại hoặc bạn không có quyền truy xuất yêu cầu này!',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>

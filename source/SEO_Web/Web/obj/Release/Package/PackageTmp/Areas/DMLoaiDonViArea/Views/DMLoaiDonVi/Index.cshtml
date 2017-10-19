@@ -1,0 +1,259 @@
+﻿@using Business.CommonBusiness
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+
+
+@model List<DMLoaiDonViBO>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    var jsonDatas = Html.Raw(JsonConvert.SerializeObject(Model));
+}
+
+<style>
+    .center {
+        text-align: center;
+    }
+</style>
+
+<div class="row" style="margin-bottom:7px; ">
+    <div class="col-sm-9">
+
+    </div>
+    <div class="col-sm-3">
+        <a class="btn btn-success btn-sm" href="javascript:OnCreate()" style="float:right">
+            <i class="fa fa-plus"></i> <span>Thêm mới loại đơn vị</span>
+        </a>
+    </div>
+</div>
+
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <h2 class="group-tittle mt10">
+            Danh sách loại đơn vị <span id="countTotal" style="font-weight:bold" class="text-danger">(@(Model == null ? "0" : Model.Count.ToString()))</span>
+        </h2>
+    </header>
+    <div class="widge-t-body no-padding">
+        <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+            <table class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tên loại</th>
+                        <th>Loại cha</th>
+                        <th>Ngày tạo</th>
+                        <th>Thao tác</th>
+
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+</div>
+<div id="CreateVaiTro" title="Thêm mới vai trò" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" id="formCreate">
+
+        </div>
+    </div>
+
+</div>
+
+<div id="PrepareVaiTro" title="Sửa vai trò" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" id="formEdit">
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    pageSetUp();
+    var JsonDatas = eval(@jsonDatas);
+
+    var loadDataTable = function (item) {
+        var table = $('.wtfayo').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "iDisplayLength": 20,
+            paging: true,
+            "aoColumns": [
+                 {
+                     "width": "7px",
+                     "mData": function (data, type, dataToSet) {
+                         return '<input class="global_checkbox" ' + ((data.IS_READ == true) ? "is_read" : "is_unread") + ' type="checkbox" name="ids" value="' + data.ID + '" />';
+                     },
+                     "orderable": false,
+                 },
+                  {
+                      "mData": function (data, type, dataToSet) {
+                          return "<span class='tr_left'>" + data.LOAI + "</span>";
+                      },
+
+                  },
+                   {
+
+                       "mData": function (data, type, dataToSet) {
+                           return "<span >" + data.PARENT_NAME + "</span>";
+                       },
+
+                   },
+
+                    {
+
+                        "mData": function (data, type, dataToSet) {
+                            return "<span >" + convertDate(data.NGAYTAO) + "</span>";
+                        },
+
+                    },
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            var result = "<div class='btn-group'>";
+                            result += "<a href='javascript:void(0)' onclick='EditVaiTro(" + data.ID + ")'   title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>";
+                            result += "<a href='javascript:void(0)' onclick='DeleteVaiTro(" + data.ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
+                            result += "</div>";
+                            return result;
+                        },
+
+                    },
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                runAllCharts()
+            }
+        });
+    }
+    var pagefunction = function () {
+
+        loadDataTable(JsonDatas);
+    };
+
+
+
+
+    function OnCreate() {
+
+        $.ajax({
+            url: '@Url.Action("GetPartialCreate", "DMLoaiDonVi")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#formEdit").html("");
+                $("#formCreate").html("");
+                $("#formCreate").html(data);
+                $("#CreateVaiTro").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function EditVaiTro(DM_VAITRO_ID) {
+        $.ajax({
+            url: '@Url.Action("GetPartialEdit", "DMLoaiDonVi")',
+            type: 'post',
+            cache: false,
+            data: {
+                id: DM_VAITRO_ID
+            },
+            success: function (data) {
+                $("#formEdit").html("");
+                $("#formCreate").html("");
+
+                $("#formEdit").html(data);
+                $("#PrepareVaiTro").modal("show");
+
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+
+    function DeleteVaiTro(DM_VAITRO_ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa loại đơn vị này?',
+            'buttons': {
+                'Đồng ý': {
+                    'class': 'btn-confirm-yes btn-primary',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "DMLoaiDonVi")',
+                            type: 'post',
+                            cache: false,
+                            data: { id: DM_VAITRO_ID },
+                            success: function (data) {
+                                if (data.Status) {
+                                    NotiSuccess("Xóa loại đơn vị thành công");
+                                    ReloadPage();
+                                } else {
+                                    NotiError(data.Message);
+                                }
+                                
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Hủy bỏ': {
+                    'class': 'btn-default',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+
+    function ReloadPage() {
+            $.ajax({
+                type: "Post",
+                url: '@Url.Action("GetDataPage", "DMLoaiDonVi")',
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    $("#countTotal").html('(' + data.Count + ')');
+                    for (var i = 0; i < data.ListItem.length; i++) {
+                        if (data.ListItem[i].NGAYTAO != null) {
+                            var str = data.ListItem[i].NGAYTAO;
+                            data.ListItem[i].NGAYTAO = ConvertToDateISO(str);
+                        }
+                    }
+                    loadDataTable(data.ListItem);
+                }
+            });
+            $("#formEdit").html("");
+            $("#formCreate").html("");
+
+    }
+
+    loadScript("js/plugin/datatables/jquery.dataTables.min.js", function () {
+        loadScript("js/plugin/datatables/dataTables.colVis.min.js", function () {
+            loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                loadScript("js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                    loadScript("js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
+                });
+            });
+        });
+    });
+
+</script>
+
+

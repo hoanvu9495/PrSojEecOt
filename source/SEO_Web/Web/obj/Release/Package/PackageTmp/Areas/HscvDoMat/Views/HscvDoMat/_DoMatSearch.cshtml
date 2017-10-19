@@ -1,0 +1,42 @@
+﻿<style>
+    .txt {
+        width: 250px;
+    }
+
+    .btn {
+        height: 30px;
+        background: #0099CC;
+        font-weight: bold;
+        color: white;
+        border: none;
+    }
+</style>
+<div class="panel">
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindDoMat", "HscvDoMat", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearch" }))
+    {
+        <h3 class="group-tittle mt10" style="margin-bottom:30px">Tìm kiếm độ mật</h3>
+        <div style="text-align:center">
+            <label class="lblDiemThi" style="margin-left:130px;width:80px">Tên độ mật:</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.TextBox("DOMAT", "", new { @style = "width:200px", @class = "e-input" })
+            <input type="submit" id="btnSearch" value="Tìm Kiếm" style="background-color:#336699;font-weight:bold;height:35px;border:none;width:100px;color:white" />
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#DOMAT").val(@ViewData["DonVi"]);
+    });
+    function failure(xhr, response) {
+        CommonJS.alert(xhr.responseText);
+        $("#DOMAT").val("");
+    }
+</script>

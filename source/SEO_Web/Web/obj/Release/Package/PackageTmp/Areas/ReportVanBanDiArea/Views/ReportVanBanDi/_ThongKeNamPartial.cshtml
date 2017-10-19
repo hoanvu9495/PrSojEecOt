@@ -1,0 +1,306 @@
+﻿@using Business.CommonBusiness;
+@using Newtonsoft.Json;
+@using System.Data;
+@using Newtonsoft.Json.Linq;
+@model List<ChartItemBO>
+@{
+    var JsonData = Html.Raw(JsonConvert.SerializeObject(Model));
+
+}
+<style>
+    .input-label {
+        padding-top: 7px;
+        font-weight: bold;
+    }
+
+    .progress {
+        margin-bottom: 0px !important;
+    }
+</style>
+<link href="~/Content/Custom/Bootstrap-picker/datepicker.css" rel="stylesheet" />
+
+<div>
+    <div class="row" id="form-search-nam">
+        <div class="form-group col-sm-4">
+            <div class="col-sm-4 input-label">
+                Từ năm <span style="color: red;">*</span>
+            </div>
+            <div class="col-sm-8">
+                <div class="input-group">
+                    <input name="TUNAM" id="TUNAM" type="text" class="form-control datepicker-Year required" data-mask="9999" data-mask-placeholder="-" value='@DateTime.Now.Year'>
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+                <div class="note-error">
+                    <span class="error mes-note-error"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-sm-4">
+            <div class="col-sm-4 input-label">
+                Đến năm<span style="color: red;">*</span>
+            </div>
+            <div class="col-sm-8">
+                <div class="input-group">
+                    <input name="DENNAM" id="DENNAM" type="text" class="form-control datepicker-Year required" data-mask="9999" data-mask-placeholder="-" value='@DateTime.Now.Year'>
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+                <div class="note-error">
+                    <span class="error mes-note-error"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-sm-4">
+            <button class="btn btn-primary btn-sm" id="btn-submit">Lọc</button>
+        </div>
+    </div>
+</div>
+<div id="MessEmpty" style="display:none">
+    <center><h3 id="mess">Không có dữ liệu thống kê</h3></center>
+</div>
+<div class="row" id="div-thongke">
+
+    <div class="col-sm-4">
+        <table class="table table-bordered" style="width:100%" id="dataTable"></table>
+    </div>
+    <div class="col-sm-8">
+        <canvas id="barChart" height="200"></canvas>
+    </div>
+
+</div>
+<script src="~/Content/Custom/Bootstrap-picker/bootstrap-datepicker.js"></script>
+
+<script>
+
+    pageSetUp();
+
+    $(".datepicker-Year").datepicker({
+        format: "yyyy",
+        minViewMode: "years",
+        yearRange: "-20:+20"
+    });
+
+    var pagefunction = function () {
+
+        // Fill all progress bars with animation
+        $('.progress-bar').progressbar({
+            display_text: 'fill'
+        });
+        var JsonDatas = eval(@JsonData);
+        if (myPie != null) {
+            myPie.destroy();
+        }
+        if (JsonDatas.length>0) {
+            myPie = new Chart(document.getElementById("barChart"), getConfig(JsonDatas));
+            var content = "";
+            var tong = 0;
+            for (var i = 0; i < JsonDatas.length; i++) {
+                tong += JsonDatas[i].Value;
+            }
+            for (var i = 0; i < JsonDatas.length; i++) {
+                var per = (JsonDatas[i].Value / tong) * 100;
+                content += GenDataTable(JsonDatas[i].Label, JsonDatas[i].Value, per);
+            }
+            $("#dataTable").html(content);
+        } else {
+            var mess = 'Từ ' + $("#TUNAM").val() + ' đến ' + $("#DENNAM").val() + ' không có dữ liệu thống kê';
+            $("#MessEmpty").css("display", "block");
+            $("#mess").html(mess);
+            $("#div-thongke").css("display", "none");
+        }
+
+
+
+
+        var myPie;
+        $("#btn-submit").click(function () {
+            if (checkDate()) {
+
+                $.ajax({
+                    url: '@Url.Action("GetThongKeNam", "ReportVanBanDi", new { @Area = "ReportVanBanDiArea" })',
+                    data: { "start": $("#TUNAM").val(), "end": $("#DENNAM").val() },
+                    type: "post",
+                    async: false,
+                    success: function (rs) {
+                        if (myPie != null) {
+                            myPie.destroy();
+                        }
+                        if (rs.length > 0) {
+                            $("#MessEmpty").css("display", "none");
+                            $("#div-thongke").css("display", "block");
+
+                            myPie = new Chart(document.getElementById("barChart"), getConfig(rs));
+                            var content = "";
+                            var tong = 0;
+                            for (var i = 0; i < rs.length; i++) {
+                                tong += rs[i].Value;
+                            }
+                            for (var i = 0; i < rs.length; i++) {
+                                var per = (rs[i].Value / tong) * 100;
+                                content += GenDataTable(rs[i].Label, rs[i].Value, per);
+                            }
+                            $("#dataTable").html(content);
+                        } else {
+                            var mess = 'Từ ' + $("#TUNAM").val() + ' đến ' + $("#DENNAM").val() + ' không có dữ liệu thống kê';
+                            $("#MessEmpty").css("display", "block");
+                            $("#mess").html(mess);
+                            $("#div-thongke").css("display", "none");
+
+                        }
+
+                    },
+                    error: function () {
+                        NotiError("Có lỗi");
+                    }, complete: function () {
+                        $('.progress-bar').progressbar({
+                            display_text: 'fill'
+                        });
+                    }
+                });
+
+            }
+
+        })
+
+        var PieConfig;
+
+        var randomScalingFactor = function () {
+            return Math.round(Math.random() * 100);
+            //return 0;
+        };
+        var randomColorFactor = function () {
+            return Math.round(Math.random() * 255);
+        };
+        var randomColor = function (opacity) {
+            return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',' + (opacity || '.3') + ')';
+        };
+    }
+
+    function checkDate() {
+        var required = requiredFieldForFormId("form-search-nam");
+        if (required) {
+            var dateStart = parseInt($("#TUNAM").val());
+            var dateEnd = parseInt($("#DENNAM").val());
+            if (dateStart <= dateEnd) {
+                return true;
+            } else {
+                NotiError("Có lỗi, vui lòng kiểm tra lại thông tin nhập");
+                return false;
+            }
+        }
+        return false;
+
+    }
+
+    function GenDataTable(name,sl, per) {
+        var tr = "<tr><td><b>" + name + "</b></td><td>" + sl + "</td><td style='width:40%'><div class='progress'>"
+            + "<div class='progress-bar bg-color-teal' role='progressbar' style='width: "+per+"%'>" +  "</div></div></td></tr>";
+        return tr;
+    }
+
+
+
+
+
+
+    function getConfig(JsonDatas) {
+        var PieConfig;
+        var colors = [];
+        var datas = [];
+        var labels = [];
+        var dataBar = [];
+        var item = {};
+        for (var i = 0; i < JsonDatas.length; i++) {
+            item = {
+                label: JsonDatas[i].Label,
+                backgroundColor: getColor(i),
+                data: [JsonDatas[i].Value]
+            }
+            dataBar.push(item);
+            colors.push(getColor(i));
+            datas.push(JsonDatas[i].Value);
+            labels.push(JsonDatas[i].Label);
+        }
+
+
+        //Dạng bánh
+        //PieConfig = {
+        //    type: 'pie',
+        //    data:
+        //        {
+        //        datasets: [{
+        //            data: datas,
+        //            backgroundColor: colors,
+        //        }],
+        //        labels: labels
+        //    },
+        //    options: {
+        //        responsive: true,
+
+        //        title: {
+        //            display: true,
+        //            text: 'Thống kê theo loại từ ' + $("#TUNAM").val() + ' đến ' + $("#DENNAM").val()
+        //        }
+
+        //    }
+        //};
+
+
+
+        PieConfig = {
+            type: 'bar',
+            data:
+                {
+                    datasets: dataBar,
+                    labels:[" "]
+            },
+            options: {
+                responsive: true,
+
+                title: {
+                    display: true,
+                    text: 'Thống kê theo loại từ ' + $("#TUNAM").val() + ' đến ' + $("#DENNAM").val(),
+                },
+                scales: {
+                    //xAxes: [{
+                    //    ticks: {
+                    //        stepSize: 10,
+
+                    //    },
+                    //    stacked: true,
+
+                    //}],
+                    yAxes: [{
+
+                        //stacked: true,
+                        display: true,
+                        ticks: {
+                            beginAtZero: true,
+                            steps: 10,
+                            stepValue: 5,
+                            min: 0
+                        }
+
+                    }]
+                }
+
+            }
+        };
+        return PieConfig
+    }
+
+
+
+
+
+    var pagedestroy = function () {
+        myPie.destroy();
+        PieConfig = null;
+    }
+    loadScript("js/plugin/moment/moment.min.js", function () {
+        loadScript("js/plugin/chartjs/chart.min.js", function () {
+
+                loadScript("js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js", pagefunction);
+
+        })
+    })
+</script>

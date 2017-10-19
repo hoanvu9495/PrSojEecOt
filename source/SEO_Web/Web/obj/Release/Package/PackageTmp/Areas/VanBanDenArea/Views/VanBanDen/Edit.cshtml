@@ -1,0 +1,312 @@
+﻿@using Web.FwCore
+@using Business.Business
+@using Business.CommonBusiness
+@using Web.Common
+@using Web.Models
+@model Web.Areas.VanBanDenArea.Models.VanBanDenEditViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    ViewBag.Title = "Cập nhật văn bản đến";
+}
+@*<link rel="stylesheet" type="text/css" href="/Content/Custom/css/van_ban_den/van_ban_den.css">
+<script src="~/Scripts/tiny_mce/tinymce.min.js"></script>*@
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+<style>
+    /*.e-input {
+        height: 30px;
+    }*/
+
+    /*.select2-hidden-accessible {
+        display: block;
+    }*/
+    .ms-drop {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+        width: 100%;
+        padding: 0px;
+    }
+
+    .ms-parent {
+        width: 100%;
+    }
+
+    .ms-choice > span {
+        width: 100%;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .control-label {
+        padding-top: 7px;
+    }
+</style>
+<div class="SearchCriterial clearfix hot-news-list-2">
+    <div class="jarviswidget" id="wid-id-0">
+        <header role="heading">
+            <span class="widget-icon"> <i class="fa fa-file-image-o txt-color-darken"></i> </span>
+            <h2 class="hidden-xs hidden-sm">Cập nhật văn bản đến</h2>
+            <ul class="nav nav-tabs pull-right in" id="myTab">
+                <li class="active">
+                    <a data-toggle="tab" href="#s1" aria-expanded="true">
+                        <i class="fa fa-crop text-success"></i>
+                        <span class="hidden-mobile hidden-tablet">Thông tin chính</span>
+                    </a>
+                </li>
+            </ul>
+            <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span>
+        </header>
+        <div role="content">
+            <div class="widget-body no-padding">
+                <form class="smart-form" id="frmVanBanDenUpdate" method="post" action="/VanBanDenArea/VanBanDen/UpdateVanBanDen" enctype="multipart/form-data" onsubmit="return submitAction();">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ID" value="@Model.vanBanDen.ID">
+                    @Html.Partial("_EditThongTinChinhVanBan")
+                    <div class="form-actions center">
+                        <center>
+                            <button class="btn btn-primary" id="btnSave" type="submit" style="padding:6px 12px !important">
+                                Lưu văn bản
+                            </button>
+                            <a class="btn btn-default" href="#VanBanDenArea/VanBanDen" style="padding:6px 12px !important">
+                                Quay lại
+                            </a>
+                        </center>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal--insert-donvi-banhanh" role="dialog">
+    <div class="modal-dialog">
+        <div class=" modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title">Thêm cơ quan ban hành văn bản đến</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveDonViBanHanh()">
+                    <i class="fa fa-save"></i>
+                    Lưu
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+</div>
+
+<script>
+    pageSetUp();
+    var donvibh_root;
+    var $emptyStr = '';
+    //chosen setup
+    //$('select').chosen({
+    //   width: '100%'
+    //});
+    //datepicker setup
+    var pageFunction = function () {
+        $(".datepicker1").datepicker({
+            dateFormat: 'dd/mm/yy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-20:+20"
+        });
+
+        $('#COQUANBANHANH_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn cơ quan ban hành"
+
+        });
+        $('#LOAIVANBAN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn loại văn bản"
+
+        });
+        $('#NHOMSOVANBAN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn cơ quan ban hành"
+
+        });
+        $('#SOVANBANDEN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn sổ văn bản đến"
+
+        });
+        $('#DOKHAN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn độ khẩn"
+
+        });
+        $('#DOMAT_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn độ mật"
+
+        });
+
+    }
+    $('#NHOMSOVANBAN_ID').on('change', function () {
+        var value = $(this).val() !== '' ? parseInt($(this).val()) : 0;
+        if (value > 0) {
+            $.ajax({
+                url: '/VanBanDenArea/VanBanDen/ChangeNhomSoVBDen',
+                type: 'post',
+                data: { id: value },
+                cache: false,
+                dataType: 'html',
+                success: function (result) {
+                    $('#SOVANBANDEN_ID').html(result);
+                    $('#SOVANBANDEN_ID').trigger("chosen:updated");
+                }, error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+        } else {
+            $('#SOVANBANDEN_ID').html($emptyStr);
+            $('#SOVANBANDEN_ID').trigger('chosen:updated');
+            $('#SODEN').val($emptyStr);
+        }
+    });
+
+    $('#SOVANBANDEN_ID').on('change', function () {
+        var soDen = $('#SOVANBANDEN_ID option:selected').data('soden') == null ? $emptyStr : $('#SOVANBANDEN_ID option:selected').data('soden');
+
+        $("#SODEN").val(parseInt(soDen) + 1);
+    });
+
+    // process add donvi ban hanh
+    $("#btnSave_donvi_ban_hanh").on('click', function () {
+        if ($("#ADD_MORE_DONVIBANHANH").val().trim() == "") {
+            $("#ERR_ADD_MORE_DONVIBANHANH").html("Bạn phải điền cơ quan ban hành");
+            $("#ADD_MORE_DONVIBANHANH").focus();
+        } else {
+            $("#DONVIBANHANHROOT").prepend(
+                '<div id="SPAN_COQUANBANHANHTEXT">' + $("#ADD_MORE_DONVIBANHANH").val().trim() + '<a style="margin-left: 20px" href="javascript:void(0)" onclick="removeDVBH()">Xóa</a></div> '
+                );
+            $("#CONQUANBANHANHSELECTLIST").hide();
+            $("#COQUANBANHANHTEXT").val($("#ADD_MORE_DONVIBANHANH").val().trim());
+            $("#add_don_vi_ban_hanh").modal("hide");
+        }
+    });
+    //end
+    //function to validate and save form
+
+    function submitAction() {
+        var err = 0;
+        var valid_Required = requiredFieldForFormId('frmVanBanDenCreate');
+        if (!valid_Required) {
+            err += 1;
+        }
+        var valid_date = ValidateFieldDate('frmVanBanDenCreate');
+        if (!valid_date) {
+            err += 1;
+        }
+        if (err == 0) {
+            return true;
+        } else {
+            NotiError("Có lỗi, Vui lòng kiểm tra lại");
+            return false;
+
+        }
+
+    };
+
+    //function AddMoreDonViBanHanh() {
+    //    $("#ADD_MORE_DONVIBANHANH").val("");
+    //    $("#add_don_vi_ban_hanh").modal("show");
+    //}
+    ////remove don vi ban hanh
+    //function removeDVBH() {
+    //    $("#COQUANBANHANHTEXT").val("");
+    //    $("#SPAN_COQUANBANHANHTEXT").remove();
+    //    $("#CONQUANBANHANHSELECTLIST").show();
+    //}
+
+    function openModalInsertDonViBanHanh() {
+        $.ajax({
+            url: '@Url.Action("ModalCreateDonViBanHanh", "HscvDonViBanHanh", new { @area = "HscvDonViBanHanhArea" })',
+            dataType: 'html',
+            success: function (view) {
+                $('#modal--insert-donvi-banhanh .modal-body').html(view);
+                $('#modal--insert-donvi-banhanh').modal('show');
+            }, error: function (err) {
+                console.log("Có lỗi :" + err.responstText);
+            }
+        })
+    }
+
+    function setTextForErrorSpan(id, value) {
+        document.getElementById(id).innerHTML = value;
+    }
+
+    function saveDonViBanHanh() {
+        var canCreate = true;
+        var tenDonViBanHanh = document.getElementById('MODAL_TEN_DONVI').value.trim();
+        if (tenDonViBanHanh === '') {
+            setTextForErrorSpan("ERR_MODAL_TENDONVI", $infoRequired);
+            canCreate = false;
+        } else {
+            var existed = $('#COQUANBANHANH_ID option').filter(function () {
+                return $(this).text().trim().replace("|", "").replace(/-/g, "").toLowerCase() === tenDonViBanHanh.toLowerCase();
+            });
+            if (existed.length > 0) {
+                setTextForErrorSpan('ERR_MODAL_TENDONVI', 'Đơn vị đã tồn tại');
+                canCreate = false;
+            }
+        }
+        var obj = {
+            TENDONVI: tenDonViBanHanh,
+            MADONVI: document.getElementById('MODAL_MA_DONVI').value.trim(),
+            PARENT_ID: document.getElementById('MODAL_DONVI_CHA').value.trim(),
+            DIACHI: document.getElementById('MODAL_DIACHI').value.trim()
+        }
+        if (canCreate) {
+            $.ajax({
+                url: '@Url.Action("InsertAndGetDropDownListDonViBanHanh", "HscvDonViBanHanh", new { @area = "HscvDonViBanHanhArea" })',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                success: function (result) {
+                    NotiSuccess('Thêm mới đơn vị ban hành thành công!');
+                    $('#modal--insert-donvi-banhanh').modal('hide');
+                    setTimeout(function () {
+                        $("#COQUANBANHANH_ID").html(result.listHTML);
+                        $("#COQUANBANHANH_ID").trigger('chosen:updated');
+                    }, 500);
+                }, error: function (result) {
+                    $('#modal--insert-donvi-banhanh').modal('hide');
+                    console.log(err.responstText);
+                }
+            })
+        }
+    }
+    $(document).ready(function () {
+        drawBreadCrumbManual("Quản lý văn bản/ Văn bản đến/Cập nhật Thông tin văn bản đến");
+        $("#VANBANDEN").addClass("open");
+        $("#VANBANDEN ul").css("display", "block")
+    });
+    loadScript("Scripts/multiple-select.js", pageFunction);
+
+</script>

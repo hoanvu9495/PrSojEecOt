@@ -1,0 +1,175 @@
+﻿@using Model.eAita;
+@using Web.FwCore;
+@using Web.Common;
+@using Web.Areas.MarkItemArea.Models;
+@{
+    ViewBag.Title = "[eAita] Văn bản đi tôi theo dõi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<WF_TRANGTHAI> lstSteps = new List<WF_TRANGTHAI>();
+    lstSteps = (List<WF_TRANGTHAI>)SessionManager.GetValue("ListBuocChuyenTrangThaiVanBanDi");
+    MarkItemViewModel mark_model = new MarkItemViewModel();
+    mark_model.ITEM_TYPE = LOAITAILIEU.VANBANDI;
+    mark_model.RELOAD_FUNCTION = "reloadGrid";
+}
+<style>
+    .e-input {
+        height: 30px;
+    }
+
+    input[type="radio"], input[type="checkbox"] {
+        margin: 3px 0 0;
+    }
+
+    label {
+        font-weight: normal !important;
+    }
+
+    table.webGrid tr.head th, table.webGrid tr.head td {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    table.webGrid tr td {
+        border-left: 0;
+        border-right: 0;
+    }
+</style>
+<div id="menu-toolbar" class="date-time">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none; border:0px;">
+        <div class="menu-left">
+            <div class="btnAddNew" style="margin-right:10px;">
+                <a href="/vanbandiarea/vanbandi/create">
+                    <span>Văn bản đi Mới</span>
+                </a>
+            </div>
+            <div style="margin-bottom: 10px;float: left;margin-right:10px;">
+                @Html.Partial("~/Areas/MarkItemArea/Views/_ActionMarkItem.cshtml", mark_model)
+            </div>
+            <button style="margin-bottom: 10px;" type="button" class="b_btn b_btn-default vbdi_search">Tìm kiếm nâng cao</button>
+        </div>
+        <div class="menu-right">
+            <div class="btn-group" role="group">
+                @*<div class="dropdown-toggle btnHienThi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer; padding:0px;">
+                        <a href="javascript:void(0)">
+                            <span>Hiển thị</span>
+                        </a>
+                    </div>*@
+                @*<div id="dropdown-menu-display" class="dropdown-menu">
+                        <ul>
+                            <li><a href="javascript:void(0)">Logout</a></li>
+                            <li><a href="javascript:void(0)">Settings display</a></li>
+                        </ul>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div id="block-search-form">
+        <div id="search-form">
+            <input type="text" placeholder="Từ khóa tìm kiếm" value="" name="txtQuickSearch" id="txtQuickSearch" />
+            <input type="button" value="search" name="btnQuickSearch" id="btnQuickSearch" />
+        </div>
+    </div>
+    <div class="left-content block" style="overflow-y: auto;">
+        <ul class="admin-menu">
+            <li class="menu" style="z-index:10">
+                <a href="/VanBanDiArea/VanBanDi/Index">Tất cả Văn bản đi</a>
+                <ul class="admin-menu-child">
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanToiDaKy">Văn bản đi tôi đã ký</a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanToiTheoDoi"><b>Văn bản đi tôi theo dõi chính</b></a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanToiSoanThao">Văn bản đi tôi soạn thảo</a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanPhongToiTheoDoi">Văn bản đi phòng tôi theo dõi</a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanPhongToiSoanThao">Văn bản đi phòng tôi soạn thảo</a>
+                    </li>
+                </ul>
+            </li>
+            @if (lstSteps != null && lstSteps.Count > 0)
+            {
+                <li class="menu">
+                    <a href="javascript:void(0)">Văn bản theo luồng xử lý</a>
+                    <ul class="admin-menu-child">
+                        @foreach (var item in lstSteps)
+                        {
+                            <li>
+                                <div class="">
+                                    <a href="/VanBanDiArea/VanBanDi/DanhSachVanBan/@item.ID">Văn bản đi @item.TENTRANGTHAI</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+            <li class="menu has-child" style="z-index:10">
+                <a href="/VanBanDenArea/VanBanDen/Index">Quản lý Văn bản đến</a>
+            </li>
+            <li class="menu has-child" style="z-index:10">
+                <a href="/CongViecArea/CongViec/Index">Quản lý Công việc</a>
+            </li>
+            <li class="menu has-child">
+                <a href="javascript:void(0)">Cấu hình</a>
+                <ul class="">
+                    <li class="menu">
+                        <div class="">
+                            <a href="/WorkFlowArea/WorkFlow/ChonLuongXuLy">Chọn luồng xử lý cho văn bản đi/đến</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="right-all-page">
+
+    <div class="right-content clearfix">
+        @*Tìm kiếm văn bản*@
+
+        <div class="clearfix">
+            @Html.Partial("_SearchVanBanDiToiTheoDoi")
+        </div>
+
+        @*Danh sách văn bản*@
+        @*<div class="clearfix hot-news-list-2 mgt20" style="margin-left:10px;margin-right:10px; min-height:500px;">
+            </div>*@
+        @Html.Partial("_SearchVanBanDiToiTheoDoiResult")
+    </div>
+</div>
+
+<script type="text/javascript">
+    function reloadGrid() {
+        //location.reload();
+        $("#reload").val("1");
+        $("#frmSearh").submit();
+    };
+    $('#txtQuickSearch').keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            $("#keyword").val($(this).val());
+            $("#mark_item").val($("#list_mark_item").multipleSelect("getSelects"));
+            $("#reload").val("0");
+            $("#frmSearh").submit();
+        }
+    });
+    $("#btnQuickSearch").click(function () {
+        $("#keyword").val($('#txtQuickSearch').val());
+        $("#mark_item").val($("#list_mark_item").multipleSelect("getSelects"));
+        $("#reload").val("0");
+        $("#frmSearh").submit();
+    });
+</script>
+
+

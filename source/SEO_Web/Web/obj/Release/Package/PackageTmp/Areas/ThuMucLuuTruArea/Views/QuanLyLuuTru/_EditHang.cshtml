@@ -1,0 +1,300 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.QuanLyHangModel
+@using (Ajax.BeginForm("SaveHang", "QuanLyLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmThuMucCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm mới hàng lưu trữ</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td>
+                            Tòa nhà:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix">
+                                @Html.DropDownList("TOANHA_ID", new SelectList(Model.lstToaNha, "Value", "Text", Model.HANG.TOANHA_ID), "[---Lựa chọn tòa nhà---]", new { @style = "", @id = "TOANHA_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TOANHA_NULL">Bạn cần phải chọn tòa nhà</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Tên tầng:<span style="color:red;">*</span>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" id="TANGLUUTRU">
+                                @Html.DropDownList("TANG", new SelectList(Model.lstTang, "Value", "Text", Model.HANG.TANG_ID), "[---Lựa chọn tầng---]", new { @style = "", @id = "TANG_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TANG_NULL">Bạn cần phải chọn tầng lưu trữ</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Tên phòng:<span style="color:red;">*</span>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" id="PHONGLUUTRU">
+                                @Html.DropDownList("PHONG_ID", new SelectList(Model.lstPhong, "Value", "Text", Model.HANG.PHONG_ID), "[---Lựa chọn phòng---]", new { @style = "", @id = "PHONG_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="PHONG_NULL">Bạn cần phải chọn phòng lưu trữ</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Tên kệ:<span style="color:red;">*</span>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" id="KELUUTRU">
+                                @Html.DropDownList("KE_ID", new SelectList(Model.lstKe, "Value", "Text", Model.HANG.KE_ID), "[---Lựa chọn kệ---]", new { @style = "", @id = "KE_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="KE_NULL">Bạn cần phải chọn kệ lưu trữ</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100px">
+                            Mã hàng:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" value="@Model.HANG.MAHANG" class="form-control" name="MAHANG" id="MAHANG" placeholder="Nhập mã hàng lưu trữ" maxlength="10">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="MAHANG_NULL">Mã hàng lưu trữ không được để trống</span>
+                            <span style="color: red; display: none" id="MAHANG_ERROR">Mã hàng lưu trữ đã tồn tại</span>
+                            <span style="color: red; display: none" id="MAHANG_HTML">Mã hàng chỉ được chứa ký tự chữ và số</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100px">
+                            Tên hàng:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" value="@Model.HANG.TENHANG" name="TENHANG" id="TENHANG" placeholder="Nhập tên hàng lưu trữ" maxlength="255">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TENHANG_NULL">Tên hàng lưu trữ không được để trống</span>
+                            <span style="color: red; display: none" id="TENHANG_ERROR">Tên hàng lưu trữ đã tồn tại</span>
+                            <span style="color: red; display: none" id="TENHANG_HTML">Tên hàng lưu trữ không được chứa ký tự HTML(<>)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100px">
+                            Mô tả:
+                        </td>
+                        <td>
+                            <textarea style="resize:vertical" class="form-control" name="MOTA" id="MOTA" placeholder="Nhập mô tả hàng lưu trữ" maxlength="255">@Model.HANG.MOTA</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color: red; display: none" id="MOTA_HTML">Mô tả không được chứa ký tự HTML(<>)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Trạng thái:
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix">
+                                <select name="TRANGTHAI">
+                                    @if (Model.HANG.TRANGTHAI.Value)
+                                    {
+                                        <option value="true" selected>Sử dụng</option>
+                                        <option value="false">Không sử dụng</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">Sử dụng</option>
+                                        <option value="false" selected>Không sử dụng</option>
+                                    }
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btnSave">Cập nhật</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" value="@Model.HANG.ID" name="ID" />
+    <input type="hidden" id="MAHANG_CHECK" value="@Model.MAHANG" />
+    <input type="hidden" id="TENHANG_CHECK" value="@Model.TENHANG" />
+}
+<script>
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Đã cập nhật hàng lưu trữ!',
+        });
+
+        $("#EditHang").modal("hide");
+        reloadGrid();
+
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $(function () {
+        $("#MAHANG").blur(function () {
+            if ($(this).val().trim() != "") {
+                $("#MAHANG_NULL").hide();
+                $("#MAHANG_HTML").hide();
+                $("#MAHANG_ERROR").hide();
+            }
+        });
+        $("#TENHANG").blur(function () {
+            if ($(this).val().trim() != "") {
+                $("#TENHANG_NULL").hide();
+                $("#TENHANG_HTML").hide();
+                $("#TENHANG_ERROR").hide();
+            }
+        });
+        var TenHang = $("#TENHANG").val();
+        var MaHang = $("#MAHANG").val();
+        $("#TOANHA_ID").change(function () {
+            if ($("#TOANHA_ID").val() != "") {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("LoadTangByToaNha", "QuanLyLuuTru")',
+                    data: {
+                        TOANHA: $("#TOANHA_ID").val()
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        $("#TANGLUUTRU").html(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            } else {
+                $("#TANGLUUTRU").html("");
+            }
+        });
+
+        $("#btnSave").click(function () {
+            if ($("#TOANHA_ID").val().trim() == "") {
+                $("#TOANHA_NULL").show();
+                return false;
+            } else {
+                $("#TOANHA_NULL").hide();
+            }
+            if ($("#TANG_ID").val().trim() == "") {
+                $("#TANG_NULL").show();
+                return false;
+            } else {
+                $("#TANG_NULL").hide();
+            }
+            if ($("#PHONG_ID").val().trim() == "") {
+                $("#PHONG_NULL").show();
+                return false;
+            } else {
+                $("#PHONG_NULL").hide();
+            }
+            if ($("#KE_ID").val().trim() == "") {
+                $("#KE_NULL").show();
+                return false;
+            } else {
+                $("#KE_NULL").hide();
+            }
+            if ($("#MAHANG").val().trim() == "") {
+                $("#MAHANG_NULL").show();
+                $("#MAHANG").focus();
+                return false;
+            } else {
+                $("#MAHANG_NULL").hide();
+
+            }
+            if (/^[a-z0-9]*$/i.test($("#MAHANG").val()) == false) {
+                $("#MAHANG").focus();
+                $("#MAHANG_HTML").show();
+                return false;
+            } else {
+                $("#MAHANG_HTML").hide();
+                if (MaHang != $("#MAHANG").val()) {
+                    var Ma = $("#MAHANG_CHECK").val();
+                    var lstMa = Ma.split(",");
+
+                    if ($.inArray($("#MAHANG").val().toLowerCase(), lstMa) != -1) {
+                        $("#MAHANG").focus();
+                        $("#MAHANG_ERROR").show();
+                        return false;
+                    } else {
+                        $("#MAHANG_ERROR").hide();
+                    }
+                }
+            }
+            if ($("#TENHANG").val().trim() == "") {
+                $("#TENHANG_NULL").show();
+                $("#TENHANG").focus();
+                return false;
+            } else {
+                $("#TENHANG_NULL").hide();
+                if (/<[a-z][\s\S]*>/i.test($("#TENHANG").val())) {
+                    $("#TENHANG").focus();
+                    $("#TENHANG_HTML").show();
+                    return false;
+                } else {
+                    $("#TENHANG_HTML").hide();
+                    if (TenHang != $("#TENHANG").val()) {
+                        var Ma = $("#TENHANG_CHECK").val();
+                        var lstMa = Ma.split(",");
+
+                        if ($.inArray($("#TENHANG").val().toLowerCase(), lstMa) != -1) {
+                            $("#TENHANG").focus();
+                            $("#TENHANG_ERROR").show();
+                            return false;
+                        } else {
+                            $("#TENHANG_ERROR").hide();
+                        }
+                    }
+                }
+            }
+            return true;
+        });
+    });
+</script>

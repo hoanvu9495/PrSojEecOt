@@ -1,0 +1,207 @@
+﻿@{
+    ViewBag.Title = "Quản lý danh mục thông tin tài liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.FwCore
+@model Web.Areas.ThuMucLuuTruArea.Models.DanhMucThongTinModel
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+    .menu-left-content {
+        height: 494px;
+        overflow-y: auto;
+    }
+    .THONGTIN {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 180px !important;
+        text-overflow: ellipsis;
+    }
+
+    .TAILIEU {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 180px !important;
+        text-overflow: ellipsis;
+    }
+
+    .DIADIEM, .GHICHU {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 150px !important;
+        text-overflow: ellipsis;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" style="width:550px">
+            <h1>Chi tiết tờ trình danh mục thông tin tài liệu</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;margin-right:50px" type="button" onclick="location.href='@Url.Action("TongHopDanhMuc", "DanhMucThongTinCuaCuc")'" class="b_btn b_btn-default vbdi_search">Tổng hợp danh mục thông tin</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+    <table style="width:90%;margin:0 auto">
+        <tr>
+            <td style="text-align:center;font-size:14px">
+                CỤC TIN HỌC HÓA
+            </td>
+            <td style="text-align:center">
+                <strong style="font-size:14px">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center">
+                <u><strong>VĂN PHÒNG</strong></u>
+            </td>
+            <td style="text-align: center; font-size: 14px">
+                <u><strong>Độc lập - Tự do - Hạnh Phúc</strong></u>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td style="text-align: center; font-size: 14px">Hà Nội, ngày @Model.DANHMUC_TRINHCUC.NGAYGUI.Value.Day tháng @Model.DANHMUC_TRINHCUC.NGAYGUI.Value.Month năm @Model.DANHMUC_TRINHCUC.NGAYGUI.Value.Year</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center;font-size:14px;font-weight:bold"><strong>DANH SÁCH DANH MỤC THÔNG TIN TÀI LIỆU QUÝ @Model.DANHMUC_TRINHCUC.QUY NĂM @Model.DANHMUC_TRINHCUC.NAM</strong></td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        @*<tr>
+            <td colspan="2"><span class="DONVI_NULL" style="display:none;font-weight:bold">Danh sách đơn vị chưa trình danh mục thông tin tài liệu</span></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <ul style="color:red;display:none" id="DONVI_DISPLAY"></ul>
+            </td>
+        </tr>*@
+        @*<tr>
+            <td colspan="2">
+                Quý: @Model.DANHMUC_TRINHCUC.QUY
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                Năm: @Model.DANHMUC_TRINHCUC.NAM
+            </td>
+        </tr>*@
+        <tr><td colspan="2">&nbsp;</td></tr>
+        @*<tr>
+            <td>
+                <div style="float:left" class="first">
+                    Nội dung:
+                </div>
+                <div style="float:left">
+                    &nbsp; @Model.DANHMUC_TRINHCUC.NOIDUNG
+                </div>
+            </td>
+        </tr>*@
+        <tr>
+            <td valign="top">
+                <div style="float:left">
+                    <span style="font-weight:bold">Nội dung: &nbsp; </span>
+                </div>
+                <div style="float:left">
+                    @Model.DANHMUC_TRINHCUC.NOIDUNG
+                </div>
+                <br />
+                <br />
+                <div>
+                    <div style="float:left">
+                        <span style="font-weight:bold">Quý: &nbsp; </span>
+                    </div>
+                    <div style="float:left">
+                        @Model.DANHMUC_TRINHCUC.QUY
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div>
+                    <div style="float:left">
+                        <span style="font-weight:bold">Năm: &nbsp; </span>
+                    </div>
+                    <div style="float:left">
+                        @Model.DANHMUC_TRINHCUC.NAM
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div id="DONVI_CHUATRINH">
+                    <span class="DONVI_NULL" style="display:none;font-weight:bold">Danh sách đơn vị chưa trình danh mục thông tin tài liệu</span>
+                    <ul style="color: red; display: none; height: 100px; overflow-y: auto" id="DONVI_DISPLAY"></ul>
+                </div>
+            </td>
+        </tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+        <tr>
+            <td colspan="2" id="tbl-ThongTin"></td>
+        </tr>
+    </table>
+    <table style="width:60%;margin:0 auto;margin-bottom:50px">
+        <tfoot style="margin-bottom:100px">
+            <tr>
+                <td colspan="2" style="text-align:center">
+                    <button class="btn btn-success" type="button" onclick="location.href = '/DanhMucThongTinCuaCuc/ExportFile?QUY=@(Model.DANHMUC_TRINHCUC.QUY)&NAM=@(Model.DANHMUC_TRINHCUC.NAM)'">Công bố danh mục thông tin, tài liệu</button>
+                    <button class="btn btn-default" onclick="location.href='@Url.Action("DanhSachDaTrinh", "DanhMucThongTinCuaCuc")'">Quay lại</button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+    $(function () {
+        $.ajax({
+            url: '@Url.Action("DanhSachThongTin", "DanhMucThongTinCuaCuc")',
+            type: 'POST',
+            cache: false,
+            data: {
+                DANHMUC: '@Model.DANHMUC_TRINHCUC.ID'
+            },
+            success: function (data) {
+                $("#tbl-ThongTin").html(data);
+                DonViChuaTrinh();
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    });
+    function DonViChuaTrinh() {
+        $.ajax({
+            url: '@Url.Action("GetDonVi", "DanhMucThongTinCuaCuc")',
+            type: 'POST',
+            cache: false,
+            data: {
+                QUY: '@Model.DANHMUC_TRINHCUC.QUY',
+                NAM: '@Model.DANHMUC_TRINHCUC.NAM',
+            },
+            success: function (data) {
+                $("#DONVI_DISPLAY").html(data);
+                $("#DONVI_DISPLAY").show();
+                $(".DONVI_NULL").show();
+                $("#DONVI_CHUATRINH").attr("class", "clearfix hot-news-list-2");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>

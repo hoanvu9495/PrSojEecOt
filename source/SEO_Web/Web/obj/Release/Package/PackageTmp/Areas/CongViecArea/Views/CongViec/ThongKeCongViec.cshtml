@@ -1,0 +1,410 @@
+﻿@using Model.eAita;
+@using Web.Models;
+@using Web.FwCore;
+@using Web.Common;
+@using Web.Areas.CongViecArea.Models;
+@using Web.Common;
+@model ThongKeCongViecViewModel
+@{
+    ViewBag.Title = "Quản lý Công việc | Smart DMS | eGovOffice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    #menu-toolbar .btnAddNew {
+        margin-right: 10px;
+    }
+
+    #menu-toolbar .right-all-page {
+        background: none;
+        border: 0;
+    }
+
+    #frmReport .ms-drop input[type="radio"], #frmReport .ms-drop input[type="checkbox"] {
+        margin: 3px;
+    }
+
+    label {
+        font-weight: normal !important;
+    }
+
+    table.webGrid tr.head th, table.webGrid tr.head td {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    table.webGrid tr td {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    #block--mark-item {
+        margin-bottom: 10px;
+        float: left;
+        margin-right: 10px;
+    }
+
+    .vbdi_search {
+        margin-bottom: 10px;
+    }
+
+    #menu-middle-left .left-content {
+        overflow: auto;
+    }
+
+    #block--congviec-statistic {
+        display: block;
+    }
+
+    #btnCreateStatistic {
+        background-color: #336699;
+        border: none;
+        width: 100px;
+        color: white;
+    }
+
+    #block--form-report-buttons {
+        text-align: center;
+        margin: 0 0 20px 0;
+        /*margin: 20px 0 0 0;*/
+    }
+
+    .height-10 {
+        height: 10px;
+    }
+
+    .height-20 {
+        height: 20px;
+    }
+
+    .e-input {
+        height: 30px !important;
+    }
+
+    /*#QUERY_NGUOITHAMGIA {
+        width: 80%;
+    }*/
+
+    #frmReport table {
+        width: 65%;
+        margin: 0 auto;
+    }
+
+        #frmReport table tr td:nth-child(2n) {
+            min-width: 290px;
+        }
+
+        #frmReport table input[type=text][class~=datepicker] {
+            width: 233px;
+        }
+
+        #frmReport table .input-field4 {
+            margin: 0 0 0 10px;
+        }
+
+        #frmReport table #QUERY_PHONGTHAMGIA {
+            width: 80%;
+        }
+
+    #CHONPHONGTHAMGIA, #XOAPHONGTHAMGIA {
+        margin: 0 0 0 10px;
+    }
+
+    .radio-inline {
+        width: 50px;
+        margin: 0 0 0 10px;
+    }
+
+    #row--query-by-month, #row--query-by-year {
+        display: none;
+    }
+</style>
+<div id="menu-toolbar" class="date-time">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+    <div class="right-all-page">
+        <div class="menu-left">
+            @if (Model.HAS_ROLE_GIAOVIEC)
+            {
+                <div class="btnAddNew">
+                    <a href="@Url.Action("Create")">
+                        <span>Giao việc</span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="btnAddNew">
+                    <a href="/congviecarea/congviec/create?myjob=1">
+                        <span>Việc cá nhân</span>
+                    </a>
+                </div>
+            }
+            <div id="block--mark-item">
+            </div>
+        </div>
+        <div class="menu-right">
+            @if (Model.HAS_ROLE_GIAOVIEC)
+            {
+                <div class="btnAddNew">
+                    <a href="/congviecarea/congviec/create?myjob=1">
+                        <span>Việc cá nhân</span>
+                    </a>
+                </div>
+            }
+            <div class="btn-group" role="group">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div id="block-search-form">
+        <div id="search-form">
+            <input type="text" placeholder="Từ khóa tìm kiếm" value="" name="txtQuickSearch" id="txtQuickSearch" />
+            <input type="button" value="search" name="btnQuickSearch" id="btnQuickSearch" />
+        </div>
+    </div>
+    <div class="left-content block">
+        @Html.Partial("_MenuCongViec", Model.CountModel, new ViewDataDictionary { { "ROLE_GIAO_VIEC", Model.HAS_ROLE_GIAOVIEC }, { "IsStatistic", true } });
+    </div>
+</div>
+<div class="right-all-page">
+    <div class="right-content clearfix">
+        <div class="clearfix">
+            <h3 class="group-tittle">
+                Thống kê công việc
+            </h3>
+            <div id="block--congviec-statistic">
+                @Html.AntiForgeryToken()
+                @using (Ajax.BeginForm("ThongKeCongViec", new { }, new AjaxOptions()
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            UpdateTargetId = "grid",
+        }, new { id = "frmReport" }))
+                {
+                    <table class="width-100">
+                        <tr class="height-20"></tr>
+                        <tr>
+                            <td>
+                                <input type="hidden" value="@StatisticCongViecConstant.BY_DAY" name="TYPE" id="TYPE" />
+                                <label class="lbl-search" for="QUERY_PHONGTHAMGIA">
+                                    Tìm theo :
+                                </label>
+                            </td>
+                            <td colspan="3">
+                                <label class="radio-inline ">
+                                    <input class="radio radio-ngay" type="radio" name="optradio" checked="checked">
+                                    Ngày
+                                </label>
+                                <label class="radio-inline ">
+                                    <input class="radio radio-thang" type="radio" name="optradio" value="">
+                                    Tháng
+                                </label>
+                                <label class="radio-inline ">
+                                    <input class="radio radio-nam" type="radio" name="optradio" value="">
+                                    Năm
+                                </label>
+                            </td>
+                        </tr>
+                        <tr class="height-10"></tr>
+                        <tr id="row--query-by-month">
+                            <td>
+                                <label for="QUERY_THANG" class="lbl-search">
+                                    Tháng :
+                                </label>
+                            </td>
+                            <td>
+                                <div class="input-field4 clearfix">
+                                    <select id="QUERY_THANG" name="QUERY_THANG">
+                                        @for (int i = 1; i <= 12; i++)
+                                        {
+                                            <option value="@i">Tháng @i</option>
+                                        }
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <label for="QUERY_NAM_THANG" class="lbl-search">
+                                    Năm :
+                                </label>
+                            </td>
+                            <td>
+                                <div class="input-field4 clearfix">
+                                    <select id="QUERY_NAM_THANG" name="QUERY_NAM_THANG">
+                                        @for (int i = DateTime.Now.Year - 50; i <= DateTime.Now.Year + 20; i++)
+                                        {
+                                            if (i == DateTime.Now.Year)
+                                            {
+                                                <option value="@i" selected="selected">@i</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="row--query-by-day" class="query-by-day">
+                            <td>
+                                <label class="lbl-search" for="QUERY_NGAYBATDAU_FROM">
+                                    Ngày bắt đầu :
+                                </label>
+                            </td>
+                            <td>
+                                <input type="text" name="QUERY_NGAYBATDAU_FROM" id="QUERY_NGAYBATDAU_FROM" placeholder="Từ ngày" class="e-input mf10 datepicker" />
+                            </td>
+                            <td>
+                                <label for="QUERY_NGAYBATDAU_TO" class="lbl-search">
+
+                                </label>
+                            </td>
+                            <td>
+                                <input type="text" id="QUERY_NGAYBATDAU_TO" name="QUERY_NGAYBATDAU_TO" placeholder="Đến ngày" class="e-input mf10 datepicker" />
+                            </td>
+                        </tr>
+                        <tr class="height-10"></tr>
+                        <tr id="row--query-by-day" class="query-by-day">
+                            <td>
+                                <label class="lbl-search" for="QUERY_HANKETTHUC_FROM">
+                                    Hạn kết thúc :
+                                </label>
+                            </td>
+                            <td>
+                                <input type="text" name="QUERY_HANKETTHUC_FROM" id="QUERY_HANKETTHUC_FROM" placeholder="Từ ngày" class="e-input mf10 datepicker" />
+                            </td>
+                            <td>
+                                <label for="QUERY_HANKETTHUC_TO" class="lbl-search">
+
+                                </label>
+                            </td>
+                            <td>
+                                <input type="text" id="QUERY_HANKETTHUC_TO" name="QUERY_HANKETTHUC_TO" placeholder="Đến ngày" class="e-input mf10 datepicker" />
+                            </td>
+                        </tr>
+                        <tr id="row--query-by-year">
+                            <td>
+                                <label class="lbl-search" for="QUERY_NAM">
+                                    Năm :
+                                </label>
+                            </td>
+                            <td>
+                                <div class="input-field4 clearfix">
+                                    <select id="QUERY_NAM" name="QUERY_NAM">
+                                        @for (int i = DateTime.Now.Year - 50; i <= DateTime.Now.Year + 20; i++)
+                                        {
+                                            if (i == DateTime.Now.Year)
+                                            {
+                                        <option value="@i" selected="selected">@i</option>
+                                            }
+                                            else
+                                            {
+                                        <option value="@i">@i</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="height-10"></tr>
+                    </table>
+                    <div id="block--form-report-buttons">
+                        <input type="submit" value="Tạo thống kê" id="btnCreateStatistic" />
+                    </div>
+                }
+            </div>
+        </div><!--TÌM KIẾM CÔNG VIỆC-->
+        <div id="grid">
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var $emptyStr = "";
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-50:+20"
+        });
+        $('.radio-thang').on('change', function () {
+            if (this.checked) {
+                $('.query-by-day').hide();
+                $('#row--query-by-month').show();
+                $('#row--query-by-year').hide();
+                $('#TYPE').val('@StatisticCongViecConstant.BY_MONTH');
+            }
+        });
+        $('.radio-ngay').on('change', function () {
+            if (this.checked) {
+                $('.query-by-day').show();
+                $('#row--query-by-month').hide();
+                $('#row--query-by-year').hide();
+                $('#TYPE').val('@StatisticCongViecConstant.BY_DAY');
+            }
+        });
+        $('.radio-nam').on('change', function () {
+            if (this.checked) {
+                $('.query-by-day').hide();
+                $('#row--query-by-month').hide();
+                $('#row--query-by-year').show();
+                $('#TYPE').val('@StatisticCongViecConstant.BY_YEAR');
+            }
+        });
+
+        $('#btnCreateStatistic').on('click', function () {
+            if ($('.radio-ngay').is(':checked')) {
+                var ngayBatDauFrom = $('#QUERY_NGAYBATDAU_FROM').val().trim();
+                var ngayBatDauTo = $('#QUERRY_NGAYBATDAU_TO').val().trim();
+                var hanKetThucFrom = $('#QUERY_HANKETTHUC_FROM').val().trim();
+                var hanKetThucTo = $('#QUERY_HANKETTHUC_TO').val().trim();
+
+                if (hanKetThucFrom !== $emptyStr && checkDateTime(hanKetThucFrom) === false) {
+                    notif({
+                        msg: 'Nhập sai định dạng',
+                        position: 'bottom',
+                        type: 'error'
+                    });
+                    return false;
+                }
+                if (hanKetThucTo !== $emptyStr && checkDateTime(hanKetThucTo) === false) {
+                    notif({
+                        msg: 'Nhập sai định dạng',
+                        position: 'bottom',
+                        type: 'error'
+                    });
+                    return false;
+                }
+
+                if (ngayBatDau !==  $emptyStr && checkDateTime(ngayBatDau) === false) {
+                    notif({
+                        msg: 'Nhập sai định dạng',
+                        position: 'bottom',
+                        type: 'error'
+                    });
+                    return false;
+                }
+                if (ngayBatDauTo !== $emptyStr && checkDateTime(ngayBatDauTo) === false) {
+                    notif({
+                        msg: 'Nhập sai định dạng',
+                        position: 'bottom',
+                        type: 'error'
+                    });
+                    return false;
+                }
+            }
+        });
+    });
+    $('#QUERY_NAM_THANG,#QUERY_NAM').multipleSelect({
+        single: true,
+        filter: true
+    });
+</script>

@@ -1,0 +1,141 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Web.Areas.DMChucVuArea.Models.ChucVuViewModel
+
+<style type="text/css">
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+</style>
+@using (Ajax.BeginForm("SaveChucVu", "DMChucVu", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmChucVuCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Thêm mới chức vụ <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body" id="modal_body" style="overflow-x:hidden; overflow-y:hidden">
+        <div style="width:100%; margin:auto;">
+            <div style="overflow-x: hidden;">
+                <table>
+
+                    <tr>
+                        <td>
+                            <label class="lbl" for="CREATE_CHUCVU" style=" width: 150px;">Tên Chức Vụ:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("TEN_CHUCVU", "", new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "CREATE_CHUCVU" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="CREATE_CHUCVU_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập tên chức vụ </span>
+                            <span class="lb-Check" id="CREATE_CHUCVU_EXIST" style="margin-left: 0px; color: red;">Chức vụ đã tồn tại </span>
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td>
+                            <label class="lbl" for="CREATE_STATUS" style=" width: 150px;">Trạng Thái:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix width_233">
+                                @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text = "Có sử dụng", Value = "true" },
+                        new SelectListItem{ Text = "Không sử dụng", Value = "false" }
+                    })
+                            </div>
+                        </td>
+                    </tr>
+
+
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btnSave" style="border-radius: 3px;">
+                Lưu
+            </button>
+            <button type="button" class="btn btn-danger" onclick="OnClose()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+}
+<script>
+    function OnClose() {
+        $("#content_chucvu").html("");
+        $("#chucvu_dialog").modal("hide");
+    }
+
+
+    $("#CREATE_CHUCVU").focusout(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+
+        } else {
+            $("#CREATE_CHUCVU_NULL").hide();
+        }
+    });
+
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Tạo mới chức vụ thành công',
+        });
+        OnClose();
+        reloadGrid();
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $("#btnSave").click(function () {
+        $("#frmChucVuCreate").submit();
+    });
+    @*$(function () {
+        var tontai = false;
+        $("#btnSave").click(function () {
+            if ($("#CREATE_CHUCVU").val().trim() == "") {
+                $("#CREATE_CHUCVU").focus();
+                $("#CREATE_CHUCVU_NULL").show();
+                return false;
+            } else {
+                $("#CREATE_CHUCVU_NULL").hide();
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ValidateChucVu", "DMChucVu")',
+                data: {
+                    chucvu: $("#CREATE_CHUCVU").val()
+                },
+                cache: false,
+                dataType: "html",
+                success: function (data) {
+                    if (data == "existed") {
+                        $("#CREATE_CHUCVU").select();
+                        $("#CREATE_CHUCVU_EXIST").show();
+                        return false;
+                    } else {
+                        $("#CREATE_CHUCVU_EXIST").hide();
+                        $("#frmChucVuCreate").submit();
+                        return true;
+                    }
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+
+    });*@
+</script>
+

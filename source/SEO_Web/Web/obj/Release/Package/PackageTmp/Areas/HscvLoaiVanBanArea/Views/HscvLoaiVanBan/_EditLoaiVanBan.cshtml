@@ -1,0 +1,163 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model LOAIVANBANBO
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #EDIT_ID {
+        display: none;
+    }
+</style>
+@using (Ajax.BeginForm("SaveLoaiVanBan", "HscvLoaiVanBan", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmLoaiVanBanEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cập nhật độ ưu tiên công việc</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr style="height:20px"></tr>
+                    @Html.TextBox("ID", Model.ID, new { @style = "width: 233px;", maxlength = "50", @class = "e-input", @id = "EDIT_ID", @readonly = "readonly" })
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="EDIT_LOAIVANBAN" style=" width: 181px;">Loại văn bản:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("TENLOAIVANBAN", Model.TENLOAIVANBAN, new { @style = "width: 233px;", maxlength = "50", @class = "e-input", @id = "EDIT_LOAIVANBAN" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="LOAIVANBAN_ER" style="margin-left: 0px; color: red;">Loại văn bản đã tồn tại đã tồn tại.</span>
+                            <span class="lb-Check" id="LOAIVANBAN_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập loại văn bản</span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" style=" width: 181px;">Trạng Thái:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" style="width: 233px;">
+                                @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text = "Được sử dụng", Value = "true" },
+                        new SelectListItem{ Text = "Không được sử dụng", Value = "false" }
+                    })
+                            </div>
+
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td></td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                @*<input type="button" value="Lưu" id="btnSave"  />*@
+                <button type="button" class="btn btn-danger" id="btnSave">Cập nhật</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+    @*<div style="margin-top: 15px; text-align:center;">
+            <input type="submit" value="Lưu" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+            <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+
+        </div>*@
+
+}
+<script type="text/javascript">
+    $(function () {
+        var isExisted = true;
+        var startLoaiVanBan = $("#EDIT_LOAIVANBAN").val();
+        $("#EDIT_LOAIVANBAN").blur(function () {
+            if ($("#EDIT_LOAIVANBAN").val().trim().length == 0) {
+                $("#LOAIVANBAN_NULL").show();
+            } else {
+                $("#LOAIVANBAN_NULL").hide();
+            }
+        });
+
+        $("#btnSave").click(function () {
+            if ($("#EDIT_LOAIVANBAN").val().trim().length == 0) {
+                $("#LOAIVANBAN_NULL").show();
+                $("#EDIT_LOAIVANBAN").focus();
+                return false;
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("validateLoaiVanBan", "HscvLoaiVanBan")',
+                    data: {
+                        tenloaivanban: $("#EDIT_LOAIVANBAN").val(),
+                        ID: $("#EDIT_ID").val()
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        if (data == "True") {
+                            if (startLoaiVanBan != $("#EDIT_LOAIVANBAN").val()) {
+                                $("#LOAIVANBAN_ER").show();
+                                $("#LOAIVANBAN_NULL").hide();
+                                $("#CREATE_LOAIVANBAN").focus();
+                            } else {
+                                $("#frmLoaiVanBanEdit").submit();
+                                return true;
+                            }
+
+                        } else {
+                            $("#LOAIVANBAN_ER").hide();
+                            $("#frmLoaiVanBanEdit").submit();
+                            return true;
+                        }
+                    }, error: function () {
+                        alert("Có lỗi xảy ra.");
+                    }
+                });
+            }
+
+        });
+    });
+    function failure(xhr, error) {
+        notif({
+            type: 'error',
+            position: 'bottom',
+            msg: 'Opps. Có lỗi trong quá trình cập nhật!',
+        });
+    }
+
+    function updateSuccess() {
+
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Cập nhật loại văn bản thành công!',
+        });
+        $("#PrepareLoaiVanBan").modal("hide");
+        reloadGrid();
+    }
+</script>

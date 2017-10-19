@@ -1,0 +1,330 @@
+﻿@using Web.Common
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@model  Web.Areas.DMChucNangArea.Models.DMChucNangEditViewModel
+
+@{
+    string pathImg = "";
+    if (!string.IsNullOrEmpty(Model.ChucNang.ICONPATH))
+    {
+        pathImg = System.Configuration.ConfigurationManager.AppSettings["HSCBAvatar"].Replace("~", "") + Model.ChucNang.ICONPATH;
+    }
+    
+}
+
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+
+<style>
+    .color-red {
+        color: red;
+    }
+
+    .lbl3 {
+        margin-top: 7px;
+    }
+
+    .ms-drop {
+        /*width: 233px;*/
+        width: 100%;
+    }
+
+    .ms-choice > span {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+        width: 100%;
+    }
+
+    .width_100 {
+        width: 100% !important;
+    }
+</style>
+@using (Ajax.BeginForm("SaveChucNang", "ChucNang", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "success"
+}, new { id = "frmChucNangEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Sửa chức năng <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body" id="modal_body">
+        <div class=" row">
+            <div class="col-sm-2">
+                <label class="lbl3">Mã chức năng<span class="color-red">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.TextBox("MA_CHUCNANG", Model.ChucNang.MA_CHUCNANG, new { @class = "form-control required", maxlength = "10", @id = "CREATE_MACHUCNANG" })
+                    <div class="note-error">
+                        <span id="ErrMaChucNang" class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-2">
+                <label class="lbl3">Tên chức năng<span class="color-red">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.TextBox("TEN_CHUCNANG", Model.ChucNang.TEN_CHUCNANG, new { @class = "form-control required", maxlength = "100", @id = "CREATE_TENCHUCNANG" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class=" row">
+            @* <div class="col-sm-2">
+                <label class="lbl3">Chức năng cha</label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.DropDownList("CHUCNANG_CHA", @Model.ListChucNangCha, "NULL", new { @class = "width_100" })
+
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>*@
+
+            <div class="col-sm-2">
+                <label class="lbl3">Trạng thái</label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <select name="TRANGTHAI" id="TRANGTHAI" style="width: 100%;">
+                        @if (Model.ChucNang.TRANGTHAI.HasValue && Model.ChucNang.TRANGTHAI == 1)
+                        {
+                            <option value="1" selected>Hiệu lực</option>
+                            <option value="0">Không hiệu lực</option>
+                        }
+                        else
+                        {
+                            <option value="1">Hiệu lực</option>
+                            <option value="0" selected>Không hiệu lực</option>
+                        }
+                    </select>
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label class="lbl3">Địa chỉ URL<span class="color-red">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.TextBox("URL", Model.ChucNang.URL, new { @class = "form-control required", maxlength = "300", @id = "CREATE_URL" })
+
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class=" row">
+            <div class="col-sm-2">
+                <label class="lbl3">Class,CSS</label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.TextBox("CSSCLASS", Model.ChucNang.CSSCLASS, new { @class = "form-control", maxlength = 300, @id = "EDIT_TT_HIENTHI" })
+
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-2">
+                <label class="lbl3">Thứ tự hiển thị</label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.TextBox("TT_HIENTHI", Model.ChucNang.TT_HIENTHI, new { @class = "form-control", maxlength = 3, @id = "CREATE_TT_HIENTHI" })
+
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" row">
+            <div class="col-sm-2">
+                <label class="lbl3">Icon</label>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <div class="center" style="margin-bottom: 7px;">
+                        @if (!string.IsNullOrEmpty(Model.ChucNang.ICONPATH))
+                        {
+                            <img src='@pathImg' id="icon_file" width="80" height="80" class="img image-thumbnail">
+
+                        }
+                        else
+                        {
+                            <img src="" id="icon_file" width="80" height="80" class="img image-thumbnail">
+
+                        }
+                    </div>
+
+                    <input type="file" name="file" id="file" width="220" class="form-control" />
+
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <input type="hidden" name="DM_CHUCNANG_ID" value="@Model.ChucNang.DM_CHUCNANG_ID" />
+        <input type="hidden" id="ICONPATH" name="ICONPATH" value="@Model.ChucNang.ICONPATH">
+    </div>
+    
+        
+    <div class="modal-footer center">
+        <button type="button" class="btn btn-primary" id="btnSaveEDIT" style="border-radius: 3px;">
+            Lưu
+        </button>
+        <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+    </div>
+}
+<script type="text/javascript">
+
+
+
+
+
+    function Close() {
+        $("#PrepareChucNang").dialog("close");
+    }
+    function failure(xhr) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function success(rs) {
+        if (rs) {
+            NotiSuccess("Sửa chức năng thành công");
+        }
+
+        OnCloseLog();
+        reloadGrid();
+    }
+    function OnCloseLog() {
+        $("#form-editChucNang").html("");
+        $("#PrepareChucNang").modal("hide");
+    }
+
+
+    function PageFunction() {
+
+        $("#btnSaveEDIT").click(function () {
+            var err = 0;
+            var require = requiredFieldForFormId("frmChucNangCreate");
+            if (!require) {
+                err++;
+            }
+
+            if (err == 0) {
+                $("#frmChucNangEdit").submit();
+                return true;
+            } else {
+                NotiError("Có lỗi.Vui lòng kiểm tra lại");
+                return false;
+            }
+
+        });
+        $("#CREATE_MACHUCNANG").change(function () {
+            if ($("#CREATE_MACHUCNANG").val() != "") {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("FindMa", "DMChucNang")',
+                    cache: false,
+                    data: {
+                        CHUCNANG_ID: "@Model.ChucNang.DM_CHUCNANG_ID",
+                        MACHUCNANG: $("#CREATE_MACHUCNANG").val()
+                    },
+                    success: function (data) {
+                        if (data > 0) {
+                            $("#ErrMaChucNang").html("Mã đã tồn tại");
+                            $("#ErrMaChucNang").css("display", "inline");
+                        } else {
+
+                            $("#ErrMaChucNang").css("display", "none");
+                        }
+                    }
+
+                });
+            }
+
+        });
+
+        $("#file").change(function () {
+            var data = new FormData();
+            var fileExtentsion = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+            var files = $("#file").get(0).files;
+            if (files.length > 0) {
+                if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtentsion) == -1) {
+                    $("#ICON_FORMAT").show();
+                    return false;
+                }
+                $("#ICON_FORMAT").hide();
+                //if (parseFloat(files[0].size / 1024).toFixed(2) > 100) {
+                //    $("#IMG_SIZE").show();
+                //    return false;
+                //}
+                $("#IMG_SIZE").hide();
+                data.append("Avatar", files[0])
+                $.ajax({
+                    url: '@Url.Action("UploadImage", "DMChucNang")',
+                    data: { oldAvatar: $("#icon_file").val() },
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (succ) {
+                        $("#icon_file").attr("src", '@System.Configuration.ConfigurationManager.AppSettings["HSCBAvatar"].Replace("~", "")' + succ);
+                        $("#ICONPATH").val(succ);
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                })
+                }
+        });
+            $("#CHUCNANG_CHA").multipleSelect({
+                multiple: false,
+                filter: false,
+                single: true,
+                placeholder: "Chọn chức năng"
+
+            });
+            $("#TRANGTHAI").multipleSelect({
+                multiple: false,
+                filter: false,
+                single: true,
+            });
+
+            $("#CREATE_TT_HIENTHI").autoNumeric({
+                decimalPlacesOverride: 0, minimumValue: 0, maximumValue: 1000,
+            });
+        }
+
+        loadScript("/Scripts/jquery.unobtrusive-ajax.min.js", function () {
+            loadScript("/Scripts/multiple-select.js", function () {
+                loadScript("/Scripts/autoNumeric.min.js", PageFunction);
+            });
+        });
+</script>

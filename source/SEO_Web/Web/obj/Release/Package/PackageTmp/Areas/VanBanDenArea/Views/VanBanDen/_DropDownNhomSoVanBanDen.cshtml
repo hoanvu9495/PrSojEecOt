@@ -1,0 +1,12 @@
+﻿@using Model.eAita
+@using Web.Areas.VanBanDenArea.Models
+@model VanBanDenViewModel
+
+<option value="" data-soden="">[--- Chọn sổ văn bản ---]</option>
+@foreach (HSCV_SOVANBAN soVanBan in Model.listSoVanBanModels)
+{
+    <option value="@soVanBan.ID" data-soden="@soVanBan.SOVBTHEOSO">
+        @soVanBan.TENSO
+    </option>
+}
+

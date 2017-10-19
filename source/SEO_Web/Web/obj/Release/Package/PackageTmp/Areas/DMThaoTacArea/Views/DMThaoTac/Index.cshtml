@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Quản lý thao tác";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+@using Web.Areas.DMThaoTacArea.Models;
+@model DMThaoTacIndexViewModel
+@*<div id="menu-toolbar">
+    <div class="left-all-page" style="width: 245px; ">
+        <div id="smart-dms" class="block">
+            <h1 style="text-transform: uppercase; font-size: 16px; line-height: 35px; text-align:left;padding-left:2%">@ViewBag.Title</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border: 0px; background: none; width: calc(100% - 245px);">
+        <div id="menu-child">
+            <div class="menu-left">
+                <div class="btnAddNew">
+                    <a href="javascript:OnCreate()">
+                        <span>Thêm mới thao tác</span>
+                    </a>
+                </div>
+            </div>
+            <div class="menu-right">
+                <div class="btn-group" role="group">
+                    <div class="dropdown-toggle btnHienThi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer; padding:0px;">
+                        <a href="javascript:void(0)">
+                            <span>Hiển thị</span>
+                        </a>
+                    </div>
+                    <div id="dropdown-menu-display" class="dropdown-menu">
+                        <ul>
+                            <li><a href="javascript:void(0)">Logout</a></li>
+                            <li><a href="javascript:void(0)">Settings display</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>*@
+
+<div class="row" style="margin-bottom:7px; ">
+    <div class="col-sm-9">
+
+    </div>
+    <div class="col-sm-3">
+        <a class="btn btn-success btn-sm" href="javascript:OnCreate()" style="float:right">
+            <i class="fa fa-plus"></i> <span>Thêm mới thao tác</span>
+        </a>
+    </div>
+</div>
+
+
+@*<div class="left-all-page" id="menu-middle-left">
+
+    <div id="block-search-form">
+        @using (Ajax.BeginForm("FindThaoTac", "DMThaoTac", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "search-form" }))
+{
+    <input type="text" placeholder="Tìm kiếm theo tên thao tác" value="" name="TENTHAOTAC" id="Keyword" />
+                    <input type="submit" value="search" name="" id="" />
+}
+    </div>
+    <div id="menu-left-content-scroll" class="menu-left-content block">
+        @{Html.RenderAction("GetMenuChild", "Common", new { area = "" });}
+    </div>
+</div>*@
+
+<div class="right-all-page" >
+
+    <div class="right-content clearfix">
+
+        <div class="SearchCriterial">
+            @*@Html.Partial("_ThaoTacSearch")*@
+        </div>
+
+        <div class="SearchResult">
+            @Html.Partial("_ThaoTacSearchResult",Model.ListThaoTac)
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    var dataReload = [];
+    $("#Keyword").change(function () {
+        $("#TENTHAOTAC").val($(this).val());
+    });
+    function reloadGrid() {
+        var TENTHAOTAC = $("#TEN_THAOTAC").val();
+        var CHUCNANGCAP1 = $("#CHUCNANGCAP1").val();
+        var CHUCNANGCAP2 = $("#CHUCNANGCAP2").val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadDataTable", "DMThaoTac")',
+            cache: false,
+            async:false,
+            success: function (data) {
+                LoadData(data);
+            }
+        });
+    }
+
+</script>

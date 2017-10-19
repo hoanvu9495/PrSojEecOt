@@ -1,0 +1,15 @@
+﻿@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.TDKTPhongTraoThiDuaArea.Models;
+@model Web.Areas.TDKTPhongTraoThiDuaArea.Models.PhongTraoThiDuaViewModel
+
+@if (Model.PhongTraoThiDua.TRANGTHAI == PhongTraoThiDuaConstant.TT_MOITAO || Model.PhongTraoThiDua.TRANGTHAI == PhongTraoThiDuaConstant.TT_TUCHOI)
+{
+    <input type="submit" value="Trình lãnh đạo" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" />   
+}
+else if (Model.PhongTraoThiDua.TRANGTHAI == PhongTraoThiDuaConstant.TT_TRINHLANDAO)
+{
+    <input type="submit" value="Phê duyệt" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" />   
+    <input type="submit" value="Từ chối phê duyệt" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" />   
+}

@@ -1,0 +1,11 @@
+﻿@using Model.eAita
+@model List<HSCV_SOVANBAN>
+
+<option value=''>[--- Chọn sổ văn bản ---]</option>
+@if (Model != null && Model.Count > 0)
+{
+    foreach (var item in Model)
+    {
+        <option data-sovb="@item.SOVBTHEOSO" value="@item.ID">@item.TENSO</option>
+    }
+}

@@ -1,0 +1,140 @@
+﻿@using Web.Areas.ThuMucLuuTruArea.Models;
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeTaiLieuModel
+
+@if (Model.YeuCau.ID > 0)
+{
+    using (Ajax.BeginForm("SaveYeuCauChiaSe", "ThuMucLuuTru", new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnFailure = "failure",
+        OnSuccess = "createSuccess"
+    }, new { id = "frmCreateYeuCau" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">
+                        Trình cục trưởng yêu cầu chia sẻ thông tin
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>Ghi chú :<span style="color:red">*</span></td>
+                            <td>
+                                <textarea class="e-input" name="COMMENT" style="width:400px;height:60px" id="COMMENT_TEXT" maxlength="500" placeholder="Nhập lý do cho yêu cầu chia sẻ này">@(Model.YeuCau.LYDO == null ? "" : Model.YeuCau.LYDO)</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><span style="color:red;display:none" id="LYDO_NULL">Bạn chưa nhập lý do cho yêu cầu chia sẻ này</span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="TRANGTHAI" id="TRANGTHAI" value="@Model.YeuCau.TRANGTHAI" />
+                    <input type="hidden" name="TIEUDE" id="TIEUDE" value="@Model.YeuCau.TIEUDE" />
+                    <input type="hidden" name="LYDO" id="LYDO" value="@Model.YeuCau.LYDO" />
+                    <input type="hidden" name="ID" id="ID" value="@Model.YeuCau.ID" />
+                    <input type="submit" class="btn btn-success" value="Gửi Cục trưởng" id="btnSendSharing" />
+                    <button class="close-modal btn btn-default" type="button" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">
+                    Trình cục trưởng yêu cầu chia sẻ thông tin
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table>
+
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Ghi chú :<span style="color:red">*</span></td>
+                        <td>
+                            <textarea class="e-input" style="width:400px;height:60px" id="COMMENT_TEXT" maxlength="500" placeholder="Nhập lý do cho yêu cầu chia sẻ này">@(Model.YeuCau.LYDO == null ? "" : Model.YeuCau.LYDO)</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><span style="color:red;display:none" id="COMMENT_TEXT_NULL">Bạn chưa nhập lý do cho yêu cầu chia sẻ này</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-success" value="Gửi Cục trưởng" id="btnSending" />
+                <button class="close-modal btn btn-default" type="button" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+
+}
+<script>
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function createSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Đã trình cục trưởng thành công yêu cầu chia sẻ',
+        });
+        $("#TrinhDuyetYeuCau").modal('hide');
+        location.href = '@Url.Action("DanhSachYeuCauChiaSe","ThuMucLuuTru")';
+    }
+    $(function () {
+        $("#COMMENT").blur(function () {
+            if ($("#COMMENT_TEXT").val().trim() == "") {
+                $("#COMMENT_TEXT").focus();
+                $("#COMMENT_TEXT_NULL").show();
+
+            } else {
+                $("#COMMENT_TEXT_NULL").hide();
+            }
+        });
+
+        $("#btnSending").click(function () {
+            $("#TRANGTHAI").val("@YeuCauChiaSeConstant.DATRINH");
+            if ($("#COMMENT_TEXT").val().trim() == "") {
+                $("#COMMENT_TEXT").focus();
+                $("#COMMENT_TEXT_NULL").show();
+                return false;
+            } else {
+                $("#COMMENT_TEXT_NULL").hide();
+            }
+            $("#COMMENT").val($("#COMMENT_TEXT").val());
+            document.getElementById("frmCreateYeuCau").submit();
+            return true;
+
+        });
+        $("#btnSendSharing").click(function () {
+            $("#TRANGTHAI").val("@YeuCauChiaSeConstant.DATRINH");
+            if ($("#COMMENT_TEXT").val().trim() == "") {
+                $("#COMMENT_TEXT").focus();
+                $("#LYDO_NULL").show();
+                return false;
+            } else {
+                $("#LYDO_NULL").hide();
+            }
+            return true;
+
+        });
+    });
+</script>

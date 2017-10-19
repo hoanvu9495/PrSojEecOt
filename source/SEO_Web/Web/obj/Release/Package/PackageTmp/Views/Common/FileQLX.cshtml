@@ -1,0 +1,176 @@
+﻿@using Model.eAita
+@model List<TAILIEUDINHKEM>
+@{
+    var is_detail = false;
+    var is_multi = true;
+    if (ViewData["detail"] != null)
+    {
+        is_detail = int.Parse(ViewData["detail"].ToString()) == 1;
+    }
+    if (ViewData["is_multi"] != null)
+    {
+        is_multi = int.Parse(ViewData["is_multi"].ToString()) == 1;
+    }
+    string id = "UpLoadFile";
+    if (ViewData["id"] != null)
+    {
+        id = ViewData["id"].ToString();
+    }
+}
+<style>
+    .e-input {
+        width: 223px;
+    }
+</style>
+@*@using (Html.BeginForm("Upload", "UploadFile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {*@
+<table class="webGrid">
+    <thead>
+        <tr class="head">
+            <th style="width:50%" scope="col">Tên tài liệu</th>
+            <th scope="col">@(is_detail ? "Tải tài liệu" : "Chọn tài liệu")</th>
+            @if (is_detail == false)
+            {
+                if (is_multi == true)
+                {
+                    @*<th scope="col">
+                            <center>
+                                <img src="~/Content/Images/Add.png" width="16" title="Thêm tài liệu" id="btnAdd_@id" style="cursor:pointer;" />
+                            </center>
+                        </th>*@
+                }
+            }
+        </tr>
+    </thead>
+    <tbody id='@(string.IsNullOrEmpty(id) ? "UpLoadFile" : id)'>
+        @if (Model != null && Model.Count > 0)
+        {
+            var i = 1;
+            foreach (var item in Model)
+            {
+                <tr id="filesave_@i">
+                    <td style="text-align:left;">
+                        @item.TENTAILIEU
+                    </td>
+                    <td>
+                        <a href="/Common/DownloadFile/@item.TAILIEU_ID">
+                            Tải về
+                        </a>
+                    </td>
+                    @if (is_detail == false && is_multi == true)
+                    {
+                        @*<td>
+                                <a title="Xóa tài liệu" href="javascript:XoaTaiLieuDaLuu(@item.TAILIEU_ID, @i)" data-id="filesave_@i"><img src="~/Content/Images/Delete.png" /></a>
+                            </td>*@
+                    }
+                </tr>
+            }
+        }
+        @if (is_detail == false)
+        {
+            @*<tr id="@(id)_file_1">
+                <td>
+                    <input type="text" class="e-input" placeholder="Nhập tên tài liệu" name="filename" />
+                </td>
+                <td>
+                    <input type="file" value="Chọn tài liệu" name="filebase" />
+                </td>
+                @if (is_multi == true)
+                {
+                    @*<td>
+                            <a title="Xóa tài liệu" href="javascript:XoaTaiLieu(1)" data-id="file_1"><img src="~/Content/Images/Delete.png" /></a>
+                        </td>
+                }
+            </tr>*@
+        }
+    </tbody>
+</table>
+@if (is_detail == false)
+{
+    <script>
+        var count = 1;
+        $(function () {
+            $("#btnAdd_" + '@id').click(function () {
+                count += 1;
+                $("#" + '@id').append(CreateFile(count));
+            });
+        });
+        function XoaTaiLieuDaLuu(id, stt) {
+            var file_id = "filesave_" + stt;
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa không, tài liệu này sẽ không thể phục hồi?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            //Call ajax to delete TAILIEU in TAILIEUDINHKEM Table
+                            //DeleteFile
+                            $.ajax({
+                                type: "POST",
+                                url: '/Common/DeleteFile',
+                                cache: false,
+                                data: {
+                                    id: id
+                                },
+                                success: function (data) {
+                                    if (data == "1") {
+                                        $("#" + file_id).remove();
+                                        notif({
+                                            type: 'success',
+                                            position: 'bottom',
+                                            msg: 'Xóa tài liệu thành công!',
+                                        });
+                                    }
+                                    else {
+                                        notif({
+                                            type: 'error',
+                                            position: 'bottom',
+                                            msg: 'Có lỗi trong quá trình xóa tài liệu, vui lòng thử lại!',
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+
+        };
+        function XoaTaiLieu(id) {
+            var file_id = '@id' + "_file_" + id;
+            var filename = $("#" + file_id + " input[name='filename']").val();
+            var fileupload = $("#" + file_id + " input[name='filebase']").val();
+            if (filename.length > 0 || fileupload.length > 0) {
+                $.confirm({
+                    'title': 'Xác nhận xóa',
+                    'message': 'Bạn có chắc chắn muốn xóa tài liệu này?',
+                    'buttons': {
+                        'Xóa': {
+                            'class': 'btn-confirm-yes',
+                            'action': function () {
+                                $("#" + file_id).remove();
+                            }
+                        },
+                        'Không xóa': {
+                            'class': 'btn-info',
+                            'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                        }
+                    }
+                });
+            } else {
+                $("#" + file_id).remove();
+            }
+
+        };
+        @*function CreateFile(count) {
+            return '<tr id="' + '@id' + '_file_' + count + '"> ' +
+                '<td><input placeholder="Nhập tên tài liệu" class="e-input" name="filename" type="text"  />&nbsp;</td>' +
+                    '<td><input type=\"file\" name=\"filebase\" value=\"Chọn tài liệu\" /></td><td><a title="Xóa tài liệu" href="javascript:XoaTaiLieu(' + count + ')" class="remove"><img src="../../../Content/Images/Delete.png" /></a></td></tr>';
+        }*@
+    </script>
+}

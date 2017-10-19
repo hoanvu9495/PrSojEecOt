@@ -1,0 +1,87 @@
+﻿@using Web.FwCore
+@using Business.Business
+@using Business.CommonBusiness
+@using Web.Models
+@using Model.eAita
+@using Web.FwCore;
+@using Business.CommonBusiness;
+@using Web.Common
+@model Web.Models.WorkFlowModel
+@{
+    Entities context = new Entities();
+    WfBuocchuyentrangthaiBusiness BuocChuyenTrangThaiBs;
+    WfLichsuchuyendoitrangthaiBusiness HistoryBs;
+
+    BuocChuyenTrangThaiBs = new WfBuocchuyentrangthaiBusiness(context);
+    HistoryBs = new WfLichsuchuyendoitrangthaiBusiness(context);
+    var canSort = Model.SortAble.HasValue && Model.SortAble.Value == false ? false : true;
+    var TableClass = !string.IsNullOrEmpty(Model.TableClass) ? Model.TableClass : "webGrid";
+    List <WF_LICHSUCHUYENDOITRANGTHAI> LstHistory = HistoryBs.All.Where(x => x.ITEM_ID == Model.ENTITY_ITEM_ID && x.ENTITY_ID == Model.ENTITY_ID).OrderByDescending(x => x.NGAYTAO).ToList();
+    var grid = new WebGrid(LstHistory,
+                       rowsPerPage: 20,
+                       canPage: true,
+                       canSort: canSort,
+                       ajaxUpdateContainerId: "grid",
+                       selectionFieldName: "selectedRow"
+                         );
+}
+@if (Model.OnlyView != true)
+{
+ <div style="margin-top: 15px; text-align: center;">
+    @foreach (var item in Model.LstSteps)
+    {
+        <input type="button" value="@item.TENBUOC" id="btnID_@item.ID" onclick="processWF(@Model.ENTITY_ITEM_ID, @Model.ENTITY_ID, @item.TRANGTHAI_1, @item.TRANGTHAI_2, '@(item.TENBUOC + " - " + Model.ENTITY_NAME)', '@Model.CALLBACK_FUNCTION', '@Model.BusinessClass')" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" />
+    }
+</div>
+   
+}
+<div class="modal fade" id="ProcessWorkFlowId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title" id="myModalLabel"></h2>
+            </div>
+            <div class="modal-body" id="modal_body">
+                <textarea cols="50" rows="4" style="width: 558px; height: 144px;" id="comment_text_step_id"></textarea>
+                <span id="ERR_comment_text_step_id" style="color: red"></span>
+                <input type="hidden" id="HIDDEN_ENTITY_ITEM_ID" value="" />
+                <input type="hidden" id="HIDDEN_ENTITY_ID" value="" />
+                <input type="hidden" id="HIDDEN_TRANG_THAI_ONE" value="" />
+                <input type="hidden" id="HIDDEN_TRANG_THAI_TWO" value="" />
+                <input type="hidden" id="HIDDEN_BUSINESS_CLASS" value="" />
+                <input type="hidden" id="HIDDEN_CALL_BACK_FUNCTION" value="" />
+                <input type="hidden" id="HIDDEN_ACTION" value="" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="SubmitToFinishChangeStep()">Gửi</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+@if (LstHistory.Count() > 0)
+{
+    <h3 class="group-tittle">
+        Lịch sử xử lý văn bản
+    </h3>
+    <div id="grid" style="height:auto;min-height:300px; margin-top:20px" class="collapse in" aria-expanded="true">
+        @grid.GetHtml(
+                    tableStyle: TableClass,
+                    headerStyle: "head",
+                    alternatingRowStyle: "alt",
+                    selectedRowStyle: "select",
+                     mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                    columns: grid.Columns(
+                        grid.Column(format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                                grid.Column(format: (item) => item.WF_TRANGTHAI != null ? item.WF_TRANGTHAI.TENTRANGTHAI : "", header: "Trạng thái bắt đầu"),
+                                grid.Column("WF_TRANGTHAI1.TENTRANGTHAI", format: (item) => item.WF_TRANGTHAI1 != null ? item.WF_TRANGTHAI1.TENTRANGTHAI : "", header: "Trạng thái kết thúc"),
+                                grid.Column("NOIDUNG_COMMENT", "Ghi chú"),
+                                grid.Column("DM_NGUOIDUNG.TENDANGNHAP", format: (item) => ((item.NGUOITAO != null) ? item.DM_NGUOIDUNG.TENDANGNHAP : ""), header: "Người xử lý"),
+                                grid.Column("NGAYTAO", "Ngày xử lý", format: (item) => (item.NGAYTAO == null) ? "" : string.Format("{0:dd-MM-yyyy H:m:00}", item.NGAYTAO))
+                    )
+                )
+    </div>
+
+
+}

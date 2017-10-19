@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Quản lý đơn vị";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .menu-left-content {
+        height: 494px;
+        overflow-y: auto;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page" style="width: 245px; ">
+        <div id="smart-dms" class="block">
+            <h1 style="text-transform: uppercase; font-size: 16px; line-height: 35px; text-align:left;padding-left:2%">@ViewBag.Title</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border: 0px; background: none; width: calc(100% - 245px);">
+        <div id="menu-child">
+            <div class="menu-left">
+                <div class="btnAddNew">
+                    <a href="javascript:OnCreate()">
+                        <span>Thêm mới đơn vị</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+
+    <div id="block-search-form">
+        @using (Ajax.BeginForm("FinDonVi", "DMDonVi", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "search-form" }))
+        {
+
+            <input type="text" placeholder="" value="" name="DONVI" id="DONVI" />
+            <input type="submit" value="search" name="" id="btnSearch" />
+        }
+    </div>
+    <div id="menu-left-content-scroll" class="menu-left-content block">
+        @{Html.RenderAction("GetMenuChild", "Common", new { area = "" });}
+    </div>
+</div>
+@*<div class="left-all-page" id="menu-middle-left">
+
+    <div id="block-search-form">
+        @using (Ajax.BeginForm("FinDonVi", "DMDonVi", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "search-form" }))
+{
+    <input type="text" placeholder="" value="" name="DONVI" id="DONVI" />
+                    <input type="submit" value="search" name="" id="" />
+}
+    </div>
+    <div id="menu-left-content-scroll" class="menu-left-content block">
+        @{Html.RenderAction("GetMenuChild", "Common", new { area = "" });}
+    </div>
+</div>*@
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+
+    <div class="right-content clearfix">
+
+        <div class="SearchCriterial">
+            @Html.Partial("_DonViSearch")
+        </div>
+
+        <div class="SearchResult">
+            @Html.Partial("_DonViSearchResult")
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    function reloadGrid() {
+        var DONVI = $("#DONVI").val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadData", "DMDonVi")',
+            data: {
+                DONVI: DONVI
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                //alert(Ten_DanToc);
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+    $(function () {
+        $("#btnSearch").click(function () {
+            if (/<[a-z][\s\S]*>/i.test($("#DONVI").val()) || /<[a-z][\s\S]*/i.test($("#DONVI").val()) || /[a-z][\s\S]*>/i.test($("#DONVI").val())) {
+                $.confirm({
+                    'title': 'Không thể tìm kiếm',
+                    'message': 'Nội dung tìm kiếm không thể chứa ký tự HTML',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-confirm-yes',
+                            'action': function () {
+                                $("#DONVI").select();
+
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            $("#DOMVI_SEARCH").val($("#DONVI").val());
+            return true;
+        });
+    });
+</script>

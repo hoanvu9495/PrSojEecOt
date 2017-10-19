@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Thông tin bài viết";
+    Layout = "~/Views/Shared/_LayoutSmartDms.cshtml";
+}
+
+@using Model.DBTool;
+@using Newtonsoft.Json;
+@using Business.CommonBusiness;
+@using Web.Areas.BaiVietArea.Models;
+@model DetailBaiVietVM
+<style>
+    .title {
+        font-weight: bold;
+    }
+
+    .header-block {
+        font-weight: bold;
+        font-size: 16px;
+        margin: 10px 0 5px 0;
+        text-transform: uppercase;
+    }
+</style>
+<div id="ribbon" style=" background-color:#57889c">
+
+    <div class="col-md-6 col-sm-6">
+        <ol class="breadcrumb">
+            <!-- This is auto generated -->
+        </ol>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        <a class="btn btn-default btn-flat pull-right" href="/baivietarea/baiviet/index">
+            <i class="fa fa-reply"></i> <span>Quay lại</span>
+        </a>
+    </div>
+</div>
+
+<div id="content">
+    <div class="well">
+        <div class="header-block">Thông tin bài viết</div>
+        <div>
+            <table class="projects-table table table-striped table-bordered table-hover">
+                <tbody>
+                    <tr>
+                        <td class="title">Tiêu đề</td>
+                        <td>@Model.BaiViet.TIEUDE</td>
+                    </tr>
+                    <tr>
+                        <td class="title">Ngày tạo</td>
+                        <td>@string.Format("{0:dd/MM/yyyy HH:mm:ss}", Model.BaiViet.NGAYTAO)</td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="title">Nội dung</td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="margin:10px 30px;">@Html.Raw(Model.BaiViet.NOIDUNG)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="center">
+                <div class="btn-group">
+                    <a class="btn btn-primary">Đăng bài viết</a>
+                    <a class="btn btn-primary">Tạo bài viết mở rộng</a>
+                    <a href="javascript:CauHinhSpin()" class="btn btn-primary ">Quản lý từ thay thế</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="well">
+        <div class="header-block">Thông tin bài viết mở rộng</div>
+        <div>
+
+        </div>
+    </div>
+</div>
+
+<div id="CauHinhSpin" title="Quản lý từ thay thế" role="dialog" class="modal fade">
+    <div class="modal-dialog" style=" width: 80%;">
+        <!-- Modal content-->
+        <div class="modal-content" id="div_QuanLy_Spin">
+
+        </div>
+    </div>
+
+</div>
+<script>
+    function CauHinhSpin() {
+        $.ajax({
+            url: '/baivietarea/baiviet/CauHinhSpin/'+@Model.BaiViet.ID,
+            type:'get',
+            success:function (rs) {
+                $("#div_QuanLy_Spin").html(rs);
+                $("#CauHinhSpin").modal('show');
+            },
+            error:function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+    }
+
+
+</script>

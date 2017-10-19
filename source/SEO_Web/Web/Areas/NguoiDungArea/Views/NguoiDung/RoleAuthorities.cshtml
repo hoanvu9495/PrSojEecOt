@@ -1,0 +1,695 @@
+﻿@using Web.Areas.NguoiDungArea.Models
+@model Web.Areas.NguoiDungArea.Models.PhanQuyenViewModel
+@{
+    ViewBag.Title = "Phân quyền người dùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var ListChucNang = Model.ListChucNang;
+    var ListRoleChecked = new List<int>();
+    var str_checked = string.Empty;
+}
+<link rel="stylesheet" href="/Scripts/accordion/a11y-accordion.css" />
+<style>
+    body, html {
+        font-family: arial;
+        font-size: 16px;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1, h2, h3, h4, h5, h6, p {
+        margin-top: 0;
+    }
+
+    hr {
+        margin: 40px 0;
+    }
+
+    p, li {
+        line-height: 1.4;
+        margin: 0 0 16px;
+    }
+
+    button, html [type="button"], [type="reset"], [type="submit"] {
+        -webkit-appearance: button;
+        cursor: pointer;
+        font-family: inherit;
+        font-style: inherit;
+    }
+
+        input[type="submit"]::-moz-focus-inner, button[type="submit"]::-moz-focus-inner, button:-moz-focusring, input:-moz-focusring {
+            outline: 0;
+        }
+
+        button::-moz-focus-inner, input::-moz-focus-inner {
+            border: 0;
+            padding: 0;
+        }
+
+    code, kbd {
+        background: #efefef;
+        font-size: .825em;
+        padding: 2px 4px;
+        display: inline-block;
+        line-height: 1;
+    }
+
+    p:last-child, li:last-child {
+        margin-bottom: 0;
+    }
+
+    .content-area {
+        padding: 10px;
+    }
+
+    .explanation {
+        background: #fafafa;
+        margin-bottom: 40px;
+        font-size: 1.1em;
+        padding: 40px;
+    }
+
+    .page {
+        max-width: 1200px;
+        margin: auto;
+        padding-bottom: 40px;
+    }
+
+    #role-infor {
+        font-size: 17px;
+    }
+
+        #role-infor span {
+            padding-left: 50px;
+        }
+
+    .accordion__panel {
+        /*width: 48%;
+        float: left;
+        margin-right: 1%;*/
+        padding: 5px;
+    }
+
+    .accordion {
+        width: 50%;
+        float: left;
+    }
+
+    .role-all {
+        width: 100%;
+        float: left;
+    }
+
+    button.accordion__trigger {
+        width: 96%;
+        font-weight: bold;
+        font-size: 15px;
+        color: #4285f4;
+        background: white;
+        padding-left: 2px;
+        /*margin-right: 1%;
+        float: left;*/
+    }
+
+    .accordion__trigger, button.accordion__trigger {
+        border-bottom: 1px solid #dcdcdc;
+    }
+
+    input[type=checkbox].css-checkbox + label.css-label2 {
+        padding: 0 0 0 20px;
+    }
+
+    #menu-child {
+        color: yellow;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    ul.tt-qlthb li {
+        float: left;
+        width: 240px;
+        margin-left: 2px;
+    }
+</style>
+<script>
+    // remove no-js and add 'js' & 'has-js' to the HTML
+    document.documentElement.className = document.documentElement.className.replace('no-js', " ");
+    document.documentElement.className += ' js has-js ';
+</script>
+
+<div id="menu-toolbar">
+    <div class="left-all-page" style="width: 245px; ">
+        <div id="smart-dms" class="block">
+            <h1 style="text-transform: uppercase; font-size: 16px; line-height: 35px; text-align:left;padding-left:2%">@ViewBag.Title</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border: 0px; background: none; width: calc(100% - 245px);">
+        <div id="menu-child">
+            <label>@Model.NguoiDung.HOTEN</label>  <span style="color:white"> ------ </span>
+            <label>Cấp cơ sở: @Model.TENCAP_COSO</label> <span style="color:white"> ------ </span>
+            <label>Cơ sở: @Model.TEN_COSO</label>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div id="menu-left-content-scroll" class="menu-left-content block">
+        @{Html.RenderAction("GetMenuChild", "Common", new { area = "" });}
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff; ">
+    @using (Ajax.BeginForm("SaveVaiTroNguoiDung", "NguoiDung", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "AddEditSuccess"
+}, new { id = "frmVaiTroChucNang" }))
+    {
+        @Html.AntiForgeryToken()
+        <fieldset style="border:1px solid #C0C0C0; padding:10px; margin-right:5px; width:99%;">
+            <legend>
+                <b style="color: #00569d;">Tìm kiếm vai trò chức năng</b>
+            </legend>
+            <ul class="tt-qlthb">
+                @{
+        if (ListChucNang != null && ListChucNang.Count > 0)
+        {
+            <li>
+                <div class="cus-check2">
+                    <span>
+                        <input class="css-checkbox" id="ROLE_ALL" name="ROLE_ALL" type="checkbox">
+                        <label for="ROLE_ALL" class="css-label2">Tất cả</label>
+                    </span>
+                </div>
+            </li>
+            foreach (var item in ListChucNang)
+            {
+                <li>
+                    <div class="cus-check2">
+                        <span>
+                            <input class="css-checkbox" id="ROLE_@item.DM_CHUCNANG_ID" name="ROLE" type="checkbox" value="@item.DM_CHUCNANG_ID">
+                            <label for="ROLE_@item.DM_CHUCNANG_ID" class="css-label2">@item.TEN_CHUCNANG</label>
+                        </span>
+                    </div>
+                </li>
+            }
+        }
+                }
+            </ul>
+            <div style="text-align:center;width:100%">
+                <input type="button" onclick="ShowRole()" value="Hiển thị" style="background: #4285f4;width:100px; color:white;border-radius:5px" />
+                <input type="button" value="Ẩn" onclick="CloseRole()" style=" width: 100px; border-radius: 5px; " />
+            </div>
+            <input type="hidden" id="role_search" name="role_search" />
+            <div style="clear:both"></div>
+            <h3 class="group-tittle1 mt10">Danh sách chức năng - thao tác</h3>
+            <fieldset>
+                <div style="width:100%; float:left">
+                    <div style="width:15%; float:left; font-weight:bold">
+                        <label class="lbl">Thiết lập vai trò:<span style="color: red;">*</span></label>
+                    </div>
+                    <div style="width:50%; float:left">
+                        <div style="float:left; width:40%">
+                            @{
+        if (Model.NguoiDung.OptionRole == null)
+        {
+            <input type="radio" class="css-checkbox" name="OptionRole" id="OptionRole_@NguoiDungConstant.USE_ROLE_DEFAULT" value="@NguoiDungConstant.USE_ROLE_DEFAULT" checked="checked" />
+                            <label class="css-label" for="OptionRole_@NguoiDungConstant.USE_ROLE_DEFAULT">Sử dụng vai trò mặc định</label>
+        }
+        else
+        {
+            <input type="radio" class="css-checkbox" name="OptionRole" id="OptionRole_@NguoiDungConstant.USE_ROLE_DEFAULT" value="@NguoiDungConstant.USE_ROLE_DEFAULT" checked="@(Model.NguoiDung.OptionRole==NguoiDungConstant.USE_ROLE_DEFAULT)" />
+                            <label class="css-label" for="OptionRole_@NguoiDungConstant.USE_ROLE_DEFAULT">Sử dụng vai trò mặc định</label>
+        }
+                            }
+                            
+                        </div>
+                        <div style="float:left; width:60%">
+
+                            <input type="radio" class="css-checkbox" name="OptionRole" id="OptionRole_@NguoiDungConstant.USE_ROLE_SETTING" value="@NguoiDungConstant.USE_ROLE_SETTING" checked="@(Model.NguoiDung.OptionRole==NguoiDungConstant.USE_ROLE_SETTING)" />
+                            <label class="css-label" for="OptionRole_@NguoiDungConstant.USE_ROLE_SETTING">Thiết lập vai trò riêng</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="page">
+                <div class="content-area">
+                    <div id="role-infor">
+
+                    </div>
+                    <div class="role-all">
+                        @if (ListChucNang != null && ListChucNang.Count > 0)
+                        {
+                            <div class="accordion" data-action="is-accordion" data-multi-open="true" id="accGen">
+                                @foreach (var item in ListChucNang.Skip(0).Take(ListChucNang.Count / 2))
+                                {
+                                    if (item.ListChildren != null && item.ListChildren.Count > 0)
+                                    {
+                                        <div class="accordion__panel" data-chucnang="@item.DM_CHUCNANG_ID" data-showrole="show_role_@item.DM_CHUCNANG_ID" data-tab-label="@item.TEN_CHUCNANG">
+                                            <div class="pq-cn-label">
+                                                <input class="css-checkbox subchucnang" value="-1" data-name="TT_P_ITEM_@item.DM_CHUCNANG_ID" id="TT_P_ALL_@item.DM_CHUCNANG_ID" name="TT_P_ITEM_ALL_@item.DM_CHUCNANG_ID" type="checkbox">
+                                                <label for="TT_P_ALL_@item.DM_CHUCNANG_ID" class="css-label2 font-bold">Tất cả</label>
+                                                @foreach (var child in item.ListChildren)
+                                                {
+                                                    <input class="css-checkbox hassubchucnang" data-cn="@child.DM_CHUCNANG_ID" data-p="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-name="TT_ITEM_@child.DM_CHUCNANG_ID" value="@child.DM_CHUCNANG_ID" id="TT_ALL_@child.DM_CHUCNANG_ID" name="CN_ITEM_@child.DM_CHUCNANG_ID" type="checkbox">
+                                                    <label for="TT_ALL_@child.DM_CHUCNANG_ID" class="css-label2 font-bold">@child.TEN_CHUCNANG</label>
+                                                    <div id="DIV_TT_ITEM_@child.DM_CHUCNANG_ID" class="pq-label-fix">
+                                                        @if (child.ListThaoTac != null && child.ListThaoTac.Count > 0)
+                                                        {
+                                                            var lstt = "";
+                                                            var lstt_checked = "";
+                                                            foreach (var tt in child.ListThaoTac)
+                                                            {
+                                                                lstt += tt.DM_THAOTAC_ID + ",";
+                                                                if (tt.Checked)
+                                                                {
+                                                                    str_checked += item.DM_CHUCNANG_ID + ",";
+                                                                    lstt_checked += tt.DM_THAOTAC_ID + ",";
+                                                                    <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-cn="@tt.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_ITEM_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox" checked="checked">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-cn="@tt.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_ITEM_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox">
+                                                                }
+                                                                <label for="TT_ITEM_@tt.DM_THAOTAC_ID" class="css-label2">@tt.TEN_THAOTAC</label>
+                                                            }
+                                                            <input type="hidden" value="@lstt_checked" name="ALL_VAL_SELECT_TT_LEFT_@child.DM_CHUCNANG_ID" id="ALL_VAL_SELECT_TT_@child.DM_CHUCNANG_ID" />
+                                                            <input type="hidden" value="@lstt" name="ALL_VAL_TT_@child.DM_CHUCNANG_ID" id="ALL_VAL_TT_@child.DM_CHUCNANG_ID" />
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+
+
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="accordion__panel" data-chucnang="@item.DM_CHUCNANG_ID" data-showrole="show_role_@item.DM_CHUCNANG_ID" data-tab-label="@item.TEN_CHUCNANG">
+                                            <div class="pq-cn-label">
+                                                @if (item.ListThaoTac != null && item.ListThaoTac.Count > 0)
+                                                {
+                                                    <input class="css-checkbox nosubchucnang" data-cn="@item.DM_CHUCNANG_ID" value="-1" data-name="TT_ITEM_@item.DM_CHUCNANG_ID" id="TT_ALL_@item.DM_CHUCNANG_ID" name="TT_ITEM_ALL_@item.DM_CHUCNANG_ID" type="checkbox">
+                                                    <label for="TT_ALL_@item.DM_CHUCNANG_ID" class="css-label2 font-bold">Tất cả</label>
+                                                    var lstt = "";
+                                                    var lstt_checked = "";
+                                                    foreach (var tt in item.ListThaoTac)
+                                                    {
+                                                        lstt += tt.DM_THAOTAC_ID + ",";
+                                                        if (tt.Checked)
+                                                        {
+                                                            str_checked += item.DM_CHUCNANG_ID + ",";
+                                                            lstt_checked += tt.DM_THAOTAC_ID + ",";
+                                                            <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="-1" data-cn="@item.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox" checked="checked">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="-1" data-cn="@item.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox">
+                                                        }
+                                                        <label for="TT_@tt.DM_THAOTAC_ID" class="css-label2">@tt.TEN_THAOTAC</label>
+                                                    }
+                                                    <input type="hidden" value="@lstt_checked" name="ALL_VAL_SELECT_TT_LEFT_@item.DM_CHUCNANG_ID" id="ALL_VAL_SELECT_TT_@item.DM_CHUCNANG_ID" />
+                                                    <input type="hidden" value="@lstt" name="ALL_VAL_TT_@item.DM_CHUCNANG_ID" id="ALL_VAL_TT_@item.DM_CHUCNANG_ID" />
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+
+                            <div class="accordion" data-action="is-accordion" data-multi-open="true" id="accGen0">
+                                @foreach (var item in ListChucNang.Skip(ListChucNang.Count / 2))
+                                {
+                                    if (item.ListChildren != null && item.ListChildren.Count > 0)
+                                    {
+                                        <div class="accordion__panel" data-chucnang="@item.DM_CHUCNANG_ID" data-showrole="show_role_@item.DM_CHUCNANG_ID" data-tab-label="@item.TEN_CHUCNANG">
+                                            <div class="pq-cn-label">
+                                                <input class="css-checkbox subchucnang" value="-1" data-name="TT_P_ITEM_@item.DM_CHUCNANG_ID" id="TT_P_ALL_@item.DM_CHUCNANG_ID" name="TT_P_ITEM_ALL_@item.DM_CHUCNANG_ID" type="checkbox">
+                                                <label for="TT_P_ALL_@item.DM_CHUCNANG_ID" class="css-label2 font-bold">Tất cả</label>
+                                                @foreach (var child in item.ListChildren)
+                                                {
+                                                    <input class="css-checkbox hassubchucnang" data-cn="@child.DM_CHUCNANG_ID" data-p="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-name="TT_ITEM_@child.DM_CHUCNANG_ID" value="@child.DM_CHUCNANG_ID" id="TT_ALL_@child.DM_CHUCNANG_ID" name="CN_ITEM_@child.DM_CHUCNANG_ID" type="checkbox">
+                                                    <label for="TT_ALL_@child.DM_CHUCNANG_ID" class="css-label2 font-bold">@child.TEN_CHUCNANG</label>
+                                                    <div id="DIV_TT_ITEM_@child.DM_CHUCNANG_ID" class="pq-label-fix">
+                                                        @if (child.ListThaoTac != null && child.ListThaoTac.Count > 0)
+                                                        {
+                                                            var lstt = "";
+                                                            var lstt_checked = "";
+                                                            foreach (var tt in child.ListThaoTac)
+                                                            {
+                                                                lstt += tt.DM_THAOTAC_ID + ",";
+                                                                if (tt.Checked)
+                                                                {
+                                                                    str_checked += item.DM_CHUCNANG_ID + ",";
+                                                                    lstt_checked += tt.DM_THAOTAC_ID + ",";
+                                                                    <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-cn="@tt.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_ITEM_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox" checked="checked">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="TT_P_ITEM_@item.DM_CHUCNANG_ID" data-cn="@tt.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_ITEM_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox">
+                                                                }
+                                                                <label for="TT_ITEM_@tt.DM_THAOTAC_ID" class="css-label2">@tt.TEN_THAOTAC</label>
+                                                            }
+                                                            <input type="hidden" value="@lstt_checked" name="ALL_VAL_SELECT_TT_RIGHT_@child.DM_CHUCNANG_ID" id="ALL_VAL_SELECT_TT_@child.DM_CHUCNANG_ID" />
+                                                            <input type="hidden" value="@lstt" name="ALL_VAL_TT_@child.DM_CHUCNANG_ID" id="ALL_VAL_TT_@child.DM_CHUCNANG_ID" />
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="accordion__panel" data-chucnang="@item.DM_CHUCNANG_ID" data-showrole="show_role_@item.DM_CHUCNANG_ID" data-tab-label="@item.TEN_CHUCNANG">
+                                            <div class="pq-cn-label">
+                                                @if (item.ListThaoTac != null && item.ListThaoTac.Count > 0)
+                                                {
+                                                    <input class="css-checkbox nosubchucnang" value="-1" data-cn="@item.DM_CHUCNANG_ID" data-name="TT_ITEM_@item.DM_CHUCNANG_ID" id="TT_ALL_@item.DM_CHUCNANG_ID" name="TT_ITEM_ALL_@item.DM_CHUCNANG_ID" type="checkbox">
+                                                    <label for="TT_ALL_@item.DM_CHUCNANG_ID" class="css-label2 font-bold">Tất cả</label>
+                                                    var lstt = "";
+                                                    var lstt_checked = "";
+                                                    foreach (var tt in item.ListThaoTac)
+                                                    {
+                                                        lstt += tt.DM_THAOTAC_ID + ",";
+                                                        if (tt.Checked)
+                                                        {
+                                                            str_checked += item.DM_CHUCNANG_ID + ",";
+                                                            lstt_checked += tt.DM_THAOTAC_ID + ",";
+                                                            <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="-1" data-cn="@item.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox" checked="checked">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input class="css-checkbox ttchildnosubchucnang" data-firstlevel="-1" data-cn="@item.DM_CHUCNANG_ID" value="@tt.DM_THAOTAC_ID" id="TT_@tt.DM_THAOTAC_ID" name="TT_ITEM_@tt.DM_CHUCNANG_ID" type="checkbox">
+                                                        }
+                                                        <label for="TT_@tt.DM_THAOTAC_ID" class="css-label2">@tt.TEN_THAOTAC</label>
+                                                    }
+                                                    <input type="hidden" value="@lstt_checked" name="ALL_VAL_SELECT_TT_RIGHT_@item.DM_CHUCNANG_ID" id="ALL_VAL_SELECT_TT_@item.DM_CHUCNANG_ID" />
+                                                    <input type="hidden" value="@lstt" name="ALL_VAL_TT_@item.DM_CHUCNANG_ID" id="ALL_VAL_TT_@item.DM_CHUCNANG_ID" />
+                                                }
+                                            </div>
+                                        </div>
+
+
+                                    }
+                                }
+
+                            </div>
+                            <input type="hidden" id="list_checked" name="list_checked" value="@str_checked" />
+                        }
+                        <hr />
+                    </div>
+                </div>
+            </div> <!-- /.page -->
+
+        </fieldset>
+        <input type="hidden" name="NGUOIDUNG_ID" id="NGUOIDUNG_ID" value="@Model.NguoiDung.DM_NGUOIDUNG_ID">
+        <div style="margin-top:25px; text-align:center">
+            <button type="submit" class="btn btn-primary" id="btnAddEdit" style="border-radius: 3px;">
+                Lưu
+            </button>
+            <button type="button" class="btn btn-default" onclick="OnClose()" style="border-radius: 3px;" data-dismiss="modal">Quay lại</button>
+        </div>
+        <div style="height:20px"></div>
+    }
+</div>
+<script src="/Scripts/accordion/a11y-accordion.js"></script>
+<script type="text/javascript">
+    function unique(list) {
+        var result = [];
+        $.each(list, function (i, e) {
+            if ($.inArray(e, result) == -1 && e != "") result.push(e);
+        });
+        return result;
+    }
+    function OnClose() {
+        window.location = "/NguoiDungArea/NguoiDung/Index";
+    }
+    $(document).ready(function () {
+        var sub_checked = unique($("#list_checked").val().split(','));
+        var str_sub = "";
+        for (var i = 0; i < sub_checked.length; i++) {
+            str_sub += sub_checked[i] + ",";
+        }
+        $("#role_search").val(str_sub);
+        var data = $("#list_checked").val().split(',');
+        for (var i = 0; i < data.length; i++) {
+            $(".accordion__panel[data-showrole=show_role_" + data[i] + "]").css("display", "block");
+            $("button[data-href=#" + $(".accordion__panel[data-showrole=show_role_" + data[i] + "]").attr("id") + "]").addClass("is-active");
+
+            $("input[name=ROLE]").each(function () {
+                if ($(this).val() == data[i]) {
+                    $(this).prop("checked", "checked");
+                }
+            });
+
+        }
+        $("input[name=ROLE]:checked").each(function () {
+            $("#ROLE_ALL").prop("indeterminate", true);
+            return false;
+        });
+        var lst_hd = "";
+        $("input[name=ROLE]").each(function () {
+            lst_hd += $(this).val() + ",";
+        });
+        if (lst_hd == $("#role_search").val()) {
+            $("input[name=ROLE_ALL]").prop("checked", "checked");
+        }
+        else {
+            $("input[name=ROLE_ALL]").prop("checked", "");
+        }
+
+        $("button[data-href^='#']").click(function () {
+            if ($(this).attr("aria-expanded") == "true") {
+                var role_id = $($(this).attr("data-href")).attr("data-chucnang");
+                $("#ROLE_" + role_id).prop("checked", "checked");
+            } else {
+                var role_id = $($(this).attr("data-href")).attr("data-chucnang");
+                $("#ROLE_" + role_id).prop("checked", "");
+            }
+            var lstChecked = "";
+            $("input[name=ROLE]:checked").each(function () {
+                $("#ROLE_ALL").prop("indeterminate", true);
+                lstChecked += $(this).val() + ",";
+            });
+            $("#role_search").val(lstChecked);
+
+            var lst_hd = "";
+            $("input[name=ROLE]").each(function () {
+                lst_hd += $(this).val() + ",";
+            });
+            if (lst_hd == lstChecked) {
+                $("input[name=ROLE_ALL]").prop("checked", "checked");
+            }
+            else {
+                $("input[name=ROLE_ALL]").prop("checked", "");
+            }
+        });
+    })
+    function ShowRole() {
+        var data = $("#role_search").val();
+        if (data != "" && data != null) {
+            var lstRole = data.split(',');
+            for (var role = 0; role < lstRole.length; role++) {
+                $(".accordion__panel[data-showrole=show_role_" + lstRole[role] + "]").css("display", "block");
+                $("button[data-href=#" + $(".accordion__panel[data-showrole=show_role_" + lstRole[role] + "]").attr("id") + "]").addClass("is-active");
+            }
+        }
+    }
+    function CloseRole() {
+        var data = $("#role_search").val();
+        if (data != "" && data != null) {
+            var lstRole = data.split(',');
+            for (var role = 0; role < lstRole.length; role++) {
+                $(".accordion__panel[data-showrole=show_role_" + lstRole[role] + "]").css("display", "none");
+                $("button[data-href=#" + $(".accordion__panel[data-showrole=show_role_" + lstRole[role] + "]").attr("id") + "]").removeClass("is-active");
+            }
+        }
+    }
+
+    $("input[name=ROLE]").change(function () {
+        var listChecked = "";
+        $("input[name=ROLE]:checked").each(function () {
+            listChecked += $(this).val() + ",";
+        });
+        var lst_hd = "";
+        $("input[name=ROLE]").each(function () {
+            lst_hd += $(this).val() + ",";
+        });
+        $("#role_search").val(listChecked);
+        if (listChecked == lst_hd) {
+            $("#ROLE_ALL").prop("checked", "checked");
+            $("#ROLE_ALL").prop("indeterminate", false);
+        }
+        else {
+            $("#ROLE_ALL").removeAttr("checked");
+            if (listChecked.length > 0) {
+                $("#ROLE_ALL").prop("indeterminate", true);
+            }
+            else {
+                $("#ROLE_ALL").prop("indeterminate", false);
+            }
+        }
+    });
+    $("input[name=ROLE_ALL]").change(function () {
+        $("#ROLE_ALL").prop("indeterminate", false);
+        var lst_hd = "";
+        $("input[name=ROLE]:checked").each(function () {
+            lst_hd += $(this).val() + ",";
+        });
+        if (lst_hd == $("#role_search").val()) {
+            if ($("input[name=ROLE_ALL]").prop("checked") == true) {
+                $("input[name=ROLE]").prop("checked", "checked");
+                var lst = "";
+                $("input[name=ROLE]").each(function () {
+                    lst += $(this).val() + ",";
+                });
+                $("#role_search").val(lst);
+            } else {
+                $("input[name=ROLE]").prop("checked", "");
+                $("#role_search").val("");
+            }
+        }
+    });
+
+
+
+
+    $(".pq-cn-label").css({ "height": "auto" });
+    $(".ttchildnosubchucnang").each(function () {
+        var cn_id = $(this).attr("data-cn");
+        var listChecked = "";
+        $("input[name=TT_ITEM_" + cn_id + "]:checked").each(function () {
+            listChecked += $(this).val() + ",";
+        });
+        $("#ALL_VAL_SELECT_TT_" + cn_id).val(listChecked);
+        if (listChecked == $("#ALL_VAL_TT_" + cn_id).val()) {
+            $("#TT_ALL_" + cn_id).prop("checked", true);
+            $("#TT_ALL_" + cn_id).prop("indeterminate", false);
+        }
+        else {
+            if ($("#ALL_VAL_SELECT_TT_" + cn_id).val().trim().length > 0) {
+                $("#TT_ALL_" + cn_id).prop("checked", true);
+                $("#TT_ALL_" + cn_id).prop("indeterminate", true);
+            } else {
+                $("#TT_ALL_" + cn_id).prop("indeterminate", false);
+                $("#TT_ALL_" + cn_id).prop("checked", false);
+            }
+        }
+        //lấy id cấp 1 để check tất cả
+        var data_p = $(this).attr("data-firstlevel");
+        if (data_p != "-1") {
+            SetCheckAll(data_p);
+        }
+    });
+    function SetCheckAll(data_p) {
+        var allsub = $("input[data-p='" + data_p + "']").length;
+        var allsub_select = $("input[data-p='" + data_p + "']:checked").length;
+        if (allsub_select > 0 && allsub == allsub_select) {
+            $("input[data-name='" + data_p + "']").prop("indeterminate", false);
+            $("input[data-name='" + data_p + "']").prop("checked", true);
+        }
+        else if (allsub_select > 0 && allsub > allsub_select) {
+            $("input[data-name='" + data_p + "']").prop("indeterminate", true);
+            $("input[data-name='" + data_p + "']").prop("checked", true);
+        }
+        else {
+            $("input[data-name='" + data_p + "']").prop("indeterminate", false);
+            $("input[data-name='" + data_p + "']").prop("checked", false);
+        }
+    }
+    //1. Xử lý sự kiện check all của các chức năng không có chức năng con
+    //những chức năng có children
+    $(".hassubchucnang").change(function () {
+        var subname = $(this).attr("data-name");
+        //$("#DIV_" + subname).toggle();
+        if ($(this).prop("checked") == true) {
+            $("input[name='" + subname + "']").prop("checked", true);
+        } else {
+            $("input[name='" + subname + "']").prop("checked", false);
+        }
+        var listChecked = "";
+        $("input[name='" + subname + "']:checked").each(function () {
+            listChecked += $(this).val() + ",";
+        });
+        var cn_id = $(this).attr("data-cn");
+        $("#ALL_VAL_SELECT_TT_" + cn_id).val(listChecked);
+        var data_p = $(this).attr("data-p");
+        SetCheckAll(data_p);
+    });
+
+    //những chức năng ko có children
+    $(".nosubchucnang").change(function () {
+        var subname = $(this).attr("data-name");
+        if ($(this).prop("checked") == true) {
+            $("input[name='" + subname + "']").prop("checked", true);
+        } else {
+            $("input[name='" + subname + "']").prop("checked", false);
+        }
+        var cn_id = $(this).attr("data-cn");
+        var listChecked = "";
+        $("input[name=TT_ITEM_" + cn_id + "]:checked").each(function () {
+            listChecked += $(this).val() + ",";
+        });
+        $("#ALL_VAL_SELECT_TT_" + cn_id).val(listChecked);
+    });
+
+    //Chọn/bỏ chọn thao tác
+    $(".ttchildnosubchucnang").change(function () {
+        var cn_id = $(this).attr("data-cn");
+        var listChecked = "";
+        $("input[name=TT_ITEM_" + cn_id + "]:checked").each(function () {
+            listChecked += $(this).val() + ",";
+        });
+        $("#ALL_VAL_SELECT_TT_" + cn_id).val(listChecked);
+        if (listChecked == $("#ALL_VAL_TT_" + cn_id).val()) {
+            $("#TT_ALL_" + cn_id).prop("checked", true);
+            $("#TT_ALL_" + cn_id).prop("indeterminate", false);
+        }
+        else {
+            if ($("#ALL_VAL_SELECT_TT_" + cn_id).val().trim().length > 0) {
+                $("#TT_ALL_" + cn_id).prop("checked", true);
+                $("#TT_ALL_" + cn_id).prop("indeterminate", true);
+            } else {
+                $("#TT_ALL_" + cn_id).prop("indeterminate", false);
+                $("#TT_ALL_" + cn_id).prop("checked", false);
+            }
+        }
+        //lấy id cấp 1 để check tất cả
+        var data_p = $(this).attr("data-firstlevel");
+        if (data_p != "-1") {
+            SetCheckAll(data_p);
+        }
+    });
+    //end 1.
+    //subchucnang
+    $(".subchucnang").change(function () {
+        var subname = $(this).attr("data-name");
+        $("input[data-p='" + subname + "']").prop("indeterminate", false);
+        if ($(this).prop("checked") == true) {
+            $("input[data-p='" + subname + "']").prop("checked", true);
+        } else {
+            $("input[data-p='" + subname + "']").prop("checked", false);
+        }
+        $("input[data-p='" + subname + "']").change();
+    });
+    $("#btnAddEdit").click(function () {
+        $("#frmVaiTroChucNang").submit();
+        return true;
+    });
+    function AddEditSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: "Thiết lập phân quyền người dùng thành công",
+        });
+        OnClose();
+    }
+    function failure(xhr, error) {
+ //alert(xhr.responseText);
+    }
+
+</script>

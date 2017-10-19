@@ -1,0 +1,409 @@
+﻿@{
+    ViewBag.Title = "Tổng hợp danh mục thông tin, tài liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.Models
+@using Business.CommonBusiness
+@model Web.Areas.ThuMucLuuTruArea.Models.DanhMucThongTinModel
+@using Web.Areas.ThuMucLuuTruArea.Models
+<style>
+    .menu-left-content {
+        height: 494px;
+        overflow-y: auto;
+    }
+
+    #loading, #including {
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        background: #000 url('/Content/Images/loadajax.gif') no-repeat 50% 4px;
+        bottom: 50%;
+        color: #fff;
+        text-align: center;
+        line-height: 166px;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0.7;
+        border-radius: 5px;
+        filter: alpha(opacity=70);
+        font-size: 12px;
+        text-shadow: none;
+        display: none;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" style="width:490px">
+            <h1>Tổng hợp danh mục thông tin, tài liệu</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;margin-right:50px" type="button" onclick="location.href='@Url.Action("Index", "DanhMucThongTinCuaCuc")'" class="b_btn b_btn-default vbdi_search">Quay lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+    @using (Html.BeginForm("SaveData", "DanhMucThongTinCuaCuc", FormMethod.Post, new { enctype = "multipart/form-data", Id = "frmCreateDonXinNghi" }))
+    {
+        <div id="loading">Đang trình Cục trưởng....</div>
+        <table style="width:90%;margin:0 auto">
+            <tr>
+                <td style="text-align:center;font-size:14px">
+                    CỤC TIN HỌC HÓA
+                </td>
+                <td style="text-align:center">
+                    <strong style="font-size:14px">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center">
+                    <u><strong>VĂN PHÒNG</strong></u>
+                </td>
+                <td style="text-align: center; font-size: 14px">
+                    <u><strong>Độc lập - Tự do - Hạnh Phúc</strong></u>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td style="text-align: center; font-size: 14px">Hà Nội, ngày @DateTime.Now.Day tháng @DateTime.Now.Month năm @DateTime.Now.Year</td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center;font-size:14px;font-weight:bold"><strong>TỔNG HỢP DANH MỤC THÔNG TIN, TÀI LIỆU</strong></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <table>
+                        <tr>
+                            <td style="width:100px">Quý:<span style="color:red">*</span></td>
+                            <td>
+                                <div class="input-field4 clearfix fix-width" style="">
+                                    <select class="width_100" id="QUY" name="QUY">
+                                        <option value="1">Quý 1</option>
+                                        <option value="2">Quý 2</option>
+                                        <option value="3">Quý 3</option>
+                                        <option value="4">Quý 4</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2">&nbsp;</td></tr>
+                        <tr>
+                            <td>Năm: <span style="color:red">*</span></td>
+                            <td>
+                                <div class="input-field4 clearfix fix-width" >
+                                    <select name="NAM" id="NAM">
+                                        @for (int i = DateTime.Now.Year - 5; i <= DateTime.Now.Year + 5; i++)
+                                        {
+                                            if (i == DateTime.Now.Year)
+                                            {
+                                                <option value="@i" selected>@i</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td rowspan="4" >
+                    <div id="DONVI_CHUATRINH">
+                        <span class="DONVI_NULL" style="display:none;font-weight:bold">Danh sách đơn vị chưa trình danh mục thông tin tài liệu</span>
+                        <ul style="color: red; display: none; height: 100px; overflow-y: auto" id="DONVI_DISPLAY"></ul>
+                    </div>
+                </td>
+            </tr>
+            <tr style="height:18px">
+                <td colspan="2">
+                    <span style="color: red; display: none; margin-left: 100px" id="QUY_NULL">Vui lòng lựa chọn quý cho danh mục thông tin cần trình</span>
+                    <span style="color: red; display: none; margin-left: 100px" id="QUY_ERROR">Bạn không thể trình danh mục thông tin tài liệu cho quý trước</span>
+                </td>
+            </tr>
+            @*<tr style="height:18px">
+                <td colspan="2">
+                    <span style="color: red; display: none; margin-left: 100px" id="NAM_NULL">Vui lòng chọn năm cho danh mục thông tin cần trình</span>
+                    <span style="color: red; display: none; margin-left: 100px" id="NAM_ERROR">Năm sai định dạng mời chọn lại</span>
+                    <span style="color: red; display: none; margin-left: 100px" id="NAM_INVALID">Bạn chỉ có thể được tạo danh mục thông tin tài liệu cho năm nay hoặc cho tương lai</span>
+                </td>
+            </tr>*@
+            <tr>
+                <td colspan="2">
+                    <button style="margin-left:100px" id="btnShowData" type="button" class="btn btn-primary">Lấy dữ liệu</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="float:left" class="first">
+                        Nội dung:<span style="color:red">*</span>
+                    </div>
+                    <div style="float:left">
+                        <input type="text" maxlength="255" style="width:350px;margin-left:-10px" name="NOIDUNG" id="NOIDUNG" class="e-input" placeholder="Nhập nội dung trình lên Cục Trưởng" />
+                    </div>
+                </td>
+            </tr>
+            <tr style="height:18px">
+                <td colspan="2">
+                    <span style="display:none;color:red;margin-left:100px" id="NOIDUNG_NULL">Vui lòng nhập nội dung trình Cục Trưởng</span>
+                    <span style="display:none;color:red;margin-left:100px" id="NOIDUNG_HTML">Nội dung không được chứa ký tự dạng thẻ HTML</span>
+                </td>
+            </tr>
+            <tr style="height:18px"></tr>
+            <tr>
+                <td colspan="2" id="tbl-ThongTin"></td>
+            </tr>
+        </table>
+        <table style="width:60%;margin:0 auto;margin-bottom:50px">
+            <tfoot style="margin-bottom:100px">
+                <tr>
+                    <td colspan="2" style="text-align:center">
+                        <button class="btn btn-success" type="button" id="btnSaveData" style="display:none">Trình Cục Trưởng</button>
+                        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "DanhMucThongTinCuaCuc")'">Quay lại</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <input type="hidden" name="FOLDER_ID" id="FOLDER_ID" value="" />
+    }
+</div>
+@if(ViewData["QUY"] == null && ViewData["NAM"] == null){
+    <script>
+        $(function () {
+            var date = new Date();
+            var curMonth = date.getMonth() + 1;
+            if (curMonth >= 1 && curMonth <= 3) {
+                $("#QUY").val("1");
+                curMonth = 1;
+            } else if (curMonth >= 4 && curMonth <= 6) {
+                $("#QUY").val("2");
+                curMonth = 2;
+            } else if (curMonth >= 7 && curMonth <= 9) {
+                $("#QUY").val("3");
+                curMonth = 3;
+            } else {
+                $("#QUY").val("4");
+                curMonth = 4;
+            }
+            $.ajax({
+                url: '@Url.Action("ShowData", "DanhMucThongTinCuaCuc")',
+                type: 'POST',
+                cache: false,
+                data: {
+                    QUY: $("#QUY").val().trim(),
+                    NAM: $("#NAM").val().trim(),
+                    STATUS: false
+                },
+                success: function (data) {
+                    if (data.trim().length > 0) {
+                        $("#btnSaveData").show();
+                        $("#tbl-ThongTin").html(data);
+                    } else {
+                        $("#tbl-ThongTin").html("<div style='color:red'>Không tìm thấy dữ liệu phù hợp</div>");
+                    }
+
+                    DonViChuaTrinh();
+                },
+                error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(function () {
+            $("#QUY").val(@ViewData["QUY"]);
+            $("#NAM").val(@ViewData["NAM"]);
+            $.ajax({
+                url: '@Url.Action("ShowData", "DanhMucThongTinCuaCuc")',
+                type: 'POST',
+                cache: false,
+                data: {
+                    QUY: $("#QUY").val().trim(),
+                    NAM: $("#NAM").val().trim(),
+                    STATUS: false
+                },
+                success: function (data) {
+                    if (data.trim().length > 0) {
+                        $("#btnSaveData").show();
+                        $("#tbl-ThongTin").html(data);
+                    } else {
+                        $("#tbl-ThongTin").html("<div style='color:red'>Không tìm thấy dữ liệu phù hợp</div>");
+                    }
+                    DonViChuaTrinh();
+                },
+                error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        });
+</script>
+}
+<script>
+    $(function () {
+        
+        $(document).on('click', '#btnSaveData', function () {
+            if ($("#NOIDUNG").val().trim() == "") {
+                $("#NOIDUNG_NULL").show();
+                $("#NOIDUNG").focus();
+                $("html, body").animate({
+                    scrollTop: 0
+                }, 500);
+                return false;
+            } else {
+                $("#NOIDUNG_NULL").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#NOIDUNG").val()) || /<[a-z][\s\S]*/i.test($("#NOIDUNG").val())) {
+                $("#NOIDUNG").focus();
+                $("#NOIDUNG_HTML").show();
+                $("html, body").animate({
+                    scrollTop: 400
+                }, 500);
+                return false;
+            } else {
+                $("#NOIDUNG_HTML").hide();
+            }
+            var selectAll = 0;
+            var trangthai = "";
+            $("input.selectedItem:checkbox:checked").each(function () {
+                selectAll = 1;
+                trangthai += $(this).attr("data-id") + ",";
+            });
+            if (selectAll == 0) {
+                alert("Vui lòng chọn 1 danh mục thông tin tài liệu.");
+            } else {
+                $.confirm({
+                    'title': 'Xác nhận gửi Cục Trưởng',
+                    'message': 'Bạn có chắc chắn gửi những thông tin này lên Cục Trưởng?',
+                    'buttons': {
+                        'Đồng ý': {
+                            'class': 'btn-confirm-yes',
+                            'action': function () {
+                                $("#FOLDER_ID").val(trangthai);
+                                $("#frmCreateDonXinNghi").submit();
+                                $("#loading").show();
+                                $("#btnSaveData").attr('disabled', 'disabled');
+                                return true;
+                            }
+                        },
+                        'Đóng': {
+                            'class': 'btn-info',
+                            'action': function () {
+                                return false
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+        });
+        $("#btnShowData").click(function () {
+            $.ajax({
+                url: '@Url.Action("ShowData", "DanhMucThongTinCuaCuc")',
+                type: 'POST',
+                cache: false,
+                data: {
+                    QUY: $("#QUY").val().trim(),
+                    NAM: $("#NAM").val().trim(),
+                    STATUS: false
+                },
+                success: function (data) {
+                    if (data.trim().length > 0) {
+                        $("#btnSaveData").show();
+                        $("#tbl-ThongTin").html(data);
+                    } else {
+                        $("#tbl-ThongTin").html("<div style='color:red'>Không tìm thấy dữ liệu phù hợp</div>");
+                    }
+
+                    DonViChuaTrinh();
+                },
+                error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+            return true;
+        });
+    });
+    function DonViChuaTrinh() {
+        $.ajax({
+            url: '@Url.Action("GetDonVi", "DanhMucThongTinCuaCuc")',
+            type: 'POST',
+            cache: false,
+            data: {
+                QUY: $("#QUY").val().trim(),
+                NAM: $("#NAM").val().trim()
+            },
+            success: function (data) {
+                $("#DONVI_DISPLAY").html(data);
+                $("#DONVI_DISPLAY").show();
+                $(".DONVI_NULL").show();
+                $("#DONVI_CHUATRINH").attr("class", "clearfix hot-news-list-2");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>
+<style>
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        vertical-align: middle !important;
+    }
+
+    .first {
+        margin-right: 50px;
+    }
+
+    th {
+        font-weight: bold;
+        text-align: left;
+        word-wrap: break-word;
+    }
+
+    .datepicker {
+        text-align: right;
+    }
+
+    .THONGTIN {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 180px !important;
+        text-overflow: ellipsis;
+    }
+
+    .TAILIEU {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 180px !important;
+        text-overflow: ellipsis;
+    }
+
+    .DIADIEM, .GHICHU {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 150px !important;
+        text-overflow: ellipsis;
+    }
+</style>

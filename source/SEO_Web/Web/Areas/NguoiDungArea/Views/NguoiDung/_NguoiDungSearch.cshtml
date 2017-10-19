@@ -1,0 +1,217 @@
+﻿@using Web.Common
+@model Web.Areas.NguoiDungArea.Models.NguoiDungIndexViewModel
+@{
+
+}
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+<script type="text/javascript" src="/Scripts/multiple-select.js"></script>
+@Html.AntiForgeryToken()
+@using (Ajax.BeginForm("FindNguoiDung", "NguoiDung", new AjaxOptions()
+                                {
+                                    InsertionMode = InsertionMode.Replace,
+                                    HttpMethod = "GET",
+                                    OnFailure = "failure",
+                                    UpdateTargetId = "grid",
+                                }, new { id = "frmSearh" }))
+{
+    <center>
+
+        <table style="margin: 0 auto;">
+            <tr style="height:20px"></tr>
+            <tr>
+                <td width="100">
+                    <label>Cấp cơ sở:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix" style="width: 233px;">
+                        @Html.DropDownList("CAPCOSO", Model.ListCapCoSo, "[--- Chọn cấp cơ sở ---]", new { @style = "width: 100%", id = "CAPCOSO" })
+                    </div>
+                </td>
+                <td width="100">
+                    <label class="lblDiemThi">Cơ sở:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix" style="width: 233px;">
+                        @Html.DropDownList("COSO_ID", Model.ListCoSo, "[--- Chọn cơ sở ---]", new { @style = "width: 100%", id = "COSO" })
+                    </div>
+                </td>
+            </tr>
+            <tr style="height:20px"></tr>
+            <tr>
+                <td style="height:20px">
+                    <label>Đơn vị:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix" style="width: 233px;">
+                        @Html.DropDownList("DM_DONVI", Model.ListDonVi, new { @style = "width: 100%", id = "DM_DONVI" })
+                        <input type="hidden" value="" name="DM_DONVI_ID" id="DM_DONVI_ID" />
+                    </div>
+                </td>
+                <td>
+                    <label>Vai Trò:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix" style="width: 233px;">
+                        @Html.DropDownList("DM_VAITRO", Model.ListVaiTro, new { @style = "width: 100%", id = "DM_VAITRO" })
+                        <input type="hidden" value="" name="DM_VAITRO_ID" id="DM_VAITRO_ID" />
+                    </div>
+                </td>
+            </tr>
+            <tr style="height:20px"></tr>
+            <tr>
+                <td>
+                    <label>Từ khóa:</label>
+                </td>
+                <td colspan="3">
+                    @Html.TextBox("FTS", "", new { @style = "width: 630px;", @class = "e-input" })
+                </td>
+            </tr>
+            <tr style="height:20px"></tr>
+            <tr>
+                <td colspan="4">
+                    <div style="margin-top: 10px; margin-left: 35%;">
+                        <input type="hidden" id="data" value="@Model.autocomplete" />
+                        <button type="button" onclick="Search()" class="btn btn-primary">Tìm kiếm</button>
+                        <button type="button" onclick="CloseSearch()" class="btn btn-default">Đóng</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </center>
+
+}
+
+<script type="text/javascript">
+    function CloseSearch() {
+        $("#contentSearch").fadeOut();
+    }
+    $(function () {
+        var result = JSON.parse($("#data").val());
+        $('#FTS').autocomplete({
+            lookup: result,
+            onSelect: function (suggestion) {
+                $.ajax({
+                    type: "GET",
+                    cache: false,
+                    data: { ID: suggestion.data },
+                    url: '@Url.Action("FindSearch", "NguoiDung")',
+                    success: function (data) {
+                        $("#grid").html(data);
+                    }
+                })
+            }
+        });
+    });
+    function Search() {
+        $("#DM_DONVI_ID").val($("#DM_DONVI").multipleSelect("getSelects"));
+        $("#DM_VAITRO_ID").val($("#DM_VAITRO").multipleSelect("getSelects"));
+        $("#frmSearh").submit();
+    }
+    $(document).ready(function () {
+        $("#DM_DONVI").multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "Lựa chọn đơn vị"
+        });
+
+        $("#DM_VAITRO").multipleSelect({
+            multiple: false,
+            filter: true,
+            single: true,
+            placeholder: "Lựa chọn vai trò"
+        });
+
+
+        $("#FTS").change(function () {
+            $("#FTS_INDEX").val($(this).val());
+        });
+        document.onkeydown = function () {
+            if (window.event.keyCode == '13') {
+                Search();
+            }
+        }
+
+
+        $("#showSearch").click(function () {
+            if ($("#contentSearch").is(':hidden')) {
+                $("#contentSearch").fadeIn();
+            } else {
+                $("#contentSearch").fadeOut();
+            }
+
+        });
+        $("#COSO").change(function () {
+            if ($(this).val() > 0) {
+                $.ajax({
+                    type: "GET",
+                    data: { COSO_ID: $(this).val() },
+                    cache: false,
+                    url: '@Url.Action("Get_DonViVaiTro", "NguoiDung")',
+                    success: function (data) {
+                        $("#DM_DONVI").html(data.DONVI);
+                        $("#DM_DONVI").multipleSelect({
+                            multiple: true,
+                            filter: true,
+                            placeholder: "Lựa chọn đơn vị"
+                        });
+                    }
+                });
+
+            } else {
+                $("#DM_DONVI").html("");
+                $("#DM_DONVI").multipleSelect({
+                    multiple: true,
+                    filter: true,
+                    placeholder: "Lựa chọn đơn vị"
+                });
+            }
+        });
+        $("#CAPCOSO").change(function () {
+
+            if ($(this).val() > 0) {
+
+                $.ajax({
+                    type: "GET",
+                    data: { CAPCOSO_ID: $(this).val(), SEARCH: "0" },
+                    cache: false,
+                    url: '@Url.Action("Get_CoSo", "NguoiDung")',
+                    success: function (data) {
+                        $("#COSO").html(data.COSO);
+                        $("#DM_VAITRO").html(data.VAITRO);
+                        $("#DM_DONVI").multipleSelect({
+                            multiple: true,
+                            filter: true,
+                            placeholder: "Lựa chọn đơn vị"
+                        });
+                        $("#DM_VAITRO").multipleSelect({
+                            multiple: false,
+                            single: true,
+                            filter: true,
+                            placeholder: "Lựa chọn vai trò"
+                        });
+                    }
+                });
+            } else {
+                $("#DM_DONVI").html("");
+                $("#DM_DONVI").multipleSelect({
+                    multiple: true,
+                    filter: true,
+                    placeholder: "Lựa chọn đơn vị"
+                });
+                $("#DM_VAITRO").html("")
+                $("#DM_VAITRO").multipleSelect({
+                    multiple: false,
+                    single:true,
+                    filter: true,
+                    placeholder: "Lựa chọn vai trò"
+                });
+            }
+
+        });
+    });
+    function failure(xhr, error) {
+        alert(xhr.responseText);
+        $("#FTS").val("");
+        $("#TENDONVI").val("");
+    }
+</script>

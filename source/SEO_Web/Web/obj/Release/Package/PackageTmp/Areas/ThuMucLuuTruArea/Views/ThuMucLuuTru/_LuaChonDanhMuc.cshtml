@@ -1,0 +1,109 @@
+﻿@using Model.eAita
+@using Web.FwCore
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using (Ajax.BeginForm("SaveLuaChonDanhMuc", "ThuMucLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmLoaiVanBanCreate" }))
+{
+    var ListDanhMuc = (List<TM_DANHMUC_THONGTIN>)SessionManager.GetValue("ListDanhMuc");
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog" style="width:450px;height:450px;overflow-y:auto;overflow-x:hidden;margin-top:200px">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close closeModal" >&times;</button>*@
+                <h4 class="modal-title">Lựa chọn danh mục thông tin tài liệu</h4>
+            </div>
+            <div class="modal-body">
+                @if (ListDanhMuc != null)
+                {
+                    var ListParent = ListDanhMuc.Where(x => x.PARENT_ID == null).ToList();
+                    <div id="treeview-disabled" class="treeview" style="height:150px">
+                        <ul class="list-group">
+                            @foreach (var item in ListParent)
+                            {
+                                var ListChild = ListDanhMuc.Where(x => x.PARENT_ID == item.ID).ToList();
+                                <li class="list-group-item node-treeview-disabled search-result">
+                                    @if (item.TRANGTHAI == DanhMucThongTinTrangThai.PHEDUYET)
+                                    {
+                                        if (ListParent.IndexOf(item) == 0)
+                                        {
+                                            <input type="radio" name="DANHMUC" id="DANHMUC_@item.ID" value="@item.ID" class="timeout css-checkbox DANHMUCTAILIEU" checked /><label for="DANHMUC_@item.ID" class="css-label TENDANHMUCTAILIEU" style="font-weight:bold">@item.TENTHONGTIN</label>
+                                        }
+                                        else
+                                        {
+                                            <input type="radio" name="DANHMUC" id="DANHMUC_@item.ID" value="@item.ID" class="timeout css-checkbox DANHMUCTAILIEU" /><label for="DANHMUC_@item.ID" class="css-label TENDANHMUCTAILIEU" style="font-weight:bold">@item.TENTHONGTIN</label>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span style="font-weight:bold">@item.TENTHONGTIN</span>
+                                    }
+                                </li>
+                                if (ListChild.Count > 0)
+                                {
+                                    <li>
+                                        @foreach (var ele in ListChild)
+                                        {
+                                            <ul>
+                                                <li class="list-group-item node-treeview-disabled search-result">
+                                                    @if (ele.TRANGTHAI == DanhMucThongTinTrangThai.PHEDUYET)
+                                                    {
+                                                        <input type="radio" name="DANHMUC" id="DANHMUC_@ele.ID" value="@ele.ID" class="timeout css-checkbox DANHMUCTAILIEU" /><label for="DANHMUC_@ele.ID" class="css-label TENDANHMUCTAILIEU">@ele.TENTHONGTIN</label>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@ele.TENTHONGTIN</span>
+                                                    }
+                                                </li>
+                                            </ul>
+                                        }
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div>Không tìm thấy danh mục thông tin tài liệu</div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btnSave">Xác nhận</button>
+                <button type="button" class="btn btn-default closeModal" id="closeModal">Đóng</button>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: "Lựa chọn danh mục thành công",
+        });
+        $("#LuaChonDanhMuc").hide();
+    }
+    $(function () {
+        $("#closeModal").click(function () {
+            $("#LuaChonDanhMuc").hide();
+        });
+        $("#btnSave").click(function () {
+            if ($('input:radio.DANHMUCTAILIEU:checked').val() != undefined) {
+                $("#TENDANHMUC_@ViewData["DANHMUC_ID"]").html($('input:radio:checked').next('label:first').html());
+                $("#DANHMUC_@ViewData["DANHMUC_ID"]").val($('input:radio:checked').val());
+                $("#TENDANHMUC_@ViewData["DANHMUC_ID"]").show();
+                $("#FILENAME_@ViewData["DANHMUC_ID"]").val($('input:radio:checked').next('label:first').html());
+            } else {
+                $("#TENDANHMUC_@ViewData["DANHMUC_ID"]").hide();
+                $("#DANHMUC_@ViewData["DANHMUC_ID"]").val("");
+                $("#FILENAME_@ViewData["DANHMUC_ID"]").val("");
+            }
+            return true;
+        });
+    });
+</script>

@@ -1,0 +1,70 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common;
+@model Web.Areas.VanBanDenArea.Models.SoVanBanDenViewModel
+@{
+    List<HSCV_SOVANBAN> lstSoVanBanDen = new List<HSCV_SOVANBAN>();
+
+    lstSoVanBanDen = Model.ListSoVanBan.Where(x => x.NHOMSOVANBAN_ID == Model.IdNhomSo).ToList();
+    var grid = new WebGrid(lstSoVanBanDen,
+                        rowsPerPage: 10,
+                        canPage: true,
+                        canSort: false,
+                        ajaxUpdateContainerId: "grid",
+                        selectionFieldName: "selectedRow"
+                          );
+}
+@Html.AntiForgeryToken()
+<style>
+    .btnEdit {
+        background: url(/Content/Images/Edit.png) no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url(/Content/Images/Delete.png) no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+</style>
+<div id="grid_@Model.IdNhomSo">
+    @grid.GetHtml(
+                        tableStyle: "table table-bordered",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+            //grid.Column(format: (item) => new MvcHtmlString(string.Format("<a href='/VanBanDenArea/SoVanBanDen/Detail/" + item.ID + "'>" + item.TENSO + "</a>")), header: "Tên sổ văn bản đến"),
+                                                                grid.Column(format: (item) => new MvcHtmlString(string.Format("<label>" + item.TENSO + "</label>")), header: "Tên sổ văn bản đến"),
+                        grid.Column(format: (item) => item.SOVANBANTOIDA, header: "Số văn bản tối đa"),
+                                        grid.Column(format: (item) => item.SOVBTHEOSO, header: "Số theo sổ hiện tại"),
+                                grid.Column(format: (item) => string.Format("{0:dd/MM/yyyy}", item.NGAYTAO), header: "Ngày tạo"),
+                        grid.Column(format: (item) => item.MUCDICHTAO, header: "Mục đích tạo"),
+                         grid.Column(format: (item) =>
+                    {
+                        return new MvcHtmlString(string.Format(
+                         "<a href='javascript:EditVaiTro(" + item.ID + ")'  class='btnEdit' title = 'Chỉnh sửa'></a>"));
+                    }
+                            , header: ""),
+                grid.Column(format: (item) =>
+                    {
+
+                        return new MvcHtmlString(string.Format(
+                        "<a href='javascript:void(0)' onclick='DeleteSoVanBan(" + item.ID + ")'  class='btnDelete' title = 'Xóa'></a>"));
+                    }
+                        ,
+                           header: "")
+                )
+                )
+</div>
+
+

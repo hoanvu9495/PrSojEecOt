@@ -1,0 +1,193 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@{
+    List<DM_TRINHDO_CHUYENMON> lstChuyenMon = new List<DM_TRINHDO_CHUYENMON>();
+    if (ViewData["Search"] == "0")
+    {
+        lstChuyenMon = (List<DM_TRINHDO_CHUYENMON>)SessionManager.GetValue("ListChuyenMon");
+    }
+    if (ViewData["Search"] == "1")
+    {
+        lstChuyenMon = (List<DM_TRINHDO_CHUYENMON>)SessionManager.GetValue("ListChuyenMonSearch");
+    }
+    var grid = new WebGrid(lstChuyenMon,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+
+}
+@Html.AntiForgeryToken()
+<div id="grid">
+    @if (lstChuyenMon.Count > 0)
+    {
+
+
+        <div id="HeaderGrid">
+            <div style="margin:20px 0px 10px 10px;">
+                <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">@(lstChuyenMon == null ? "0" : lstChuyenMon.Count.ToString()) &nbsp; kết quả</label>
+
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                             grid.Column("TRINHDO_CHUYENMON", "Trình độ chuyên môn"),
+                                  grid.Column("NGAYTAO", "Ngày Tạo", format: (item) => item.NGAYTAO != null ? string.Format("{0:dd-MM-yyyy}", item.NGAYTAO) : ""),
+                                grid.Column("NGAYSUA", "Ngày Sửa", format: (item) => item.NGAYSUA != null ? string.Format("{0:dd-MM-yyyy}", item.NGAYSUA) : ""),
+                 grid.Column("NGUOITAO", "Người Tạo"),
+                                     grid.Column("NGUOISUA", "Người Sửa"),
+                 grid.Column(format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == true ? "Được sử dụng" : "<span style='color: red;'>Không được sử dụng</span>"
+                                     )), header: "Trạng Thái"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                   "<a href='javascript:void(0)' onclick='EditChuyenMon(" + item.ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                   "<a href='javascript:void(0)' onclick='RemoveChuyenMon(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+
+                 )
+    )
+    }
+    else
+    {
+
+        <div id="Empty" style="color: red;">
+            Chưa có trình độ chuyên môn nào được tạo
+        </div>
+
+    }
+</div>
+<div class="modal fade" id="CreateChuyenMon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<style>
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 222px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .head th:first-child {
+        width: 10px;
+    }
+
+    .webGrid tbody tr td:nth-child(2) {
+        width: 250px;
+        text-align: left;
+    }
+</style>
+<script type="text/javascript">
+
+
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("AddFormTrinhDoChuyenMon", "DmTrinhDoChuyenMon")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#CreateChuyenMon").html(data);
+                $("#CreateChuyenMon").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+    function EditChuyenMon(ID) {
+        $.ajax({
+            url: '@Url.Action("EditFormTrinhDoChuyenMon", "DmTrinhDoChuyenMon")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#PrepareChuyenMon").html(data);
+                $("#CreateChuyenMon").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function RemoveChuyenMon(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa trình độ chuyên môn này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveTrinhDOChuyenMon", "DmTrinhDoChuyenMon")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Xóa trình độ chuyên môn thành công!',
+                                });
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+
+</script>

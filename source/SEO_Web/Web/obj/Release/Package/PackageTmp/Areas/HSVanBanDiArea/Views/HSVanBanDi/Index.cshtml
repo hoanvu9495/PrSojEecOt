@@ -1,0 +1,363 @@
+﻿@using Model.eAita;
+@using Web.FwCore;
+@using Web.Common;
+@using Web.Areas.HSVanBanDiArea.Models;
+@using Web.Areas.MarkItemArea.Models;
+@model VBDiIndexViewModel
+@{
+    ViewBag.Title = "[eAita] Điều hành tác nghiệp > Quản lý văn bản đi";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+
+    MarkItemViewModel mark_model = new MarkItemViewModel();
+    mark_model.ITEM_TYPE = LOAITAILIEU.VANBANDI;
+    mark_model.RELOAD_FUNCTION = "ReloadPage";
+
+    var VBDiIndexViewModel = new VBDiIndexViewModel();
+    VBDiIndexViewModel = Model;
+    var updateAttachment = SessionManager.GetValue("UpdateAttachment");
+    SessionManager.Remove("UpdateAttachment");
+}
+<style type="text/css">
+    .button--attachment {
+        cursor: pointer;
+    }
+
+    .btnHasAttFile {
+        background: url('/Content/Images/van_ban_den/has_attachment.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    input[type="radio"], input[type="checkbox"] {
+        margin: 3px 0 0;
+    }
+
+    label {
+        font-weight: normal !important;
+    }
+
+    table.webGrid tr.head th, table.webGrid tr.head td {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    #grid table.table--self-define tr td {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .preview-item-content {
+        border: 2px solid rgb(17, 138, 203);
+        border-top: 0 !important;
+        overflow: hidden;
+        cursor: default;
+    }
+
+    #grid {
+        width: 100%;
+        overflow-x: auto;
+        min-height: 600px;
+    }
+
+    .modal-title {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    #EditAttachmentModal > .modal-dialog {
+        width: 1080px;
+    }
+
+    #EditAttachmentModal .modal-header {
+        text-transform: uppercase;
+    }
+
+    #EditAttachmentModal > .modal-dialog #block--edit-attachment {
+        height: 450px;
+        overflow-y: scroll;
+    }
+</style>
+<div class="row">
+    <div class=" col-sm-3">
+        @Html.Partial("~/Areas/MarkItemArea/Views/_ActionMarkItem.cshtml", mark_model)
+    </div>
+    <div class="col-sm-9">
+       @* <a href="/#hsvanbandiarea/hsvanbandi/createvb" class="btn btn-success" style="float: right; ">
+            <i class="fa fa-plus"></i> <span class="hidden-mobile">Thêm mới văn bản đi</span>
+        </a>*@
+        <a href="#collapseSearch" class="btn btn-labeled btn-primary" aria-controls="collapseSearch" data-toggle="collapse" role="button" style="float: right; margin-right:5px;">
+            <span class="btn-label">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+            Tìm kiếm nâng cao
+        </a>
+
+    </div>
+</div>
+@*<div id="menu-toolbar" class="date-time">
+
+        <div class="right-all-page" style="background:none; border:0">
+            <div class="menu-left">
+
+                    <div class="btn btn-success btn-sm" style="margin-right:10px;">
+                        <a href="/hsvanbandiarea/hsvanbandi/createvb">
+                            <span>Văn bản đi Mới</span>
+                        </a>
+                    </div>
+
+                <div style="margin-bottom: 10px;float: left;margin-right:10px;">
+
+                </div>
+                <button style="margin-bottom: 10px;" type="button" class="b_btn b_btn-default vbdi_search">
+                    Tìm kiếm nâng cao
+                </button>
+            </div>
+            <div class="menu-right">
+                <div class="btn-group" role="group">
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+<div class="right-all-page">
+    <div class="right-content clearfix">
+        <div class="clearfix">
+            @Html.Partial("_SearchVanBanDi")
+        </div>
+        @Html.Partial("_SearchVanBanDiResult", VBDiIndexViewModel)
+    </div>
+</div>
+
+<div class="modal fade" id="EditAttachmentModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="closeEditAttachment()" aria-label="Close" aria-hidden="true">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4" class="modal-title">
+                    Cập nhật tệp đính kèm văn bản
+                </h4">
+            </div>
+            <div class="modal-body" id="block--edit-attachment">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveEditAttachment()">
+                    Lưu
+                </button>
+                <button type="button" class="btn btn-default" onclick="closeEditAttachment()">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    pageSetUp();
+    var currentPage = 1;
+    var $emptyStr = '';
+    $(function () {
+        if ('@updateAttachment' !== $emptyStr) {
+            notif({
+                type: 'success',
+                position: 'bottom',
+                msg: 'Cập nhật file đính kèm thành công'
+            });
+        }
+        if ('@TempData["SaveNoteSucceed"]' !== $emptyStr) {
+            notif({
+                type: 'success',
+                position: 'bottom',
+                msg: 'Lưu sổ thành công!',
+            });
+        }
+        if ('@TempData["CreateVanBanDiSuccess"]' !== $emptyStr) {
+            NotiSuccess("@TempData["CreateVanBanDiSuccess"]");
+        }
+        if ('@TempData["UpdateVanBanDiSuccess"]' !== $emptyStr) {
+            NotiSuccess("@TempData["UpdateVanBanDiSuccess"]");
+        }
+        $('#txtQuickSearch').on('keyup', function (event) {
+            if (event.keyCode === 13) {
+                $('#btnQuickSearch').trigger('click');
+            }
+        });
+
+        $('#btnQuickSearch').on('click', function () {
+            var trich_yeu = $('#txtQuickSearch').val().trim();
+            $('#frmSearch #QUERY_TUKHOA').val(trich_yeu);
+            $('#frmSearch').submit();
+        });
+    });
+
+
+    function closeEditAttachment() {
+        $('#EditAttachmentModal').modal('hide');
+        $("#EditAttachmentModal .modal-body").children().remove();
+    }
+
+    var currentClickID = 0;
+
+    function previewDocument(id) {
+        if (currentClickID == id) {
+            $(".preview-item").remove();
+            $(".webGrid tbody tr").css("background", "");
+            $(".webGrid tbody tr").css("color", "");
+            $(".webGrid tbody tr a").css("color", "");
+            currentClickID = 0;
+        }
+        else {
+            currentClickID = id;
+            var colspan = $('.table--self-define thead tr th').length;
+            $(".preview-item").hide();
+            $(".webGrid tbody tr").css("background", "");
+            $(".webGrid tbody tr").css("color", "");
+            $(".webGrid tbody tr a").css("color", "");
+            var tr = $("#item" + id).parent().parent();
+            tr.css("background", "rgb(17, 138, 203) none repeat scroll 0% 0%");
+            tr.css("color", "#F88C01");
+            tr.find("a").css("color", "#F88C01");
+            tr.after("<tr class='preview-item'><td colspan='" + colspan + "' style='padding:0 !important;'><div id='preview-item-" + id + "' class='preview-item-content'></div></td></tr>");
+            $.ajax({
+                url: "@Url.Action("LoadPreviewVB")",
+                type: 'POST',
+                data: {
+                    id: id,
+                    type: parseInt('@VBDiIndexViewModel.Type'),
+                    nhomSoID: parseInt('@VBDiIndexViewModel.NhomSoID'),
+                    soID: parseInt('@VBDiIndexViewModel.SoID')
+                },
+                success: function (data) {
+                    $("#preview-item-" + id).html(data);
+                },
+                error: function (data) {
+                    $("#preview-item-" + id).html("Không tìm thấy dữ liệu, vui lòng thử lại sau.");
+                }
+            });
+        }
+    }
+
+    function ViewDetail(id) {
+        location.href = '#hsvanbandiarea/hsvanbandi/detail/' + id;
+    }
+
+    function openEditAttachment(id) {
+        $.ajax({
+            url: '@Url.Action("EditAttachment")',
+            type: 'POST',
+            data: { id: id },
+            dataType: 'html',
+            success: function (result) {
+                if (result !== null && result !== '') {
+                    $("#EditAttachmentModal .modal-body").html(result);
+                    $('#EditAttachmentModal').modal('show');
+                } else {
+                    notif({
+                        type: 'warning',
+                        position: 'bottom',
+                        msg: 'Bạn không thể cập nhật văn bản này!',
+                    });
+                }
+            }
+        })
+    }
+
+    function saveEditAttachment() {
+        $("#EditAttachmentModal form").submit();
+    }
+
+
+    function reloadGrid() {
+        var currentPageIndex = parseInt($('#grid tfoot td').clone().children('a').remove().end().text().trim(), 10) - 1;
+        if (isNaN(currentPageIndex)) {
+            currentPageIndex = 0;
+        }
+        $.ajax({
+            url: '@Url.Action("RefreshPage")',
+            type: 'GET',
+            dataType: 'html',
+            data: {
+                pageIndex: currentPageIndex,
+                type: '@VBDiIndexViewModel.Type',
+                nhomSoID: '@VBDiIndexViewModel.NhomSoID',
+                soID: '@VBDiIndexViewModel.SoID'
+            },
+            success: function (view) {
+                $('#grid').html(view);
+            }, error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+
+    function ReloadPage() {
+        $.ajax({
+            url: '@Url.Action("RefreshData")',
+            type: 'POST',
+            dataType: 'Json',
+            data: {
+                pageIndex: currentPage,
+                type: '@VBDiIndexViewModel.Type',
+                nhomSoID: '@VBDiIndexViewModel.NhomSoID',
+                soID: '@VBDiIndexViewModel.SoID'
+            },
+            success: function (rs) {
+                for (var i = 0; i < rs.ListItem.length; i++) {
+                    if (rs.ListItem[i].NGAYBANHANH != null) {
+                        var str = rs.ListItem[i].NGAYBANHANH;
+                        rs.ListItem[i].NGAYBANHANH = ConvertToDateISO(str);
+                    }
+                }
+                LoadData(rs.ListItem);
+            }, error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+
+    function ActionQuanTrong(id, status) {
+        $.ajax({
+            url: '@Url.Action("SetQuanTrong", "HSVanBanDi")',
+            type: 'post',
+            cache: false,
+            data: { id: id, status: status },
+            success: function (data) {
+                if (data) {
+                    NotiSuccess("Thao tác thành công");
+                    ReloadPage();
+                } else {
+                    NotiError("Thao tác thất bại");
+                }
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function ActionDauSao(id, status) {
+        $.ajax({
+            url: '@Url.Action("SetDauSao", "HSVanBanDi")',
+            type: 'post',
+            cache: false,
+            data: { id: id, status: status },
+            success: function (data) {
+                if (data) {
+                    NotiSuccess("Thao tác thành công");
+                    ReloadPage();
+
+                } else {
+                    NotiError("Thao tác thất bại");
+
+                }
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>

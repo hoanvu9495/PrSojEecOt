@@ -1,0 +1,215 @@
+﻿
+@using Web.Areas.QLUyQuyenArea.Models;
+@using Model.eAita;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@model QLUyQuyenFormEditModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<style type="text/css">
+    .div-form {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .wid-100 {
+        width: 100%;
+    }
+
+    .required-mark {
+        color: red;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .lbl {
+        margin-top: 7px;
+    }
+</style>
+<div class="row" style="margin-bottom:7px;">
+    <div class=" col-sm-3">
+    </div>
+    <div class="col-sm-9">
+        <a href="#QLUyQuyenArea/QLUyQuyen/index" class="btn btn-primary" style="float: right; ">
+            <i class="fa fa-reply"></i> <span class="hidden-mobile">Quay lại</span>
+        </a>
+    </div>
+</div>
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <span class="widget-icon"> <i class="fa fa-file-image-o txt-color-darken"></i> </span>
+        <h2 class="hidden-xs hidden-sm">Cập nhật Ủy quyền </h2>
+
+    </header>
+    <div role="content">
+        <div class="widget-body">
+            @using (Ajax.BeginForm("Edit", "QLUyQuyen", new AjaxOptions
+            {
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "Post",
+                OnSuccess = "ActionEditSuccess",
+                OnFailure = "ActionEditFailure"
+            },
+                new { Id = "frmCreate" }))
+            {
+                <div class="tab-content custom-scroll" style=" ">
+
+                    @Html.AntiForgeryToken()
+                    <div class="div-form">
+                        <input type="hidden" name="ID" value="@Model.ID" />
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                    <label class="lbl" for="TRICHYEU">
+                                        Người ủy quyền
+                                    </label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="text" name="NGUOI_UYQUYEN" class="form-control" readonly value="@Model.NguoiUyQuyen" />
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+
+                                    <label class="lbl" for="TRICHYEU">
+                                        Module<span class="required-mark">*</span>
+                                    </label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input value="@Model.Module" class="form-control" readonly />
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                    <label class="lbl" for="TRICHYEU">
+                                        Người được ủy quyền<span class="required-mark">*</span>
+                                    </label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input value="@Model.NguoiDcUyQuyen_Name" class="form-control" readonly />
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                    <label class="lbl" for="TRICHYEU">
+                                        Thời gian bắt đầu<span class="required-mark">*</span>
+                                    </label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="text" name="TIME_START" id="TIME_START" class="form-control validateDate input_datepicker" value='@string.Format("{0:dd/MM/yyyy}", Model.Time_Star)' />
+                                    <div class="note-error">
+                                        <span  class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                    <label class="lbl" for="TRICHYEU">
+                                        Thời gian kết thúc<span class="required-mark">*</span>
+                                       
+                                    </label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="text" name="TIME_END" id="TIME_END" class="form-control validateDate input_datepicker" value='@string.Format("{0:dd/MM/yyyy}", Model.Time_End)' />
+                                    <div class="note-error">
+                                        <span id="errTIME_END" class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions center">
+                    <button type="button" id="btnCreate" class="btn btn-primary btn-sm">Tạo mới</button>
+                </div>
+            }
+
+        </div>
+
+    </div>
+</div>
+<script>
+    pageSetUp();
+    //$("#btnCreate").click(function () {
+    //    $("#frmCreate").submit();
+    //})
+    $("#btnCreate").click(function () {
+        var err = 0;
+        var errDate = ValidateFieldDate("frmCreate");
+        if (!errDate) {
+            err++;
+        } else {
+            var isVaildTime = CheckRangeDate("frmCreate", "TIME_START", "TIME_END")
+            if (!isVaildTime) {
+                err++;
+                $("#errTIME_END").html("Thời gian kết thúc phải lớn hơn thời gian bắt đầu");
+                $("#errTIME_END").css("display", "inline");
+                $("#TIME_END").val("");
+            } else {
+                $("#errTIME_END").css("display", "none");
+
+            }
+        }
+        if (err == 0) {
+            $("#frmCreate").submit();
+            return true;
+        } else {
+            NotiError("Có lỗi. Vui lòng kiểm tra lại");
+            return false;
+
+        }
+
+    })
+
+    $(".input_datepicker").datepicker({
+        dateFormat: 'dd/mm/yy',
+        changeMonth: true,
+        changeYear: true, yearRange: "-50:+20",
+        showWeek: false, weekHeader: "Tuần",
+        language: 'vi',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        onSelect: function (date) {
+
+        }
+    });
+    function ActionEditSuccess(rs) {
+        if (rs.Status) {
+            NotiSuccess("Cập nhật ủy quyền thành công");
+            setTimeout(function () {
+                window.location.href = "#QLUyQuyenArea/QLUyQuyen/index";
+            }, 1000);
+        } else {
+            NotiError(rs.Message);
+        }
+    }
+
+    function ActionEditFailure(rs) {
+        NotiError("Có lỗi");
+    }
+    loadScript("Scripts/jquery.unobtrusive-ajax.min.js");
+</script>
+
+@*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@

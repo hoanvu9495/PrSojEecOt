@@ -1,0 +1,97 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Business.CommonBusiness;
+@{
+    List<ThuMucLuuTruBO> lstThuMuc = (List<ThuMucLuuTruBO>)SessionManager.GetValue("ListPheDuyet");
+}
+@{
+
+    if (lstThuMuc != null && lstThuMuc.Count > 0)
+    {
+
+        <ul id="browser" class="filetree treeview-famfamfam">
+            @foreach (var i in lstThuMuc)
+            {
+                <li data-fid="@("F_"+i.ID)">
+
+                    @*<span class="folder" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>*@
+                    @if (i.EXPIRE_DATEFROM.HasValue || i.EXPIRE_DATE.HasValue)
+                    {
+                        if (i.EXPIRE_DATE.HasValue && i.EXPIRE_DATE.Value < DateTime.Now)
+                        {
+                            <span class="folder" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE) (Hết hạn lưu trữ)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                        else if (i.EXPIRE_DATEFROM.HasValue && DateTime.Now < i.EXPIRE_DATEFROM.Value)
+                        {
+                            <span class="folder" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE) (Chưa được sử dụng)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                        else if (DateTime.Now >= i.EXPIRE_DATEFROM && DateTime.Now <= i.EXPIRE_DATE)
+                        {
+                            <span class="folder" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+
+                        else
+                        {
+                            <span class="folder" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                    }
+                    @*else if (i.IS_PRIVATE.Value)
+                        {
+                            <span class="folder private" title="@i.TENTHUMUC (Thư mục cá nhân)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }*@
+                    else
+                    {
+
+                        <span class="folder" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+
+                    }
+                </li>
+            }
+        </ul>
+
+
+    }
+    else
+    {
+
+        <span style="color:red">Không có thư mục nào</span>
+
+    }
+}
+<style>
+    .expired1 {
+        background: url('/Content/themes/base/images/folder-expired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: red;
+    }
+
+    .unexpired1 {
+        background: url('/Content/themes/base/images/folder_unexpired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+    }
+
+    .private1 {
+        background: url('/Content/themes/base/images/my_folder.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+        color: #ff6a00;
+    }
+</style>

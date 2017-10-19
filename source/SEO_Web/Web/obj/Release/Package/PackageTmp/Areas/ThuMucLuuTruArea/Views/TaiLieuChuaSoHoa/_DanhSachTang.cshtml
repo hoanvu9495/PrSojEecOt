@@ -1,0 +1,29 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.TaiLieuChuaSoHoaModel
+@Html.DropDownList("TANG_ID", Model.lstToaNha, "[---Lựa chọn tầng---]", new { @style = "", @id = "TANG_ID" })
+<script>
+    $(function () {
+        $("#TANG_ID").change(function () {
+
+            if ($("#TANG_ID").val() != "") {
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("LoadPhongByTang", "TaiLieuChuaSoHoa")',
+                    data: {
+                        TANG: $("#TANG_ID").val()
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        $("#PHONGLUUTRU").html(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            } else {
+                $("#PHONGLUUTRU").html("");
+            }
+        });
+    });
+</script>

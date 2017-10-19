@@ -1,0 +1,61 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.QuanLyKeModel
+@Html.DropDownList("PHONG_ID", Model.lstPhong, "[---Lựa chọn phòng---]", new { @style = "", @id = "PHONG_ID" })
+
+<script>
+    $(function () {
+        $("#PHONG_ID").change(function () {
+
+            if ($("#PHONG_ID").val() != "") {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListMaKe", "QuanLyLuuTru")',
+                    data: {
+                        PHONGID: $("#PHONG_ID").val()
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        $("#MAKE_CHECK").val(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListTenKe", "QuanLyLuuTru")',
+                    data: {
+                        PHONGID: $("#PHONG_ID").val()
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        $("#TENKE_CHECK").val(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("LoadKeByPhong", "QuanLyLuuTru")',
+                    data: {
+                        PHONG: $("#PHONG_ID").val()
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        $("#KELUUTRU").html(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            } else {
+                $("#KELUUTRU").html("");
+                $("#TENKE_CHECK").val("");
+                $("#MAKE_CHECK").val("");
+            }
+        });
+    });
+</script>

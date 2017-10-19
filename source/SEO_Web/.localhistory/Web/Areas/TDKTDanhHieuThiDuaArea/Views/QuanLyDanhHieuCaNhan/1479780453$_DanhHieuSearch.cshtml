@@ -1,0 +1,31 @@
+﻿@using Web.Common
+@using Web.FwCore;
+<div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" role="tabpanel" style="">
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindVanBanDen", "VanBanDen", new { SearchType = "Index" }, new AjaxOptions()
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnFailure = "failure",
+            OnSuccess = "searchSuccess",
+            UpdateTargetId = "grid",
+        }, new { id = "frmSearh" }))
+    {
+        <div>
+            <center>
+                <table style="width:80%;">
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td width="160">
+                            <label>Tên danh hiệu:</label>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBox("DANHHIEUTHIDUA", "", new { @placeholder = "Tìm theo nội dung trích yếu", id = "TRICHYEU", @style = "width: 655px;", @class = "e-input" })
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                </table>
+            </center>
+        </div>
+    }
+</div>

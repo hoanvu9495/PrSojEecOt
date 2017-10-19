@@ -1,0 +1,176 @@
+﻿@using Web.Areas.CongViecArea.Models;
+@model TaskDiscussionModel
+@{
+    ViewBag.Title = "Smart DMS | eGovOffice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    #TIEUDE{
+        width:750px;
+    }
+    #NOIDUNG{
+        width:750px;height:300px;
+    }
+    .e-input {
+        height: 30px !important;
+    }
+
+    .right-content label {
+        font-weight: normal !important;
+    }
+
+    #block--form-comment-buttons {
+        text-align: center;
+        padding-bottom: 30px;
+    }
+
+    #btnBack {
+        border: medium none;
+        color: white;
+        padding: 6px 20px;
+        background-color: seagreen;
+    }
+    #block--attachment-comment{
+        width:750px;
+    }
+</style>
+<link href="~/Content/Custom/css/congviec/congviec.css" rel="stylesheet" />
+<div id="menu-toolbar" class="date-time">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none;">
+        <div class="menu-left">
+            <div class="btnAddNew" style="margin-right:10px;">
+                <a href="/congviecarea/congviec/create">
+                    <span>@(Model.HAS_ROLE_GIAOVIEC ? "Giao việc" : "Việc cá nhân")</span>
+                </a>
+            </div>
+        </div>
+        <div class="menu-right">
+
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div class="left-content block">
+        @Html.Partial("_MenuCongViec", Model.CongViecCounter, new ViewDataDictionary { { "ROLE_GIAO_VIEC", Model.HAS_ROLE_GIAOVIEC }, { "Active", ViewBag.Active.ToString() } })
+    </div>
+</div>
+<div class="right-all-page">
+    <div class="right-content clearfix">
+        <h3 class="group-tittle">
+            Nội dung trao đổi
+        </h3>
+        @using (Html.BeginForm("AddComment", "CongViec", FormMethod.Post, new { enctype = "multipart/form-data", Id = "frmAddComment" }))
+        {
+            @Html.AntiForgeryToken()
+                <table class="edit-table" id="table--add-comment">
+                    <tr>
+                        <td>
+                            <label class="lbl" for="TIEUDE">
+                                Tiêu đề:<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <input type="text" name="TIEUDE" id="TIEUDE" class="e-input" maxlength="250" value="@Model.TIEUDE"/>
+                        </td>
+                    </tr>
+                    <tr class="height-15">
+                        <td></td>
+                        <td>
+                            <span class="lb-Check" id="TIEUDE_NULL">Bạn hãy nhập tiêu đề</span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <label class="lbl" for="NOIDUNG">
+                                Nội dung:<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <textarea name="NOIDUNG" id="NOIDUNG" maxlength="1500" class="e-input"></textarea>
+                        </td>
+                    </tr>
+                    <tr class="height-15">
+                        <td></td>
+                        <td>
+                            <span class="lb-Check" id="NOIDUNG_NULL">
+                                Bạn hãy nhập nội dung trao đổi công việc
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <label class="lbl">Tài liệu đính kèm:</label>
+                        </td>
+                        <td>
+                            <div id="block--attachment-comment">
+                                @{Html.RenderPartial("../Common/UploadFile", new List<Model.eAita.TAILIEUDINHKEM>());}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="height-15"></tr>
+                </table>
+            <div id="block--form-comment-buttons">
+                @Html.HiddenFor(x => x.CONGVIEC_ID, Model.CONGVIEC_ID)
+                @Html.HiddenFor(x => x.REPLY_TO, Model.REPLY_TO)
+                <input type="submit" value="Cập nhật" id="btnSave"/>
+                <a id="btnBack" href="@Url.Action("Detail", new { id = Model.CONGVIEC_ID})">
+                    Quay lại
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".datepicker").datepicker({ dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true, yearRange: "-50:+20" });
+        tinymce.init({
+            selector: '#NOIDUNG',
+            language: 'vi_VN',
+            width: 750,
+            height: 150,
+            plugins: [
+                    "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+            toolbar2: "cut copy paste pastetext | bullist numlist | outdent indent | undo redo | link unlink code | forecolor backcolor",
+            toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | insertdatetime preview | print fullscreen | ltr rtl | pagebreak restoredraft",
+            menubar: true,
+            convert_urls: false,
+            paste_data_images: true,
+            toolbar_items_size: 'small'
+        });
+
+        $("#btnSave").click(function () {
+            //validate data
+            //NGUOIGIAOVIEC
+            if (validate_element($("#TIEUDE"), $("#TIEUDE_NULL"), "", "", "0") == 0) {
+                $("#TIEUDE").focus();
+                //$("#CHONNGUOIGIAOVIEC").click();
+                return false;
+            }
+            var noidungcv = tinyMCE.get('NOIDUNG').getContent();
+            //NOIDUNGCONGVIEC
+            if (noidungcv.trim().length <= 0) {
+                $("#NOIDUNG_NULL").show();
+                $("#NOIDUNG").focus();
+                return false;
+            }
+            else {
+                $("#NOIDUNG_NULL").hide();
+            }
+        });
+    });
+    function OnClose() {
+        $("#backBtn").click();
+    }
+</script>

@@ -1,0 +1,88 @@
+﻿@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.TDKTPhongTraoThiDuaArea.Models;
+@*@model Web.Areas.TDKTPhongTraoThiDuaArea.Models.PhongTraoThiDuaViewModel*@
+@{
+
+    List<TDKT_PHONGTRAO_THIDUA> LstPhongTrao = Model.LstPhongTrao;
+    var grid = new WebGrid(LstPhongTrao,
+             rowsPerPage: 10,
+             canPage: true,
+             canSort: true,
+             ajaxUpdateContainerId: "grid",
+             selectionFieldName: "selectedRow"
+               );
+
+}
+<div id="grid">
+    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(                
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                            "<a href='/TDKTPhongTraoThiDuaArea/PhongTraoThiDua/View/" + item.ID + "' >" + item.KE_HOACH_THI_DUA + "</a>")), header: "Phong trào thi đua", style: "left"),
+                grid.Column(format: (item) =>
+                    {
+                        var str_return = "";
+                        if (item.TRANGTHAI == PhongTraoThiDuaConstant.TT_MOITAO)
+                        {
+                            str_return = "Mới tạo";
+                        }
+                        else if (item.TRANGTHAI == PhongTraoThiDuaConstant.TT_TRINHLANDAO)
+                        {
+                            str_return = "Đã trình lãnh đạo";
+                        }
+                        else if (item.TRANGTHAI == PhongTraoThiDuaConstant.TT_PHEDUYET)
+                        {
+                            str_return = "Đã phê duyệt";
+                        }
+                        else if (item.TRANGTHAI == PhongTraoThiDuaConstant.TT_TUCHOI)
+                        {
+                            str_return = "Từ chối phê duyệt";
+                        }
+                        else if (item.TRANGTHAI == PhongTraoThiDuaConstant.TT_BANHANH)
+                        {
+                            str_return = "Đã ban hành";
+                        }
+                        return str_return;
+                    }
+                            , header: "Trạng thái", style: "left"),
+                  grid.Column(format: (item) =>
+                    {
+                        if (item.TRANGTHAI = PhongTraoThiDuaConstant.TT_MOITAO || item.TRANGTHAI = PhongTraoThiDuaConstant.TT_TUCHOI)
+                        {
+                            return "FFFFFFFFFFFFF";
+                            //return new MvcHtmlString(string.Format(
+                            // "<a href='/QuanLyNangLuongTruocThoiHanArea/QuanLyNangLuongTruocThoiHan/Edit/" + item.ID + "'  class='btnEdit' title = 'Chỉnh sửa'></a>"));
+                        }
+                        else
+                        {
+                            return "";
+                        }
+
+                    }
+                            , header: "")
+                //grid.Column(format: (item) =>
+                //    {
+                //        if (item.TRANGTHAI != NangLuongTTHConstant.MOITAO)
+                //        {
+                //            return "";
+                //        }
+                //        else
+                //        {
+                //            return new MvcHtmlString(string.Format(
+                //            "<a href='javascript:void(0)' onclick='DeleteDonXinTangLuong(" + item.ID + ")'  class='btnDelete' title = 'Xóa'></a>"));
+                //        }
+
+                //    }
+                //        ,
+                //           header: "Xóa")
+                )
+                )
+                )
+</div>

@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Quản lý danh mục trình độ chuyên môn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" style="width:490px">
+            <h1>Quản lý danh mục trình độ chuyên môn</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;margin-right:20px" type="button" onclick="OnCreate()" class="b_btn b_btn-default vbdi_search">Thêm mới trình độ chuyên môn</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div id="block-search-form">
+
+        @using (Ajax.BeginForm("FindTrinhDoChuyenMon", "DmTrinhDoChuyenMon", new AjaxOptions()
+{
+
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    UpdateTargetId = "grid",
+}, new { id = "search-form" }))
+        {
+            <input type="text" placeholder="Tìm kiếm" value="" name="TRINHDO_CHUYENMON" id="DANTOC" />
+            <input type="submit" value="search" name="" id="btnSearch" />
+        }
+    </div>
+    <div class="menu-left-content block">
+
+        @{Html.RenderAction("NhanSuMenuChild", "Common", new { area = "" });}
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div class="SearchResult">
+                    @Html.Partial("_TrinhDoChuyenMonSearchResult")
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<script type="text/javascript">
+    function reloadGrid() {
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadGrid", "DmTrinhDoChuyenMon")',
+            data: {},
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+    $(function () {
+        $("#btnSearch").click(function () {
+            if (/<[a-z][\s\S]*>/i.test($("#DANTOC").val())) {
+                $.confirm({
+                    'title': 'Không thể tìm kiếm',
+                    'message': 'Nội dung tìm kiếm không thể chứa ký tự HTML',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-confirm-yes',
+                            'action': function () {
+                                $("#DANTOC").select();
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            return true;
+        });
+    });
+</script>

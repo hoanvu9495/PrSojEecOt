@@ -1,0 +1,99 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common;
+@using Web.Areas.MarkItemArea.Models;
+@{
+    List<VanBanDenBO> lstVanBanDen = new List<VanBanDenBO>();
+    if (ViewData["Search"] == "0")
+    {
+        lstVanBanDen = (List<VanBanDenBO>)SessionManager.GetValue("ListVanBanDenByTrangThai");
+    }
+    if (ViewData["Search"] == "1")
+    {
+        lstVanBanDen = (List<VanBanDenBO>)SessionManager.GetValue("ListVanBanDenByTrangThaiSearch");
+    }
+    int InitialState = (int)SessionManager.GetValue("InitialState");
+    var grid = new WebGrid(lstVanBanDen,
+                        rowsPerPage: 10,
+                        canPage: true,
+                        canSort: false,
+                        ajaxUpdateContainerId: "grid",
+                        selectionFieldName: "selectedRow"
+                          );
+    
+    string TenTrangThaiDanhMuc = (string)SessionManager.GetValue("TenTrangThaiDanhMuc");
+}
+<style>
+    table.webGrid tr td {
+        text-align: left;
+    }
+
+    .tr_trich_yeu {
+        width: 250px;
+    }
+
+    .tr_don_vi {
+        width: 100px;
+    }
+
+    .btnEdit {
+        width: 45px;
+    }
+
+    .btnDelete {
+        width: 45px;
+    }
+</style>
+<div id="grid">    
+    <table style="width: 100%;">
+        <tr>
+            <td>
+
+                <div class="SearchResult clearfix" style="">
+                    
+
+                    <div id="SearchResultContent">
+                        @Html.AntiForgeryToken()
+                        <div style="height:auto;min-height:300px;">
+                            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                                    //grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+
+                grid.Column(format: (item) => new MvcHtmlString(string.Format("<input class='global_checkbox " + ((item.IS_READ == true) ? "is_read" : "is_unread") + "' type='checkbox' name='ids' value='" + item.ID + "'/>"))),
+
+                grid.Column(format: (item) => new MvcHtmlString(string.Format("<span style='cursor:pointer' aria-label='Được gắn dấu sao' onclick=\"javascript:singleMarkItem(" + item.ID + ",'" + item.IS_FAVORITE + "'," + LOAITAILIEU.VANBANDEN + ",'" + LOAITAILIEU.FAVORITE + "')\" title='Được gắn dấu sao' class='" + ((item.IS_FAVORITE == true) ? "favorite" : "notset_favorite") + "' ></span>"))),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format("<span style='cursor:pointer' onclick=\"javascript:singleMarkItem(" + item.ID + ",'" + item.IS_IMPORTANT + "'," + LOAITAILIEU.VANBANDEN + ",'" + LOAITAILIEU.IMPORTANT + "')\" class='" + ((item.IS_IMPORTANT == true) ? "important" : "notset_important") + "' ></span>"))),
+                grid.Column("SODEN", format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.SODEN + "</span>")) : item.SODEN, header: "Số đến"),
+                grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.SOKYHIEU + "</span>")) : item.SOKYHIEU, header: "Số kí hiệu"),
+                                                grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold' class='tr_left' >" + item.TRICHYEU + "</span>")) : new MvcHtmlString(string.Format("<span class='tr_left'>" + item.TRICHYEU + "</span>")), header: "Trích yếu"),
+                grid.Column("COQUANBANHANH_ID", format: (item) => (item.COQUANBANHANH_ID > 0) ? new MvcHtmlString(string.Format("<span style='" + ((item.IS_READ != true) ? "font-weight:bold" : "") + "'>" + item.DONVIBANHANH + "</span>")) : new MvcHtmlString(string.Format("<span style='" + ((item.IS_READ == true) ? "font-weight:bold" : "") + "'>" + item.COQUANBANHANHTEXT + "</span>")), header: "Đơn vị ban hành"),
+                grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + string.Format("{0:dd/MM/yyyy}", item.NGAYDEN) + "</span>")) : string.Format("{0:dd/MM/yyyy}", item.NGAYDEN), header: "Ngày đến"),
+                grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.DOKHAN + "</span>")) : item.DOKHAN, header: "Độ khẩn"),
+                grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.LOAIVANBAN + "</span>")) : item.LOAIVANBAN, header: "Loại văn bản"),
+                                        grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.TRANGTHAI_XULY + "</span>")) : item.TRANGTHAI_XULY, header: "Trạng thái xử lý"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format((item.HAS_FILE == true) ? "<span class='btnAttFile'></span>" : "")), header: "AttFile"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                                             "<a href='/VanBanDenArea/VanBanDen/ViewDetail/" + item.ID + "' class='btnView' title = 'Xem chi tiết'></a>")), header: "Xem")
+
+                )
+                )
+                        </div>
+
+
+
+                    </div>
+                    <div id="ViewVanBanDen" title="Chi tiết văn bản đến">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>

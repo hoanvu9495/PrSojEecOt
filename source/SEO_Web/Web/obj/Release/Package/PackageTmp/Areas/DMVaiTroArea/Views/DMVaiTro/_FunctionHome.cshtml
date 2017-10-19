@@ -1,0 +1,158 @@
+﻿@using Web.Areas.DMVaiTroArea.Models
+@model ChucNangTrangChuViewModel
+@Html.AntiForgeryToken()
+@{
+    var lstt = "";
+    var lstt_checked = "";
+}
+@using (Ajax.BeginForm("SetChucNangTrangChu", "DMVaiTro", new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                OnFailure = "configChucNangTrangChuFailure",
+                OnSuccess = "configChucNangTrangChuSuccess",
+            }, new { id = "frmSaveChucNangTrangChu" }))
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Chức năng trang chủ <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body">
+        <div style="width:100%; margin:auto;">
+            <div style="overflow-x: hidden;height:300px;">
+                <div class="box-border">
+                    <p class="group-tittle1 mt10" style="font-size:large">Danh sách chức năng - thao tác</p>
+                    <table>
+                        <tr>
+                            <td>
+                                <div style="float: left;width: 100%;">
+                                    <input class="css-checkbox" id="TT_ALL" name="CN_ITEM" type="checkbox">
+                                    <label for="TT_ALL" class="css-label2 font-bold">Chọn tất cả (@(Model.ListAllChucNang.Count + " chức năng"))</label>
+                                </div>
+                            </td>
+                        </tr>
+
+                        @if (Model.ListAllChucNang != null && Model.ListAllChucNang.Count > 0)
+                        {
+
+                            foreach (var tt in Model.ListAllChucNang)
+                            {
+                                <tr>
+                                    <td>
+                                        @{
+                                lstt += tt.ID + ",";
+                                if (Model.ListChucNangInRole != null && Model.ListChucNangInRole.Contains(tt.ID))
+                                {
+                                    lstt_checked += tt.ID + ",";
+                                    <input class="css-checkbox homefunction" value="@tt.ID" id="TT_ITEM_@tt.ID" name="TT_ITEM" type="checkbox" checked="checked">
+                                }
+                                else
+                                {
+                                    <input class="css-checkbox homefunction" value="@tt.ID" id="TT_ITEM_@tt.ID" name="TT_ITEM" type="checkbox">
+                                }
+                                        }
+                                        <label style="font-weight:normal" for="TT_ITEM_@tt.ID" class="css-label2" title="@tt.MOTACHUCNANG">@tt.TENCHUCNANG</label>
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+
+
+                    </table>
+                    <input type="hidden" value="@lstt_checked" name="ALL_VAL_SELECT_TT" id="ALL_VAL_SELECT_TT" />
+                    <input type="hidden" value="@lstt" name="ALL_VAL_TT" id="ALL_VAL_TT" />
+                    <div class="clear-both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer center">
+        <input type="hidden" name="DM_VAITRO_ID" id="DM_VAITRO_ID" value="@Model.DM_VAITRO_ID" />
+
+        <button type="submit" class="btn btn-primary" id="btnSaveConfig" style="border-radius: 3px;">
+            Lưu
+        </button>
+        <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+    </div>
+}
+}
+<script>
+    $(document).ready(function () {
+        var _listChecked = "";
+        $("input[name=TT_ITEM]:checked").each(function () {
+            _listChecked += $(this).val() + ",";
+        });
+        if (_listChecked == $("#ALL_VAL_TT").val()) {
+            $("#TT_ALL").prop("checked", true);
+            $("#TT_ALL").prop("indeterminate", false);
+        }
+        else {
+            if ($("#ALL_VAL_SELECT_TT").val().trim().length > 0) {
+                $("#TT_ALL").prop("checked", true);
+                $("#TT_ALL").prop("indeterminate", true);
+            } else {
+                $("#TT_ALL").prop("checked", false);
+                $("#TT_ALL").prop("indeterminate", false);
+            }
+        }
+    });
+    $(".homefunction").change(function () {
+        var listChecked = "";
+        $("input[name=TT_ITEM]:checked").each(function () {
+            listChecked += $(this).val() + ",";
+        });
+        $("#ALL_VAL_SELECT_TT").val(listChecked);
+        if (listChecked == $("#ALL_VAL_TT").val()) {
+            $("#TT_ALL").prop("checked", true);
+            $("#TT_ALL").prop("indeterminate", false);
+        }
+        else {
+            if ($("#ALL_VAL_SELECT_TT").val().trim().length > 0) {
+                $("#TT_ALL").prop("checked", true);
+                $("#TT_ALL").prop("indeterminate", true);
+            } else {
+                $("#TT_ALL").prop("checked", false);
+                $("#TT_ALL").prop("indeterminate", false);
+            }
+        }
+    });
+    $("#TT_ALL").change(function () {
+        if ($("#TT_ALL").is(":checked")) {
+            var listChecked = "";
+            $("#TT_ALL").prop("checked", true);
+            $("#TT_ALL").prop("indeterminate", false);
+            $("input[name=TT_ITEM]").prop("checked", true);
+            $("input[name=TT_ITEM]:checked").each(function () {
+                listChecked += $(this).val() + ",";
+            });
+            $("#ALL_VAL_SELECT_TT").val(listChecked);
+        }
+        else {
+            $("#TT_ALL").prop("checked", false);
+            $("#TT_ALL").prop("indeterminate", false);
+            $("input[name=TT_ITEM]").prop("checked", false);
+        }
+    });
+    function configChucNangTrangChuFailure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function configChucNangTrangChuSuccess() {
+        //CommonJS.alert("Thiết lập chức năng trên trang chủ thành công");
+        //$("#SetChucNangTrangChuVaiTro").dialog("close");
+        //reloadGrid();
+
+        NotiSuccess("Thiết lập chức năng trên trang chủ thành công");
+        //CommonJS.alert("Tạo mới người dùng thành công");
+        //$("#CreateNguoiDung").dialog("close");
+        OnCloseLog();
+        reloadGrid();
+    }
+    function OnCloseConfig() {
+        $("#SetChucNangTrangChuVaiTro").dialog("close");
+    }
+    function OnCloseLog() {
+        $("#create_user").html("");
+        $("#nhan_su_dialog").modal("hide");
+    }
+</script>

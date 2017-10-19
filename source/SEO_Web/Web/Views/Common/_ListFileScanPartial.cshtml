@@ -1,0 +1,71 @@
+﻿@using Web.Common
+@model List<DirectoryItem>
+<style>
+    .no-padding{
+        padding:0px;
+    }
+    .mrg-bottom-10{
+        margin-bottom:10px;
+    }
+</style>
+<div class="modal-dialog" style=" width:800px">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Danh sách File</h4>
+        </div>
+        <div class="modal-body" id="content-ListFileScan">
+            <div class="row no-padding mrg-bottom-10">
+                <div class="col-sm-6" style="text-align:center">
+                    <input class="form-control" placeholder="Nhập tên file tìm kiếm" onkeyup="SearchEvent($(this))" id="txt-SearchFileScan" />
+                </div>
+
+            </div>
+            <div class="row no-padding mrg-bottom-10" id="ListFileScanFTP">
+                @foreach (var item in Model)
+                {
+                    <div class="col-sm-3 item-file" style="padding-left:5px; padding-right:5px;" data-url="@item.AbsolutePath">
+                        <div class="thumbnail">
+                            <a href="javascript:void(0)" onclick="addAttachmentRowScan(this)" data-url="@item.AbsolutePath" data-name="@item.Name">
+                                <img src="~/Content/Images/van_ban_den/so_van_ban.png" alt="Lights" style="width:80%" />
+                                <div class="caption">
+                                    <p>@item.Name</p>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+
+</div>
+<script>
+
+    function SearchEvent(event) {
+
+        var key = RemoveUnicode(event.val());
+        if (key != "") {
+            isSearch = true;
+        } else {
+            isSearch = false;
+        }
+        $("#ListFileScanFTP div.item-file a").each(function () {
+            var $row = $(this);
+            var name = RemoveUnicode($row.attr("data-name"));
+            if (name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
+                $row.parents("div.item-file").show();
+            }
+            else {
+                $row.parents("div.item-file").hide();
+            }
+        });
+    }
+
+</script>

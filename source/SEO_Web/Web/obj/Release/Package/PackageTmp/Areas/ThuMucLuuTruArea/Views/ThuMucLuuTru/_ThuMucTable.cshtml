@@ -1,0 +1,394 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Business.CommonBusiness;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@{
+    List<ThuMucLuuTruBO> lstThuMuc = new List<ThuMucLuuTruBO>();
+    UserInfoBO user = (UserInfoBO)SessionManager.GetUserInfo();
+
+    if (ViewData["Search"] == "0")
+    {
+        lstThuMuc = (List<ThuMucLuuTruBO>)SessionManager.GetValue("ThuMucTable");
+        //lstThuMuc = lstThuMuc.OrderBy(x => x.TENTHUMUC).ToList();
+        if (lstThuMuc != null && lstThuMuc.Count > 0)
+        {
+            foreach (var i in lstThuMuc)
+            {
+                <tr class="folder-item">
+                    @*@if ((i.IS_NEEDREVIEW == ThuMucConstant.DUTHAO || i.IS_NEEDREVIEW == ThuMucConstant.CUC_TRAVE) && (!i.IS_PRIVATE.Value))
+                        {
+                            <td><input type="checkbox" class="checkbox1" value="@i.ID" data-pid="@i.ID" /></td>
+                        }
+                        else
+                        {
+                            <td>&nbsp;</td>
+                        }*@
+                    <td data-fid="@("F_"+i.ID)" style="width:450px">
+                        <div style="width:100%;float:left" class="TENTHUMUC">
+                            @if ((i.EXPIRE_DATEFROM.HasValue || i.EXPIRE_DATE.HasValue) && !i.IS_PRIVATE.Value)
+                            {
+                                if (i.EXPIRE_DATE.HasValue && i.EXPIRE_DATE.Value < DateTime.Now)
+                                {
+                                    <span data-sort='0' class="folder expired" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE) (Hết hạn lưu trữ)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                                }
+                                else if (i.IS_PRIVATE.Value)
+                                {
+                                    <span data-sort='0' class="folder private" title="@i.TENTHUMUC (Thư mục cá nhân)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                                }
+                                else if (DateTime.Now >= i.EXPIRE_DATEFROM && DateTime.Now <= i.EXPIRE_DATE)
+                                {
+                                    <span data-sort='0' class="folder unexpired" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                                }
+                                else if (DateTime.Now < i.EXPIRE_DATEFROM.Value)
+                                {
+                                    <span data-sort='0' class="folder unexpired" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE) (Chưa được sử dụng)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                                }
+                                else
+                                {
+                                    <span data-sort='0' class="folder item" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                                }
+                            }
+                            else if (i.IS_PRIVATE.Value)
+                            {
+                                <span data-sort='0' class="folder private" title="@i.TENTHUMUC (Thư mục cá nhân)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+
+                            else
+                            {
+                                <span data-sort='0' class="folder item" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                        </div>
+                        @if (SessionManager.GetValue("ISTRUONGDONVI") == "true" && i.IS_NEEDREVIEW == ThuMucConstant.DADUYET)
+                        {
+                            <div style="text-align:left;float:left;width:100%">
+                                @if (i.CANPHEDUYET > 0 || i.SL_FILECANDUYET > 0)
+                                {
+                                    <font>
+                                        Cần duyệt:
+                                        @if (i.CANPHEDUYET > 0)
+                                        {
+                                            <font style="font-weight:bold">Folder (@i.CANPHEDUYET.Value)</font>
+                                        }
+                                        @if (i.SL_FILECANDUYET > 0)
+                                        {
+                                            <span>
+                                                <font style="font-weight:bold">
+                                                    File (@i.SL_FILECANDUYET)
+                                                </font>
+                                            </span>
+
+                                        }
+                                    </font>
+                                }
+                                @if (i.TRAVE > 0 || i.SL_FILETRAVE > 0)
+                                {
+                                    <font>
+                                        Trả về:
+                                        @if (i.TRAVE > 0)
+                                        {
+                                            <font style="font-weight:bold">Folder (@i.TRAVE)</font>
+                                        }
+                                        @if (i.SL_FILETRAVE > 0)
+                                        {
+                                            <font style="font-weight:bold">, File (@i.SL_FILETRAVE)</font>
+                                        }
+
+
+                                    </font>
+                                }
+                            </div>
+                        }
+                    </td>
+                    <td>@i.TENDANGNHAP</td>
+                    <td>
+                        @if (i.SLTHUMUC > 0 && i.SL_FILE > 0)
+                        {
+                            <font>Folder: @i.SLTHUMUC , File: @i.SL_FILE</font>
+                        }
+                        else if (i.SLTHUMUC > 0)
+                        {
+                            <font>Folder: @i.SLTHUMUC</font>
+                        }
+                        else if (i.SL_FILE > 0)
+                        {
+                            <font>File: @i.SL_FILE</font>
+                        }
+                        else
+                        {
+                            <font>Thư mục rỗng</font>
+                        }
+                    </td>
+                    <td>@String.Format("{0:dd/M/yyyy}", @i.NGAYTAO)</td>
+                    <td>
+                        @{
+                if (i.IS_PRIVATE.Value)
+                {
+                    if (i.IS_SHARING.HasValue && i.IS_SHARING.Value)
+                    {
+                        <span class="share-fileplus" data-file="true" title="Chia sẻ tài liệu với những người khác" data-fid="@i.ID"></span>
+                    }
+                    else
+                    {
+                        <span class="share-file" data-file="true" title="Chia sẻ tài liệu với những người khác" data-fid="@i.ID"></span>
+                    }
+
+                }
+                else
+                {
+                    <span>Không</span>
+                }
+
+                        }
+                    </td>
+                    @*<td>
+                            @if (!i.IS_PRIVATE.Value)
+                            {
+                                switch (i.IS_NEEDREVIEW)
+                                {
+                                    case ThuMucConstant.DUTHAO:
+                                        <span class="trangthai" data-id="@i.ID" onclick="LichSuPheDuyet(@i.ID)" title="Chi tiết lịch sử tiếp nhận" style='color:#CCC'>
+                                            Dự thảo
+                                        </span>;
+                                        break;
+                                    case ThuMucConstant.DATRINH:
+                                    <span class="trangthai" data-id="@i.ID" onclick="LichSuPheDuyet(@i.ID)" title="Chi tiết lịch sử tiếp nhận" style='color:#4cff00'>
+                                        Chờ duyệt
+                                    </span>;
+                                    break;
+
+                                    case ThuMucConstant.CUC_TRAVE:
+                                    <span class="trangthai" data-id="@i.ID" onclick="LichSuPheDuyet(@i.ID)" title="Chi tiết lịch sử tiếp nhận" style='color:red'>
+                                        Cục trả về
+                                    </span>;
+                                    break;
+                                    case ThuMucConstant.DADUYET:
+                                    <span class="trangthai" data-id="@i.ID" onclick="LichSuPheDuyet(@i.ID)" title="Chi tiết lịch sử tiếp nhận" style='color:green'>
+                                        Đã duyệt
+                                    </span>;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                <span>&nbsp;</span>
+                            }
+                        </td>*@
+                </tr>
+            }
+        }
+    }
+    else
+    {
+        var lstTaiLieu = (List<TaiLieuDinhKemBO>)SessionManager.GetValue("ThuMucTableSearch");
+        lstTaiLieu = lstTaiLieu.OrderBy(x => x.TENTAILIEU).ToList();
+        if (lstTaiLieu != null && lstTaiLieu.Count > 0)
+        {
+            string share = "";
+            string extension = "";
+            foreach (var item in lstTaiLieu)
+            {
+                share = "";
+
+                if (item.IS_PRIVE == true || item.IS_PRIVE == null)
+                {
+                    share = "<span class='share-file' data-file='false' title='Chia sẻ tài liệu với những người khác' data-fid='" + item.TAILIEU_ID + "'></span>";
+                }
+                else
+                {
+                    share = "Không";
+                }
+                extension = item.DINHDANG_FILE;
+                var docx = "";
+                switch (extension)
+                {
+                    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                        docx = "msword";
+                        break;
+                    case "application/vnd.ms-word.document.12":
+                        docx = "msword";
+                        break;
+                    case "application/msword":
+                        docx = "msword";
+                        break;
+                    case ".doc":
+                        docx = "msword";
+                        break;
+                    case ".docx":
+                        docx = "msword";
+                        break;
+                    case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                        docx = "ms-excel";
+                        break;
+                    case "application/vnd.ms-excel":
+                        docx = "ms-excel";
+                        break;
+                    case ".xls":
+                        docx = "ms-excel";
+                        break;
+                    case ".xlsx":
+                        docx = "ms-excel";
+                        break;
+                    case "application/x-rar":
+                        docx = "zip";
+                        break;
+                    case "application/zip":
+                        docx = "zip";
+                        break;
+                    case "application/octet-stream":
+                        docx = "zip";
+                        break;
+                    case "application/x-zip-compressed":
+                        docx = "zip";
+                        break;
+                    case ".zip":
+                        docx = "zip";
+                        break;
+                    case ".rar":
+                        docx = "zip";
+                        break;
+                    case "application/pdf":
+                        docx = "pdf";
+                        break;
+                    case "application/download":
+                        docx = "pdf";
+                        break;
+                    case ".pdf":
+                        docx = "pdf";
+                        break;
+                    case "audio/mp3":
+                        docx = "mp3";
+                        break;
+                    case ".mp3":
+                        docx = "mp3";
+                        break;
+                    case "audio/mpeg":
+                        docx = "mp3";
+                        break;
+                    case "video/mp4":
+                        docx = "mp4";
+                        break;
+                    case ".mp4":
+                        docx = "mp4";
+                        break;
+                    case "image/gif":
+                        docx = "jpeg";
+                        break;
+                    case "image/jpeg":
+                        docx = "jpeg";
+                        break;
+                    case "image/png":
+                        docx = "jpeg";
+                        break;
+                    case ".jpg":
+                        docx = "jpeg";
+                        break;
+                    case ".jpeg":
+                        docx = "jpeg";
+                        break;
+                    case ".pptx":
+                        docx = "ppt";
+                        break;
+                    case ".ppt":
+                        docx = "ppt";
+                        break;
+                    case "text/html":
+                        docx = "html";
+                        break;
+                    case "text/plain":
+                        docx = "plain";
+                        break;
+                    case "txt":
+                        docx = "plain";
+                        break;
+                }
+                <tr class="file-item">
+                    <td data-fid="F_@item.TAILIEU_ID">
+                        @if (item.IS_PHEDUYET == TaiLieuDinhKemConstant.DADUYET)
+                        {
+                            <span class="@docx filearchive" data-file='true' data-pid='@item.TAILIEU_ID'>
+                                @item.TENTAILIEU
+                            </span>
+                        }
+                        else if (item.IS_PHEDUYET == TaiLieuDinhKemConstant.TRAVE)
+                        {
+                            <span class="@docx filearchive" style='color:red' data-file='true' data-pid='@item.TAILIEU_ID'>
+                                @item.TENTAILIEU (Trả về)
+                            </span>
+                        }
+                        else if (item.IS_PHEDUYET == TaiLieuDinhKemConstant.DUTHAO)
+                        {
+                            <span class="@docx filearchive" data-file='true' data-pid='@item.TAILIEU_ID'>
+                                @item.TENTAILIEU (Dự thảo)
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="@docx filearchive" data-file='true' data-pid='@item.TAILIEU_ID'>
+                                @item.TENTAILIEU (Chưa duyệt)
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        @item.HOTEN
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>
+                        @string.Format("{0:dd-MM-yyyy}", item.NGAYTAO)
+                    </td>
+                    <td>
+                        @if (item.IS_PRIVE.HasValue && item.IS_PRIVE.Value)
+                        {
+                            if (item.IS_SHARING.HasValue && item.IS_SHARING.Value)
+                            {
+                                <span class="share-file" data-file="false" title="Chia sẻ tài liệu với những người khác" data-fid="@item.TAILIEU_ID"></span>
+                            }
+                            else
+                            {
+                                <span class="share-fileplus" data-file="false" title="Chia sẻ tài liệu với những người khác" data-fid="@item.TAILIEU_ID"></span>
+                            }
+                        }
+                        else
+                        {
+                            <span>Không</span>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    }
+}
+<script>
+    function LichSuPheDuyet(ID) {
+        $.ajax({
+            url: '@Url.Action("GetLichSuPheDuyet", "ThuMucLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+                phong: ID
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#LichSuPheDuyet").html(data);
+                    $("#LichSuPheDuyet").modal("show");
+                    $("#LichSuPheDuyet").find(".modal-dialog").css("width", "1100px");
+                } else {
+                    $.confirm({
+                        'title': 'Không thể xem lịch sử!',
+                        'message': 'Xin lỗi chức năng này chỉ có trưởng đơn vị được xem.Bạn vui lòng đăng nhập với quyền trưởng đơn vị',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                            }
+                        }
+                    });
+                }
+
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>

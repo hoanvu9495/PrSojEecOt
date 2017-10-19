@@ -1,0 +1,160 @@
+﻿@using Business.CommonBusiness
+@model Web.Areas.ThuMucLuuTruArea.Models.TaiLieuDinhKemModel
+@using Web.FwCore
+@{
+    List<TaiLieuDinhKemBO> ListTaiLieu = new List<TaiLieuDinhKemBO>();
+    if (ViewData["Search"] == "0")
+    {
+        ListTaiLieu = (List<TaiLieuDinhKemBO>)SessionManager.GetValue("ListFileExpired");
+    }
+    else
+    {
+        ListTaiLieu = (List<TaiLieuDinhKemBO>)SessionManager.GetValue("ListFileExpiredSearch");
+    }
+    var grid = new WebGrid(ListTaiLieu,
+                 rowsPerPage: 10,
+                 canPage: true,
+                 canSort: false,
+                 ajaxUpdateContainerId: "grid",
+                 selectionFieldName: "selectedRow"
+                );
+}
+<div id="grid">
+    @if (ListTaiLieu.Count > 0)
+    {
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                    grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                    grid.Column("TENTAILIEU", "Tên tài liệu"),
+                    grid.Column("TENTACGIA", "Tác giả", format: (item) => new MvcHtmlString(string.Format("<span title='" + item.TENTACGIA + "'>" + item.TENTACGIA + "</span>"))),
+                    grid.Column("NGAYPHATHANH", "Ngày phát hành", format: (item) => item.NGAYPHATHANH != null ? string.Format("{0:dd-MM-yyyy}", item.NGAYPHATHANH) : ""),
+                    grid.Column("VERSION", "Phiên bản"),
+                    grid.Column(format: (item) => new MvcHtmlString("<a class='btnDownload' href='javascript:void(0)' onclick='DownloadFileIndex(" + item.TAILIEU_ID + ")'></a>"), header: "Tải xuống"),
+                    grid.Column(format: (item) => new MvcHtmlString(string.Format("<a href='javascript:void(0)' onclick='CancelVersion(" + item.TAILIEU_ID + ")' class='btnDelete' title = 'Hủy phiên bản tài liệu'></a>")), header: "Hủy phiên bản")
+                )
+    )
+    }
+    else
+    {
+        <span style="color:red">Chưa có tài liệu nào hết hiệu lực</span>
+    }
+</div>
+
+<style>
+    .webGrid th {
+        text-align: center !important;
+    }
+
+    .webGrid td:nth-child(3), .webGrid td:nth-child(5) {
+        text-align: left !important;
+    }
+
+    .webGrid td:first-child {
+        width: 20px !important;
+    }
+
+    .webGrid td:nth-child(2) span {
+        width: 600px !important;
+        text-align: left !important;
+    }
+
+    .webGrid td:nth-child(3) span, .webGrid td:nth-child(5) span {
+        width: 150px !important;
+    }
+
+    .webGrid td:nth-child(6), .webGrid td:nth-child(7) {
+        width: 100px !important;
+    }
+
+    .webGrid th:nth-child(1) {
+        width: 10px !important;
+    }
+
+    .webGrid td:nth-child(4), .webGrid td:nth-child(2) {
+        text-align: left !important;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDownload {
+        background: url('/Content/themes/base/images/BieuMau_Download.png') no-repeat;
+        display: block;
+        width: 32px;
+        height: 32px;
+        margin: 0 auto;
+    }
+</style>
+<script>
+    $(function () {
+        $(".close").click(function () {
+            $("#VersionFile").modal('hide');
+        });
+        $('#VersionFile').on('hidden.bs.modal', function () {
+            $("#VersionFile").html("");
+        });
+
+    });
+
+    function CancelVersion(TAILIEU) {
+        $.confirm({
+            'title': 'Xác nhận hủy phiên bản',
+            'message': 'Bạn có chắc chắn muốn hủy phiên bản này?',
+            'buttons': {
+                'Hủy': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("XoaTaiLieu", "ThuMucLuuTru")',
+                            type: 'post',
+                            cache: false,
+                            data: { TAILIEU: TAILIEU },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Hủy phiên bản tài liệu thành công!',
+                                });
+                                ReloadGrid();
+                            },
+                            error: function (err) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Có lỗi xảy ra trong quá trình hủy tài liệu',
+                                });
+                            }
+                        });
+                    }
+                },
+                'Không hủy': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function ReloadGrid() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ReloadFileExpired", "ThuMucLuuTru")',
+            data: {
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,142 @@
+﻿@using Web.FwCore;
+@model List<SelectListItem>
+@{
+    var dsTrangThai = Model;
+}
+
+@using (Ajax.BeginForm("InsertTaiLieu", "TaiLieuKetXuat", new { @area = "TaiLieuKetXuatArea" }, new AjaxOptions()
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "ThemMoi_Tailieu_failure",
+    OnSuccess = "ThemMoi_Tailieu_Success"
+
+}, new { id = "form_themmoi_tailieu", enctype = "multipart/form-data" }))
+{
+
+    @Html.AntiForgeryToken();
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Thêm mới tài liệu kết xuất <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-md-4 control-label">Tên tài liệu<span class="red">(*)</span></label>
+                <div class="col-md-8">
+                    <input class="form-control required" type="text" name="TENTAILIEU" />
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Mã Tài liệu <span class="red">(*)</span></label>
+                <div class="col-md-8">
+                    <input class="form-control required" type="text" name="MATAILIEU" />
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Tải lên<span class="red">(*)</span></label>
+                <div class="col-md-8">
+                    <input class="form-control required" accept=".docx" type="file" name="file" />
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Trạng thái kết xuất<span class="red">(*)</span></label>
+                <div class="col-md-8">
+                    @Html.DropDownList("TRANGTHAIKETXUAT", dsTrangThai, new { @class = "select2 requiredDropDownList", @style = "width:100%", @multiple = "multiple" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="center">
+            <button class="btn btn-primary btn-sm" id="btn-themmoi-tailieu">Thêm mới</button>
+        </div>
+    </div>
+
+}
+
+<script>
+    $("form#form_themmoi_tailieu").submit(function () {
+
+        var dataString;
+        event.preventDefault();
+        var contentType1 = false;
+        var action = $("#form_themmoi_tailieu").attr("action");
+        if ($("#form_themmoi_tailieu").attr("enctype") == "multipart/form-data") {
+            //this only works in some browsers.
+            //purpose? to submit files over ajax. because screw iframes.
+            //also, we need to call .get(0) on the jQuery element to turn it into a regular DOM element so that FormData can use it.
+            dataString = new FormData($("#form_themmoi_tailieu").get(0));
+            contentType1 = false;
+            processData = false;
+        } else {
+            // regular form, do your own thing if you need it
+        }
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: dataString,
+            dataType: "json", //change to your own, else read my note above on enabling the JsonValueProviderFactory in MVC
+            contentType: false,
+            processData: false,
+            success: ThemMoi_Tailieu_Success,
+            error: ThemMoi_Tailieu_failure,
+        });
+
+        return false;
+
+
+    });
+
+
+    $("#btn-themmoi-tailieu").click(function () {
+        var err = 0;
+        err += requiredFieldForFormId("form_themmoi_tailieu") ? 0 : 1;
+        err += RequireDropDownlist("form_themmoi_tailieu") ? 0 : 1;
+        console.log(err);
+        if (err) {
+            console.log(err);
+
+            NotiError("Vui lòng kiểm tra thông tin nhập<br/> Các trường (*) là bắt buộc");
+        } else {
+            $("#form_themmoi_tailieu").submit();
+        }
+        console.log(err);
+
+        return false;
+    })
+
+    function ThemMoi_Tailieu_failure() {
+        NotiError("Không thực hiện được thao tác");
+    }
+
+    function ThemMoi_Tailieu_Success(rs) {
+        if (rs.Status) {
+            NotiSuccess("Thêm mới tài liệu thành công.");
+            CloseThemMoiModal();
+            reloadData();
+        } else {
+            NotiError("Thêm mới thất bại<br/>" + rs.Message);
+        }
+    }
+
+    $(document).ready(function () {
+        $(".select2").select2();
+    })
+</script>

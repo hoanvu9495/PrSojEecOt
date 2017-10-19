@@ -1,0 +1,935 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Web.Areas.ThuMucLuuTruArea.Models
+@model Web.Areas.ThuMucLuuTruArea.Models.CreateThuMucModel
+@using (Ajax.BeginForm("SaveThuMuc", "ThuMucLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "createSuccess"
+}, new { id = "frmCreateThuMuc" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm mới thư mục</h4>
+            </div>
+            <div class="modal-body">
+                <div id="loading">Đang thêm mới thư mục...</div>
+                <table>
+                    <tr>
+                        <td style="width: 70%; vertical-align:top !important;">
+                            <table style="width:100%;">
+                                <tr>
+                                    <td style="width:100px"><label class="lbl" style=" width:140px;"> Đường dẫn:</label></td>
+                                    <td style="width:500px" id="DUONGDAN">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        &nbsp;
+                                        @*<input type="hidden" name="IS_CENSOR" id="IS_CENSOR" value="true" />*@
+                                        @Html.TextBox("PARENT_ID", Model.ThuMuc.ID, new { @style = "width: 20px;", maxlength = "100", @class = "e-input", @id = "PARENT_ID", @readonly = "readonly" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="CREATE_NAM" style=" width:140px;">Năm sử dụng:<span style="color: red;">*</span></label>
+                                    </td>
+                                    <td>
+                                        @if (Model.ThuMuc.ID == 0)
+                                        {
+                                            @Html.TextBox("NAM", Model.ThuMuc.NAM, new { @style = "width: 190px;float:left", maxlength = "4", @class = "e-input", @id = "CREATE_NAM" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBox("NAM", Model.ThuMuc.NAM, new { @style = "width: 190px;disabled:true;float:left", maxlength = "4", @class = "e-input", @id = "CREATE_NAM", @readonly = "readonly" })
+                                        }
+                                        @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                                        {
+                                            <div style="float:left;margin-left:15px;margin-top:2px">
+                                                Quý:
+                                                @*<input type="text" name="QUY" id="QUY" value="" class="e-input" placeholder="" />*@
+                                            </div>
+                                            <div class="input-field4 clearfix fix-width" style="float:left">
+                                                <select name="QUY" id="QUY">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                </select>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                                @if (Model.ThuMuc.ID == 0)
+                                {
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            <span class="lb-Check" id="NAM_ERROR" style="margin-left: 0px; color: red;">Năm sử dụng phải là số</span>
+                                            <span class="lb-Check" id="NAM_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập năm sử dụng</span>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="2">&nbsp;</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="CREATE_NAME" style=" width:140px;">Tên thư mục:<span style="color: red;">*</span></label>
+                                    </td>
+                                    <td>
+                                        <input placeholder="Nhập tên thư mục" type="text" name="TENTHUMUC" style="width: 465px;" maxlength="255" class="e-input" id="CREATE_NAME" autofocus="autofocus" />
+                                        @*@Html.TextBox("TENTHUMUC", "", new { @style = "width: 390px;", maxlength = "100", @class = "e-input", @id = "CREATE_NAME" })*@
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 20px;"></td>
+                                    <td>
+                                        <span class="lb-Check" id="TENTHUMUC_ER" style="margin-left: 0px; color: red;">Thư mục đã tồn tại.</span>
+                                        <span class="lb-Check" id="TENTHUMUC_ERROR" style="margin-left: 0px; color: red;">Tên thư mục không được chứa ký tự html</span>
+                                        <span class="lb-Check" id="TENTHUMUC_INVALID" style="margin-left: 0px; color: red;">Tên folder không thể chứa bất kỳ các ký tự nào sau đây: \ / : ? * " < > |</span>
+                                        <span class="lb-Check" id="TENTHUMUC_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập tên thư mục</span>
+                                    </td>
+                                </tr>
+                                @if (SessionManager.GetValue("ISTRUONGDONVI") == "true" || Model.ThuMuc.ID > 0)
+                                {
+                                    if (Model.ThuMuc.IS_PRIVATE.HasValue && !Model.ThuMuc.IS_PRIVATE.Value)
+                                    {
+                                        @*<tr>
+                                                <td>
+                                                    <label class="lbl" for="myonoffswitch2" style=" width:140px;">Thư mục cá nhân:</label>
+                                                </td>
+                                                <td>
+                                                    <div class="onoffswitch2">
+                                                        <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox2" checked id="myonoffswitch2">
+                                                        <label class="onoffswitch-label2" for="myonoffswitch2">
+                                                            <span class="onoffswitch-inner2"></span>
+                                                            <span class="onoffswitch-switch2"></span>
+                                                        </label>
+                                                    </div>
+                                                     <input type="hidden" name="IS_PRIVATE" id="IS_PRIVATE" value="true" />
+                                                </td>
+                                            </tr>*@
+                                        <tr>
+                                            <td colspan="2">
+                                                <input type="hidden" name="IS_PRIVATE" id="IS_PRIVATE" value="false" />
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        @*<tr>
+                                                <td>
+                                                    <label class="lbl" for="myonoffswitch2" style=" width:140px;">Thư mục cá nhân:</label>
+                                                </td>
+                                                <td>
+                                                    <div class="onoffswitch2">
+                                                        <input disabled type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox2" checked id="myonoffswitch2">
+                                                        <label class="onoffswitch-label2" for="myonoffswitch2">
+                                                            <span class="onoffswitch-inner2"></span>
+                                                            <span class="onoffswitch-switch2"></span>
+                                                        </label>
+                                                    </div>
+                                                    <input type="hidden" name="IS_PRIVATE" id="IS_PRIVATE" value="true" />
+                                                    <input type="hidden" name="IS_CENSOR" id="IS_CENSOR" value="true" />
+                                                </td>
+                                            </tr>*@
+                                        <tr>
+                                            <td colspan="2">
+                                                <input type="hidden" name="IS_PRIVATE" id="IS_PRIVATE" value="true" />
+                                                <input type="hidden" name="IS_NEEDREVIEW" id="IS_NEEDREVIEW" value="@ThuMucConstant.DADUYET" />
+                                            </td>
+                                        </tr>
+                                    }
+
+                                    @*<tr>
+                                            <td colspan="2">&nbsp;</td>
+                                        </tr>*@
+                                    if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                                    {
+                                        if (!Model.ThuMuc.IS_PRIVATE.Value)
+                                        {
+                                            if (Model.ChinhSach != null)
+                                            {
+                                                foreach (var item in Model.ChinhSach)
+                                                {
+                                                    if (item.MACHINHSACH == ChinhSachQuanLiTaiLieuConstant.PHEDUYETTAILIEU && item.TRANGTHAI == true)
+                                                    {
+                                                        <tr class="turn-thoihan">
+                                                            @if (Model.ThuMuc.ID == 0)
+                                                            {
+                                                                <td>
+                                                                    <label class="lbl" for="myonoffswitch1" style=" width:140px;">Phê duyệt tài liệu<span style="color: red;">*</span></label>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="onoffswitch1">
+                                                                        <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox1" id="myonoffswitch1" checked>
+                                                                        <label class="onoffswitch-label1" for="myonoffswitch1">
+                                                                            <span class="onoffswitch-inner1"></span>
+                                                                            <span class="onoffswitch-switch1"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <input type="hidden" name="IS_CENSOR" id="IS_CENSOR" value="false" />
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                if (Model.ThuMuc.IS_CENSOR.Value)
+                                                                {
+                                                                    <td>
+                                                                        <label class="lbl" for="myonoffswitch1" style=" width:140px;">Phê duyệt tài liệu<span style="color: red;">*</span></label>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="onoffswitch1">
+                                                                            <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox1" id="myonoffswitch1" checked>
+                                                                            <label class="onoffswitch-label1" for="myonoffswitch1">
+                                                                                <span class="onoffswitch-inner1"></span>
+                                                                                <span class="onoffswitch-switch1"></span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <input type="hidden" name="IS_CENSOR" id="IS_CENSOR" value="true" />
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td colspan="2">
+                                                                        <input type="hidden" name="IS_CENSOR" id="IS_CENSOR" value="false" />
+                                                                        <input type="hidden" name="IS_NEEDREVIEW" id="IS_NEEDREVIEW" value="@ThuMucConstant.DADUYET" />
+                                                                    </td>
+                                                                }
+                                                            }
+                                                        </tr>
+                                                        if (Model.ThuMuc.ID > 0 && Model.ThuMuc.IS_CENSOR.Value)
+                                                        {
+                                                            <tr class="turn-thoihan">
+                                                                <td colspan="2">&nbsp;</td>
+                                                            </tr>
+                                                        }
+                                                        else if (Model.ThuMuc.ID == 0)
+                                                        {
+                                                            <tr class="turn-thoihan">
+                                                                <td colspan="2">&nbsp;</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    if (item.MACHINHSACH == ChinhSachQuanLiTaiLieuConstant.HANSUDUNG && item.TRANGTHAI == true)
+                                                    {
+                                                        <tr class="turn-thoihan">
+                                                            <td>
+                                                                <label class="lbl" for="myonoffswitch" style=" width:140px;">Thời hạn lưu trữ<span style="color: red;">*</span></label>
+                                                            </td>
+                                                            <td>
+                                                                <div class="onoffswitch">
+                                                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                                                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                                                        <span class="onoffswitch-inner"></span>
+                                                                        <span class="onoffswitch-switch"></span>
+                                                                    </label>
+                                                                </div>
+                                                                <div id="THOIHAN" style="margin-left:20px">
+                                                                    <input type="hidden" value="false" name="TRANGTHAI" id="TRANGTHAI" />
+                                                                    Từ: @Html.TextBox("EXPIRE_DATEFROM", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATEFROM" })
+                                                                    Đến: @Html.TextBox("EXPIRE_DATE", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATE" })
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="turn-thoihan">
+                                                            <td style="height: 20px;"></td>
+                                                            <td align="right">
+                                                                <span class="lb-Check" id="EXPIRE_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập thời hạn lưu trữ</span>
+                                                                <span class="lb-Check" id="EXPIRE_ERROR" style="margin-left: 0px; color: red;">Thời hạn lưu trữ sai định dạng</span>
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="IS_PRIVATE" id="IS_PRIVATE" value="true" />
+                                        </td>
+                                    </tr>
+                                }
+                                @*else
+                                    {
+                                        <tr>
+                                            <td colspan="2">&nbsp;</td>
+                                        </tr>
+                                    }*@
+
+                                @if (Model.ThuMuc.ID > 0)
+                                {
+                                    if (Model.ThuMuc.IS_NEEDREVIEW == ThuMucConstant.DADUYET)
+                                    {
+                                        if (Model.ThuMuc.IS_CENSOR.Value)
+                                        {
+                                            <tr class="turn-thoihan">
+                                                <td>
+                                                    <label class="lbl" style=" width:140px;"> Trạng thái:</label>
+                                                </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                                                        {
+                                                            <label><input type="radio" class="TRANGTHAI_THUMUC" value="@ThuMucConstant.DUTHAO" name="optradio">Dự thảo</label>
+                                                            <label><input checked type="radio" class="TRANGTHAI_THUMUC" value="@ThuMucConstant.DADUYET" name="optradio">Duyệt</label>
+                                                        }
+                                                        else
+                                                        {
+                                                            <label><input type="radio" class="TRANGTHAI_THUMUC" value="@ThuMucConstant.DUTHAO" name="optradio">Dự thảo</label>
+                                                            <label><input checked type="radio" class="TRANGTHAI_THUMUC" value="@ThuMucConstant.DATRINH" name="optradio">Trình duyệt</label>
+                                                        }
+                                                    </div>
+                                                    <input type="hidden" value="" id="IS_NEEDREVIEW" name="IS_NEEDREVIEW" />
+                                                </td>
+                                            </tr>
+                                            if (SessionManager.GetValue("ISTRUONGDONVI") != "true")
+                                            {
+                                                <tr class="turn-thoihan turn-ghichu">
+                                                    <td>
+                                                        Ghi chú:<span style="color:red">*</span>
+                                                    </td>
+                                                    <td>
+                                                        <textarea class="form-control" maxlength="500" name="MOTA" id="MOTA" placeholder="Nhập thông tin xin duyệt" style="resize:vertical;width:387px;height:100px"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr class="turn-thoihan turn-ghichu">
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <span style="color:red;display:none" id="MOTA_NULL">Vui lòng nhập thông tin xin duyệt thư mục</span>
+                                                        <span style="color:red;display:none" id="MOTA_ERROR">Thông tin xin xét duyệt thư mục không được chứa thẻ HTML</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td><input type="hidden" value="@ThuMucConstant.DADUYET" id="IS_NEEDREVIEW" name="IS_NEEDREVIEW" /></td>
+                                        </tr>
+                                    }
+                                }
+                            </table>
+                        </td>
+                        <td valign="top">
+                            @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                            {
+                                <h3 class="group-tittle mt10" style="margin-bottom:10px">Danh mục thông tin tài liệu<font style="color:red !important">*</font></h3>
+                                <div id="DANHMUC_THONGTIN" style="height: 250px; overflow-y: auto; overflow-x: hidden; border-left: 1px solid #e8e8e8">
+                                </div>
+                                <span style="color:red;display:none" id="THONGTIN_NULL">Vui lòng chọn danh mục, thông tin</span>
+                            }
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="true" id="EXISTED_HIDDEN" />
+                <input type="button" value="Thêm folder" id="btnCreateThuMuc" class="btn btn-success" />
+                <button class="close-modal btn btn-default" type="button" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    //document.getElementById("CREATE_NAME").focus();
+    $(function () {
+        $(document).on('click', '.TENDANHMUCTAILIEU', function () {
+            $("#CREATE_NAME").val($(this).html());
+            $("#TENTHUMUC_ER").hide();
+            $("#TENTHUMUC_ERROR").hide();
+            $("#TENTHUMUC_INVALID").hide();
+            $("#TENTHUMUC_NULL").hide();
+        });
+        var element_src = document.getElementById("selectnam");
+        if (element_src != null) {
+            $("#CREATE_NAM").val(document.getElementById("selectnam").value);
+        } else {
+            $("#CREATE_NAM").val(new Date().getFullYear());
+        }
+        var date = new Date();
+        var curMonth = date.getMonth() + 1;
+        if (curMonth >= 1 && curMonth <= 3) {
+            $("#QUY").val("1");
+        } else if (curMonth >= 4 && curMonth <= 6) {
+            $("#QUY").val("2");
+        } else if (curMonth >= 7 && curMonth <= 9) {
+            $("#QUY").val("3");
+        } else {
+            $("#QUY").val("4");
+        }
+        $("#CREATE_NAM").blur(function () {
+            LoadData();
+        });
+
+        $("#QUY").change(function () {
+            LoadData();
+        });
+        function LoadData() {
+            $.ajax({
+                url: '@Url.Action("InitDanhMucThongTin", "ThuMucLuuTru")',
+                type: 'POST',
+                cache: false,
+                data: {
+                    QUY: $("#QUY").val().trim(),
+                    NAM: $("#CREATE_NAM").val().trim(),
+                    TAILIEU_ID: 0,
+                    FOLDER_ID: '@Model.ThuMuc.ID'
+                },
+                success: function (data) {
+                    $("#DANHMUC_THONGTIN").html(data);
+                },
+                error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        }
+    });
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    var folder = $("#CREATE_NAME").val();
+    var parent = $("#PARENT_ID").val();
+    $("#CREATE_NAME").blur(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#TENTHUMUC_NULL").show();
+        } else {
+            $("#TENTHUMUC_NULL").hide();
+        }
+    });
+    $(".TRANGTHAI_THUMUC").change(function () {
+        if ($(this).val() == '@ThuMucConstant.DUTHAO') {
+            $(".turn-ghichu").hide();
+        } else {
+            $(".turn-ghichu").show();
+        }
+    });
+    $("#CREATE_NAM").blur(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#NAM_NULL").show();
+        } else {
+            $("#NAM_NULL").hide();
+        }
+    });
+    $("#CREATE_NAM").keypress(function (e) {
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            $("#NAM_ERROR").show();
+            return false;
+        } else {
+            $("#NAM_ERROR").fadeOut("slow");
+        }
+    });
+    function createSuccess() {
+        if (parent > 0) {
+            LoadDataByID(parent);
+            $("#THEMTHUMUC").attr("data-pid", parent);
+            $("#THEMTAILIEU").attr("data-pid", parent);
+            $("#UPLOAD_FILE").show();
+            $("#THEMTHUMUC").show();
+        }
+        if (parent == 0) {
+            reloadGrid();
+            reloadTable();
+        }
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Thêm mới thư mục thành công!',
+        });
+        $("#loading").hide();
+        $("#CreateThuMuc").modal('hide');
+        $("#CreateThuMuc").html("");
+    }
+    $(function () {
+        $('#CreateThuMuc').on('hidden.bs.modal', function () {
+            $("#CreateThuMuc").html("");
+        });
+        if ($("#URLPath").val() != "") {
+            $("#DUONGDAN").html($("#URLPath").html());
+        } else {
+            GetPathUrl(parent);
+        }
+
+
+        $("#myonoffswitch").change(function () {
+            var checked = $(".onoffswitch-checkbox:checked").length;
+            //alert(checked);
+            if (checked == 1) {
+                $("#EXPIRE_DATE").show();
+                $("#THOIHAN").show();
+                $("#EXPIRE_NULL").hide();
+                $("#EXPIRE_ERROR").hide();
+                $("#TRANGTHAI").val("true");
+            } else {
+                $("#EXPIRE_DATE").hide();
+                $("#THOIHAN").hide();
+                $("#EXPIRE_NULL").hide();
+                $("#EXPIRE_ERROR").hide();
+                $("#TRANGTHAI").val("false");
+            }
+        });
+        $("#myonoffswitch2").change(function () {
+            var checked = $(".onoffswitch-checkbox2:checked").length;
+            if (checked == 1) {
+                $("#IS_PRIVATE").val("true");
+                $(".turn-thoihan").hide();
+            } else {
+                $("#IS_PRIVATE").val("false");
+                $(".turn-thoihan").show();
+            }
+        });
+        $("#myonoffswitch").click();
+        $("#myonoffswitch1").click();
+        $("#myonoffswitch1").change(function () {
+            var checked = $(".onoffswitch-checkbox1:checked").length;
+            //alert(checked);
+            if (checked == 1) {
+                $("#IS_CENSOR").val("true");
+            } else {
+                $("#IS_CENSOR").val("false");
+            }
+        });
+        $("#EXPIRE_DATE").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            onClose: function (selected) {
+                $("#EXPIRE_DATEFROM").datepicker("option", "maxDate", selected);
+            }
+        });
+        $("#EXPIRE_DATEFROM").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            onClose: function (selected) {
+                $("#EXPIRE_DATE").datepicker("option", "minDate", selected);
+            }
+        });
+
+        $("#EXPIRE_DATE").change(function () {
+            if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+                //$("#EXPIRE_NULL").show();
+            } else {
+                $("#EXPIRE_NULL").hide();
+                if (!checkDateTime($(this).val())) {
+                    $("#EXPIRE_ERROR").show();
+                } else {
+                    $("#EXPIRE_ERROR").hide();
+                }
+            }
+        });
+        $("#EXPIRE_DATEFROM").change(function () {
+            if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+                //$("#EXPIRE_NULL").show();
+            } else {
+                $("#EXPIRE_NULL").hide();
+                if (!checkDateTime($(this).val())) {
+                    $("#EXPIRE_ERROR").show();
+                } else {
+                    $("#EXPIRE_ERROR").hide();
+                }
+            }
+        });
+        $("#btnCreateThuMuc").click(function () {
+            var existed_tm = true;
+            if ($("#CREATE_NAM").val() != undefined) {
+                if (($("#CREATE_NAM").val().trim() == null || $("#CREATE_NAM").val().trim() == "")) {
+                    $("#NAM_NULL").show();
+                    $("#CREATE_NAM").focus();
+                    return false;
+                } else {
+                    $("#NAM_NULL").hide();
+                }
+            }
+            if ($("#IS_PRIVATE").val() != "true") {
+                if (!$(".DANHMUCTAILIEU").is(':checked')) {
+                    $("#THONGTIN_NULL").show();
+                    return false;
+                } else {
+                    $("#THONGTIN_NULL").hide();
+                }
+                if ($(".onoffswitch-checkbox:checked").length == 1) {
+                    if (($("#EXPIRE_DATE").val().trim() == "" && $("#EXPIRE_DATEFROM").val().trim() == "")) {
+                        $("#EXPIRE_NULL").show();
+                        if ($("#EXPIRE_DATEFROM").val().trim() == "") {
+                            $("#EXPIRE_DATEFROM").focus();
+                        } else {
+                            $("#EXPIRE_DATE").val().trim() == ""
+                        }
+                        return false;
+                    } else {
+                        $("#EXPIRE_NULL").hide();
+                        if (!checkDateTime($("#EXPIRE_DATEFROM").val()) && !checkDateTime($("#EXPIRE_DATE").val())) {
+                            $("#EXPIRE_ERROR").show();
+                            if (!checkDateTime($("#EXPIRE_DATEFROM").val())) {
+                                $("#EXPIRE_DATEFROM").focus();
+                            } else {
+                                $("#EXPIRE_DATE").val().trim() == "";
+                            }
+                            return false;
+                        } else {
+                            $("#EXPIRE_ERROR").hide();
+                        }
+                    }
+                }
+            }
+            if (($("#CREATE_NAME").val().trim() == null || $("#CREATE_NAME").val().trim() == "")) {
+                $("#CREATE_NAME").focus();
+                $("#TENTHUMUC_NULL").show();
+                return false;
+            } else {
+                $("#TENTHUMUC_NULL").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#CREATE_NAME").val())) {
+                $("#CREATE_NAME").focus();
+                $("#TENTHUMUC_ERROR").show();
+                return false;
+            } else {
+                $("#TENTHUMUC_ERROR").hide();
+            }
+            if (/[\\/:?*"<>|]/i.test($("#CREATE_NAME").val().trim())) {
+                $("#CREATE_NAME").focus();
+                $("#TENTHUMUC_INVALID").show();
+                return false;
+            } else {
+                $("#TENTHUMUC_INVALID").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#CREATE_NAME").val())) {
+                $("#CREATE_NAME").focus();
+                $("#TENTHUMUC_ERROR").show();
+                return false;
+            } else {
+                $("#TENTHUMUC_ERROR").hide();
+            }
+            //alert($('input[name=optradio]:checked').val());
+            if ($('input[name=optradio]:checked').val() != undefined) {
+                $("#IS_NEEDREVIEW").val($('input[name=optradio]:checked').val());
+            }
+            var thumuc = $("#CREATE_NAME").val();
+            if (thumuc.trim() != "") {
+                if ($(".TRANGTHAI_THUMUC:checked").val() == '@ThuMucConstant.DUTHAO') {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("FolderChecking", "ThuMucLuuTru")',
+                        data: {
+                            name: thumuc,
+                            parentID: parent
+                        },
+                        cache: false,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data == "true") {
+                                $("#TENTHUMUC_ER").show();
+                                $("#CREATE_NAME").focus();
+                                return false;
+                            } else {
+                                $("#TENTHUMUC_ER").hide();
+                                $("#EXISTED_HIDDEN").val("false");
+                                $("#frmCreateThuMuc").submit(); $("#loading").show();
+                                return true;
+                            }
+                        }, error: function (xrt) {
+                        }
+                    });
+                } else {
+                    if ($("#IS_PRIVATE").val() != "true") {
+                        if ($("#MOTA").val() != undefined && $("#MOTA").val().trim() == "") {
+                            $("#MOTA_NULL").show();
+                            $("#MOTA").focus();
+                            return false;
+                        } else {
+                            $("#MOTA_NULL").hide();
+                            if ($("#MOTA").val() != undefined && /<[a-z][\s\S]*>/i.test($("#MOTA").val().trim())) {
+                                $("#MOTA").select();
+                                $("#MOTA_ERROR").show();
+                                return false;
+                            } else {
+                                $("#MOTA_ERROR").hide();
+                            }
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("FolderChecking", "ThuMucLuuTru")',
+                                data: {
+                                    name: thumuc,
+                                    parentID: parent
+                                },
+                                cache: false,
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data == "true") {
+                                        $("#TENTHUMUC_ER").show();
+                                        $("#CREATE_NAME").focus();
+                                        return false;
+                                    } else {
+                                        $("#TENTHUMUC_ER").hide();
+                                        $("#EXISTED_HIDDEN").val("false");
+                                        $("#frmCreateThuMuc").submit(); $("#loading").show();
+                                        return true;
+                                    }
+                                }, error: function (xrt) {
+                                }
+                            });
+                        }
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("FolderChecking", "ThuMucLuuTru")',
+                            data: {
+                                name: thumuc,
+                                parentID: parent
+                            },
+                            cache: false,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data == "true") {
+                                    $("#TENTHUMUC_ER").show();
+                                    $("#CREATE_NAME").focus();
+                                    return false;
+                                } else {
+                                    $("#TENTHUMUC_ER").hide();
+                                    $("#EXISTED_HIDDEN").val("false");
+                                    $("#frmCreateThuMuc").submit();
+                                    $("#loading").show();
+                                    return true;
+                                }
+                            }, error: function (xrt) {
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    });
+</script>
+@if (SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+{
+    <script>
+        $(function () {
+            LoadData1();
+        });
+        function LoadData1() {
+            $.ajax({
+                url: '@Url.Action("InitDanhMucThongTin", "ThuMucLuuTru")',
+                type: 'POST',
+                cache: false,
+                data: {
+                    QUY: $("#QUY").val().trim(),
+                    NAM: $("#CREATE_NAM").val().trim(),
+                    TAILIEU_ID: 0,
+                    FOLDER_ID: '@Model.ThuMuc.ID'
+                },
+                success: function (data) {
+                    $("#DANHMUC_THONGTIN").html(data);
+                },
+                error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        }
+    </script>
+}
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    .modal-body #THOIHAN {
+        float: left;
+    }
+
+    #PARENT_ID {
+        display: none;
+    }
+
+    .onoffswitch, .onoffswitch2 {
+        position: relative;
+        width: 77px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        float: left;
+    }
+
+    .onoffswitch-checkbox, .onoffswitch-checkbox2 {
+        display: none;
+    }
+
+    .onoffswitch-label, .onoffswitch-label2 {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid #999999;
+        border-radius: 29px;
+    }
+
+    .onoffswitch-inner, .onoffswitch-inner2 {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+        .onoffswitch-inner:before, .onoffswitch-inner:after, .onoffswitch-inner2:before, .onoffswitch-inner2:after {
+            display: block;
+            float: left;
+            width: 50%;
+            height: 25px;
+            padding: 0;
+            line-height: 25px;
+            font-size: 14px;
+            color: white;
+            font-family: Trebuchet, Arial, sans-serif;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .onoffswitch-inner:before, .onoffswitch-inner2:before {
+            content: "Bật";
+            padding-left: 10px;
+            background-color: #1DB1EB;
+            color: #FFFFFF;
+        }
+
+        .onoffswitch-inner:after, .onoffswitch-inner2:after {
+            content: "Tắt";
+            padding-right: 10px;
+            background-color: #EEEEEE;
+            color: #999999;
+            text-align: right;
+        }
+
+    .onoffswitch-switch, .onoffswitch-switch2 {
+        display: block;
+        width: 18px;
+        margin: 3.5px;
+        background: #FFFFFF;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 48px;
+        border: 2px solid #999999;
+        border-radius: 29px;
+        transition: all 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner, .onoffswitch-checkbox2:checked + .onoffswitch-label2 .onoffswitch-inner2 {
+        margin-left: 0;
+    }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch, .onoffswitch-checkbox2:checked + .onoffswitch-label2 .onoffswitch-switch2 {
+        right: 0px;
+    }
+
+    .onoffswitch1 {
+        position: relative;
+        width: 77px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .onoffswitch-checkbox1 {
+        display: none;
+    }
+
+    .onoffswitch-label1 {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid #999999;
+        border-radius: 29px;
+    }
+
+    .onoffswitch-inner1 {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+        .onoffswitch-inner1:before, .onoffswitch-inner1:after {
+            display: block;
+            float: left;
+            width: 50%;
+            height: 25px;
+            padding: 0;
+            line-height: 25px;
+            font-size: 14px;
+            color: white;
+            font-family: Trebuchet, Arial, sans-serif;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .onoffswitch-inner1:before {
+            content: "Bật";
+            padding-left: 10px;
+            background-color: #1DB1EB;
+            color: #FFFFFF;
+        }
+
+        .onoffswitch-inner1:after {
+            content: "Tắt";
+            padding-right: 10px;
+            background-color: #EEEEEE;
+            color: #999999;
+            text-align: right;
+        }
+
+    .onoffswitch-switch1 {
+        display: block;
+        width: 18px;
+        margin: 3.5px;
+        background: #FFFFFF;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 48px;
+        border: 2px solid #999999;
+        border-radius: 29px;
+        transition: all 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-checkbox1:checked + .onoffswitch-label1 .onoffswitch-inner1 {
+        margin-left: 0;
+    }
+
+    .onoffswitch-checkbox1:checked + .onoffswitch-label1 .onoffswitch-switch1 {
+        right: 0px;
+    }
+
+    #loading, #including {
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        background: #000 url('/Content/Images/loadajax.gif') no-repeat 50% 4px;
+        bottom: 50%;
+        color: #fff;
+        text-align: center;
+        line-height: 166px;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0.7;
+        border-radius: 5px;
+        filter: alpha(opacity=70);
+        font-size: 12px;
+        text-shadow: none;
+        display: none;
+    }
+</style>

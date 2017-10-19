@@ -1,0 +1,54 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using Model.eAita;
+@model Web.Areas.ThuMucLuuTruArea.Models.ThuMucLuuTruModel
+@{
+    List<TmChuyenTiepYeuCauBO> lstChiase = new List<TmChuyenTiepYeuCauBO>();
+    lstChiase = (List<TmChuyenTiepYeuCauBO>)SessionManager.GetValue("ListYeuCau");
+    var grid = new WebGrid(lstChiase,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+}@Html.AntiForgeryToken()
+@if (lstChiase.Count > 0)
+{
+    <div id="grid">
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                              grid.Column("NOIDUNG", "Lý do chia sẻ", format: (item) => new MvcHtmlString(string.Format("<a href='" + @Url.Action("ChiTietYeuCauCanChiaSe/" + item.ID, "YeuCauChiaSe") + "' title='" + item.NOIDUNG + "'>" + item.NOIDUNG + "</a>"))),
+                                grid.Column("NGAYGUI", "Ngày gửi", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYGUI)),
+                                  grid.Column("THOIGIAN_TU", "Chia sẻ từ", format: (item) => item.THOIGIAN_TU == null ? "" : string.Format("{0:dd-MM-yyyy}", item.THOIGIAN_TU)),
+                                   grid.Column("THOIGIAN_DEN", "Chia sẻ đến", format: (item) => item.THOIGIAN_DEN == null ? "" : string.Format("{0:dd-MM-yyyy}", item.THOIGIAN_DEN)),
+                                       grid.Column("TRANGTHAI", "Trạng thái", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == ChuyenTiepYeuCauContant.DAGUI ? "<span style='color:red'>Chưa xử lý</span>" : item.TRANGTHAI == ChuyenTiepYeuCauContant.CHIASE ? "<span style='color:green'>Đã xử lý</span>" : item.TRANGTHAI == ChuyenTiepYeuCauContant.GUILAI ? "<span style='color:red'>Bắt buộc chia sẻ</span>" : item.TRANGTHAI == ChuyenTiepYeuCauContant.TUCHOI ? "<span style='color:green'>Từ chối chia sẻ</span>" : "<span style='color:red'>Chưa xử lý</span>"))),
+                              grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                      (item.TRANGTHAI == ChuyenTiepYeuCauContant.DAGUI || item.TRANGTHAI == ChuyenTiepYeuCauContant.GUILAI) ? "<a href='javascript:void(0)' onclick='TrinhDuyetYeuCau(" + item.YEUCAU_ID + "," + item.DONVI_ID + "," + item.ID + ")' class='btnEdit' title = 'Bắt đầu chia sẻ cho yêu cầu này'></a>" : "")), header: "Chia sẻ")
+                 )
+    )
+        @if (lstChiase.Count == 0)
+        {
+            <div id="Empty" style="color: red;">
+                Không tìm thấy dữ liệu phù hợp
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div id="grid">
+        <div id="Empty" style="color: red;">
+            Chưa có yêu cầu nào muốn sử dụng tài liệu của đơn vị bạn
+        </div>
+    </div>
+}

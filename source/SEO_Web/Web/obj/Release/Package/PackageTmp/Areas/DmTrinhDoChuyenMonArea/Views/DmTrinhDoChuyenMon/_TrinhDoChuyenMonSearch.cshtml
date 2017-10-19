@@ -1,0 +1,42 @@
+﻿<style>
+    .txt {
+        width: 250px;
+    }
+
+    .btn {
+        height: 30px;
+        background: #0099CC;
+        font-weight: bold;
+        color: white;
+        border: none;
+    }
+</style>
+<div class="panel">
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindTrinhDoChuyenMon", "DmTrinhDoChuyenMon", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearch" }))
+    {
+        <h3 class="group-tittle mt10" style="margin-bottom:30px">Tìm kiếm trình độ chuyên môn</h3>
+        <div style="text-align:center">
+            <label class="lblDiemThi" style="margin-left:130px;width:80px">Tên nhóm sổ văn bản:</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.TextBox("TRINHDO_CHUYENMON", "", new { @style = "width:200px", @class = "e-input" })
+            <input type="submit" id="btnSearch" value="Tìm Kiếm" style="background-color:#336699;font-weight:bold;height:30px;border:none;width:100px;color:white" />
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#TRINHDO_CHUYENMON").val(@ViewData["ChuyenMon"]);
+    });
+    function failure(xhr, response) {
+        CommonJS.alert(xhr.responseText);
+        $("#TRINHDO_CHUYENMON").val("");
+    }
+</script>

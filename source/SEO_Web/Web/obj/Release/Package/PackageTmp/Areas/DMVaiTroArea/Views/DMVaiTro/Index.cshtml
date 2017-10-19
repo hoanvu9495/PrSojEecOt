@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Quản lý vai trò";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+@using Web.Areas.DMVaiTroArea.Models;
+@model VaiTroViewModel
+@*<div class="row" style="margin-bottom:7px; ">
+    <div class="col-sm-9">
+
+    </div>
+    <div class="col-sm-3">
+        <a class="btn btn-success btn-sm" href="javascript:OnCreate()" style="float:right">
+            <i class="fa fa-plus"></i> <span>Thêm mới vai trò</span>
+        </a>
+    </div>
+</div>*@
+
+
+<div class="right-all-page" >
+
+    <div class="right-content clearfix">
+       
+
+        <div class="SearchResult">
+            @Html.Partial("_VaiTroSearchResult",Model)
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#Keyword").change(function () {
+        $("#TEN_VAITRO").val($(this).val());
+    });
+    function reloadGrid() {
+        var TENVAITRO = $("#TEN_VAITRO").val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadData", "DMVaiTro")',
+          
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                loadDataTable(data);
+            }
+        });
+        $("#formEdit").html("");
+        $("#formCreate").html("");
+
+    }
+
+</script>

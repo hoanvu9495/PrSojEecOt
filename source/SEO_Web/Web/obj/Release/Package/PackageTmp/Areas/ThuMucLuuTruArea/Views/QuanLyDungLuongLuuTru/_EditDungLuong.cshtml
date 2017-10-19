@@ -1,0 +1,226 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Web.Models
+@model Web.Areas.ThuMucLuuTruArea.Models.TaiLieuDungLuongLuuTruModel
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    input[type="checkbox"] {
+        margin: 0 6px 0 !important;
+    }
+
+    a:hover {
+        cursor: pointer;
+    }
+</style>
+@using (Ajax.BeginForm("SaveDungLuong", "QuanLyDungLuongLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmLoaiVanBanCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thiết lập dung lượng lưu trữ cho @(ViewData["OPTION"] == "donvi" ? " đơn vị" : "người sử dụng")</h4>
+            </div>
+            <div class="modal-body">
+                @if (Model.TAILIEU != null)
+                {
+                    <table>
+                        @if (Model.TAILIEU.DONVI_ID.HasValue)
+                        {
+                            <tr>
+                                <td>Đơn vị: <span style="color:red">*</span></td>
+                                <td>
+                                    @*<div class="input-field4  clearfix">
+                                        @Html.DropDownList("DONVI_ID", Model.DONVI, new { @id = "DONVI_ID" })
+                                    </div>*@
+                                    <span>
+                                        @foreach(var item in Model.DONVI){
+                                            if(item.Selected){
+                                                @item.Text
+                                                break;
+                                            }
+                                        }
+                                    </span>
+                                    <input type="hidden" name="ID" value="@Model.TAILIEU.ID" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <span style="color:red;display:none" id="DONVI_NULL">Vui lòng lựa chọn đơn vị</span>
+                                    <input type="hidden" name="DONVI_HIDDEN" id="DONVI_HIDDEN" />
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>Người dùng: <span style="color:Red">*</span></td>
+                                <td>
+                                    <div style="float:left;width:240px">
+                                        <input type="text" id="CHUYEN_VIEN" style="width:233px" class="e-input" readonly="readonly" disabled />
+                                    </div>
+                                    <div style="float:left;margin-top:5px">
+                                        <a id="Test_Chon">Chọn</a> |
+                                        <a id="Xoa_ChuyenVien">Xóa chuyên viên</a>
+                                        <input type="hidden" id="CHUYEN_VIEN_HIDEN" value="@Model.TAILIEU.NGUOIDUNG_ID" name="CHUYEN_VIEN_HIDEN">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <span style="color:red;display:none" id="NGUOIDUNG_NULL">Vui lòng chọn người sử dụng</span>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td>Dung lượng:<span style="color:red">*</span></td>
+                            <td>
+                                <input type="text" value="@Model.TAILIEU.DUNGLUONG" name="DUNGLUONG" id="DUNGLUONG" class="e-input" style="width:233px" placeholder="Nhập dung lượng lưu trữ"> (Mb)Megabyte
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <span id="DUNGLUONG_NULL" style="color:red;display:none">Vui lòng nhập dung lượng lưu trữ</span>
+                                <span id="DUNGLUONG_ERROR" style="color:red;display:none">Dung lượng lưu trữ sai định dạng</span>
+                            </td>
+                        </tr>
+                    </table>
+                }
+                else
+                {
+                    <div>
+                        <span>Không tìm thấy thiết lập dung lượng cần chỉnh sửa</span>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btnSave">Cập nhật</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+}
+@{
+    UserInfoBO user = (UserInfoBO)SessionManager.GetUserInfo();
+    ChonNguoiDungModel model_one = new ChonNguoiDungModel();
+    model_one.COSO_ID = user.CoSoID.Value;
+    model_one.DONVI_ID = 0;
+    model_one.PHONGBAN_ID = 0;
+    model_one.TEXT_ID = "CHUYEN_VIEN";
+    model_one.VALUE_ID = "CHUYEN_VIEN_HIDEN";
+    model_one.ID_CLICK = "Test_Chon";
+    model_one.IS_MULTICHOICE = 1;
+    model_one.INDEX = 0;
+    model_one.TITLE = "Lựa chọn người sử dụng";
+    Html.RenderPartial("../Common/_ChooseUserV1", model_one);
+}
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+<script type="text/javascript" src="/Scripts/multiple-select.js"></script>
+@if (Model.TAILIEU.DONVI_ID.HasValue)
+{
+    <script>
+        function initialVulue() {
+            $("#DONVI_HIDDEN").val($("#DONVI_ID").multipleSelect("getSelects"));
+        }
+        $(function () {
+            $("#btnSave").click(function () {
+                initialVulue();
+                if ($("#DONVI_HIDDEN").val() == "") {
+                    $("#DONVI_NULL").show();
+                    return false;
+                } else {
+                    $("#DONVI_NULL").hide();
+                }
+                if ($("#DUNGLUONG").val().trim() == "") {
+                    $("#DUNGLUONG_NULL").show();
+                    $("#DUNGLUONG").focus();
+                    return false;
+                } else {
+                    $("#DUNGLUONG_NULL").hide();
+                }
+                if (/[0-9]+/i.test($("#DUNGLUONG").val()) == false) {
+                    $("#DUNGLUONG_ERROR").show();
+                    $("#DUNGLUONG").focus();
+                    return false;
+                } else {
+                    $("#DUNGLUONG_ERROR").hide();
+                }
+                return true;
+            });
+        });
+    </script>
+}
+else
+{
+    <script>
+        function initialVulue() {
+            $("#DONVI_HIDDEN").val($("#DONVI_ID").multipleSelect("getSelects"));
+        }
+        $(function () {
+            $("#Xoa_ChuyenVien").click(function () {
+                $("#CHUYEN_VIEN_HIDEN").val("");
+                $("#CHUYEN_VIEN").val();
+            });
+            $("#btnSave").click(function () {
+                initialVulue();
+                if ($("#CHUYEN_VIEN_HIDEN").val() == "") {
+                    $("#NGUOIDUNG_NULL").show();
+                    return false;
+                } else {
+                    $("#NGUOIDUNG_NULL").hide();
+                }
+                if ($("#DUNGLUONG").val().trim() == "") {
+                    $("#DUNGLUONG_NULL").show();
+                    $("#DUNGLUONG").focus();
+                    return false;
+                } else {
+                    $("#DUNGLUONG_NULL").hide();
+                }
+                if (/[0-9]+/i.test($("#DUNGLUONG").val()) == false) {
+                    $("#DUNGLUONG_ERROR").show();
+                    $("#DUNGLUONG").focus();
+                    return false;
+                } else {
+                    $("#DUNGLUONG_ERROR").hide();
+                }
+                return true;
+            });
+        });
+    </script>
+}
+<script>
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Thiết lập dung lượng lưu trữ thành công!',
+        });
+        $("#CreateDungLuong").modal("hide");
+        reloadGrid();
+    }
+    function failure(xhr) {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: xhr.responseText,
+        });
+        $("#CreateDungLuong").modal("hide");
+        reloadGrid();
+    }
+</script>

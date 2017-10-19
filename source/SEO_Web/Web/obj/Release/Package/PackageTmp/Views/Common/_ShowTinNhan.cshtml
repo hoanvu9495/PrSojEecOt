@@ -1,0 +1,18 @@
+﻿@using Business.CommonBusiness;
+@model List<SysTinNhanBO>
+@if (Model != null && Model.Count > 0)
+{
+    <div class="box-notify">
+        <ul class="l-notify">
+            @foreach (var item in Model)
+            {
+                <li>
+                    <a href="@item.URL">@item.TIEUDE</a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div style="padding-top:5px;font-weight:bold;border-top: 1px solid #f2f2f2">
+        <a href="/SysTinNhanArea/SysTinNhan">Xem tất cả</a>
+    </div>
+}

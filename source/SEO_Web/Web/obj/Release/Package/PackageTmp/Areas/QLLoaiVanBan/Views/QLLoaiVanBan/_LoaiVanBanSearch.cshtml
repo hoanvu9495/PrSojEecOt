@@ -1,0 +1,50 @@
+﻿@using Web.Common
+@using Web.FwCore;
+@model Web.Areas.QLLoaiVanBan.Models.LoaiVbViewModel
+<div class="panel">
+    @Html.AntiForgeryToken()
+    
+        <div>
+            <h3 class="group-tittle mt10"><span>Tìm kiếm thông tin loại văn bản</span></h3>
+            <center>
+                <table style="width:80%;">                   
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td width="160">
+                            <label>Loại văn bản:</label>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBox("TENLOAIVB", "", new { @placeholder = "Tìm theo tên loại văn bản", id = "TENLOAIVB", @style = "width: 80%;margin-left:5px;", maxlength = "320", @class = "e-input" })
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                </table>
+                <div style="margin-top: 10px;">
+                    <input id="btnSearch" type="submit" value="Tìm kiếm" onclick="SearchLoaiVanBan()" style="background-color: #336699; font-weight: bold; height: 35px; border: none; width: 100px; color: white;" />
+                </div>
+            </center>
+        </div>
+</div>
+
+<script type="text/javascript">
+    $(document).on("keypress", function (e) {
+        if (e.which == 13) {
+            SearchLoaiVanBan();
+        }
+    });
+
+    function SearchLoaiVanBan() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("FindLoaiVanBan", "QLLoaiVanBan")',
+            cache: false,
+            data: {
+                TENLOAIVB: $("#TENLOAIVB").val()
+            },
+            dataType: "html",
+            success: function (data) {
+                $("#SearchResult").html(data);
+            }
+        });
+    }
+</script>

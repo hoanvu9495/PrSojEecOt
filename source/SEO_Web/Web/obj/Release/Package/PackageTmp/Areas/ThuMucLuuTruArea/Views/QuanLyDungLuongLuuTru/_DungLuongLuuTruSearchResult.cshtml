@@ -1,0 +1,205 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Web.Areas.InitiativeArea.Models
+@using Model.eAita;
+@{
+    List<TaiLieuDungLuongLuuTruBO> lstLoaiVanBan = new List<TaiLieuDungLuongLuuTruBO>();
+    if (ViewData["Search"] == "0")
+    {
+        lstLoaiVanBan = (List<TaiLieuDungLuongLuuTruBO>)SessionManager.GetValue("ListDungLuong");
+    }
+    else
+    {
+        lstLoaiVanBan = (List<TaiLieuDungLuongLuuTruBO>)SessionManager.GetValue("ListDungLuongSearch");
+    }
+    var grid = new WebGrid(lstLoaiVanBan,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+}
+@Html.AntiForgeryToken()
+<div id="grid">
+    @if (lstLoaiVanBan.Count > 0)
+    {
+
+        <div id="HeaderGrid">
+            <div style="margin:20px 0px 10px 10px;">
+                <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">@(lstLoaiVanBan == null ? "0" : lstLoaiVanBan.Count.ToString()) &nbsp; kết quả</label>
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                                        grid.Column("TENDONVI", "Đơn vị"),
+                                             grid.Column("TENNGUOIDUNG", "Người dùng"),
+                                                  grid.Column("DUNGLUONG", "Dung Lượng", format: (item) => new MvcHtmlString(string.Format(string.Format("{0:#,## Mb}", item.DUNGLUONG)))),
+                              grid.Column(format: (item) => new MvcHtmlString(string.Format("<a href='javascript:void(0)' onclick='EditThietLap(" + item.ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                      grid.Column(format: (item) => new MvcHtmlString(string.Format("<a href='javascript:void(0)' onclick='RemoveSize(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+                 )
+    )
+
+    }
+    else
+    {
+        if (ViewData["Search"] == "0")
+        {
+            <div id="Empty" style="color: red;">
+                Chưa thiết lập dung lượng lưu trữ cho nhóm hay người sử dụng nào
+            </div>
+        }
+        else
+        {
+            <div id="Empty" style="color: red;">
+                Không tìm thấy dữ liệu phù hợp
+            </div>
+        }
+    }
+</div>
+<div class="modal fade" id="CreateDungLuong" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="EditDungLuong" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<style>
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDownload {
+        background: url('/Content/themes/base/images/BieuMau_Download.png') no-repeat;
+        display: block;
+        width: 26px;
+        height: 26px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .head th:first-child, th:nth-child(10), th:nth-child(9) {
+        width: 10px;
+    }
+
+    th:nth-child(6), th:nth-child(8), th:nth-child(8) {
+        width: 100px !important;
+    }
+
+    .webGrid th {
+        text-align: center !important;
+    }
+
+
+    .webGrid tbody tr td:nth-child(2), .webGrid tbody tr td:nth-child(3) {
+        text-align: left !important;
+    }
+
+    .webGrid td:nth-child(5), .webGrid td:nth-child(4) {
+        width: 120px !important;
+        text-align: left !important;
+    }
+
+    .webGrid td:nth-child(8) {
+        text-align: left !important;
+    }
+
+    .webGrid td:nth-child(2) a, .webGrid td:nth-child(3) span {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 180px !important;
+        text-overflow: ellipsis;
+    }
+</style>
+<script type="text/javascript">
+    function RemoveSize(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa thiết lập này này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveDungLuong", "QuanLyDungLuongLuuTru")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: data,
+                                });
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { }
+                }
+            }
+        });
+    }
+    function EditThietLap(ID) {
+        $.ajax({
+            url: '@Url.Action("EditDungLuongLuuTru", "QuanLyDungLuongLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID:ID
+            },
+            success: function (data) {
+                $("#CreateDungLuong").html(data);
+                $("#CreateDungLuong").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>

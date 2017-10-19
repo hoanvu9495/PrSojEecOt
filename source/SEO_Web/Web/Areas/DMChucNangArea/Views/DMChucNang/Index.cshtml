@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Quản lý chức năng";
+    Layout = "~/Views/Shared/_LayoutSmartDms.cshtml";
+}
+@model  Web.Areas.DMChucNangArea.Models.DMChucNangIndexViewModel
+
+<div id="ribbon" style=" background-color:#57889c">
+
+
+    <div class="col-md-6">
+        <ol class="breadcrumb">
+            <!-- This is auto generated -->
+        </ol>
+    </div>
+    <!-- breadcrumb -->
+    <!-- end breadcrumb -->
+
+    <div class="col-md-6">
+        <a class="btn btn-default btn-flat pull-right" href="javascript:OnCreate()">
+            <i class="fa fa-plus"></i> <span>Thêm mới chức năng</span>
+        </a>
+    </div>
+</div>
+<!-- #MAIN CONTENT -->
+<div id="content">
+    
+    @*<div class="left-all-page" id="menu-middle-left">
+
+            <div id="block-search-form">
+                @using (Ajax.BeginForm("FindChucNang", "ChucNang", new AjaxOptions()
+            {
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "GET",
+                OnFailure = "failure",
+                UpdateTargetId = "grid",
+            }, new { id = "search-form" }))
+        {
+            <input type="text" placeholder="" value="" name="TENCHUCNANG" id="Keyword" />
+                            <input type="submit" value="search" name="" id="" />
+        }
+            </div>
+            @*<div id="menu-left-content-scroll" class="menu-left-content block">
+                @{Html.RenderAction("GetMenuChild", "Common", new { area = "" });}
+            </div>
+        </div>*@
+    <div class="right-all-page">
+
+        <div class="right-content clearfix">
+
+            <div class="SearchCriterial">
+                @*@Html.Partial("_ChucNangSearch", Model)*@
+            </div>
+
+            <div class="SearchResult clearfix">
+                <div id="SearchResult">
+                    @Html.Partial("_ChucNangSearchResult", Model.ListChucNang)
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#Keyword").change(function () {
+        $("#TENCHUCNANG").val($(this).val());
+    });
+    function reloadGrid() {
+        var TENCHUCNANG = $("#TENCHUCNANG").val();
+        var CHUCNANGCHA = $("#CHUCNANGCHA").val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadDataTable", "DMChucNang")',
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                loadDataTable(data);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        pageSetUp();
+    })
+</script>

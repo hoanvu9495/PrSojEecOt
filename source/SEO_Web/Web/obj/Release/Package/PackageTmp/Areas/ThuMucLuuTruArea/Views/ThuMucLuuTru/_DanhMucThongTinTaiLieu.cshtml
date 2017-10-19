@@ -1,0 +1,73 @@
+﻿@using Model.eAita
+@model List<TM_DANHMUC_THONGTIN>
+@using Web.Areas.ThuMucLuuTruArea.Models
+@if (Model.Count > 0)
+{
+    var ListParent = Model.Where(x => x.PARENT_ID == null).ToList();
+    <div id="treeview-disabled" class="treeview" style="height:250px">
+        <ul class="list-group">
+            @foreach (var item in ListParent)
+            {
+                var ListChild = Model.Where(x => x.PARENT_ID == item.ID).ToList();
+                <li class="list-group-item node-treeview-disabled search-result">
+                    @if (item.TRANGTHAI == DanhMucThongTinTrangThai.PHEDUYET)
+                    {
+                        if (ListParent.IndexOf(item) == 0)
+                        {
+                            <input type="radio" name="DANHMUC" id="DANHMUC_@item.ID" value="@item.ID" class="timeout css-checkbox DANHMUCTAILIEU" checked /><label for="DANHMUC_@item.ID" class="css-label TENDANHMUCTAILIEU" style="font-weight:bold">@item.TENTHONGTIN</label>
+                        }
+                        else
+                        {
+                            <input type="radio" name="DANHMUC" id="DANHMUC_@item.ID" value="@item.ID" class="timeout css-checkbox DANHMUCTAILIEU" /><label for="DANHMUC_@item.ID" class="css-label TENDANHMUCTAILIEU" style="font-weight:bold">@item.TENTHONGTIN</label>
+                        }
+                    }
+                    else
+                    {
+                        if (item.TRANGTHAI == DanhMucThongTinTrangThai.EDITFILE)
+                        {
+                            <input type="radio" name="DANHMUC" id="DANHMUC_@item.ID" value="@item.ID" class="timeout css-checkbox DANHMUCTAILIEU" /><label for="DANHMUC_@item.ID" class="css-label TENDANHMUCTAILIEU" style="font-weight:bold">@item.TENTHONGTIN</label>
+                        }
+                        else
+                        {
+                            <span style="font-weight:bold">@item.TENTHONGTIN</span>
+                        }
+
+                    }
+                </li>
+                if (ListChild.Count > 0)
+                {
+                    <li>
+                        @foreach (var ele in ListChild)
+                        {
+                            <ul>
+                                <li class="list-group-item node-treeview-disabled search-result">
+                                    @if (ele.TRANGTHAI == DanhMucThongTinTrangThai.PHEDUYET)
+                                    {
+                                        <input type="radio" name="DANHMUC" id="DANHMUC_@ele.ID" value="@ele.ID" class="timeout css-checkbox DANHMUCTAILIEU" /><label for="DANHMUC_@ele.ID" class="css-label TENDANHMUCTAILIEU">@ele.TENTHONGTIN</label>
+                                    }
+                                    else
+                                    {
+                                        if (ele.TRANGTHAI == DanhMucThongTinTrangThai.EDITFILE)
+                                        {
+                                            <input checked type="radio" name="DANHMUC" id="DANHMUC_@ele.ID" value="@ele.ID" class="timeout css-checkbox DANHMUCTAILIEU" /><label for="DANHMUC_@ele.ID" class="css-label TENDANHMUCTAILIEU" style="font-weight:bold">@ele.TENTHONGTIN</label>
+                                        }
+                                        else
+                                        {
+                                            <span>@ele.TENTHONGTIN</span>
+                                        }
+
+                                    }
+                                </li>
+                            </ul>
+                        }
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+}
+<style>
+    .list-group-item {
+        border: none !important;
+    }
+</style>

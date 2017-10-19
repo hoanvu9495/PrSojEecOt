@@ -1,0 +1,45 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeTaiLieuModel
+@using Web.Areas.ThuMucLuuTruArea.Models
+
+@{
+    List<TmYeuCauChiaSeLichSuBO> lstLichSu = Model.lstLichSu;
+
+    var grid = new WebGrid(lstLichSu,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+}
+@{
+    if (lstLichSu.Count > 0)
+    {
+        @grid.GetHtml(
+                tableStyle: "webGrid tblLog",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                                     grid.Column("TENNGUOITHUCHIEN", "Người thực hiện"),
+                                                    grid.Column("NGAYTHUCHIEN", "Ngày gửi", format: (item) => new MvcHtmlString(string.Format("{0:dd/MM/yyyy}", item.NGAYTHUCHIEN))),
+                                                          grid.Column("MOTA", "Lý do thực hiện"),
+                                                                                  grid.Column("TRANGTHAI1", "Trạng thái 1", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI1 == YeuCauChiaSeConstant.DUTHAO ? "Chưa trình" : item.TRANGTHAI1 == YeuCauChiaSeConstant.TRAVE ? "Cục trả về" : item.TRANGTHAI1 == YeuCauChiaSeConstant.DATRINH ? "Đã trình" : item.TRANGTHAI1 == YeuCauChiaSeConstant.DADUYET ? "Đã duyệt" : item.TRANGTHAI1 == YeuCauChiaSeConstant.CHUYENYEUCAU ? "Chờ chia sẻ" : item.TRANGTHAI1 == YeuCauChiaSeConstant.HUYCHIASE ? "Đã hủy theo dõi" : item.TRANGTHAI1 == YeuCauChiaSeConstant.DONVIOK ? "Đã được chia sẻ" : ""))),
+                                                                                                                     grid.Column("TRANGTHAI2", "Trạng thái 2", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI2 == YeuCauChiaSeConstant.DUTHAO ? "Chưa trình" : item.TRANGTHAI2 == YeuCauChiaSeConstant.TRAVE ? "Cục trả về" : item.TRANGTHAI2 == YeuCauChiaSeConstant.DATRINH ? "Đã trình" : item.TRANGTHAI2 == YeuCauChiaSeConstant.DADUYET ? "Đã duyệt" : item.TRANGTHAI2 == YeuCauChiaSeConstant.CHUYENYEUCAU ? "Chờ chia sẻ" : item.TRANGTHAI2 == YeuCauChiaSeConstant.HUYCHIASE ? "Đã hủy theo dõi" : item.TRANGTHAI2 == YeuCauChiaSeConstant.DONVIOK ? "Đã được chia sẻ" : "")))
+                 )
+    )
+    }
+    else
+    {
+        <span>
+            Không tìm thấy lịch sử xin chia sẻ của yêu cầu này
+        </span>
+    }
+}

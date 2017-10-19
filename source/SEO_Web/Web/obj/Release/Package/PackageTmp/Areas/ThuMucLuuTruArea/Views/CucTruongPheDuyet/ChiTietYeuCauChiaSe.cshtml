@@ -1,0 +1,737 @@
+﻿@{
+    ViewBag.Title = "Chi tiết yêu cầu chia sẻ thông tin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@using Business.CommonBusiness;
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeTaiLieuModel
+
+<div id="menu-toolbar">
+    <div class="left-all-page" style="width:350px">
+        <div id="smart-dms" class="block">
+            <h1>Chi tiết yêu cầu chia sẻ</h1>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left" style="height:100%">
+    <div class="menu-left-content block">
+        <ul class="admin-menu">
+            <li class="menu"><a href="@Url.Action("Index", "CucTruongPheDuyet")">Phê duyệt tài liệu</a></li>
+            <li class="menu"><a href="@Url.Action("DanhSachYeuCauChiaSe", "CucTruongPheDuyet")">Yêu cầu chia sẻ tài liệu</a></li>
+            <li class="menu"><a href="@Url.Action("DanhSachThuMucGiaHan", "CucTruongPheDuyet")">Gia hạn thời gian lưu trữ</a></li>
+        </ul>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff">
+    <div class="right-content clearfix">
+        <div class="SearchResult ">
+            <div style="margin: 0 auto;width:70%;">
+                <table class="YeuCau">
+                    <tr>
+                        <td colspan="2">
+                            <h3 class="group-tittle mt10" style="margin-top:28px ;margin-bottom:20px">Chi tiết yêu cầu chia sẻ tài liệu</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Đơn vị yêu cầu:</td>
+                        <td>
+                            <span style="font-weight:bold">@Model.YEUCAU.TENDONVI</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    @*<tr>
+                            <td>Người yêu cầu:</td>
+                            <td>
+                                <span style="font-weight:bold">@Model.YEUCAU.TENNGUOIYEUCAU</span>
+                            </td>
+                        </tr>*@
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày yêu cầu:</td>
+                        <td>
+                            <span style="font-weight:bold">@string.Format("{0:dd-MM-yyyy}", Model.YEUCAU.NGAYYEUCAU)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px">Lý do yêu cầu:</td>
+                        <td>
+                            <span style=" white-space: nowrap;font-weight:bold">
+                                @Model.YEUCAU.LYDO
+                            </span>
+                            <input type="hidden" id="LYDO" value="@Model.YEUCAU.LYDO" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Trạng thái:</td>
+                        <td>
+                            @{
+                                string UnitUnAccept = "";
+                                var ListLog = Model.lstLichSu.Where(x => x.TRANGTHAI2 == YeuCauChiaSeConstant.DONVITUCHOI).ToList();
+                            }
+                            @switch (Model.YEUCAU.TRANGTHAI)
+                            {
+                                case YeuCauChiaSeConstant.DATRINH:
+                                    <span style="color:red;">Chờ duyệt</span>
+                                    break;
+                                case YeuCauChiaSeConstant.DADUYET:
+                                <span style="color:green">Đồng ý</span>
+                                    break;
+                                case YeuCauChiaSeConstant.CHUYENYEUCAU:
+                                <span>Đã chuyển yêu cầu</span>
+                                    break;
+                                case YeuCauChiaSeConstant.TRAVE:
+                                <span>Từ chối</span>
+                                    break;
+                                case YeuCauChiaSeConstant.DONVIOK:
+                                <span>Đã chia sẻ</span>
+                                    break;
+                                case YeuCauChiaSeConstant.DONVITUCHOI:
+                                    foreach (var item in ListLog)
+                                    {
+                                        UnitUnAccept += item.TENDONVI + ",";
+                                    }
+                                    <span style="color:red">@UnitUnAccept từ chối chia sẻ</span>
+                                    break;
+                            }
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <h3 class="group-tittle mt10" style="margin-top:28px ;margin-bottom:20px">Danh sách các tài liệu cần chia sẻ</h3>
+                </div>
+                <table class="webGrid tblFixed">
+                    <thead>
+                        @if (Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DATRINH || Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DONVITUCHOI)
+                        {
+                            <tr class="head">
+                                <th rowspan="2">
+                                    Đơn vị
+                                </th>
+                                <th rowspan="2">
+                                    Tên tài liệu - thư mục
+                                </th>
+                                <th rowspan="2">
+                                    Ghi chú
+                                </th>
+                                <th style="width:70px">
+                                    Đồng ý
+                                </th>
+                                <th style="width:70px">
+                                    Trả về
+                                </th>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center">
+                                    <input type="checkbox" name="" id="acceptAll" checked />
+                                </th>
+                                <th style="text-align:center">
+                                    <input type="checkbox" name="" id="unacceptAll" />
+                                </th>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="head">
+                                <th>
+                                    Đơn vị
+                                </th>
+                                <th>
+                                    Tên tài liệu - thư mục
+                                </th>
+                                <th>
+                                    Ghi chú
+                                </th>
+                                <th style="width:70px">
+                                    Đồng ý
+                                </th>
+                                <th style="width:70px">
+                                    Trả về
+                                </th>
+                            </tr>
+                        }
+                    <tbody id="SelectedItem">
+                        @{
+                            if (Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DATRINH || Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DONVITUCHOI)
+                            {
+                                var lstDonVi = Model.lstChiTiet.GroupBy(x => x.TENDONVI).Select(g => g.First()).ToList();
+                                foreach (var i in lstDonVi)
+                                {
+                                    var ListTemp = Model.lstChiTiet.Where(x => x.TENDONVI.Equals(i.TENDONVI)).ToList();
+                                    if (ListTemp.Count > 0)
+                                    {
+                                        <tr>
+                                            <td>@i.TENDONVI</td>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                            <td>
+                                                <input data-id="@i.DONVI_ID" checked class="Accept_@i.DONVI_ID Accept SelectUnit SelectUnit_@i.DONVI_ID" type="checkbox" name="AcceptAll_@i.DONVI_ID" />
+                                            </td>
+                                            <td>
+                                                <input data-id="@i.DONVI_ID" class="UnAccept_@i.DONVI_ID UnAccept UnSelectUnit UnSelectUnit_@i.DONVI_ID" type="checkbox" name="UnAcceptAll_@i.DONVI_ID" />
+                                            </td>
+                                        </tr>
+                                        foreach (var item in Model.lstChiTiet)
+                                        {
+                                            if (i.TENDONVI == item.TENDONVI)
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td data-id="@item.TAILIEU_ID" data-sta="@(item.ISTHUMUC.Value ? 1 : 0)">
+                                                        <span title="@item.TENTAILIEU">
+                                                            @item.TENTAILIEU
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span title="@item.GHICHU">
+                                                            @item.GHICHU
+                                                        </span>
+                                                    </td>
+                                                    @if (item.IS_ACCEPT.HasValue && !item.IS_ACCEPT.Value)
+                                                    {
+                                                    <td>
+                                                        <a class="uncheckbox-item"></a>
+                                                    </td>
+                                                    <td><a class="checkbox-item"></a></td>
+                                                    }
+                                                    else
+                                                    {
+                                                    <td>
+                                                        <input type="checkbox" checked data-pid="@i.DONVI_ID" data-id="@item.TAILIEU_ID" class="AcceptTaiLieu Accept_@item.TAILIEU_ID Accept Accept_@item.DONVI_ID" name="Accept_@item.DONVI_ID" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="checkbox" data-pid="@i.DONVI_ID" data-id="@item.TAILIEU_ID" class="UnAcceptTaiLieu UnAccept_@item.TAILIEU_ID UnAccept UnAcceptAll_@item.DONVI_ID" name="UnAccept_@item.DONVI_ID" />
+                                                    </td>
+                                                    }
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>@i.TENDONVI</td>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        foreach (var item in Model.lstChiTiet)
+                                        {
+                                            if (i.TENDONVI == item.TENDONVI)
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td data-id="@item.TAILIEU_ID" data-sta="@(item.ISTHUMUC.Value ? 1 : 0)">
+                                                        <span title="@item.TENTAILIEU">
+                                                            @item.TENTAILIEU
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span title="@item.GHICHU">
+                                                            @item.GHICHU
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        @if (item.IS_ACCEPT.HasValue && item.IS_ACCEPT.Value)
+                                                        {
+
+                                                        <a class="checkbox-item"></a>
+                                                        }
+                                                        else
+                                                        {
+                                                        @*<input type="checkbox" />*@
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (item.IS_ACCEPT.HasValue && !item.IS_ACCEPT.Value)
+                                                        {
+                                                        <a class="checkbox-item"></a>
+                                                        }
+                                                        else
+                                                        {
+                                                        @*<input type="checkbox" />*@
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                var lstDonVi = Model.lstChiTiet.GroupBy(x => x.TENDONVI).Select(g => g.First()).ToList();
+                                foreach (var i in lstDonVi)
+                                {
+                                    <tr>
+                                        <td>@i.TENDONVI</td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    foreach (var item in Model.lstChiTiet)
+                                    {
+                                        if (i.TENDONVI == item.TENDONVI)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td data-id="@item.TAILIEU_ID" data-sta="@(item.ISTHUMUC.Value ? 1 : 0)">
+                                                    <span title="@item.TENTAILIEU">
+                                                        @item.TENTAILIEU
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span title="@item.GHICHU">
+                                                        @item.GHICHU
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    @if (item.IS_ACCEPT.HasValue && item.IS_ACCEPT.Value)
+                                                    {
+                                                    <a class="checkbox-item"></a>
+                                                    }
+                                                    else
+                                                    {
+                                                    <a class="uncheckbox-item"></a>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (item.IS_ACCEPT.HasValue && !item.IS_ACCEPT.Value)
+                                                    {
+                                                    <a class="checkbox-item"></a>
+                                                    }
+                                                    else
+                                                    {
+                                                    <a class="uncheckbox-item"></a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div style="width:60%;margin-left:20%;text-align:center;margin-top:20px">
+                @if (Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DATRINH || Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DONVITUCHOI)
+                {
+                    <button class="btn btn-success" id="btnSend" type="button">Xác nhận</button>
+                }
+                <button class="btn btn-default" id="btnBack" type="button">Quay lại</button>
+            </div>
+            <div style="margin: 0 auto;width:70%;">
+                <h3 class="group-tittle mt10" style="margin-top:28px ;margin-bottom:20px">Lịch sử yêu cầu chia sẻ tài liệu</h3>
+                @Html.Partial("_LichSuChiaSe")
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="TrinhDuyetYeuCau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="YeuCauChiaSeLog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<script>
+    $(function () {
+        $(".SelectUnit").click(function () {
+            var ID = $(this).attr("data-id");
+            $('.Accept_' + ID).prop('checked', this.checked);
+            if (this.checked) {
+                $('.UnAcceptAll_' + ID).prop('checked', !this.checked);
+                $("#acceptAll").prop('checked', !this.checked);
+            }
+        });
+        $(".UnSelectUnit").click(function () {
+            var ID = $(this).attr("data-id");
+            $('.UnAcceptAll_' + ID).prop('checked', this.checked);
+            if (this.checked) {
+                $('.Accept_' + ID).prop('checked', !this.checked);
+                $("#acceptAll").prop('checked', !this.checked);
+            }
+        });
+        $("#acceptAll").click(function () {
+            if (this.checked) {
+                $("#unacceptAll").prop('checked', !this.checked);
+                $('.UnAccept').prop('checked', !this.checked);
+            }
+            $('.Accept').prop('checked', this.checked);
+        });
+        $("#unacceptAll").click(function () {
+            if (this.checked) {
+                $("#acceptAll").prop('checked', !this.checked);
+                $('.UnAccept').prop('checked', this.checked);
+            }
+            $('.Accept').prop('checked', !this.checked);
+        });
+        $(".Accept").change(function () {
+            var ID = $(this).attr("data-id");
+            var pID = $(this).attr("data-pid");
+            if (ID != undefined) {
+                if (this.checked) {
+                    $('.UnAccept_' + ID).prop('checked', !this.checked);
+                }
+            }
+            $('.UnSelectUnit_' + pID).prop('checked', false);
+            var totalRows = $(".Accept").length;
+            var checked = $(".Accept:checked").length;
+            if (checked != totalRows) {
+                $("#acceptAll").prop('checked', false);
+            } else {
+                $("#acceptAll").prop('checked', true);
+            }
+        });
+        $(".UnAccept").change(function () {
+            var ID = $(this).attr("data-id");
+            var pID = $(this).attr("data-pid");
+            if (ID != undefined) {
+                if (this.checked) {
+                    $('.Accept_' + ID).prop('checked', !this.checked);
+                }
+            }
+            $('.SelectUnit_' + pID).prop('checked', false);
+            var totalRows = $(".UnAccept").length;
+            var checked = $(".UnAccept:checked").length;
+            if (checked != totalRows) {
+                $("#unacceptAll").prop('checked', false);
+            } else {
+                $("#unacceptAll").prop('checked', true);
+            }
+        });
+        $("#btnBack").click(function () {
+            location.href = "@Url.Action("DanhSachYeuCauChiaSe", "CucTruongPheDuyet")";
+        });
+        $("#btnSend").click(function () {
+            var Accept = "";
+            var UnAccept = "";
+            var selectAll = 0;
+            var trangthai = "";
+            $("input.AcceptTaiLieu:checkbox:checked").each(function () {
+                selectAll = 1;
+                trangthai += $(this).attr("data-id") + ",";
+            });
+            Accept = trangthai;
+            selectAll = 0;
+            trangthai = "";
+            $("input.UnAcceptTaiLieu:checkbox:checked").each(function () {
+                selectAll = 1;
+                trangthai += $(this).attr("data-id") + ",";
+            });
+            UnAccept = trangthai;
+            ChuyenTiep(Accept, UnAccept);
+        });
+    });
+    function ShowLog(YEUCAU_ID) {
+        $.ajax({
+            url: '@Url.Action("ShowChuyenTiepLog", "CucTruongPheDuyet")',
+            type: 'POST',
+            cache: false,
+            data: {
+                YEUCAU_ID: YEUCAU_ID
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#YeuCauChiaSeLog").html(data);
+                    $("#YeuCauChiaSeLog").modal("show");
+                    $("#YeuCauChiaSeLog").find(".modal-dialog").css("width", "1050px");
+
+                } else {
+                    $.confirm({
+                        'title': 'Có lỗi xảy ra',
+                        'message': 'Không tìm thấy lịch sử của yêu cầu chia sẻ bạn đang tìm',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function ChuyenTiep(DONGY, TRAVE) {
+        $.ajax({
+            url: '@Url.Action("GuiDonVi", "CucTruongPheDuyet")',
+            type: 'POST',
+            cache: false,
+            data: {
+                DONGY: DONGY, TRAVE: TRAVE,
+                ID: '@Model.YEUCAU.ID',
+                DONVI: '@Model.YEUCAU.TENDONVI'
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#TrinhDuyetYeuCau").html(data);
+                    $("#TrinhDuyetYeuCau").modal("show");
+                } else {
+                    $.confirm({
+                        'title': 'Có lỗi xảy ra',
+                        'message': 'Yêu cầu chia sẻ này không tồn tại hoặc bạn không có quyền truy xuất yêu cầu này!',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+
+                                }
+                            }
+
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+    .btn:hover {
+        cursor: pointer;
+    }
+
+    .approve1 {
+        background: url('/Content/themes/base/images/TmFolder_approvel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .tblFixed {
+        table-layout: fixed;
+    }
+
+    .unexpired {
+        background: rgba(0, 0, 0, 0) url("/Content/themes/base/images/folder_unexpired.png") no-repeat scroll 4px 2px / 22px 22px;
+        float: left;
+        line-height: 1.3em;
+        margin-left: 5px;
+        padding: 10px 15px 10px 38px;
+        text-align: center;
+    }
+
+    .clearfix::before, .clearfix::after, .row::before, .row::after {
+        content: ".";
+        display: block;
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        width: 0;
+    }
+
+    .row::after, .clearfix::after {
+        clear: both;
+    }
+
+    .SearchCriterial.clearfix.hot-news-list-2 {
+        margin-left: 10px;
+        margin-top: 10px;
+        width: 95%;
+    }
+
+    .unapprove1 {
+        background: url('/Content/themes/base/images/Tmfolder-cancel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .expired1 {
+        background: url('/Content/themes/base/images/folder-expired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: red;
+    }
+
+    .unexpired1 {
+        background: url('/Content/themes/base/images/folder_unexpired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+    }
+
+    .private1 {
+        background: url('/Content/themes/base/images/my_folder.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+        color: #ff6a00;
+    }
+
+    .popup-content {
+        width: 97% !important;
+    }
+
+    #browser li {
+        margin-top: 3px;
+    }
+
+    #display {
+        width: 54%;
+        margin-right: 10px;
+        float: left;
+        min-height: 80%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-top: 10px;
+    }
+
+    #treeview {
+        float: left;
+        width: 45%;
+        margin-top: 10px;
+    }
+
+    #Path li {
+        float: left;
+    }
+
+    .SearchResult.hot-news-list-2.mgt20 > #URLPath {
+        margin-bottom: 3%;
+    }
+
+    #right ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        padding: 10px 25px;
+        border-radius: 5px;
+    }
+
+    #right li {
+        float: left;
+        margin-right: 10px;
+    }
+
+    #right i {
+        -moz-user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        padding: 6px 12px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    #right li a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    #right li:hover {
+        color: #357ae8;
+        cursor: pointer;
+    }
+
+    .tblFixed th:nth-child(1), .tblFixed #bodyItem td:nth-child(1) {
+        width: 30%;
+    }
+
+    .close-modal:hover {
+        cursor: pointer;
+    }
+
+    #SelectedItem td:nth-child(3) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #SelectedItem td:hover {
+        cursor: pointer;
+    }
+
+    .webGrid tr td:first-child, #SelectedItem td:nth-child(2), #SelectedItem td:nth-child(3) {
+        text-align: left !important;
+    }
+
+    .tblFixed td:nth-child(2) span, .tblFixed td:nth-child(3) span {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 170px !important;
+        text-overflow: ellipsis;
+    }
+
+    .checkbox-item {
+        background: url('/Content/themes/base/images/TM_DANHMUC_Checkbox.png') no-repeat;
+        display: block;
+        width: 26px;
+        height: 26px;
+        margin-left: 23px;
+    }
+
+    /*.uncheckbox-item {
+        background: url('/Content/themes/base/images/TM_DANHMUC_UnCheckbox.png') no-repeat;
+        display: block;
+        width: 26px;
+        height: 26px;
+        margin-left:23px;
+    }*/
+</style>

@@ -1,0 +1,113 @@
+﻿@using Web.FwCore
+@using Business.Business
+@using Business.CommonBusiness
+@using Web.Models
+@model Web.Areas.TDKTDangKyDanhHieuArea.Models.CaNhanDangKyViewModel
+@{
+    ViewBag.Title = "Đăng ký thi đua cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #collapseThongTinChinh {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    #ca_nhan_dang_ky .width_100{
+        width: 100% !important;
+    }
+</style>
+<script src="~/Scripts/tiny_mce/tinymce.min.js"></script>
+@Html.Partial("_TopNavbar")
+@Html.Partial("_MenuLeft")
+
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <form id="frmVanBanDenCreate" method="post" action="/TDKTDangKyDanhHieuArea/CaNhanDangKy/Save" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <h3 class="group-tittle mt10" style="height: 41px">Đăng ký thi đua cá nhân</h3>
+        <div style="margin:auto; margin-top:20px" id="collapseThongTinChinh" class="panel-collapse collapse in" aria-expanded="true">
+            <table id="tbl_create_nangluong_truocthoihan">
+                <tr>
+                    <td style="width:20%">
+                        <label class="lbl-title">Phong trào thi đua:<span style="color: red;">*</span></label>
+                    </td>
+                    <td colspan="3">
+                        <div class="input-field4 clearfix fix-width" style="width:100%" id="ca_nhan_dang_ky">
+                            @Html.DropDownList("PHONG_TRAO_ID", Model.LstPhongTraoThiDua, new { @class = "width_100", @style = "padding-right:30px" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="height_20"></td>
+                    <td>
+                        <span id="ERR_PHONG_TRAO_ID" style="color: red"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:20%">
+                        <label class="lbl-title">Danh hiệu thi đua:<span style="color: red;">*</span></label>
+                    </td>
+                    <td colspan="3">
+                        <div class="input-field4 clearfix fix-width" style="width:100%" id="ca_nhan_dang_ky">
+                            @Html.DropDownList("DANHHIEU_IDS", Model.LstDanhHieuCaNhan, new { @class = "width_100", @style = "padding-right:30px", @multiple = "multiple" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="height_20"></td>
+                    <td>
+                        <span id="ERR_DANHHIEU_IDS" style="color: red"></span>
+                    </td>
+                </tr>
+                @*End*@
+                @*Tự đánh giá các mặt công tác*@
+                <tr>
+                    <td>
+                        <label class="lbl-title">Tự đánh giá, nhận xét:<span style="color: red;">*</span></label>
+                    </td>
+                    <td colspan="3">
+                        @Html.TextArea("TUDANHGIA", "", new { @style = "width:700px;height:300px;", @placeholder = "", @class = "e-input", @maxlength = "500" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="height_20"></td>
+                    <td>
+                        <span id="ERR_TUDANHGIA" style="color: red"></span>
+                    </td>
+                </tr>
+                @*end*@
+            </table>
+        </div>
+        <div style="margin-top: 15px; text-align: center;">
+            <input type="submit" value="Lưu toàn bộ thông tin" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" />
+            <a style="border: medium none; color: white; padding: 7px 20px; background-color: seagreen;" href="/TDKTPhongTraoThiDuaArea/PhongTraoThiDua">Quay lại </a>
+
+        </div>
+    </form>
+</div>
+<script type="text/javascript">    
+    $("#DANHHIEU_IDS").multipleSelect({
+        multiple: true,
+        filter: true,
+        placeholder: "Danh hiệu thi đua"
+    });
+    $(document).ready(function () {
+        tinymce.init({
+            selector: '#TUDANHGIA',
+            language: 'vi_VN',
+            width: '100%',
+            height: 200,
+            plugins: [
+                    "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+            toolbar2: "cut copy paste pastetext | bullist numlist | outdent indent | undo redo | link unlink code | forecolor backcolor",
+            toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | insertdatetime preview | print fullscreen | ltr rtl | pagebreak restoredraft",
+            menubar: false,
+            convert_urls: false,
+            paste_data_images: true,
+            toolbar_items_size: 'small'
+        });
+    });
+</script>

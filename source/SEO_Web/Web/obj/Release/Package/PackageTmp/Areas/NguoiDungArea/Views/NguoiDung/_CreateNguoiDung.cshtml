@@ -1,0 +1,505 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Web.Areas.NguoiDungArea.Models.NguoiDungCreateViewModel
+@{
+    UserInfoBO userInfo = (UserInfoBO)SessionManager.GetUserInfo();
+}
+<style type="text/css">
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+</style>
+@using (Ajax.BeginForm("SaveNguoiDung", "NguoiDung", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmNguoiDungCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <input type="hidden" name="NGUOITAO" value="@userInfo.Username" />
+        <table>
+            <tr style="height: 20px;"></tr>
+            <tr>
+                <td>
+                    <label class="lbl">Tên đăng nhập:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("TENDANGNHAP", "", new { @style = "width: 222px;", maxlength = 20, @class = "e-input", @id = "tendangnhapId" })
+
+                </td>
+                <td>
+                    <label style="margin-left: 40px; width: 90px;">Mật khẩu:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("MATKHAU", "", new { @style = "width: 222px;", maxlength = 100, @class = "e-input", @id = "matkhauid" })
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px;"></td>
+                <td>
+                    <span class="lb-Check" id="TENDANGNHAPNull" style="margin-left: 0px;">Bạn nhập tên đăng nhập </span>
+                    <span class="lb-Check" id="TENDANGNHAPEr" style="margin-left: 0px;">Bạn nhập sai định dạng </span>
+                    <span class="lb-Check" id="TENDANGNHAPMax" style="margin-left: 0px;">Tên đăng nhập không quá 20 kí tự</span>
+                </td>
+                <td colspan="2">
+                    <span class="lb-Check" id="MATKHAUNull" style="margin-left: 150px;">Bạn nhập mật khẩu </span>
+                    <span class="lb-Check" id="MATKHAUEr" style="margin-left: 40px;">Mật khẩu phải lớn hơn 8 ký tự và nhỏ hơn 100 ký tự </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label class="lbl">Điện thoại:</label>
+                </td>
+                <td>
+                    @Html.TextBox("DIENTHOAI", "", new { @style = "width: 222px;", maxlength = 20, @class = "e-input", @id = "dienthoaiid" })
+                </td>
+                <td>
+                    <label style="margin-left: 40px; width: 90px;">Email:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("EMAIL", "", new {@placeholder="Ví dụ: tenban@gmail.com", @style = "width: 222px;", maxlength = 255, @class = "e-input", @id = "EMAIL" })
+                </td>
+            </tr>
+            <tr>
+                <td style="height:20px"></td>
+                <td>
+                    <span class="lb-Check" id="DIENTHOAIEr" style="margin-left: 0px;">Bạn nhập sai định dạng </span>
+                    <span class="lb-Check" id="DIENTHOAI10" style="margin-left: 0px;">Bạn nhập ít nhất 10 kí tự </span>
+                    <span class="lb-Check" id="DIENTHOAIQUA" style="margin-left: 0px;">Không nhập quá 20 kí tự </span>
+                </td>
+                <td></td>
+                <td>
+                    <span class="lb-Check" id="EMAIL_NULL" style="margin-left: 0px;">Bạn phải nhập email</span>
+                    <span class="lb-Check" id="EMAIL_RE" style="margin-left: 0px;">Bạn phải nhập đúng định dạng email</span>
+                </td>
+            </tr>
+            <tr style="height:20px">
+                <td>
+                    <label>Cấp đơn vị:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    <div class="input-field4  clearfix" style="width: 233px;">
+                        <select name="HINHTHUC" id="CREATE_HINHTHUC" style="width:100%" onchange="ChangePhanLoai();">
+                            <option value="-1">[--- Chọn cấp ---]</option>
+                            <option data-pl="Cuc" data-phanloai="" data-vaitro="2,3" value="@CAPDONVI.CAPCUC">Cấp Cục</option>
+                            <option data-phanloai="CREATE_TINH" data-vaitro="4" value="@CAPDONVI.CAPSO">Cấp Sở</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <label style="margin-left: 40px; width: 90px;">Phòng ban:</label>
+                </td>
+                <td>
+                    <div class="input-field4  clearfix" style="width: 233px;">
+                        @Html.DropDownList("DM_PHONGBAN_ID", @Model.ListPhongBan, "[--- Chọn Phòng ban ---]", new { @style = "width: 100%", id = "CREATE_PHONGBAN" })
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="lb-Check" id="CREATE_PHANLOAI_NULL" style="margin-left: 160px;">Bạn chọn cấp đơn vị</span>
+                </td>
+                <td style="height:20px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl">Tỉnh/TP:<span id="CREATE_SHOW_TINH" class="create-show" style="color: red;">*</span></label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix" style="width: 233px;">
+                        @Html.DropDownList("TINH_ID", @Model.ListTinhThanh, "[--- Chọn Tỉnh/TP ---]", new { @class = "create_capdonvi", @disabled = "disabled", @style = "width: 100%", id = "CREATE_TINH", @Onchange = "GetDonVi()" })
+                    </div>
+                </td>
+                <td>
+                    <label style="margin-left: 40px; width: 90px;">Đơn vị:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix" style="width: 233px;">
+                        @Html.DropDownList("COSO_ID", @Model.ListCoSo, "[--- Chọn đơn vị ---]", new { @style = "width: 100%", id = "CREATE_COSO" })
+                    </div>
+                </td>
+
+            </tr>
+            <tr style="height:20px">
+                <td></td>
+                <td>
+                    <span class="lb-Check" id="CREATE_TINH_NULL" style="margin-left: 0px;">Bạn chọn Tỉnh/Thành Phố</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl">Vai trò:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix" style="width: 233px;">
+                        @Html.DropDownList("DM_VAITRO_ID", Model.ListVaiTro, "[--- Chọn vai trò ---]", new { @style = "width: 100%", id = "CREATE_VAITRO" })
+                        @*<select id="CREATE_VAITRO" name="DM_VAITRO_ID" style="width:100%">
+                            <option value="-1">[--- Chọn vai trò ---]</option>
+                        </select>*@
+                    </div>
+                </td>
+
+                <td>
+                    <label style="margin-left: 40px; width: 90px;">Trạng thái:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    <div class="input-field4  clearfix" style="width: 233px;">
+
+                        <select name="TRANGTHAI" id="TRANGTHAI" style="width: 100%;">
+                            <option value="1">Hiệu lực</option>
+                            <option value="0">Không hiệu lực</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px;"></td>
+                <td>
+                    <span class="lb-Check" id="CREATE_VAITRO_NULL" style="margin-left: 0px;">Bạn chọn vai trò</span>
+                </td>
+                <td style="height:20px;"></td>
+                <td>
+                    <span class="lb-Check" id="TRANGTHAI_NULL" style="margin-left: 0px;">Bạn chọn trạng thái</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin-top: 15px; text-align: center;">
+        <input type="button" value="Lưu" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+        <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+    </div>
+}
+<script type="text/javascript">
+
+    function GetDonVi() {
+        var tinh = $("#CREATE_TINH").val();
+        if (tinh > 0) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetDonVi", "NguoiDung")",
+                cache: false,
+                data: { CAPDONVI: $("#CREATE_HINHTHUC").val(), TINH_ID: tinh },
+                success: function (data) {
+                    var str = "";
+                    str += "<option value='-1'> [--- Chọn đơn vị ---]</option>";
+                    $.each(data, function (i, type) {
+                        str += "<option value='" + data[i].COSO_ID + "'>" + data[i].TENCOSO + "</option>";
+                    });
+                    $("#CREATE_COSO").html(str);
+                }
+            });
+        }
+    }
+
+    function ChangePhanLoai() {
+        $("#CREATE_VAITRO").html("<option value='-1'> [--- Chọn vai trò ---]</option>");
+        $("#CREATE_TINH").html("<option value='-1'> [--- Tỉnh/Thành Phố ---]</option>");
+        $("#CREATE_COSO").html("<option value='-1'> [--- Chọn đơn vị ---]</option>");
+        var phanloai = $("#CREATE_HINHTHUC").val();
+        if (phanloai != "-1") {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetData", "NguoiDung")",
+                cache: false,
+                data: { PHANCAP: phanloai },
+                success: function (data) {
+                    var str = "";
+                    var captinh = "@CAPDONVI.CAPSO";
+                    var capcuc = "@CAPDONVI.CAPCUC";
+
+                    if (phanloai == capcuc) {
+                        str += "<option value='-1'> [--- Chọn đơn vị ---]</option>";
+                    }
+                    if (phanloai == captinh) {
+                        str += "<option value='-1'> [--- Tỉnh/Thành Phố ---]</option>";
+
+                    }
+                    $.each(data, function (i, type) {
+                        if (phanloai == capcuc) {
+                            str += "<option value='" + data[i].COSO_ID + "'>" + data[i].TENCOSO + "</option>";
+                        }
+                        if (phanloai == captinh) {
+                            str += "<option value='" + data[i].TINH_ID + "'>" + data[i].TENTINH + "</option>";
+                        }
+                    });
+                    if (phanloai == capcuc) {
+                        $("#CREATE_COSO").html(str);
+                    }
+                    if (phanloai == captinh) {
+                        $("#CREATE_TINH").html(str);
+                    }
+                }, error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+            getVaiTro();
+            var capdonvi = $("#CREATE_HINHTHUC option[value='" + phanloai + "']").attr("data-phanloai");
+            if (capdonvi != "") {
+                var list_capdonvi = capdonvi.split(',');
+                if (list_capdonvi.length > 0) {
+                    for (var i = 0; i < list_capdonvi.length ; i++) {
+                        $("#" + list_capdonvi[i]).removeAttr("disabled", "disabled");
+                    }
+                }
+            } else {
+                $(".create_capdonvi").attr("disabled", "disabled");
+            }
+
+            /////
+
+
+        }
+    }
+    function getVaiTro() {
+        var phanloai = $("#CREATE_HINHTHUC").val();
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetVaiTro", "NguoiDung")",
+            cache: false,
+            success: function (data) {
+                var str = "<option value='-1'> [--- Chọn vai trò ---]</option>";
+                var vaitro = $("#CREATE_HINHTHUC option[value='" + phanloai + "']").attr("data-vaitro");
+                var list_vaitro = vaitro.split(',');
+                $.each(data, function (i, type) {
+                    if (list_vaitro.length > 0) {
+                        for (var y = 0; y < list_vaitro.length; y++) {
+                            if (list_vaitro[y] == data[i].DM_VAITRO_ID) {
+                                str += "<option value='" + data[i].DM_VAITRO_ID + "'>" + data[i].TEN_VAITRO + "</option>"
+                            }
+                        }
+                    } else {
+                        str += "<option value='" + data[i].DM_VAITRO_ID + "'>" + data[i].TEN_VAITRO + "</option>"
+                    }
+                });
+                $("#CREATE_VAITRO").html(str);
+            }
+
+        });
+    }
+    $(document).ready(function () {
+        @*$("#CREATE_VAITRO").val("@Model.VAITROID");*@
+
+        var data = "@Model.phancap";
+        $("#CREATE_HINHTHUC").val("@Model.hinhthuc");
+        $("#CREATE_HINHTHUC option[data-pl='" + data + "']").remove();
+
+        //var listData = data.split(',');
+        //for (var i = 0; i < listData.length; i++) {
+        //    $("#EDIT_HINHTHUC option[data-pl='EDIT_" + listData[i] + "']").remove();
+        //}
+
+
+        $("#CREATE_COSO").change(function () {
+            if ($("#CREATE_COSO").val() > 0) {
+                $("#CREATE_COSO_NULL").hide();
+            }
+
+        });
+        $("#CREATE_VAITRO").change(function () {
+            if ($(this).val() > 0) {
+                $("#CREATE_VAITRO_NULL").hide();
+            } else {
+                $("#CREATE_VAITRO_NULL").show();
+
+            }
+        });
+        $("#btnSave").click(function () {
+            if (($("#tendangnhapId").val() == null || $("#tendangnhapId").val() == "")) {
+                $("#TENDANGNHAPNull").show();
+                $("#TENDANGNHAPEr").hide();
+                $("#tendangnhapId").focus();
+                return false;
+            }
+            if (!$('#TENDANGNHAPEr').is(':hidden')) {
+                $("#tendangnhapId").focus();
+                $("#tendangnhapId").select();
+                return false;
+            }
+            if (!$('#TENDANGNHAPMax').is(':hidden')) {
+                $("#tendangnhapId").focus();
+                $("#tendangnhapId").select();
+                return false;
+            }
+
+            if (($("#matkhauid").val() == null || $("#matkhauid").val() == "")) {
+                $("#MATKHAUNull").show();
+                $("#MATKHAUEr").hide();
+                $("#matkhauid").focus();
+                return false;
+            } else {
+                if (($("#matkhauid").val().length < 8 || $("#matkhauid").val().length > 100)) {
+                    $("#MATKHAUEr").show();
+                    $("#MATKHAUNull").hide();
+                    $("#matkhauid").focus();
+                    return false;
+                    
+                } else {
+                    $("#MATKHAUEr").hide();
+                    $("#MATKHAUNull").hide();
+                }
+            }
+
+            if (($("#dienthoaiid").val().trim() == null || $("#dienthoaiid").val().trim() == "")) {
+                $("#DIENTHOAIEr").hide(); $("#DIENTHOAIQUA").hide(); $("#DIENTHOAI10").hide();
+            } else {
+                var Regex = /^([0-9\.\+])+$/;
+                var sdt = $("#dienthoaiid").val().trim();
+                if (sdt.match(Regex) == null) {
+                    $("#DIENTHOAIEr").show(); $("#DIENTHOAIQUA").hide(); $("#DIENTHOAI10").hide(); $("#dienthoaiid").focus();
+                    return false;
+                } if (sdt.match(Regex) != null)
+                {
+                    $("#DIENTHOAIEr").hide(); $("#DIENTHOAIQUA").hide();
+                    if ($("#dienthoaiid").val().trim().length < 10)
+                    {
+                        $("#DIENTHOAI10").show();
+                        return false;
+                    }
+                    else { $("#DIENTHOAI10").hide(); }
+                }
+                if ($("#dienthoaiid").val().length > 20)
+                {
+                    $("#DIENTHOAIQUA").show(); $("#DIENTHOAIEr").hide(); $("#DIENTHOAI10").hide(); $("#dienthoaiid").focus();
+                    return false;
+                }
+            }
+            
+            if (validate_element($("#EMAIL"), $("#EMAIL_NULL"), "", "", "0") == 0) {
+                $("#EMAIL_RE").hide();
+                $("#EMAIL").focus();
+                return false;
+            }
+            else {
+                var is_email_valid = validateEmail($("#EMAIL").val());
+                if (is_email_valid == false) {
+                    $("#EMAIL_NULL").hide();
+                    $("#EMAIL_RE").show();
+                    $("#EMAIL").focus();
+                    return false;
+                }
+            }
+            //if (validate_element($("#CREATE_PHONGBAN"), $("#CREATE_PHONGBAN_NULL"), "", "", "0") == 0) {
+            //    $("#CREATE_PHONGBAN").focus();
+            //    return false;
+            //}
+            if (validate_element($("#CREATE_COSO"), $("#CREATE_COSO_NULL"), "", "", "0") == 0) {
+                $("#CREATE_COSO").focus();
+                return false;
+            }
+            if (validate_element($("#CREATE_VAITRO"), $("#CREATE_VAITRO_NULL"), "", "", "0") == 0) {
+                $("#CREATE_VAITRO").focus();
+                return false;
+            }
+            if ($("#CREATE_HINHTHUC").val() < 0) {
+                $("#CREATE_PHANLOAI_NULL").show();
+                return false;
+            } else if ($("#CREATE_HINHTHUC").val() == "@CAPDONVI.CAPCUC") {
+                $("#CREATE_TINH_NULL").hide();
+            }
+
+            if ($("#CREATE_COSO").val() == "-1" || $("#CREATE_COSO").val().length == 0) {
+                if ($("#CREATE_HINHTHUC").val() != 7) {
+                    $("#CREATE_COSO_NULL").show();
+                    return false;
+                }
+            }
+            if ($("#CREATE_VAITRO").val().length == 0 || $("#CREATE_VAITRO").val() == "-1") {
+                $("#CREATE_VAITRO_NULL").show();
+                return false;
+            }
+            if (validate_element($("#TRANGTHAI"), $("#TRANGTHAI_NULL"), "", "", "0") == 0) {
+                $("#TRANGTHAI").focus();
+                return false;
+            }
+            $("#btnSave").submit();
+        });
+
+        $("#tendangnhapId").focusout(function () {
+
+            if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+                $("#TENDANGNHAPNull").show();
+                $("#TENDANGNHAPEr").hide();
+                $("#TENDANGNHAPMax").hide();
+                //$(this).focus();
+            } else {
+                $("#TENDANGNHAPNull").hide();
+                $(this).val($(this).val().trim());
+                var Regex = /^[0-9a-zA-Z\_]+$/;
+
+                if ($(this).val().match(Regex) == null) {
+                    $("#TENDANGNHAPEr").show();
+                    $("#TENDANGNHAPMax").hide();
+                    //$(this).focus();
+                } else {
+                    $("#TENDANGNHAPEr").hide();
+                    if ($(this).val().length > 20) {
+                        $("#TENDANGNHAPMax").show();
+                    } else { $("#TENDANGNHAPMax").hide(); }
+                }
+            }
+        });
+        $("#matkhauid").focusout(function () {
+            if (($("#matkhauid").val() == null || $("#matkhauid").val() == "")) {
+                $("#MATKHAUNull").show();
+                $("#MATKHAUEr").hide();
+                //$("#matkhauid").focus();
+            } else {
+                if (($("#matkhauid").val().length < 8 || $("#matkhauid").val().length > 100)) {
+                    $("#MATKHAUEr").show();
+                    $("#MATKHAUNull").hide();
+                    //$("#matkhauid").focus();
+                } else {
+                    $("#MATKHAUEr").hide();
+                    $("#MATKHAUNull").hide();
+                }
+            }
+        });
+
+        $("#dienthoaiid").focusout(function () {
+            if (($("#dienthoaiid").val().trim() == null || $("#dienthoaiid").val().trim() == "")) {
+                $("#DIENTHOAIEr").hide(); $("#DIENTHOAIQUA").hide(); $("#DIENTHOAI10").hide();
+            } else {
+                var Regex = /^([0-9\.\+])+$/;
+                var sdt = $("#dienthoaiid").val().trim();
+                if (sdt.match(Regex) == null) {
+                    $("#DIENTHOAIEr").show(); $("#DIENTHOAIQUA").hide(); $("#DIENTHOAI10").hide(); //$("#dienthoaiid").focus();
+                } if (sdt.match(Regex) != null) {
+                    $("#DIENTHOAIEr").hide(); $("#DIENTHOAIQUA").hide();
+                    if ($("#dienthoaiid").val().trim().length < 10)
+                    { $("#DIENTHOAI10").show(); }
+                    else { $("#DIENTHOAI10").hide(); }
+                }
+                if ($("#dienthoaiid").val().length > 20) {
+                    $("#DIENTHOAIQUA").show(); $("#DIENTHOAIEr").hide(); $("#DIENTHOAI10").hide(); //$("#dienthoaiid").focus();
+                }
+            }
+
+        });
+        $("#CREATE_VAITRO").change(function () {
+            if ($("#CREATE_VAITRO").val() > 0) {
+                $("#CREATE_VAITRO_NULL").hide();
+            }
+        });
+    });
+    function OnClose() {
+        $("#CreateNguoiDung").dialog("close");
+    }
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function updateSuccess() {
+        CommonJS.alert("Tạo mới người dùng thành công");
+        $("#CreateNguoiDung").dialog("close");
+        reloadGrid();
+    }
+</script>

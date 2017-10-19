@@ -1,0 +1,189 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Business.CommonBusiness
+@{
+    List<DmChucVuBO> lstChucVu = new List<DmChucVuBO>();
+
+    if (ViewData["Search"] == "0")
+    {
+        lstChucVu = (List<DmChucVuBO>)SessionManager.GetValue("ListChucVu");
+    }
+    if (ViewData["Search"] == "1")
+    {
+        lstChucVu = (List<DmChucVuBO>)SessionManager.GetValue("ListChucVuSearch");
+    }
+    var grid = new WebGrid(lstChucVu,
+                          rowsPerPage: 10,
+                          canPage: true,
+                          canSort: true,
+                          ajaxUpdateContainerId: "grid",
+                           selectionFieldName: "selectedRow"
+                          );
+}
+@Html.AntiForgeryToken()
+
+<div id="grid">
+    <div id="HeaderGrid">
+        <div style="margin: 20px 0px 10px 10px;">
+            <label id="lblBenhChuanDoan" style="margin-top: 90px; margin-left: 5px; font-weight: bold">@(lstChucVu == null ? "0" : lstChucVu.Count.ToString())&nbsp;kết quả</label>
+        </div>
+    </div>
+    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center",canSort:false),
+                         grid.Column("TEN_CHUCVU", "Tên Chức Vụ"),
+                                   grid.Column("CAPCOSO", "Cấp cơ sở"),
+                           grid.Column("NGAYTAO", "Ngày Tạo", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYTAO)),
+                                        grid.Column("NGAYSUA", "Ngày Sửa", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYSUA)),
+                                grid.Column("NGUOITAO", "Người Tạo"),
+
+                                         grid.Column("NGUOISUA", "Người Sửa"),
+                                         grid.Column("TRANGTHAI", "Trạng Thái", format: (item) =>
+        (bool)item.TRANGTHAI == true
+            ? Html.Raw("Được sử dụng")
+            : Html.Raw("Không được sử dụng")),
+
+grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                "<a href='javascript:void(0)' onclick='EditChucVu(" + item.ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                        "<a href='javascript:void(0)' onclick='RemoveChucVu(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+
+                 )
+    )
+    @if (lstChucVu.Count == 0)
+    {
+        <div id="Empty" style="color: red;">
+            Không tìm thấy dữ liệu phù hợp
+        </div>
+    }
+
+
+</div>
+<div class="modal fade" id="chucvu_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="min-width:450px">
+        <div class="modal-content" style="min-width:450px" id="content_chucvu">
+        </div>
+    </div>
+</div>
+<style>
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .head th:first-child {
+        width: 10px;
+    }
+
+    .webGrid tbody tr td:nth-child(2) {
+        width: 250px;
+    }
+</style>
+<script>
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("AddFormChucVu", "DMChucVu")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#content_chucvu").html(data);
+                $("#chucvu_dialog").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+    function EditChucVu(ID) {
+        $.ajax({
+            url: '@Url.Action("EditChucVu", "DMChucVu")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#content_chucvu").html(data);
+                $("#chucvu_dialog").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    function RemoveChucVu(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa chức vụ này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("DeleteChucVu", "DMChucVu")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Xóa chức vụ thành công!',
+                                });
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+
+</script>
+
+
+

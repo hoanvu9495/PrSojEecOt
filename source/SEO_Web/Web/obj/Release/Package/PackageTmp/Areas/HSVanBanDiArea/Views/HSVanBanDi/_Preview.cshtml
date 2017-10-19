@@ -1,0 +1,409 @@
+﻿@using Web.Models;
+@using Web.FwCore;
+@using Model.eAita;
+@using System.Text;
+@using Business.CommonBusiness;
+@using Web.Common;
+@using Web.Areas.HSVanBanDiArea.Models;
+@model VanBanDiDetailViewModel
+@{
+    string nguoiky_vb = "";
+    List<HscvVanBanDiLogBO> listWorkFlowHistory = Model.ListWorkFlowHistory;
+    var vanban = Model.VanBanDi;
+    List<WfVanBanDiStepTransitionBO> listSteps = Model.ListSteps;
+}
+<style type="text/css">
+    #block--detail-vanbandi {
+        overflow: hidden;
+        width: 98%;
+        margin: 0 1%;
+    }
+
+    .align-left {
+        text-align: left;
+    }
+
+    #block--detail-vanbandi .edit-table tr {
+        border-bottom: 1px dotted #ccc;
+        width: 100%;
+    }
+
+        #block--detail-vanbandi .edit-table tr:last-child {
+            border-bottom: 0;
+        }
+
+
+    .lbl {
+        font-weight: 600;
+        text-align: left;
+    }
+
+    #block--info-vanbandi {
+        float: left;
+        width: 100%;
+        border-right: 1px solid #ccc;
+        overflow: hidden;
+    }
+
+    #block--detail-vanbandi > table {
+        width: 100%;
+    }
+
+    #block--info-vanbandi .edit-table tr td {
+        /*width: 25%;*/
+        border-left: 1px solid #ccc;
+    }
+
+        #block--info-vanbandi .edit-table tr td:nth-child(2),
+        #block--info-vanbandi .edit-table tr td:nth-child(4) {
+            text-align: left;
+        }
+
+    #block--info-workflow {
+        width: 100%;
+        float: right;
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+        #block--info-workflow > table {
+            width: 100%;
+        }
+
+    .p--title {
+        text-align: left;
+        padding: 0 0 0 5px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    #button--show-detail-vanbandi {
+        background-color: #016897;
+        color: #fff;
+        border-radius: 0;
+        padding: 10px 10px;
+        margin: 0 auto;
+        border: none;
+        display: block;
+        text-align: center;
+        width: 10%;
+    }
+
+    #block--detail-vanbandi .content {
+        height: auto;
+    }
+
+    #row--show-detail-vanbandi {
+        padding: 20px 0;
+    }
+    #block--info-workflow table{
+
+    }
+</style>
+<input type="hidden" id="VANBANDI_ID" value="@Model.VanBanDi.ID" />
+<input type="hidden" id="NGUOIKY" value="@nguoiky_vb" />
+<div id="block--detail-vanbandi">
+    <div id="blocktab--preview-vanbandi">
+        <h3>Thông tin chính</h3>
+        <section>
+            <div id="block--info-vanbandi">
+                <table class="edit-table webGrid">
+                    <tr>
+                        <td>
+                            <p class="p--title">Nhóm sổ văn bản:</p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.NHOMSOVANBAN
+                        </td>
+                        <td>
+                            <p class="p--title">Sổ văn bản:</p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.SOVANBAN
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="p--title">Độ khẩn:</p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.DOKHAN
+                        </td>
+                        <td>
+                            <p class="p--title">Mức độ quan trọng:</p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.MUCDOQUANTRONG
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="p--title">Loại văn bản:</p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.LOAIVANBAN
+                        </td>
+                        <td>
+                            <p class="p--title">Trạng thái xử lý:</p>
+                        </td>
+                        <td colspan="3">
+                            @Model.TrangThaiXuLy
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="p--title">Số đi theo sổ:</p>
+                        </td>
+                        <td>
+                            @if (Model.VanBanDi.SODITHEOSO.HasValue)
+                            {
+                            @Model.VanBanDi.SODITHEOSO
+                            }
+                            else
+                            {
+                            @Model.VanBanDi.SODITHEOSO_TXT
+                            }
+                        </td>
+                        <td>
+                            <p class="p--title">Số hiệu văn bản:</p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.SOHIEU
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="p--title">Ngày ký:</p>
+                        </td>
+                        <td>
+                            @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYKY))
+                        </td>
+                        <td>
+                            <p class="p--title">Người ký:</p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.TENNGUOIKY
+                            @if (!string.IsNullOrEmpty(Model.VanBanDi.TENNGUOIKY))
+                            {
+                                nguoiky_vb += Model.VanBanDi.TENNGUOIKY;
+                            }
+                        </td>
+                        <td>
+                            <p class="p--title">Chức vụ:</p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.CHUCVUNGUOIKY
+                        </td>
+                    </tr>
+                    @{var stt = 2; }
+                    @if (Model.ListNguoiKy != null && Model.ListNguoiKy.Count > 0)
+                    {
+                        foreach (var item in Model.ListNguoiKy)
+                        {
+                    <tr>
+                        <td>
+                            <p class="p--title">Người ký @stt:</p>
+                        </td>
+                        <td>
+                            @item.FullName
+                            @if (!string.IsNullOrEmpty(item.FullName))
+                                    {
+                                        nguoiky_vb += ", " + item.FullName;
+                                    }
+                        </td>
+                        <td>
+                            <p class="p--title">Chức vụ:</p>
+                        </td>
+                        <td>
+                            @item.ChucVu
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                                    stt++;
+                        }
+                    }
+                    <tr>
+                        <td>
+                            <p class="p--title">Ngày ban hành:</p>
+                        </td>
+                        <td>
+                            @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYBANHANH))
+                        </td>
+                        <td>
+                            <p class="p--title">Đơn vị ban hành:</p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.DONVIBANHANH
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="p--title">Trích yếu:</p>
+                        </td>
+                        <td colspan="5">
+                            @Model.VanBanDi.TRICHYEU
+                        </td>
+                    </tr>
+                    @if (Model.ListTaiLieuDinhKem != null && Model.ListTaiLieuDinhKem.Count > 0)
+                    {
+                    <tr>
+                        <td>
+                            <p class="p--title">Tài liệu đính kèm:</p>
+                        </td>
+                        <td colspan="5">
+                            <div class="">
+                                @{Html.RenderPartial("UploadFileVB", Model.ListTaiLieuDinhKem);}
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                    <tr>
+                        <td>
+                            <p class="p--title">Số bản sao: </p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.SOBANSAO
+                        </td>
+                        <td>
+                            <p class="p--title">
+                                Số tờ :
+                            </p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.SOTO
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="p--title">Ngày có hiệu lực:<p>
+                        </td>
+                        <td>
+                            @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYCOHIEULUC))
+                        </td>
+                        <td>
+                            <p class="p--title">
+                                Ngày hết hiệu lực:
+                            </p>
+                        </td>
+                        <td>
+                            @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYHETHIEULUC))
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="p--title">Người soạn thảo:</p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.NGUOISOAN
+                        </td>
+                        <td>
+                            <p class="p--title">Đơn vị soạn thảo:</p>
+                        </td>
+                        <td>
+                            @Model.VanBanDi.DONVISOANTHAO
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr></tr>
+                </table>
+            </div>
+        </section>
+        <h3>Lịch sử xử lý</h3>
+        <section>
+            <div id="block--info-workflow">
+                @Html.Partial("_VanBanDiWorkFlow", Model)
+            </div>
+        </section>
+        @if (Model.ListDonViNhan != null && Model.ListDonViNhan.Count > 0)
+        {
+            <h3>Đơn vị nhận văn bản</h3>
+            <section>
+                <table class="edit-table webGrid">
+                    <thead>
+                        <tr>
+                            <td>
+                                <b>STT</b>
+                            </td>
+                            <td>
+                                <b>Tên đơn vị</b>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.ListDonViNhan.Count; i++)
+                        {
+                    <tr>
+                        <td>
+                            @(i + 1)
+                        </td>
+                        <td>
+                            @Model.ListDonViNhan[i].TEN_DONVI
+                        </td>
+                    </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        }
+        <h3>
+            Xem chi tiết
+        </h3>
+        <section></section>
+    </div>
+</div>
+<div id="block--workflow-step-transition">
+    @if (listSteps.Count > 0)
+    {
+        foreach (var item in listSteps)
+        {
+            <button title="@item.TENBUOC" class="button--workflow-step-transfer" onclick="showWorkFlowStepChange(@vanban.ID,'@item.TENBUOC',@item.TRANGTHAI_1,'@item.TRANGTHAI_2')">
+                @item.TENBUOC
+            </button>
+        }
+    }
+    else
+    {
+        if (Model.IS_FINISH && Model.VanBanDi.CanSaveNote == true)
+        {
+            <button class="button--workflow-step-transfer" onclick="showWorkFlowSaveNoteModal(@Model.VanBanDi.ID)">
+                Lưu sổ và phát hành
+            </button>
+        }
+    }
+</div>
+@Html.Partial("_VanBanDiWorkFlowInfo", new ViewDataDictionary { { "Type", Model.Type }, { "NhomSoID", Model.NhomSoID }, { "SoID", Model.SoID } })
+<script>
+    $("#blocktab--preview-vanbandi").steps({
+        headerTag: "h3",
+        bodyTag: "section",
+        transitionEffect: "slideLeft",
+        enableFinishButton: false,
+        enablePagination: true,
+        enableAllSteps: true,
+        titleTemplate: "#title#",
+        cssClass: "tabcontrol",
+        onStepChanged: function (event, currIndex, preIndex) {
+            $('#blocktab--preview-vanbandi-t-' + currIndex).find('.current-info').text('');
+        },
+        onInit: function (event, currIndex) {
+            $('#blocktab--preview-vanbandi-t-' + currIndex).find('.current-info').text('');
+        }
+    });
+    $('#blocktab--preview-vanbandi').find('.steps .last').on('click', function () {
+        location.href = "/HSVanBanDiArea/HSVanBanDi/Detail?id=@Model.VanBanDi.ID&type=@Model.Type&nhomSoID=@Model.VanBanDi.NHOMSOVANBAN_ID&soID=@Model.VanBanDi.SOVANBAN_ID";
+    });
+</script>

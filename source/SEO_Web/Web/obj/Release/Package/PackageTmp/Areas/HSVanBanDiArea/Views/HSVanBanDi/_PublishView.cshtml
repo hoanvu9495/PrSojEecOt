@@ -1,0 +1,334 @@
+﻿@using Business.CommonBusiness
+@using Web.Models;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Common;
+@using Web.Areas.HSVanBanDiArea.Models;
+@model VanBanDiPublishCreateViewModel
+
+
+<style>
+    .ui-datepicker {
+        z-index: 99999 !important;
+    }
+
+    .row {
+        margin: auto !important;
+    }
+</style>
+<form action="@Url.Action("Publish")" id="frmPublishVanBanDi" enctype="multipart/form-data" method="post" onsubmit="return publishSubmit()">
+    @Html.AntiForgeryToken()
+    <div class="modal-header" style="padding:0;background:#3276b1;">
+        <button type="button" class="close" data-dismiss="modal" style="color:#fff;">&times;</button>
+        <h1 class="modal-title text-primary" style="text-align:center;font-weight:bold;color:#fff;">
+            LƯU SỔ VÀ PHÁT HÀNH
+        </h1>
+    </div>
+
+    <div class="modal-body clearfix" style="padding:10px 0;max-height:450px;overflow-y:scroll">
+        <input type="hidden" name="VANBANDI_ID" value="@Model.vanBanDiId">
+        <fieldset>
+            <div class="row">
+                <section class="col-lg-6">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label for="NHOMSOVANBAN_ID" class="lbl control-label">
+                                    Nhóm sổ văn bản <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                @Html.DropDownList("NHOMSOVANBAN_ID", Model.listNhomSoVanBans, "--- Chọn nhóm sổ văn bản ---", new { Class = "form-control required" })
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label for="SODITHEOSO" class="lbl control-label">
+                                    Số đi theo sổ <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" name="SODITHEOSO" id="SODITHEOSO" class="form-control required">
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3 control-label">
+                                <label for="NGAYBANHANH" class="lbl control-label">
+                                    Ngày ban hành <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input name="NGAYBANHANH" id="NGAYBANHANH" type="text" class="form-control datepicker validateDate required" data-mask="99/99/9999" data-mask-placeholder="-">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                </div>
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3 control-label">
+                                <label for="TUKHOA" class="lbl control-label">
+                                    Từ khóa
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input name="TUKHOA" id="TUKHOA" type="text" class="form-control">
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label for="TENNGUOIKY" class="lbl control-label">
+                                    Người ký <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" name="TENNGUOIKY" id="TENNGUOIKY" class="form-control required" value="@Model.NguoiKy">
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label for="NGUOISOAN" class="lbl control-label">
+                                    Người soạn <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" name="NGUOISOAN" id="NGUOISOAN" class="form-control required" value="@Model.NguoiTao">
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="col-lg-6">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label for="SOVANBAN_ID" class="lbl control-label">
+                                    Sổ văn bản <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                @Html.DropDownList("SOVANBAN_ID", Model.listSoVanBans, "--- Chọn sổ văn bản ---", new { Class = "form-control required" })
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label for="SOHIEU" class="lbl control-label">
+                                    Số ký hiệu <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" name="SOHIEU" id="SOHIEU" class=" form-control required">
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label for="SOTO" class="lbl control-label">
+                                    Số tờ + Số bản sao
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="col-sm-6" style="padding-left:0">
+                                    <input type="text" name="SOTO" id="SOTO" class=" validateNumber form-control" placeholder="Số tờ">
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="padding-right:0">
+                                    <input type="text" name="SOBANSAO" id="SOBANSAO" class=" validateNumber form-control" placeholder="Số bản sao">
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label for="DOMAT_ID" class="lbl control-label">
+                                    Độ mật
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                @Html.DropDownList("DOMAT_ID", Model.listDoMats, "--- Chọn độ mật ---", new { Class = "form-control" })
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label for="CHUCVUNGUOIKY" class="lbl control-label">
+                                    Chức vụ người ký <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" name="CHUCVUNGUOIKY" id="CHUCVUNGUOIKY" class="form-control required" value="@Model.ChucVuNguoiKy">
+                                <div class="note-error">
+                                    <span class="error mes-note-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </fieldset>
+        <fieldset>
+            <div class="col-sm-12">
+                <section class="clearfix smart-form">
+                    <label for="" class="label" style="color:#3276b1;font-weight:bold;">ĐƠN VỊ NHẬN TRONG CƠ SỞ</label>
+                    <div class="col col-4">
+                        <label class="checkbox" for="CHECK_ALL_DONVINHAN">
+                            <input type="checkbox" onchange="checkAllInternalDepartments(this)" id="CHECK_ALL_DONVINHAN" />
+                            <i></i><span class="DEPARTMENT_NAME"><strong>Tất cả đơn vị</strong></span>
+                        </label>
+                    </div>
+                    @{
+                        int countDonViNhanTrongCoSos = Model.listDonViNhanTrongCoSos.Count;
+                        for (int i = 0; i < countDonViNhanTrongCoSos; i++)
+                        {
+                            SelectListItem donVi = Model.listDonViNhanTrongCoSos[i];
+                            <div class="col col-4">
+                                <label class="checkbox" for="DONVI_NHAN_TRONG_COQUAN_@donVi.Value">
+                                    <input type="checkbox" name="DONVI_NHAN_TRONG_COQUAN" id="DONVI_NHAN_TRONG_COQUAN_@donVi.Value" class="DONVI_NHAN_TRONG_COQUAN" value="@donVi.Value" />
+                                    <i></i><span class="DEPARTMENT_NAME"><strong>@donVi.Text</strong></span>
+                                </label>
+                            </div>
+                        }
+                    }
+                </section>
+            </div>
+        </fieldset>
+        <fieldset>
+            <div class="col-sm-12">
+                <section class="clearfix smart-form">
+                    <label for="" class="label text-primary" style="color:#3276b1;font-weight:bold;">
+                        ĐƠN VỊ NHẬN NGOÀI CƠ SỞ
+                    </label>
+                    <div class="row">
+                        <div class="form-group">
+                            <textarea name="COQUANNGOAI_KHAC" id="COQUANNGOAI_KHAC" style="resize:none;width:99%;margin:0 auto 10px auto" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+    </div>
+</form>
+
+
+<script>
+    var $emptyStr = '';
+    $('#frmPublishVanBanDi select').chosen({
+        width: '100%'
+    });
+
+    $('#frmPublishVanBanDi .datepicker').datepicker({
+        dateFormat: 'dd/mm/yy',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-20:+20"
+    });
+
+    $('#frmPublishVanBanDi #NHOMSOVANBAN_ID').on('change', function () {
+        var value = $(this).val() !== '' ? parseInt($(this).val()) : 0;
+        if (value > 0) {
+            $.ajax({
+                url: '/VanBanDenArea/VanBanDen/ChangeNhomSoVBDen',
+                type: 'post',
+                data: { id: value },
+                cache: false,
+                dataType: 'html',
+                success: function (result) {
+                    $('#frmPublishVanBanDi #SOVANBAN_ID').html(result);
+                    $('#frmPublishVanBanDi #SOVANBAN_ID').trigger("chosen:updated");
+                }, error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+        } else {
+            $('#frmPublishVanBanDi #SOVANBAN_ID').html('<option value="" data-soden="">[--- Chọn sổ văn bản ---]</option>');
+            $('#frmPublishVanBanDi #SOVANBAN_ID').trigger('chosen:updated');
+            $('#frmPublishVanBanDi #SODITHEOSO').val($emptyStr);
+        }
+    });
+
+    $('#frmPublishVanBanDi #SOVANBAN_ID').on('change', function () {
+        var soDen = $('#frmPublishVanBanDi #SOVANBAN_ID option:selected').data('soden') == null ? $emptyStr : $('#frmPublishVanBanDi #SOVANBAN_ID option:selected').data('soden');
+        $("#frmPublishVanBanDi #SODITHEOSO").val(parseInt(soDen) + 1);
+    });
+
+    function publishSubmit() {
+        var err = 0;
+        var valid_Required = requiredFieldForFormId('frmPublishVanBanDi');
+        if (!valid_Required) {
+            err += 1;
+        }
+        var valid_date = ValidateFieldDate('frmPublishVanBanDi');
+        if (!valid_date) {
+            err += 1;
+        }
+
+        var validateNumber = ValidateFieldNumber('frmPublishVanBanDi');
+        if (!validateNumber) {
+            err += 1; BuocChuyenTrangThaiBO
+        }
+        if (err == 0) {
+            return true;
+        } else {
+            NotiError("Có lỗi, Vui lòng kiểm tra lại");
+            return false;
+        }
+        return true;
+    }
+    function checkAllInternalDepartments(obj) {
+        var checked = obj.checked;
+        $('.DONVI_NHAN_TRONG_COQUAN').prop('checked', checked);
+    }
+</script>

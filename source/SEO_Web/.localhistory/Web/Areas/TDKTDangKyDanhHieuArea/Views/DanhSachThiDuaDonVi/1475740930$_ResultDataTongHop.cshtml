@@ -1,0 +1,88 @@
+﻿@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.TDKTDangKyDanhHieuArea.Models;
+@model Web.Areas.TDKTDangKyDanhHieuArea.Models.CaNhanDangKyViewModel
+@{
+
+    var grid = new WebGrid(Model.LstDonDangKyCaNhan,
+             rowsPerPage: 10,
+             canPage: true,
+             canSort: true,
+             ajaxUpdateContainerId: "grid",
+             selectionFieldName: "selectedRow"
+               );
+
+}
+<div class="row">
+    <table class="webGrid">
+        <thead>
+            <tr class="head">
+                <th scope="col" style="width:50%">Tên tài liệu</th>
+                <th scope="col">Chọn tài liệu</th>
+                <th scope="col">
+                    <center>
+                        <img width="16" style="cursor:pointer;" id="btnAdd_UpLoadFile" title="Thêm tài liệu" src="/Content/Images/Add.png">
+                    </center>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="UpLoadFile">
+            <tr id="UpLoadFile_file_1">
+                <td>
+                    <input type="text" name="filename" placeholder="Nhập tên tài liệu" class="e-input" maxlength="500">
+                </td>
+                <td>
+                    <input type="file" name="filebase" value="Chọn tài liệu" id="filebase_1">
+                    <span style="color:red;display:none" id="file_null_1">Vui lòng kiểm tra định dạng file hoặc dung lượng file cho phép</span>
+                    <input type="hidden" value="1," id="SO_FILE_CURRENT">
+                </td>
+                <td>
+                    <a data-id="file_1" href="javascript:XoaTaiLieu(1)" title="Xóa tài liệu"><img src="/Content/Images/Delete.png"></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="col-sm-12">
+    <h3>
+        Danh sách cá nhân đăng ký thi đua
+    </h3>
+</div>
+<div id="grid">
+    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                        grid.Column(format: (item) =>
+                                    {
+                                        if (item.TRANGTHAI != DonDangKyThiDuaCaNhanConstant.TT_DATONGHOPGUI)
+                                        {
+                                            return new MvcHtmlString(string.Format("<input class='global_checkbox' type='checkbox' name='ids' value='" + item.ID + "'/>"));
+                                        }
+                                        else
+                                        {
+                                            return "";
+                                        }
+
+                                    }
+                                    , header: ""),
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column(format: (item) =>
+                    {
+                        var PhongTrao = Model.LstPhongTraoThiDua.Where(x => x.Value == item.PHONG_TRAO_ID.ToString()).FirstOrDefault();
+                        return new MvcHtmlString(string.Format(
+                        "<a href='/TDKTDangKyDanhHieuArea/CaNhanDangKy/ViewDetail/" + item.ID + "' >" + PhongTrao.Text + "</a>"));
+                    }
+                    , header: "Phong trào thi đua", style: "left"),
+                            grid.Column(format: (item) => item.HO_TEN, header: "Người đăng ký", style: "left"),
+                                            grid.Column(format: (item) => item.DON_VI, header: "Đơn vị", style: "left"),
+                        grid.Column("NGAYDANGKY", format: (item) => new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + string.Format("{0:dd/MM/yyyy}", item.NGAYDANGKY) + "</span>")), header: "Ngày đăng ký", style: "left"),
+                        grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                           "<a href='/TDKTPhongTraoThiDuaArea/PhongTraoThiDua/ViewDonDangKyThiDua/" + item.ID + "' target='_blank' class='btnDocument' title = 'Đơn đăng ký thi đua'></a>")), header: "Đơn đăng ký thi đua")
+                )
+    )
+</div>

@@ -1,0 +1,59 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using Model.eAita;
+@{
+    List<TmYeuCauChiaSeBO> lstChiase = new List<TmYeuCauChiaSeBO>();
+    if (ViewData["Search"] == "0")
+    {
+        lstChiase = (List<TmYeuCauChiaSeBO>)SessionManager.GetValue("ListDanhSach");
+    }
+    if (ViewData["Search"] == "1")
+    {
+        lstChiase = (List<TmYeuCauChiaSeBO>)SessionManager.GetValue("ListDanhSachSearch");
+    }
+    var grid = new WebGrid(lstChiase,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+}
+<div id="grid">
+    @if (lstChiase.Count > 0)
+    {
+        @Html.AntiForgeryToken()
+        <div id="HeaderGrid">
+            <div style="margin:20px 0px 10px 10px;">
+                <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">@(lstChiase == null ? "0" : lstChiase.Count.ToString()) &nbsp; kết quả</label>
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                   grid.Column("LYDO", "Lý do", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == YeuCauChiaSeConstant.DONVIOK ? "<a href='" + @Url.Action("TaiLieuDuocChiaSe/" + item.ID, "ThuMucLuuTru") + "' title='Danh sách tài liệu được chia sẻ'>" + item.LYDO + "</a>" : "<a href='" + @Url.Action("ChiTietYeuCauChiaSe/" + item.ID, "ThuMucLuuTru") + "' title= 'Chi tiết yêu cầu chia sẻ'>" + item.LYDO + "</a>"))),
+            //  grid.Column("LYDO", "Lý do", format: (item) => new MvcHtmlString(string.Format("<span title='" + item.LYDO + "'>" + item.LYDO + "</span>"))),
+                           grid.Column("TENNGUOIYEUCAU", "Người yêu cầu"),
+                             grid.Column("NGAYYEUCAU", "Ngày yêu cầu", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYYEUCAU)),
+                                  grid.Column("TRANGTHAI", "Trạng thái", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == YeuCauChiaSeConstant.DONVITUCHOI ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Chờ chia sẻ</a>" : item.TRANGTHAI == YeuCauChiaSeConstant.DUTHAO ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Chưa trình</a>" : item.TRANGTHAI == YeuCauChiaSeConstant.TRAVE ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Cục trả về</a>" : item.TRANGTHAI == YeuCauChiaSeConstant.DATRINH ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Đã trình</a>" : item.TRANGTHAI == YeuCauChiaSeConstant.DADUYET ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Đã duyệt</a>" : item.TRANGTHAI == YeuCauChiaSeConstant.CHUYENYEUCAU ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Chờ chia sẻ</a>" : item.TRANGTHAI == YeuCauChiaSeConstant.HUYCHIASE ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Đã hủy theo dõi</a>" : item.TRANGTHAi == YeuCauChiaSeConstant.DONVIOK ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Đã được chia sẻ</a>" : ""))),
+                              grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                    (item.TRANGTHAI == YeuCauChiaSeConstant.TRAVE || item.TRANGTHAI == YeuCauChiaSeConstant.DUTHAO) ? "<a href='javascript:void(0)' onclick='TrinhDuyetYeuCau(" + item.ID + ")' class='btnEdit' title = 'Trình cục trưởng yêu cầu chia sẻ này'></a>" : "")), header: "Trình cục trưởng"),
+                 grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                   (item.TRANGTHAI == YeuCauChiaSeConstant.DADUYET || item.TRANGTHAI == YeuCauChiaSeConstant.DATRINH || item.TRANGTHAI == YeuCauChiaSeConstant.CHUYENYEUCAU || item.TRANGTHAI == YeuCauChiaSeConstant.DADUYET) ? "" : "<a href='javascript:void(0)' data-id='" + item.ID + "' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+                 )
+    )
+    }
+    else
+    {
+        <div id="Empty" style="color: red;">
+            Không tìm thấy dữ liệu phù hợp
+        </div>
+    }
+</div>

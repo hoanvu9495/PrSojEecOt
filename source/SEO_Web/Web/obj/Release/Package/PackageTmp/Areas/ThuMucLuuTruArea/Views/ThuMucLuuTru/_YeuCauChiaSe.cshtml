@@ -1,0 +1,23 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeModel
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@if (Model.ListThongTin.Count > 0)
+{
+    var ListParent = Model.ListThongTin.Where(x => x.PARENT_ID == null).ToList();
+    foreach (var item in ListParent)
+    {
+        <div class="checkbox">
+            <label><input type="checkbox" value="@item.ID">@item.TENTHONGTIN</label>
+        </div>
+        var ListChild = Model.ListThongTin.Where(x => x.PARENT_ID == item.ID).ToList();
+
+        if (ListChild.Count > 0)
+        {
+            foreach (var ele in ListChild)
+            {
+                <div class="checkbox">
+                    <label><input type="checkbox" value="@ele.ID">>@ele.TENTHONGTIN</label>
+                </div>
+            }
+        }
+    }
+}

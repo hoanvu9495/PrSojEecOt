@@ -1,0 +1,1163 @@
+﻿@using Business.CommonBusiness;
+@using Web.Areas.CongViecArea.Models;
+@using Model.eAita;
+@using Web.Models;
+@using System.Text;
+@model CongViecViewModel
+@{
+    ViewBag.Title = "Smart DMS | eGovOffice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    CongViecBO congviec = Model.CongViec;
+}
+<style type="text/css">
+    .e-input {
+        height: 30px !important;
+    }
+
+    #fromUdpateCongViec label {
+        font-weight: normal !important;
+    }
+
+    .job-phong {
+        /*display: none;*/
+    }
+
+    .lb-Check {
+        margin-left: 0;
+    }
+
+    .red {
+        color: red;
+    }
+
+    #NGAYBATDAU, #HANKETTHUC {
+        width: 233px;
+        height: 20px;
+    }
+
+    label[for=CHK_IS_GIAOVIECTHEOPHONG] {
+        width: auto;
+        margin-top: -5px;
+        margin-left: 100px;
+        color: rgb(17, 138, 203);
+        text-transform: none;
+    }
+
+    label[for=CHK_IS_GIAOVIECTHEOCANHAN] {
+        width: auto;
+        margin-top: -5px;
+        margin-left: 10px;
+        color: #F88C01;
+        text-transform: none;
+    }
+
+    #button--close-insert-congviec {
+        background-color: #336699;
+        /*height: 25px;*/
+        border: none;
+        width: 100px;
+        color: white;
+    }
+
+    #block--form-update {
+        margin: 15px 0;
+    }
+
+        #block--form-update > .edit-table {
+            width: 100%;
+        }
+
+    #button--remove-deliver {
+        margin-left: 10px;
+    }
+
+    #CHONNGUOIGIAOVIEC {
+        margin-left: 5px;
+        margin-right: 10px;
+    }
+
+    #NGUOIGIAOVIEC {
+        width: 250px;
+        height: 20px;
+    }
+
+    .height-15 {
+        height: 15px;
+    }
+
+    .job-phong .lbl {
+        color: rgb(17, 138, 203);
+    }
+
+    #DONVIXULYCHINH, #DONVITHAMGIAXULY, #DONVITHEODOI, #NGUOIXULYCHINH, #NGUOITHAMGIAPHOIHOP,
+    #NGUOITHEODOI {
+        width: 400px;
+        height: 20px;
+    }
+
+    #CHONNGUOIXULYCHINH, #CHONNGUOITHEODOI {
+        margin-left: 5px;
+        margin-right: 10px;
+    }
+
+    .job-canhan .lbl {
+        color: #F88C01;
+    }
+
+    #button--remove-main-handler, #button--remove-follower {
+        margin-left: 10px;
+    }
+
+    label[for=CHK_HAS_ROLE_BOSUNGTHANHVIEN], label[for=CHK_HAS_ROLE_GHINOIDUNGCONGVIEC] {
+        width: auto;
+        margin-top: -5px;
+        margin-left: 10px;
+    }
+
+    label[for=CHK_HAS_ROLE_THAYDOITRANGTHAI], label[for=CHK_HAS_ROLE_THAYDOITRANGTHAI_NTD] {
+        width: auto;
+        margin-top: -5px;
+    }
+
+    #TENCONGVIEC {
+        width: 635px;
+        /*height: 20px;*/
+    }
+
+    label[for=HANKETTHUC] {
+        width: 120px;
+    }
+
+    #HANKETTHUC_NULL, #HANKETTHUC_FORMAT {
+        margin-left: 375px;
+    }
+
+    #block--select-douutien, #block--select-trangthai {
+        width: 233px;
+    }
+
+    label[for=TRANGTHAI_ID] {
+        /*width: 125px;*/
+        /*float: left;
+        margin-left: 15px;*/
+        line-height: 34px;
+        height: 34px;
+    }
+
+    .width-100 {
+        width: 100%;
+    }
+
+    .width-150 {
+        width: 150px;
+    }
+
+    .width-250 {
+        width: 250px;
+    }
+
+    #block--form-update .edit-table tr td:first-child {
+        width: 150px;
+    }
+
+    #row--get-alert-method label {
+        width: auto;
+    }
+
+    label[for=CHK_HAS_NHACVIECDENHAN] {
+        width: auto;
+        margin-top: -5px;
+    }
+
+    #SONGAYNHACTRUOCHAN {
+        width: 30px;
+    }
+
+    #SONGAYNHACTRUOCHAN_FORMAT, #SONGAYNHACTRUOCHAN_NULL {
+        margin-left: 265px;
+    }
+
+    #NOIDUNGCONGVIEC {
+        width: 750px;
+        height: 300px;
+    }
+
+    #block--tailieu-dinhkem, #block--tailieu-dinhkem-congvan {
+        width: 750px;
+    }
+
+    #btnSave {
+        background-color: #336699;
+        /*height: 25px;*/
+        border: none;
+        width: 100px;
+        color: white;
+    }
+
+    #TEN_CONGVIEC_GOC {
+        width: 605px;
+        font-weight: bold;
+    }
+
+    #block--form-button-container {
+        text-align: center;
+        margin: 0 0 10px 0;
+    }
+
+    .ms-drop input[type=radio] {
+        margin: 0 5px 0 0;
+    }
+
+    .link-select {
+        margin-left: 5px;
+        margin-right: 10px;
+    }
+
+    .link-remove {
+        margin-left: 10px;
+    }
+</style>
+<div id="menu-toolbar" class="date-time">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none; border:0">
+        <div class="menu-left">
+            @if (Model.HAS_ROLE_GIAOVIEC)
+            {
+                <div class="btnAddNew" style="margin-right:10px;">
+                    <a href="@Url.Action("Create")">
+                        <span>Giao việc</span>
+                    </a>
+                </div>
+            }
+        </div>
+        <div class="menu-right">
+            <div class="btn-group" role="group">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div class="left-content block">
+        @Html.Partial("_MenuCongViec", Model.CongViecCounter, new ViewDataDictionary { { "ROLE_GIAO_VIEC", Model.HAS_ROLE_GIAOVIEC } })
+    </div>
+</div>
+<div class="right-all-page">
+    <div class="right-content clearfix">
+        <h3 class="group-tittle">
+            Cập nhật thông tin công việc
+        </h3>
+        @using (Html.BeginForm("UpdateCongViec", "CongViec", FormMethod.Post, new { enctype = "multipart/form-data", Id = "frmUpdateCongViec" }))
+        {
+            @Html.AntiForgeryToken()
+            <div id="block--form-update">
+                @Html.HiddenFor(x => x.CongViec.ID)
+                <table class="edit-table">
+                    @if (!Model.IS_CONGVIEC_CANHAN)
+                    {
+                        <tr>
+                            <td class="lbl">
+                                Người giao việc:<span class="red">*</span>
+                            </td>
+                            <td colspan="3">
+                                <input type="text" name="NGUOIGIAOVIEC" id="NGUOIGIAOVIEC" placeholder="" class="e-input" maxlength="255" value="@congviec.NGUOIGIAOVIEC" />
+                                <a href="javascript:void(0)" id="CHONNGUOIGIAOVIEC">
+                                    Chọn
+                                </a>|<a href="javascript:XoaNguoiGiaoViec()" id="XOANGUOIGIAOVIEC">
+                                    Xóa
+                                </a>
+                                <input type="hidden" id="NGUOIGIAOVIEC_ID" name="NGUOIGIAOVIEC_ID" value="@congviec.NGUOIGIAOVIEC_ID" />
+                            </td>
+                        </tr><!--NGƯỜI GIAO VIỆC-->
+                        <tr class="height-15">
+                            <td></td>
+                            <td colspan="3">
+                                <span class="lb-Check" id="NGUOIGIAOVIEC_ID_NULL">Bạn hãy chọn người giao việc</span>
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.IS_CONGVIEC_PHONG)
+                    {
+                        <tr class="job-phong">
+                            @{
+                        string strDonViXuLy = string.Empty;
+                        string strDonViXuLyIDs = string.Empty;
+                        if (congviec.ListDonViXuLyChinh != null && congviec.ListDonViXuLyChinh.Count > 0)
+                        {
+                            strDonViXuLy = string.Join(", ", congviec.ListDonViXuLyChinh.Select(x => x.TEN_DONVI).ToArray());
+                            strDonViXuLyIDs = string.Join(",", congviec.ListDonViXuLyChinh.Select(x => x.ID).ToArray());
+                        }
+                            }
+                            <td>
+                                <label class="lbl" for="DONVIXULYCHINH">
+                                    Đơn vị chủ trì:<span class="red">*</span>
+                                </label>
+                            </td>
+                            <td colspan="3">
+                                <input type="text" name="DONVIXULYCHINH" id="DONVIXULYCHINH" value="@strDonViXuLy" placeholder="" class="e-input" maxlength="500" />
+                                <a class="link-select" href="javascript:void(0)" id="CHONDONVIXULYCHINH">Chọn</a>|<a class="link-remove" href="javascript:XoaDonViXuLyChinh()">Xóa</a>
+                                <input type="hidden" id="DONVIXULYCHINH_ID" name="DONVIXULYCHINH_ID" value="@strDonViXuLyIDs" />
+                            </td>
+                        </tr>
+                        <tr class="job-phong height-15">
+                            <td></td>
+                            <td colspan="3">
+                                <span class="lb-Check" id="DONVIXULYCHINH_ID_NULL">Bạn hãy chọn đơn vị chủ trì</span>
+                            </td>
+                        </tr><!--PHÒNG XỬ LÝ CHÍNH-->
+
+                        <tr class="job-phong">
+                            @{
+                        string strDonViThamGiaXuLy = string.Empty;
+                        string strDonViThamGiaXuLyIDs = string.Empty;
+                        if (congviec.ListDonViPhoiHop != null && congviec.ListDonViPhoiHop.Count > 0)
+                        {
+                            strDonViThamGiaXuLy = string.Join(", ", congviec.ListDonViPhoiHop.Select(x => x.TEN_DONVI).ToArray());
+                            strDonViThamGiaXuLyIDs = string.Join(",", congviec.ListDonViPhoiHop.Select(x => x.ID).ToArray());
+                        }
+                            }
+                            <td>
+                                <label class="lbl" for="DONVITHAMGIAXULY">
+                                    Đơn vị phối hợp:
+                                </label>
+                            </td>
+                            <td colspan="3">
+                                <input type="text" name="DONVITHAMGIAXULY" id="DONVITHAMGIAXULY" placeholder="" class="e-input" maxlength="500" value="@strDonViThamGiaXuLy" />
+                                <a class="link-select" href="javascript:void(0)" id="CHONDONVITHAMGIAXULY">Chọn</a>|<a class="link-remove" href="javascript:XoaDonViThamGiaXuLy()">Xóa</a>
+                                <input type="hidden" id="DONVITHAMGIAXULY_ID" name="DONVITHAMGIAXULY_ID" value="@strDonViThamGiaXuLyIDs" />
+                            </td>
+                        </tr>
+                        <tr class="job-phong height-15">
+                            <!--PHÒNG THAM GIA XỬ LÝ-->
+                        </tr><!--PHÒNG THAM GIA XỬ LÝ-->
+
+                        @*<tr class="job-phong">
+                            @{
+                        string strPhongTheoDoi = string.Empty;
+                        string strPhongTheoDoiIDs = string.Empty;
+                        if (congviec.ListPhongTheoDoi != null && congviec.ListPhongTheoDoi.Count > 0)
+                        {
+                            strPhongTheoDoi = string.Join(", ", congviec.ListPhongTheoDoi.Select(x => x.TENPHONGBAN).ToArray());
+                            strPhongTheoDoiIDs = string.Join(",", congviec.ListPhongTheoDoi.Select(x => x.DM_PHONGBAN_ID).ToArray());
+                        }
+                            }
+                            <td>
+                                <label class="lbl" for="PHONGTHEODOI">Phòng theo dõi:</label>
+                            </td>
+                            <td colspan="3">
+
+                                <input type="text" name="PHONGTHEODOI" id="PHONGTHEODOI" class="e-input" placeholder="" maxlength="500" value="@strPhongTheoDoi" />
+                                <a class="link-select" href="javascript:void(0)" id="CHONPHONGTHEODOI">Chọn</a>|<a class="link-remove" href="javascript:XoaPhongTheoDoi()">Xóa</a>
+                                <input type="hidden" id="PHONGTHEODOI_ID" name="PHONGTHEODOI_ID" value="@strPhongTheoDoiIDs" />
+                            </td>
+                        </tr>*@
+                        @*<tr class="job-phong height-15"></tr>*@<!--PHÒNG THEO DÕI-->
+                    }
+                    else if (Model.IS_CONGVIEC_NHANVIEN)
+                    {
+                        <tr class="job-canhan">
+                            <td>
+                                <label class="lbl" for="NGUOIXULYCHINH">
+                                    Người xử lý chính:<span class="red">*</span>
+                                </label>
+                            </td>
+                            @{
+                        string strNguoiXuLyChinh = string.Empty;
+                        string strNguoiXuLyChinhIDs = string.Empty;
+                        if (congviec.ListNguoiXuLyChinh != null && congviec.ListNguoiXuLyChinh.Count > 0)
+                        {
+                            strNguoiXuLyChinh = string.Join(", ", congviec.ListNguoiXuLyChinh.Select(x => x.FullName).ToArray());
+                            strNguoiXuLyChinhIDs = string.Join(",", congviec.ListNguoiXuLyChinh.Select(x => x.UserID).ToArray());
+                        }
+                            }
+                            <td colspan="3">
+                                <input type="text" value="@strNguoiXuLyChinh" placeholder="" class="e-input" name="NGUOIXULYCHINH" id="NGUOIXULYCHINH" maxlength="500" />
+                                <a href="javascript:void(0)" id="CHONNGUOIXULYCHINH">
+                                    Chọn
+                                </a>|<a href="javascript:XoaNguoiXuLyChinh()" id="button--remove-main-handler">
+                                    Xóa
+                                </a>
+                                <input type="hidden" id="NGUOIXULYCHINH_ID" name="NGUOIXULYCHINH_ID" value="@strNguoiXuLyChinhIDs" />
+
+                                @if (congviec.HAS_ROLE_BOSUNGTHANHVIEN == true)
+                                {
+                                    <input class="css-checkbox" id="CHK_HAS_ROLE_BOSUNGTHANHVIEN" checked="checked" value="True" name="CHK_HAS_ROLE_BOSUNGTHANHVIEN" type="checkbox">
+                                }
+                                else
+                                {
+                                    <input class="css-checkbox" id="CHK_HAS_ROLE_BOSUNGTHANHVIEN" value="True" name="CHK_HAS_ROLE_BOSUNGTHANHVIEN" type="checkbox">
+                                }
+                                <label for="CHK_HAS_ROLE_BOSUNGTHANHVIEN" class="css-label2">
+                                    Được bổ sung thành viên
+                                </label>
+                                @if (congviec.HAS_ROLE_THAYDOITRANGTHAI == true)
+                                {
+                                    <input class="css-checkbox" id="CHK_HAS_ROLE_THAYDOITRANGTHAI" value="True" checked="checked" name="CHK_HAS_ROLE_THAYDOITRANGTHAI" type="checkbox">
+                                }
+                                else
+                                {
+                                    <input class="css-checkbox" id="CHK_HAS_ROLE_THAYDOITRANGTHAI" value="True" name="CHK_HAS_ROLE_THAYDOITRANGTHAI" type="checkbox">
+                                }
+                                <label for="CHK_HAS_ROLE_THAYDOITRANGTHAI" class="css-label2">
+                                    Được thay đổi trạng thái
+                                </label>
+                            </td>
+                        </tr>
+                        <tr class="job-canhan height-15">
+                            <td></td>
+                            <td colspan="3">
+                                <span class="lb-Check" id="NGUOIXULYCHINH_ID_NULL">Bạn hãy chọn người xử lý chính</span>
+                            </td>
+                        </tr><!--NGƯỜI XỬ LÝ CHÍNH-->
+
+                        <tr class="job-canhan">
+                            @{
+                                string strNguoiTheoDoi = string.Empty;
+                                string strNguoiTheoDoiIDs = string.Empty;
+                                if (congviec.ListNguoiTheoDoi != null && congviec.ListNguoiTheoDoi.Count > 0)
+                                {
+                                    strNguoiTheoDoi = string.Join(", ", congviec.ListNguoiTheoDoi.Select(x => x.FullName).ToArray());
+                                    strNguoiTheoDoiIDs = string.Join(",", congviec.ListNguoiTheoDoi.Select(x => x.UserID).ToArray());
+                                }
+                            }
+                            <td>
+                                <label class="lbl" for="NGUOITHEODOI">Người theo dõi:</label>
+                            </td>
+                            <td colspan="3">
+                                <input type="text" name="NGUOITHEODOI" id="NGUOITHEODOI" placeholder="" class="e-input" maxlength="500" value="@strNguoiTheoDoi" />
+                                <a href="javascript:void(0)" id="CHONNGUOITHEODOI">
+                                    Chọn
+                                </a>|<a href="javascript:XoaNguoiTheoDoi()" id="button--remove-follower">
+                                    Xóa
+                                </a>
+                                <input type="hidden" id="NGUOITHEODOI_ID" name="NGUOITHEODOI_ID" value="@strNguoiTheoDoiIDs" />
+
+                                @if (congviec.HAS_ROLE_GHINOIDUNGCONGVIEC == true)
+                                {
+                                    <input class="css-checkbox" id="CHK_HAS_ROLE_GHINOIDUNGCONGVIEC" checked="checked" value="True" name="CHK_HAS_ROLE_GHINOIDUNGCONGVIEC" type="checkbox">
+                                }
+                                else
+                                {
+                                    <input class="css-checkbox" id="CHK_HAS_ROLE_GHINOIDUNGCONGVIEC" value="True" name="CHK_HAS_ROLE_GHINOIDUNGCONGVIEC" type="checkbox">
+                                }
+                                <label for="CHK_HAS_ROLE_GHINOIDUNGCONGVIEC" class="css-label2">
+                                    Được ghi nội dung công việc
+                                </label>
+
+                                @if (congviec.HAS_ROLE_THAYDOITRANGTHAI_NTD == true)
+                                {
+                                    <input class="css-checkbox" id="CHK_HAS_ROLE_THAYDOITRANGTHAI_NTD" value="True" name="CHK_HAS_ROLE_THAYDOITRANGTHAI_NTD" type="checkbox" checked="checked">
+                                }
+                                else
+                                {
+                                    <input class="css-checkbox" id="CHK_HAS_ROLE_THAYDOITRANGTHAI_NTD" value="True" name="CHK_HAS_ROLE_THAYDOITRANGTHAI_NTD" type="checkbox">
+                                }
+                                <label for="CHK_HAS_ROLE_THAYDOITRANGTHAI_NTD" class="css-label2">
+                                    Được thay đổi trạng thái
+                                </label>
+                            </td>
+                        </tr>
+                        <tr class="job-canhan height-15"></tr><!--NGƯỜI THEO DÕI-->
+
+                        <tr class="job-canhan">
+                            @{
+                                string strNguoiThamGiaXuLy = string.Empty;
+                                string strNguoiThamGiaXuLyIDs = string.Empty;
+                                if (congviec.ListNguoiThamGiaXuLy != null && congviec.ListNguoiThamGiaXuLy.Count > 0)
+                                {
+                                    strNguoiThamGiaXuLy = string.Join(", ", congviec.ListNguoiThamGiaXuLy.Select(x => x.FullName).ToArray());
+                                    strNguoiThamGiaXuLyIDs = string.Join(",", congviec.ListNguoiThamGiaXuLy.Select(x => x.UserID).ToArray());
+                                }
+                            }
+                            <td>
+                                <label class="lbl" for="NGUOITHAMGIAPHOIHOP">Người tham gia xử lý:</label>
+                            </td>
+                            <td colspan="3">
+                                <input type="text" value="@strNguoiThamGiaXuLy" placeholder="" class="e-input" maxlength="500" id="NGUOITHAMGIAPHOIHOP" />
+                                <a class="link-select" href="javascript:void(0)" id="CHONNGUOITHAMGIAPHOIHOP">Chọn</a>|<a class="link-remove" href="javascript:XoaNguoiThamGiaXuLy()">Xóa</a>
+                                <input type="hidden" id="NGUOITHAMGIAPHOIHOP_ID" name="NGUOITHAMGIAPHOIHOP_ID" value="@strNguoiThamGiaXuLyIDs" />
+                            </td>
+                        </tr>
+                        <tr class="job-canhan height-15"></tr>
+                    }
+                    <tr>
+                        <td>
+                            <label class="lbl" for="TENCONGVIEC">
+                                Tên công việc:<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td colspan="3">
+                            <input type="text" name="TENCONGVIEC" id="TENCONGVIEC" placeholder="Tên công việc" class="e-input" value="@congviec.TENCONGVIEC" maxlength="500" autocomplete="off" @( Model.IS_CONGVIEC_CANHAN ? "autofocus='autofocus'" : string.Empty) />
+                        </td>
+                    </tr>
+                    <tr class="height-15">
+                        <td></td>
+                        <td colspan="3">
+                            <span class="lb-Check" id="TENCONGVIEC_NULL">Bạn hãy nhập tên công việc</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="lbl" for="NGAYBATDAU">
+                                Ngày bắt đầu:<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td class="width-250">
+                            <input type="text" name="NGAYBATDAU" id="NGAYBATDAU" class="e-input datepicker" maxlength="10" value="@string.Format("{0:dd/MM/yyyy}",congviec.NGAYBATDAU.Value)" autocomplete="off" placeholder="Ngày bắt đầu" />
+                        </td>
+                        <td class="width-150">
+                            <label class="lbl" for="HANKETTHUC">
+                                Ngày kết thúc:<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <input name="HANKETTHUC" id="HANKETTHUC" value="@string.Format("{0:dd/MM/yyyy}",congviec.HANKETTHUC.Value)" class="e-input datepicker" maxlength="10"
+                                   placeholder="Hạn kết thúc" autocomplete="off" />
+                        </td>
+                    </tr>
+                    <tr class="height-15">
+                        <td></td>
+                        <td>
+                            <span class="lb-Check" id="NGAYBATDAU_ERROR">
+                            </span>
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="lb-Check" id="HANKETTHUC_ERROR">
+                                Bạn hãy nhập đúng định dạng
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="lbl" for="DOUUTIEN_ID">
+                                Độ ưu tiên:<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td class="width-250">
+                            <div class="input-field4 clearfix float-left" id="block--select-douutien">
+                                @Html.DropDownList("DOUUTIEN_ID", Model.ListDoUuTien, new { @class = "create-phanloai width-100" })
+                            </div>
+                        </td>
+                        <td class="width-150">
+                            <label for="TRANGTHAI_ID" class="lbl">
+                                Trạng thái:<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix float-left" id="block--select-trangthai">
+                                @Html.DropDownList("TRANGTHAI_ID", Model.ListTrangThai, new { @class = "create-phanloai width-100" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="height-15"></tr>
+
+                    <tr id="row--get-alert-method">
+                        <td>
+                            <label class="lbl">Nhận thông báo:</label>
+                        </td>
+                        <td colspan="3">
+                            @if (congviec.IS_POPUP == true)
+                            {
+                                <input class="css-checkbox" id="CHK_IS_POPUP" checked="checked" value="True" name="CHK_IS_POPUP" type="checkbox">
+                            }
+                            else
+                            {
+                                <input class="css-checkbox" id="CHK_IS_POPUP" value="True" name="CHK_IS_POPUP" type="checkbox">
+                            }
+                            <label for="CHK_IS_POPUP" class="css-label2">
+                                Tin thông báo
+                            </label>
+
+                            @if (congviec.IS_MESG == true)
+                            {
+                                <input class="css-checkbox" id="CHK_IS_MESG" value="True" name="CHK_IS_MESG" type="checkbox" checked="checked">
+                            }
+                            else
+                            {
+                                <input class="css-checkbox" id="CHK_IS_MESG" value="True" name="CHK_IS_MESG" type="checkbox">
+                            }
+                            <label for="CHK_IS_MESG" class="css-label2">
+                                Tin nhắn
+                            </label>
+
+                            @if (congviec.IS_EMAIL == true)
+                            {
+                                <input class="css-checkbox" id="CHK_IS_EMAIL" value="True" name="CHK_IS_EMAIL" type="checkbox" checked="checked">
+                            }
+                            else
+                            {
+                                <input class="css-checkbox" id="CHK_IS_EMAIL" value="True" name="CHK_IS_EMAIL" type="checkbox">
+                            }
+                            <label for="CHK_IS_EMAIL" class="css-label2">
+                                Email
+                            </label>
+                            @if (!Model.IS_CONGVIEC_CANHAN)
+                            {
+                                if (congviec.IS_SMS == true)
+                                {
+                                    <input class="css-checkbox" id="CHK_IS_SMS" value="True" name="CHK_IS_SMS" type="checkbox" checked="checked">
+                                }
+                                else
+                                {
+                                    <input class="css-checkbox" id="CHK_IS_SMS" value="True" name="CHK_IS_SMS" type="checkbox">
+                                }
+                                <label for="CHK_IS_SMS" class="css-label2">
+                                    SMS
+                                </label>
+                            }
+                        </td>
+                    </tr>
+
+                    <tr class="height-15"></tr>
+
+                    <tr>
+                        <td>
+                            <label class="lbl">Nhắc việc đến hạn:</label>
+                        </td>
+                        <td colspan="3">
+                            @if (congviec.HAS_NHACVIECDENHAN == true)
+                            {
+                                <input class="css-checkbox" id="CHK_HAS_NHACVIECDENHAN" value="True" name="CHK_HAS_NHACVIECDENHAN" type="checkbox" checked="checked">
+                            }
+                            else
+                            {
+                                <input class="css-checkbox" id="CHK_HAS_NHACVIECDENHAN" value="True" name="CHK_HAS_NHACVIECDENHAN" type="checkbox">
+                            }
+                            <label for="CHK_HAS_NHACVIECDENHAN" class="css-label2">
+                                Gửi tin nhắn nhắc việc đến hạn <b>trước</b>
+                            </label>
+                            <input maxlength="3" type="text" value="@(congviec.SONGAYNHACTRUOCHAN == null ? 0 : congviec.SONGAYNHACTRUOCHAN.Value)" name="SONGAYNHACTRUOCHAN" id="SONGAYNHACTRUOCHAN" /> (ngày)
+                        </td>
+                    </tr>
+
+                    <tr class="height-15">
+                        <td></td>
+                        <td colspan="3">
+                            <span class="lb-Check" id="SONGAYNHACTRUOCHAN_ERROR">
+                                Bạn hãy nhập số ngày
+                            </span>
+                            @*<span class="lb-Check" id="SONGAYNHACTRUOCHAN_FORMAT">
+                                    Bạn hãy nhập định dạng số (ví dụ: 1 hoặc 2)
+                                </span>*@
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="lbl" for="NOIDUNGCONGVIEC">
+                                Nội dung công việc:<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td colspan="3">
+                            <textarea id="NOIDUNGCONGVIEC" name="NOIDUNGCONGVIEC" placeholder="Nội dung công việc" class="e-input" maxlength="1500">@congviec.NOIDUNGCONGVIEC</textarea>
+                        </td>
+                    </tr>
+                    <tr class="height-15">
+                        <td></td>
+                        <td colspan="3">
+                            <span class="lb-Check" id="NOIDUNGCONGVIEC_NULL">Bạn hãy nhập nội dung công việc</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl">
+                                Tài liệu đính kèm :
+                            </label>
+                        </td>
+                        <td colspan="3">
+                            <div id="block--tailieu-dinhkem">
+                                @{Html.RenderPartial("../Common/UploadFile", Model.ListTaiLieuDinhKemCongViec);}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="height-15"></tr>
+                    @if (Model.HasCongVan)
+                    {
+                        if (Model.ListTaiLieuDinhKem != null && Model.ListTaiLieuDinhKem.Count > 0)
+                        {
+                            <tr>
+                                <td>
+                                    <label class="lbl">Tài liệu của Công văn:</label>
+                                </td>
+                                <td colspan="3">
+                                    <div id="block--tailieu-dinhkem-congvan">
+                                        @{Html.RenderPartial("../Common/UploadFile", Model.ListTaiLieuDinhKem, new ViewDataDictionary { { "detail", 1 } });}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="height-15"></tr>
+                            <tr>
+                                <td>
+                                    <label class="lbl">Phân phát công văn:</label>
+                                </td>
+                                <td colspan="3">
+                                    @if (Model.ListTaiLieuDinhKem != null && Model.ListTaiLieuDinhKem.Count > 0)
+                                    {
+                                        if (congviec.IS_DINHKEMTAILIEUVANBAN == true)
+                                        {
+                                            <input class="css-checkbox" id="CHK_IS_DINHKEMTAILIEUVANBAN" checked="checked" value="True" name="CHK_IS_DINHKEMTAILIEUVANBAN" type="checkbox">
+                                        }
+                                        else
+                                        {
+                                            <input class="css-checkbox" id="CHK_IS_DINHKEMTAILIEUVANBAN" value="True" name="CHK_IS_DINHKEMTAILIEUVANBAN" type="checkbox">
+                                        }
+                                        <label style="width:auto;" for="CHK_IS_DINHKEMTAILIEUVANBAN" class="css-label2">
+                                            Đính kèm tài liệu của Công văn vào công việc
+                                        </label>
+                                    }
+                                    @if (Model.IS_CONGVIEC_CANHAN == false)
+                                    {
+                                        if (congviec.IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY == true)
+                                        {
+                                            <input class="css-checkbox" id="CHK_IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY" value="True" name="CHK_IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY" type="checkbox" checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input class="css-checkbox" id="CHK_IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY" value="True" name="CHK_IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY" type="checkbox" />
+                                        }
+                                        <label style="width:auto;" for="CHK_IS_PHANPHATCONGVANCHONGUOITHAMGIAXULY" class="css-label2">
+                                            Phân phát công văn cho cán bộ tham gia xử lý công việc
+                                        </label>
+                                    }
+                                </td>
+                            </tr>
+                            <tr class="height-15"></tr>
+                        }
+                    }
+                </table>
+            </div>
+            <div id="block--form-button-container">
+                <input type="submit" value="Lưu công việc" id="btnSave" />
+                <input type="button" value="Hủy bỏ" onclick="cancel()" id="button--close-insert-congviec" />
+            </div>
+        }
+    </div>
+</div>
+@{
+    //tạo model chọn user
+    ChonNguoiDungModel NGUOIGIAOVIEC = new ChonNguoiDungModel();
+    NGUOIGIAOVIEC.COSO_ID = Model.UserInfo.CoSoID.Value;
+    NGUOIGIAOVIEC.DONVI_ID = Model.IS_LANHDAO_CUC ? 0 : Model.UserInfo.DonViID;
+    NGUOIGIAOVIEC.PHONGBAN_ID = 0;
+    NGUOIGIAOVIEC.TEXT_ID = "NGUOIGIAOVIEC";
+    NGUOIGIAOVIEC.VALUE_ID = "NGUOIGIAOVIEC_ID";
+    NGUOIGIAOVIEC.ID_CLICK = "CHONNGUOIGIAOVIEC";
+    NGUOIGIAOVIEC.IS_MULTICHOICE = 0;
+    NGUOIGIAOVIEC.INDEX = 1;
+    NGUOIGIAOVIEC.TITLE = "Chọn người giao việc";
+    NGUOIGIAOVIEC.CALLBACK_FUNCTION = "ValidateNguoiGiaoViec";
+    Html.RenderPartial("../Common/_ChooseUserV1", NGUOIGIAOVIEC);
+
+    ChonNguoiDungModel NGUOIXULYCHINH = new ChonNguoiDungModel();
+    NGUOIXULYCHINH.COSO_ID = Model.UserInfo.CoSoID.Value;
+    NGUOIXULYCHINH.DONVI_ID = Model.IS_LANHDAO_CUC ? 0 : Model.UserInfo.DonViID;
+    NGUOIXULYCHINH.PHONGBAN_ID = 0;
+    NGUOIXULYCHINH.TEXT_ID = "NGUOIXULYCHINH";
+    NGUOIXULYCHINH.VALUE_ID = "NGUOIXULYCHINH_ID";
+    NGUOIXULYCHINH.ID_CLICK = "CHONNGUOIXULYCHINH";
+    NGUOIXULYCHINH.IS_MULTICHOICE = 1;
+    NGUOIXULYCHINH.INDEX = 2;
+    NGUOIXULYCHINH.TITLE = "Chọn người xử lý chính";
+    NGUOIXULYCHINH.CALLBACK_FUNCTION = "ValidateNguoiXuLyChinh";
+    Html.RenderPartial("../Common/_ChooseUserV1", NGUOIXULYCHINH);
+
+    ChonNguoiDungModel NGUOITHAMGIAPHOIHOP = new ChonNguoiDungModel();
+    NGUOITHAMGIAPHOIHOP.COSO_ID = Model.UserInfo.CoSoID.Value;
+    NGUOITHAMGIAPHOIHOP.DONVI_ID = Model.IS_LANHDAO_CUC ? 0 : Model.UserInfo.DonViID;
+    NGUOITHAMGIAPHOIHOP.PHONGBAN_ID = 0;
+    NGUOITHAMGIAPHOIHOP.TEXT_ID = "NGUOITHAMGIAPHOIHOP";
+    NGUOITHAMGIAPHOIHOP.VALUE_ID = "NGUOITHAMGIAPHOIHOP_ID";
+    NGUOITHAMGIAPHOIHOP.ID_CLICK = "CHONNGUOITHAMGIAPHOIHOP";
+    NGUOITHAMGIAPHOIHOP.IS_MULTICHOICE = 1;
+    NGUOITHAMGIAPHOIHOP.INDEX = 3;
+    NGUOITHAMGIAPHOIHOP.TITLE = "Chọn người tham gia phối hợp xử lý";
+    Html.RenderPartial("../Common/_ChooseUserV1", NGUOITHAMGIAPHOIHOP);
+
+    ChonNguoiDungModel NGUOITHEODOI = new ChonNguoiDungModel();
+    NGUOITHEODOI.COSO_ID = Model.UserInfo.CoSoID.Value;
+    NGUOITHEODOI.DONVI_ID = Model.IS_LANHDAO_CUC ? 0 : Model.UserInfo.DonViID;
+    NGUOITHEODOI.PHONGBAN_ID = 0;
+    NGUOITHEODOI.TEXT_ID = "NGUOITHEODOI";
+    NGUOITHEODOI.VALUE_ID = "NGUOITHEODOI_ID";
+    NGUOITHEODOI.ID_CLICK = "CHONNGUOITHEODOI";
+    NGUOITHEODOI.IS_MULTICHOICE = 1;
+    NGUOITHEODOI.INDEX = 4;
+    NGUOITHEODOI.TITLE = "Chọn người theo dõi công việc";
+    Html.RenderPartial("../Common/_ChooseUserV1", NGUOITHEODOI);
+
+
+    //model đơn vị xử lý chính
+    ChonNguoiDungModel donvixulychinh = new ChonNguoiDungModel();
+    donvixulychinh.COSO_ID = Model.UserInfo.CoSoID.Value;
+    donvixulychinh.DONVI_ID = 0;
+    donvixulychinh.CALLBACK_FUNCTION = "ValidateDonViXuLyChinh";
+    donvixulychinh.TEXT_ID = "DONVIXULYCHINH";
+    donvixulychinh.VALUE_ID = "DONVIXULYCHINH_ID";
+    donvixulychinh.ID_CLICK = "CHONDONVIXULYCHINH";
+    donvixulychinh.IS_MULTICHOICE = 1;
+    donvixulychinh.INDEX = 1;
+    donvixulychinh.TITLE = "Chọn đơn vị chủ trì";
+    Html.RenderPartial("../Common/_ChooseDonViV1", donvixulychinh);
+    
+    //model đơn vị tham gia
+    ChonNguoiDungModel phongthamgiaxuly = new ChonNguoiDungModel();
+    phongthamgiaxuly.COSO_ID = Model.UserInfo.CoSoID.Value;
+    phongthamgiaxuly.DONVI_ID = 0;
+    phongthamgiaxuly.TEXT_ID = "DONVITHAMGIAXULY";
+    phongthamgiaxuly.VALUE_ID = "DONVITHAMGIAXULY_ID";
+    phongthamgiaxuly.ID_CLICK = "CHONDONVITHAMGIAXULY";
+    phongthamgiaxuly.IS_MULTICHOICE = 1;
+    phongthamgiaxuly.INDEX = 2;
+    phongthamgiaxuly.TITLE = "chọn đơn vị phối hợp";
+    Html.RenderPartial("../Common/_ChooseDonViV1", phongthamgiaxuly);
+}
+<script type="text/javascript">
+    var $emptyStr = "";
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-50:+20"
+        });
+        tinymce.init({
+            selector: '#NOIDUNGCONGVIEC',
+            language: 'vi_VN',
+            width: 750,
+            height: 100,
+            plugins: [
+                    "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+            toolbar2: "cut copy paste pastetext | bullist numlist | outdent indent | undo redo | link unlink code | forecolor backcolor",
+            toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | insertdatetime preview | print fullscreen | ltr rtl | pagebreak restoredraft",
+            menubar: true,
+            convert_urls: false,
+            paste_data_images: true,
+            toolbar_items_size: 'small'
+        });
+        $('#DOUUTIEN_ID').multipleSelect({
+            single: true
+        });
+        $('#TRANGTHAI_ID').multipleSelect({
+            single: true
+        });
+        //setting TENCONGVIEC
+        $('#TENCONGVIEC').on('keyup', function () {
+            if (this.value.trim() === $emptyStr) {
+                $('#TENCONGVIEC_NULL').show();
+            } else {
+                $('#TENCONGVIEC_NULL').hide();
+            }
+        });
+        //setting NGAYBATDAU
+        $('#NGAYBATDAU').on('keyup change', function () {
+            if (this.value.trim() === $emptyStr) {
+                document.getElementById('NGAYBATDAU_ERROR').innerHTML = 'Bạn hãy nhập ngày bắt đầu';
+                $('#NGAYBATDAU_ERROR').show();
+            } else {
+                $('#NGAYBATDAU_ERROR').hide();
+            }
+        });
+        //setting NGAYKETTHUC
+        $('#HANKETTHUC').on('keyup change', function () {
+            if (this.value.trim() === $emptyStr) {
+                document.getElementById('HANKETTHUC_ERROR').innerHTML = 'Bạn hãy nhập hạn kết thúc'
+                $('#HANKETTHUC_ERROR').show();
+            } else {
+                $('#HANKETTHUC_ERROR').hide();
+            }
+        });
+
+        $("#btnSave").click(function () {
+            //Kiểm tra dữ liệu
+            //NGUOIGIAOVIEC
+            if ($('#NGUOIGIAOVIEC').length > 0) {
+                if (validate_element($("#NGUOIGIAOVIEC"), $("#NGUOIGIAOVIEC_ID_NULL"), "", "", "0") == 0) {
+                    $("#NGUOIGIAOVIEC").focus();
+                    return false;
+                }
+            }
+            //LOAICONGVIEC
+            if ($('input[type=radio][name=LOAICONGVIEC]').length > 0) {
+                var type = $('input[type=radio][name=LOAICONGVIEC]:checked').val();
+                if (type === '@CongViecConstant.TASK_NHANVIEN') {
+                    //NGUOIXULYCHINH
+                    if (validate_element($("#NGUOIXULYCHINH"), $("#NGUOIXULYCHINH_ID_NULL"), "", "", "0") == 0) {
+                        $("#NGUOIXULYCHINH").focus();
+                        return false;
+                    }
+                } else {
+                    //PHONGXULYCHINH
+                    if (validate_element($("#DONVIXULYCHINH"), $("#DONVIXULYCHINH_ID_NULL"), "", "", "0") == 0) {
+                        $("#DONVIXULYCHINH").focus();
+                        return false;
+                    }
+                }
+            }
+            //TENCONGVIEC
+            if (validate_element($("#TENCONGVIEC"), $("#TENCONGVIEC_NULL"), "", "", "0") == 0) {
+                $("#TENCONGVIEC").focus();
+                return false;
+            }
+            //NGAYBATDAU
+            var strNgayBatDau = $('#NGAYBATDAU').val().trim();
+            if (strNgayBatDau === $emptyStr) {
+                document.getElementById('NGAYBATDAU_ERROR').innerHTML = 'Bạn hãy nhập ngày bắt đầu';
+                $('#NGAYBATDAU').focus();
+                $('#NGAYBATDAU_ERROR').show();
+                return false;
+            } else {
+                if (checkDateTime(strNgayBatDau) === false) {
+                    document.getElementById('NGAYBATDAU_ERROR').innerHTML = 'Bạn hãy nhập đúng định dạng';
+                    $('#NGAYBATDAU').focus();
+                    $('#NGAYBATDAU_ERROR').show();
+                    return false;
+                } else {
+                    $('#NGAYBATDAU_ERROR').hide();
+                }
+            }
+
+            //HANKETTHUC
+            var strHanKetThuc = $('#HANKETTHUC').val().trim();
+            if (strHanKetThuc === $emptyStr) {
+                document.getElementById('HANKETTHUC_ERROR').innerHTML = 'Bạn hãy nhập hạn kết thúc';
+                $('#HANKETTHUC').focus();
+                $('#HANKETTHUC_ERROR').show();
+                return false;
+            } else {
+                if (checkDateTime(strHanKetThuc) === false) {
+                    document.getElementById('HANKETTHUC_ERROR').innerHTML = 'Bạn hãy nhập đúng định dạng';
+                    $('#HANKETTHUC').focus();
+                    $('#HANKETTHUC_ERROR').show();
+                    return false;
+                } else {
+                    $('#HANKETTHUC_ERROR').hide();
+                }
+            }
+            //SONGAYBAOTRUOCHAN
+            if ($("#CHK_HAS_NHACVIECDENHAN:checked").val() != undefined) {
+                if ($("#CHK_HAS_NHACVIECDENHAN:checked").val().trim().length > 0) {
+                    var strSoNgay = $('#SONGAYNHACTRUOCHAN').val().trim();
+                    if (strSoNgay === $emptyStr) {
+                        document.getElementById('SONGAYNHACTRUOCHAN_ERROR').innerHTML = 'Bạn hãy nhập số ngày';
+                        $('#SONGAYNHACTRUOCHAN_ERROR').show();
+                        return false;
+                    } else {
+                        if ($.isNumeric(strSoNgay) === false) {
+                            document.getElementById('SONGAYNHACTRUOCHAN_ERROR').innerHTML = 'Bạn hãy nhập định dạng số (ví dụ: 1 hoặc 2)';
+                            $('#SONGAYNHACTRUOCHAN_ERROR').show();
+                            return false;
+                        } else {
+                            if (parseInt(strSoNgay) < 0) {
+                                document.getElementById('SONGAYNHACTRUOCHAN_ERROR').innerHTML = 'Số ngày phải lớn hơn 0';
+                                $('#SONGAYNHACTRUOCHAN_ERROR').show();
+                                return false;
+                            }
+                        }
+                        $('#SONGAYNHACTRUOCHAN_ERROR').hide();
+                    }
+                }
+            }
+            var noidungcv = tinyMCE.get('NOIDUNGCONGVIEC').getContent();
+            //NOIDUNGCONGVIEC
+            if (noidungcv.trim().length <= 0) {
+                $("#NOIDUNGCONGVIEC_NULL").show();
+                $("#NOIDUNGCONGVIEC").focus();
+                return false;
+            }
+            else {
+                $("#NOIDUNGCONGVIEC_NULL").hide();
+            }
+        });
+    });
+
+    function ValidateDonViXuLyChinh() {
+        if (validate_element($("#DONVIXULYCHINH"), $("#DONVIXULYCHINH_ID_NULL"), "", "", "0") == 0) {
+            $("#DONVIXULYCHINH").focus();
+        }
+    }
+    function ValidateNguoiGiaoViec() {
+        if (validate_element($("#NGUOIGIAOVIEC"), $("#NGUOIGIAOVIEC_ID_NULL"), "", "", "0") == 0) {
+            $("#NGUOIGIAOVIEC").focus();
+        }
+    }
+    function ValidateNguoiXuLyChinh() {
+        if (validate_element($("#NGUOIXULYCHINH"), $("#NGUOIXULYCHINH_ID_NULL"), "", "", "0") == 0) {
+            $("#NGUOIXULYCHINH").focus();
+        }
+    }
+
+    function XoaNguoiGiaoViec() {
+        var hasValue = $("#NGUOIGIAOVIEC").val().length > 0;
+
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa thông tin người giao việc?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#NGUOIGIAOVIEC").val("");
+                            $("#NGUOIGIAOVIEC_ID").val("");
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+    function XoaNguoiXuLyChinh() {
+        var hasValue = $("#NGUOIXULYCHINH").val().length > 0;
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa thông tin người xử lý chính?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#NGUOIXULYCHINH").val("");
+                            $("#NGUOIXULYCHINH_ID").val("");
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+    function XoaNguoiThamGiaXuLy() {
+        var hasValue = $("#NGUOITHAMGIAPHOIHOP").val().length > 0;
+
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa thông tin người tham gia xử lý?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#NGUOITHAMGIAPHOIHOP").val("");
+                            $("#NGUOITHAMGIAPHOIHOP_ID").val("");
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+    function XoaNguoiTheoDoi() {
+        var hasValue = $("#NGUOITHEODOI").val().length > 0;
+
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa thông tin người theo dõi?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#NGUOITHEODOI").val("");
+                            $("#NGUOITHEODOI_ID").val("");
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+
+    function XoaDonViXuLyChinh() {
+        var hasValue = $("#DONVIXULYCHINH").val().length > 0;
+
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa thông tin đơn vị chủ trì ?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#DONVIXULYCHINH").val("");
+                            $("#DONVIXULYCHINH_ID").val("");
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+    function XoaDonViThamGiaXuLy() {
+        var hasValue = $("#DONVITHAMGIAXULY").val().length > 0;
+
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa thông tin đơn vị phối hợp ?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#DONVITHAMGIAXULY").val("");
+                            $("#DONVITHAMGIAXULY_ID").val("");
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+    function XoaPhongTheoDoi() {
+        var hasValue = $("#PHONGTHEODOI").val().length > 0;
+
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa thông tin Phòng theo dõi?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#PHONGTHEODOI").val("");
+                            $("#PHONGTHEODOI_ID").val("");
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+    function cancel() {
+        location.href = "@Url.Action("Index")";
+    }
+</script>

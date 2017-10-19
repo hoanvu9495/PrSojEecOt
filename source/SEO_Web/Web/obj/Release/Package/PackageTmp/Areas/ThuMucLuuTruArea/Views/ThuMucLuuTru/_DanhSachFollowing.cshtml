@@ -1,0 +1,91 @@
+﻿@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@using Business.CommonBusiness;
+@{
+    List<ThuMucLuuTruBO> lstThuMuc = new List<ThuMucLuuTruBO>();
+    if (ViewData["Search"] == "0")
+    {
+        lstThuMuc = (List<ThuMucLuuTruBO>)SessionManager.GetValue("ListFollowing");
+    }
+    else
+    {
+        lstThuMuc = (List<ThuMucLuuTruBO>)SessionManager.GetValue("ListFollowingSearch");
+    }
+    if (lstThuMuc != null && lstThuMuc.Count > 0)
+    {
+        foreach (var i in lstThuMuc)
+        {
+            <tr>
+                <td data-pid="@("F_"+i.ID)">
+                    @if (i.IS_THUMUC)
+                    {
+                        if (i.EXPIRE_DATEFROM.HasValue && i.EXPIRE_DATE.HasValue)
+                        {
+                            if (DateTime.Now >= i.EXPIRE_DATEFROM && DateTime.Now <= i.EXPIRE_DATE)
+                            {
+                                <span data-yeucau="@i.USER_ID" class="folder unexpired" data-file="false" data-donvi="@i.DONVI_ID" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                            else
+                            {
+                                <span data-yeucau="@i.USER_ID" data-donvi="@i.DONVI_ID" class="folder item" title="@i.TENTHUMUC" data-pid="@i.ID" data-file="false" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                        }
+                        else
+                        {
+                            <span data-yeucau="@i.USER_ID" class="folder item" title="@i.TENTHUMUC" data-donvi="@i.DONVI_ID" data-pid="@i.ID" data-file="false" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                    }
+                    else
+                    {
+                        var extension = i.THUMUCCHA;
+                        var docx = "";
+                        if (extension == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+                        {
+                            docx = "docx";
+                        }
+                        else if (extension == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                        {
+                            docx = "ms-excel";
+                        }
+                        <span data-yeucau="@i.USER_ID" class="@(extension.Split('/')[1]) @docx @(extension.Split('.').Length > 1 ? extension.Split('.')[1] : "") filearchive" style='color:red' data-file='true' data-pid="@i.ID">@i.TENTHUMUC</span>
+                    }
+                </td>
+                <td>@i.TENDONVI</td>
+                <td>
+                    @if (i.IS_THUMUC)
+                    {
+                        <span>Có @i.SLTHUMUC thư mục</span>
+                    }
+                </td>
+                <td>
+                    @if (i.IS_THUMUC)
+                    {
+                        <a href="javascript:void(0)" data-yeucau="@i.USER_ID" class=" StopShared" data-id="@i.PARENT_ID" data-donvi="@i.DONVI_ID" data-file="true" data-private="@i.IS_CENSOR"></a>
+                    }
+                    else
+                    {
+                        <a href="javascript:void(0)" data-yeucau="@i.USER_ID" class=" StopShared" data-id="@i.PARENT_ID" data-donvi="@i.DONVI_ID" data-file="false" data-private="@i.IS_CENSOR"></a>
+                    }
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="4">
+                <span style="color:red">Không tìm thấy tài liệu nào đang được chia sẻ</span>
+            </td>
+        </tr>
+    }
+}
+<style>
+    .StopShared {
+        background: url('/Content/themes/base/images/TM_Cancel.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+        margin-top: 10px;
+    }
+</style>

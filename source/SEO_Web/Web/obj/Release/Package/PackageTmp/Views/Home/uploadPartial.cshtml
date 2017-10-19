@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Web.Models.imageviewmodel>
+<script src="~/Scripts/jquery-1.9.1.js"></script>
+@foreach (var image in Model)
+{
+    <a href="#" class="returnImage" data-url="@Request.Url.GetLeftPart(UriPartial.Authority)@image.Url">
+        <img src="@image.Url" alt="Hejsan" id="#image" data-source="@image.Url" width="200" height="200" />
+    </a>
+}
+<script type="text/javascript">
+    
+    $(document).ready(function () {
+        $(".returnImage").click("click", function (e) {
+            var urlImage = $(this).attr("data-url");
+            window.opener.updateValue("cke_72_textInput", urlImage);
+            window.close();
+        });
+    });
+</script>

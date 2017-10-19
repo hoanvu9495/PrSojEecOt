@@ -1,0 +1,432 @@
+﻿@using Web.Common
+@model List<Business.CommonBusiness.HscvVanBanLienQuanBO>
+@{
+    //get selected
+    List<SelectListItem> listCoQuanBanHanh = (ViewData["CoQuanBanHanh"] == null ? new List<SelectListItem>() : (List<SelectListItem>)ViewData["CoQuanBanHanh"]);
+    List<SelectListItem> listMucDoQuanTrong = (ViewData["MucDoQuanTrong"] == null ? new List<SelectListItem>() : (List<SelectListItem>)ViewData["MucDoQuanTrong"]);
+    List<SelectListItem> listLoaiVanBan = (ViewData["LoaiVanBan"] == null ? new List<SelectListItem>() : (List<SelectListItem>)ViewData["LoaiVanBan"]);
+    List<SelectListItem> listNhomSoVanBan = (ViewData["NhomSoVanBan"] == null ? new List<SelectListItem>() : (List<SelectListItem>)ViewData["NhomSoVanBan"]);
+    List<SelectListItem> listSoVanBan = (ViewData["SoVanBan"] == null ? new List<SelectListItem>() : (List<SelectListItem>)ViewData["SoVanBan"]);
+    List<SelectListItem> listDoKhan = ViewData["DoKhan"] == null ? new List<SelectListItem>() : (List<SelectListItem>)ViewData["DoKhan"];
+    
+    listCoQuanBanHanh.ForEach(x => x.Selected = false);
+    listMucDoQuanTrong.ForEach(x => x.Selected = false);
+    listLoaiVanBan.ForEach(x => x.Selected = false);
+    //listNhomSoVanBan.ForEach(x => x.Selected = false);
+    //listSoVanBan.ForEach(x => x.Selected = false);
+    listDoKhan.ForEach(x => x.Selected = false);
+
+    string controller = this.ViewContext.RouteData.Values["controller"].ToString();
+    bool isInVanBanDiController = controller.ToLower().Equals("hsvanbandi");
+}
+<style type="text/css">
+    .chon_van_ban_lien_quan .modal-dialog {
+        width: 900px;
+    }
+
+    .chon_van_ban_lien_quan label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+
+    .chon_van_ban_lien_quan > .modal-dialog > .modal-content .modal-header .modal-title {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .chon_van_ban_lien_quan > .modal-dialog > .modal-content .modal-body {
+        height: 460px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    #box-van-ban-lien-quan {
+        width: 100%;
+        margin: auto;
+    }
+
+    #table--form-search-criteria {
+        width: 100%;
+    }
+
+    #button--search-vanbanlienquan {
+        background-color:rgb(40,96,144);
+        height: 30px;
+        border: none;
+        width: 100px;
+        color: white;
+    }
+
+    #block--button-search-container {
+        text-align: center;
+        margin: 5px 0 0 0;
+    }
+
+    #block--radio-loaivb label {
+        width: auto;
+        display: inline-block;
+    }
+
+    .height-10 {
+        height: 10px;
+    }
+
+    #table--form-search-criteria tbody td {
+        width: 20%;
+    }
+
+    #table--form-search-criteria tbody .ms-parent {
+        width: 100%;
+    }
+
+    #table--form-search-criteria .e-input {
+        width: 233px;
+    }
+
+    #table--form-search-criteria .ms-drop.bottom ul {
+        /*height: 90px;*/
+    }
+
+    #VBLQ_LOAIVANBAN ~ .ms-parent .ms-drop.bottom ul {
+        height:230px;
+    }
+
+    #block--button-search-container #QUERY_TRICHYEU {
+        width: 97%;
+    }
+</style>
+<div class="modal fade chon_van_ban_lien_quan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 style="" class="modal-title">
+                    Chọn văn bản liên quan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table id="table--form-search-criteria">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label class="lbl-title">Loại văn bản:</label>
+                            </td>
+                            <td id="block--radio-loaivb" colspan="3">
+                                <label class="radio-inline ">
+                                    <input class="radio-chon-van-ban radio-van-ban-den" type="radio" name="optradio" value="@LOAIHOSO.VANBANDEN" @(isInVanBanDiController == false ? "checked" : "")>Văn bản đến
+                                </label>
+                                <label class="radio-inline ">
+                                    <input class="radio-chon-van-ban radio-van-ban-di" type="radio" name="optradio" value="@LOAIHOSO.VANBANDI"
+                                    @(isInVanBanDiController == true ? "checked":"")      
+                                           >
+                                    Văn bản đi
+                                </label>
+                            </td>
+                        </tr>
+                        <tr class="height-10"></tr>
+                        <tr>
+                            <td>
+                                <label class="lbl-title">Trích yếu :</label>
+                            </td>
+                            <td>
+                                <input class="e-input" type="text" id="KEYWORD_TRICHYEU" placeholder="Trích yếu" width="97%" />
+                            </td>
+                            <td>
+                                <label class="lbl-title">Số hiệu văn bản:</label>
+                            </td>
+                            <td>
+                                <input class="e-input" id="KEYWORD_SOHIEUVANBAN" name="KEYWORD_SOHIEUVANBAN" placeholder="Số hiệu văn bản">
+                            </td>
+                        </tr>
+                        <tr class="height-10"></tr>
+                        <tr>
+                            <td>
+                                <label class="lbl-title">Ngày ban hành :</label>
+                            </td>
+                            <td>
+                                <input class="e-input datepicker" type="text" id="KEYWORD_NGAYBANHANH_FROM" placeholder="Từ ngày" />
+                            </td>
+                            <td></td>
+                            <td>
+                                <input class="e-input datepicker" type="text" id="KEYWORD_NGAYBANHANH_TO" placeholder="Ngày đến" />
+                            </td>
+                        </tr>
+                        <tr class="height-10"></tr>
+                        <tr>
+                            <td>
+                                <label class="lbl-title">Cơ quan ban hành :</label>
+                            </td>
+                            <td>
+                                @Html.DropDownList("VBLQ_COQUANBANHANH", listCoQuanBanHanh, "---Chọn cơ quan ban hành---", new { @class = "width_100" })
+                            </td>
+                            <td>
+                                <label class="lbl-title">Độ khẩn :</label>
+                            </td>
+                            <td>
+                                @Html.DropDownList("VBLQ_DOKHAN", listDoKhan, "---Chọn độ khẩn---", new { @class = "width_100" })
+                            </td>
+                        </tr>
+                        <tr class="height-10"></tr>
+                        <tr>
+                            <td>
+                                <label class="lbl-title">Hình thức văn bản :</label>
+                            </td>
+                            <td>
+                                @Html.DropDownList("VBLQ_LOAIVANBAN", listLoaiVanBan, "---Chọn loại văn bản---", new { @class = "width_100" })
+                            </td>
+                            <td>
+                                <label class="lbl-title">Nhóm sổ văn bản :</label>
+                            </td>
+                            <td>
+                                @Html.DropDownList("VBLQ_NHOMSOVANBAN", listNhomSoVanBan, "---Chọn nhóm sổ văn bản---", new { @class = "width_100" })
+                            </td>
+                        </tr>
+                        <tr class="height-10"></tr>
+                        <tr>
+                            <td>
+                                <label class="lbl-title">Sổ văn bản :</label>
+                            </td>
+                            <td>
+                                @Html.DropDownList("VBLQ_SOVANBAN", listSoVanBan, "---Chọn sổ văn bản---", new { @class = "width_100" })
+                            </td>
+                            <td>
+                                <label class="lbl-title">Số văn bản :</label>
+                            </td>
+                            <td>
+                                <input class="e-input" id="KEYWORD_SOVANBAN" name="KEYWORD_SOVANBAN" placeholder="Số văn bản">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div id="block--button-search-container">
+                                    <input type="button" value="Tra cứu" id="button--search-vanbanlienquan">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="box-van-ban-lien-quan">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnChonVanBanLienQuan">
+                    Chọn
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="~/Content/Custom/css/multiple-select.css" rel="stylesheet" />
+<script src="~/Scripts/multiple-select.js"></script>
+<script type="text/javascript">
+    var find_by_van_ban_den = false;
+    $(document).ready(function () {
+        $('.chon_van_ban_lien_quan').draggable({
+            handle: '.modal-header'
+        });
+        $("#button--add-vanbanlienquan").click(function () {
+            $(".chon_van_ban_lien_quan").modal("show");
+        });
+
+        $('#VBLQ_COQUANBANHANH').multipleSelect({
+            single: true,
+            filter: true,
+        });
+        $('#VBLQ_MUCDOQUANTRONG').multipleSelect({
+            single: true,
+            filter: true
+        });
+        $('#VBLQ_LOAIVANBAN').multipleSelect({
+            filter: true,
+            single: true
+        });
+        $('#VBLQ_NHOMSOVANBAN').multipleSelect({
+            filter: true,
+            single: true,
+            onClick: function (option) {
+                var id = option.value;
+                if (id > 0) {
+                    $.ajax({
+                        url: '/Common/GetSoByNhomSo',
+                        type: 'POST',
+                        data: { id: id },
+                        cache: false,
+                        success: function (data) {
+                            $('#VBLQ_SOVANBAN').html(data.strResultSoVanBan);
+                            $('#VBLQ_SOVANBAN').multipleSelect('refresh');
+                        }, error: function (jqXHR, textStatus, errorThrown) {
+                            console.log('ERRORS: ' + textStatus);
+                        }
+                    });
+                } else {
+                    $('#VBLQ_SOVANBAN option').not(':eq(0)').remove();
+                    $('#VBLQ_SOVANBAN').multipleSelect('refresh');
+                }
+            }
+        });
+        $('#VBLQ_SOVANBAN').multipleSelect({
+            filter: true,
+            single: true
+        });
+        $('#VBLQ_DOKHAN').multipleSelect({
+            filter: true,
+            single: true
+        });
+
+        $('.radio-van-ban-di').on('change', function () {
+            if (this.checked) {
+                getNhomSoAndSoByVanBanType(this.value);
+            }
+        });
+
+        $('.radio-van-ban-den').on('change', function () {
+            if (this.checked) {
+                getNhomSoAndSoByVanBanType(this.value);
+            }
+        });
+    });
+    $("#KEYWORD_SOHIEUVANBAN,#KEYWORD_TRICHYEU,#KEYWORD_NGAYBANHANH_FROM,#KEYWORD_NGAYBANHANH_TO,#KEYWORD_SOVANBAN").keypress(function (event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            search(event);
+        }
+    });
+    $("#button--search-vanbanlienquan").click(function (event) {
+        search(event);
+    });
+    $("#btnChonVanBanLienQuan").click(function () {
+        var tblBodyHtml = "";
+        $(".li-van-ban-lien-quan.active").each(function () {
+            var vb_id = $(this).find(".check-box-van-ban-lien-quan").val();
+            if (!existedVanBanLienQuan(vb_id)) {
+                tblBodyHtml += "<tr>";
+                if (find_by_van_ban_den) {
+                    tblBodyHtml += "<td><a href='/hsvanbandenarea/hsvanbanden/viewdetail/" + vb_id + "'>" + $(this).find('.input--trichyeu').val() + "</a></td>";
+                    tblBodyHtml += "<td>" + $(this).find('.input--sohieu').val() + "</td>";
+                    tblBodyHtml += "<td>Văn bản đến<input type='hidden' name='VanBanDenLienQuan' value='" + vb_id + "'/></td>";
+                } else {
+                    tblBodyHtml += "<td><a href='/hsvanbandiarea/hsvanbandi/detail/" + vb_id + "'>" + $(this).find('.input--trichyeu').val() + "</a></td>";
+                    tblBodyHtml += "<td>" + $(this).find('.input--sohieu').val() + "</td>";
+                    tblBodyHtml += "<td>Văn bản đi<input type='hidden' name='VanBanDiLienQuan' value='" + vb_id + "'/></td>";
+                }
+                tblBodyHtml += "<td><a class='delete-van-ban-lien-quan' data-id='file_1' href='javascript:void(0)' onclick='deleteVanBanLienQuan(event)' title='Xóa văn bản liên quan'><img src='/Content/Images/Delete.png'></a></td>";
+                tblBodyHtml += "</tr>";
+            }
+        });
+        if (tblBodyHtml !== '') {
+            $("#block--table-container-1 > table tbody").append(tblBodyHtml);
+        }
+        $(".chon_van_ban_lien_quan").modal("hide");
+    });
+    function search(event) {
+        if ($(".radio-chon-van-ban:checked").length == 0) {
+            notif({
+                type: 'error',
+                position: 'bottom',
+                msg: 'Bạn phải chọn loại văn bản!',
+            });
+            event.preventDefault();
+            return false;
+        } else {
+            if ($(".radio-van-ban-den:checked").length == 1) {
+                find_by_van_ban_den = true;
+                //Tìm kiếm văn bản đến
+                $.ajax({
+                    type: "POST",
+                    dataType: 'html',
+                    url: '/Common/SearchVanBanDen',
+                    cache: false,
+                    data: {
+                        TRICHYEU: $("#KEYWORD_TRICHYEU").val().trim(),
+                        SOHIEU: $('#KEYWORD_SOHIEUVANBAN').val().trim(),
+                        NGAYBANHANH_FROM: $("#KEYWORD_NGAYBANHANH_FROM").val().trim(),
+                        NGAYBANHANH_TO: $('#KEYWORD_NGAYBANHANH_TO').val().trim(),
+                        COQUANBANHANH: $("#VBLQ_COQUANBANHANH").val().trim(),
+                        DOKHAN: $("#VBLQ_DOKHAN").val().trim(),
+                        LOAIVANBAN: $("#VBLQ_LOAIVANBAN").val().trim(),
+                        NHOMSOVANBAN: $("#VBLQ_NHOMSOVANBAN").val().trim(),
+                        SOVANBAN: $("#VBLQ_SOVANBAN").val().trim(),
+                        SODEN: $("#KEYWORD_SOVANBAN").val().trim()
+                    },
+                    success: function (view) {
+                        $('#box-van-ban-lien-quan').html(view);
+                    }
+                });
+            } else {
+                //Tìm kiếm văn bản đi
+                find_by_van_ban_den = false;
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'html',
+                    url: '/Common/SearchVanBanDi',
+                    cache: false,
+                    data: {
+                        TRICHYEU: $("#KEYWORD_TRICHYEU").val().trim(),
+                        SOHIEU: $('#KEYWORD_SOHIEUVANBAN').val().trim(),
+                        NGAYBANHANH_FROM: $("#KEYWORD_NGAYBANHANH_FROM").val().trim(),
+                        NGAYBANHANH_TO: $('#KEYWORD_NGAYBANHANH_TO').val().trim(),
+                        COQUANBANHANH: $("#VBLQ_COQUANBANHANH").val().trim(),
+                        DOKHAN: $("#VBLQ_DOKHAN").val().trim(),
+                        LOAIVANBAN: $("#VBLQ_LOAIVANBAN").val().trim(),
+                        NHOMSOVANBAN: $("#VBLQ_NHOMSOVANBAN").val().trim(),
+                        SOVANBAN: $("#VBLQ_SOVANBAN").val().trim(),
+                        SODEN: $("#KEYWORD_SOVANBAN").val().trim()
+                    },
+                    success: function (view) {
+                        $('#box-van-ban-lien-quan').html(view);
+                    }
+                });
+            }
+        }
+    }
+    function deleteVanBanLienQuan(event) {
+        var element = $(event.currentTarget);
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc xóa văn bản này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        element.closest('tr').remove();
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { }
+                }
+            }
+        });
+    }
+    function existedVanBanLienQuan(id) {
+        var listVanVanLienQuan = $('#block--table-container-1 > table tbody').find('input[type=hidden]');
+        var listExisted = listVanVanLienQuan.filter(function (index, ele) {
+            return $(ele).val() === id;
+        });
+        return listExisted.length > 0;
+    }
+
+    function getNhomSoAndSoByVanBanType(id) {
+        $.ajax({
+            url: '/Common/GetNhomSoAndSoByVanBanType',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify({ type: id }),
+            success: function (data) {
+                $('#VBLQ_NHOMSOVANBAN').html(data.strResultNhomSoVanBan);
+                $('#VBLQ_SOVANBAN').html(data.strResultSoVanBan);
+
+                $('#VBLQ_NHOMSOVANBAN').multipleSelect('refresh');
+                $('#VBLQ_SOVANBAN').multipleSelect('refresh');
+            }
+        })
+    }
+</script>

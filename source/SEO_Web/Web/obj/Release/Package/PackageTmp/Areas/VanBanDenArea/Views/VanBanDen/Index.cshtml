@@ -1,0 +1,248 @@
+﻿    @using Web.FwCore
+@using Business.CommonBusiness
+@using System.Text
+@using Model.eAita
+@using Web.Common
+@using Web.Areas.MarkItemArea.Models
+@model Web.Areas.VanBanDenArea.Models.VanBanDenSearchModel
+@{
+    ViewBag.Title = "[eAita] Điều hành tác nghiệp > Quản lý văn bản đến";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    MarkItemViewModel mark_model = new MarkItemViewModel();
+    mark_model.ITEM_TYPE = LOAITAILIEU.VANBANDEN;
+    mark_model.RELOAD_FUNCTION = "ReloadPage";
+}
+<style>
+    input[type="radio"], input[type="checkbox"] {
+        margin: 3px 0 0;
+    }
+
+    .e-input {
+        height: 30px;
+    }
+
+    .panel {
+        margin-bottom: 0px;
+        border-radius: 0px;
+        border-bottom: none;
+    }
+
+    /*#grid {
+        margin-top: -40px;
+    }*/
+
+    .panel-title {
+        padding-top: 5px;
+    }
+</style>
+<style>
+    table.webGrid tr.head th, table.webGrid tr.head td {
+        border: none;
+    }
+
+    table.webGrid tr td {
+        border: none;
+        border-bottom: 1px solid #e8e8e8;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/van_ban_den/van_ban_den.css">
+<script src="~/Scripts/workflow.js"></script>
+
+<div class="row">
+    <div class="col-sm-3">
+        @Html.Partial("~/Areas/MarkItemArea/Views/_ActionMarkItem.cshtml", mark_model)
+    </div>
+    <div class="col-sm-9">
+        @*<a href="#VanBanDenArea/VanBanDen/Create" class="btn btn-success" style="float: right;">
+            <i class="fa fa-plus"></i> <span class="hidden-mobile">Thêm mới văn bản đến</span>
+        </a>*@
+        <a href="#collapseOne" class="btn btn-labeled btn-primary" aria-controls="collapseOne" data-toggle="collapse" role="button" style="float: right;  margin-right:5px;">
+            <span class="btn-label">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+            Tìm kiếm nâng cao
+        </a>
+       
+
+    </div>
+
+</div>
+<div class="right-all-page">
+    <div class="right-content clearfix">
+        <div id="search_vb_den">
+            @Html.Partial("_VanBanDenSearch", Model)
+        </div>
+        @Html.Partial("_VanBanDenSearchResult", Model)
+    </div>
+</div>
+
+<script>
+    var currentPage=1;
+
+    if ('@TempData["VanBanDenInsertSuccess"]' !== '') {
+        NotiSuccess("@TempData["VanBanDenInsertSuccess"]");
+    };
+    $(document).ready(function () {
+        $("#ViewVanBanDen").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 960,
+            height: 760,
+            resizable: false,
+            show: {
+                effect: "blind",
+                duration: 200
+            },
+            hide: {
+                effect: "blind",
+                duration: 200
+            }
+        });
+    });
+    function getParam(name, href) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(href);
+        if (results == null) {
+            return null;
+        }
+        else {
+            return results[1] || 0;
+        }
+    }
+    function reloadGrid() {
+        window.location.reload();
+    }
+
+    function PrintDetailVanBan() {
+        $("#ViewVanBanDen").printElement();
+        return false;
+    }
+
+    @*function ViewDetail(id) {
+        $.ajax({
+            url: '@Url.Action("ViewVanBanDen","VanBanDen" )',
+            type: 'post',
+            cache: false,
+            data: { ID: id },
+            success: function (data) {
+                $("#ViewVanBanDen").html(data);
+                $("#ViewVanBanDen").dialog("open");
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }*@
+
+    function ReloadPage() {
+        $.ajax({
+            url: '@Url.Action("ReloadData", "VanBanDen")',
+            type: 'post',
+            cache: false,
+            data:{"ID": @Model.TYPE, "page":currentPage},
+            success: function (data) {
+                $("#countTotal").html("("+data.Count+")");
+                for (var i = 0; i < data.ListItem.length; i++) {
+                    if (data.ListItem[i].NGAYDEN != null) {
+                        var str = data.ListItem[i].NGAYDEN;
+                        data.ListItem[i].NGAYDEN = ConvertToDateISO(str);
+                    }
+                }
+                loadData(data.ListItem);
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+
+    function ActionQuanTrong(id, status) {
+        $.ajax({
+            url: '@Url.Action("SetQuanTrong", "VanBanDen")',
+            type: 'post',
+            cache: false,
+            data: { id: id, status: status },
+            success: function (data) {
+                if (data) {
+                    NotiSuccess("Thao tác thành công");
+                    ReloadPage();
+                } else {
+                    NotiError("Thao tác thất bại");
+                }
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function ActionDauSao(id, status) {
+        $.ajax({
+            url: '@Url.Action("SetDauSao", "VanBanDen")',
+            type: 'post',
+            cache: false,
+            data: { id: id, status: status },
+            success: function (data) {
+                if (data) {
+                    NotiSuccess("Thao tác thành công");
+                    ReloadPage();
+
+                } else {
+                    NotiError("Thao tác thất bại");
+
+                }
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    function DeleteVanBanDen(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa văn bản đến này?',
+            'buttons': {
+                'Đồng ý': {
+                    'class': 'btn-confirm-yes btn-primary',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "VanBanDen")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID, SearchType: "Soft" },
+                            success: function (data) {
+                                NotiSuccess("Xóa thành công");
+                                ReloadPage();
+
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Hủy bỏ': {
+                    'class': 'btn-danger',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+
+
+
+    $('#txtQuickSearch').keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            $("#TRICHYEU").val($(this).val());
+            $("#frmSearh").submit();
+        }
+    });
+    $("#btnQuickSearch").click(function () {
+        $("#TRICHYEU").val($('#txtQuickSearch').val());
+        $("#frmSearh").submit();
+    });
+
+    
+</script>
+

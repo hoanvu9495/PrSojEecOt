@@ -1,0 +1,522 @@
+﻿@using Business.CommonBusiness;
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Web.Models;
+@model DrashboardViewModel
+@{
+    UserInfoBO user = ((UserInfoBO)SessionManager.GetUserInfo());
+    //List<ChucNangBO> lstRootMenu = user == null ? new List<ChucNangBO>() : user.ListCN.ToList();//.Where(x => x.CHUCNANG_CHA == null)
+    List<ChucNangBO> lstCN = user == null ? new List<ChucNangBO>() : user.ListCNFull.ToList();
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<div style="margin-top: 27px; margin-left: 713px; cursor:pointer; width: 230px; float: left; font-size: 12px;">
+        <img src="~/Content/Images/downloadicon.png" id="DownloadImage" />
+        <a style="color: red" onclick="DownloadClick();">Download Tài nguyên Hệ thống</a>
+    </div>
+    <div id="DwnloadPopup" title="Download Tài nguyên hệ thống">
+        @Html.Partial("_DownloadTaiNguyen")
+    </div>*@
+@*@Html.Partial("_MenuChucNang")*@
+
+<style>
+    .content-logo-img {
+        margin: 50px 0 0 250px;
+    }
+</style>
+
+<td style="background:#015bb4;">
+    <ul class="admin-menu" style="margin-bottom:0px;">
+        <li class="menu" style="z-index:10">
+            <a class="ico-3 admin-menu-active" href="/home/index">Trang chủ</a>
+        </li>
+    </ul>
+    <div class="left-content">
+        <ul class="admin-menu">
+            @if (lstCN != null)
+            {
+                var i = 1;
+                foreach (ChucNangBO menu in lstCN)
+                {
+                    if (menu.IS_HIDDEN == 1) { continue; }
+                    <li class="menu" style="z-index:10">
+                        <a class="ico-@i" href="javascript:openMenu( @menu.DM_CHUCNANG_ID,@user.RoleID,@user.UserID)" id="ico-@menu.TT_HIENTHI" data-parent="@menu.DM_CHUCNANG_ID">@menu.TEN_CHUCNANG</a>
+                    </li>
+                    i++;
+                    if (i > 6)
+                    {
+                        i = 1;
+                    }
+                }
+            }
+        </ul>
+
+    </div>
+    @*<div class="div-footer">
+            <p>
+                Cục Tin Học Hóa<br />
+                Bộ Thông tin và Truyền thông<br />
+                8A Tôn Thất Thuyết - Mỹ Đình - Hà Nội
+            </p>
+        </div>*@
+</td>
+<td style="background:#ecf0f1">
+    <div class="date-time">
+        <p><span id="servertime"></span> GMT+7</p>
+        <div class="notifi-bar">
+            <a href="javascript:void(0)" id="lnkNotification" data-comment="Thông báo mới" class="show-pop-notification" data-contrains="vertical" data-placement="bottom-left" title="Thông báo">
+                <img src="~/Content/Images/i-notifi.png" style="float: left;" />
+                <span id="c-notifi" class="c-notifi">999</span>
+            </a>
+        </div>
+    </div>
+    <div class="right-content clearfix">
+        <div class="tbl-sub-menu" id="nhapsolieu" style="width: calc(100% - 200px); float:left; border-right:1px solid #ddd;min-height:50em;">
+            <div class="conf-bar">
+                <a href="javascript:ConfigRowHomePage()" class="conf-home" title="Tùy chỉnh bố cục hàng ngang">
+                    <img src="~/Content/Images/row-config.png" />
+                </a>
+            </div>
+            <div>
+                @if (Model.ListDrashboardRowViewModel.Count > 0)
+                {
+                    for (int j = 1; j <= Model.ListDrashboardRowViewModel.Count; j++)
+                    {
+                        <div class="conf-col-bar">
+                            <a href="javascript:ConfigHomePage(@j)" class="conf-home" title="Tùy chỉnh bố cục hàng dọc">
+                                <img src="~/Content/Images/col-config.png" />
+                            </a>
+                            <a href="javascript:ConfigFunctionList(@j)" class="conf-home" title="Tùy chỉnh tính năng">
+                                <img src="~/Content/Images/function-list.png" />
+                            </a>
+                        </div>
+                        var _model = Model.ListDrashboardRowViewModel[j - 1];
+                        if (_model.ListChucNang != null && _model.ListChucNang.Count > 0)
+                        {
+                            var _i = 1;
+                            <div class="column" id="row_@j" data-row="@j">
+                                @foreach (var item in _model.ListChucNang)
+                                {
+                                    //Hiển thị 100% hoặc 50%-50% hoặc 25%-25%-25%-25%
+                                    if (_model.Width == 99 || _model.Width == (float)48.5 || _model.Width == (float)23.5)
+                                    {
+                                        <div class="dragbox" data-fid="@item.ID" id="@item.SYS_CHUCNANGTRANGCHU.ID" style="@("width:" + _model.Width + "%" )">
+                                            <h2><a href="">@item.SYS_CHUCNANGTRANGCHU.TENCHUCNANG</a></h2>
+                                            <div class="dragbox-content">
+                                                @{Html.RenderAction(item.SYS_CHUCNANGTRANGCHU.ACTION, item.SYS_CHUCNANGTRANGCHU.CONTROLLER);}
+                                            </div>
+                                        </div>
+                                                    }
+                                                    else if (_model.Width == 37)//Hiển thị 30%-70%
+                                                    {
+                                                        if (_i % 2 != 0)
+                                                        {
+                                                            <div class="dragbox" data-fid="@item.ID" id="@item.SYS_CHUCNANGTRANGCHU.ID" style="width:29%">
+                                                                <h2><a href="">@item.SYS_CHUCNANGTRANGCHU.TENCHUCNANG</a></h2>
+                                                                <div class="dragbox-content">
+                                                                    @{Html.RenderAction(item.SYS_CHUCNANGTRANGCHU.ACTION, item.SYS_CHUCNANGTRANGCHU.CONTROLLER);}
+                                                                </div>
+                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div class="dragbox" data-fid="@item.ID"  id="@item.SYS_CHUCNANGTRANGCHU.ID" style="width:68%">
+                                                                                <h2><a href="">@item.SYS_CHUCNANGTRANGCHU.TENCHUCNANG</a></h2>
+                                                                                <div class="dragbox-content">
+                                                                                    @{Html.RenderAction(item.SYS_CHUCNANGTRANGCHU.ACTION, item.SYS_CHUCNANGTRANGCHU.CONTROLLER);}
+                                                                                </div>
+                                                                            </div>
+                                                                                            }
+                                                                                        }
+                                                                                        else if (_model.Width == 73)//Hiển thị 70%-30%
+                                                                                        {
+                                                                                            if (_i % 2 != 0)
+                                                                                            {
+                                                                                                <div class="dragbox" data-fid="@item.ID"  id="@item.SYS_CHUCNANGTRANGCHU.ID" style="width:68%">
+                                                                                                    <h2><a href="">@item.SYS_CHUCNANGTRANGCHU.TENCHUCNANG</a></h2>
+                                                                                                    <div class="dragbox-content">
+                                                                                                        @{Html.RenderAction(item.SYS_CHUCNANGTRANGCHU.ACTION, item.SYS_CHUCNANGTRANGCHU.CONTROLLER);}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                <div class="dragbox" data-fid="@item.ID" id="@item.SYS_CHUCNANGTRANGCHU.ID" style="width:29%">
+                                                                                                                    <h2><a href="">@item.SYS_CHUCNANGTRANGCHU.TENCHUCNANG</a></h2>
+                                                                                                                    <div class="dragbox-content">
+                                                                                                                        @{Html.RenderAction(item.SYS_CHUCNANGTRANGCHU.ACTION, item.SYS_CHUCNANGTRANGCHU.CONTROLLER);}
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                            else if (_model.Width == 343)//Hiển thị 30%-40%-30%
+                                                                                                                            {
+                                                                                                                                if (_i % 3 == 0 || (_i % 3 != 0 && _i % 3 != 2)) //Cột ngoài cùng bên phải hoặc trái
+                                                                                                                                {
+                                                                                                                                    <div class="dragbox" data-fid="@item.ID"  id="@item.SYS_CHUCNANGTRANGCHU.ID" style="width:29%">
+                                                                                                                                        <h2><a href="">@item.SYS_CHUCNANGTRANGCHU.TENCHUCNANG</a></h2>
+                                                                                                                                        <div class="dragbox-content">
+                                                                                                                                            @{Html.RenderAction(item.SYS_CHUCNANGTRANGCHU.ACTION, item.SYS_CHUCNANGTRANGCHU.CONTROLLER);}
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                                }
+                                                                                                                                                else//Cột giữa
+                                                                                                                                                {
+                                                                                                                                                    <div class="dragbox" data-fid="@item.ID"  id="@item.SYS_CHUCNANGTRANGCHU.ID" style="width:38%">
+                                                                                                                                                        <h2><a href="">@item.SYS_CHUCNANGTRANGCHU.TENCHUCNANG</a></h2>
+                                                                                                                                                        <div class="dragbox-content">
+                                                                                                                                                            @{Html.RenderAction(item.SYS_CHUCNANGTRANGCHU.ACTION, item.SYS_CHUCNANGTRANGCHU.CONTROLLER);}
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+                                                                                                                                                                        }
+                                                                                                                                                                    }
+                                                                                                                                                                    _i++;
+                                                                                                                                                                }
+                            </div>
+                                                                                                                                                                        }
+                                                                                                                                                                    }
+                                                                                                                                                                }
+            </div>
+        </div>
+        <div class="user-online">
+            <div id="pnl-thongbao" class="pnl-thongbao">
+
+            </div>
+            <div id="pnl-useronline" class="pnl-useronline">
+                <h3 class="group-tittle vbdi_search" style="text-transform:none; padding-left:5px;">
+                    Thành viên trực tuyến
+                </h3>
+                <ul class="list-user"></ul>
+            </div>
+        </div>
+        @if (Model.ListDrashboardRowViewModel.Count > 0)
+        {
+            for (int i = 1; i <= Model.ListDrashboardRowViewModel.Count; i++)
+            {
+                var _modelconfig = Model.ListDrashboardRowViewModel[i - 1];
+                <div class="modal fade user-config-layout" id="user-config-layout-@i" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    @Html.AntiForgeryToken()
+                    @using (Ajax.BeginForm("SaveConfigHomePage", "Home", new AjaxOptions()
+                    {
+                        HttpMethod = "POST",
+                        OnFailure = "configFailure",
+                        OnSuccess = "configSuccess",
+                    }, new { id = "frmSaveConfig" + i }))
+                    {
+                        <div class="modal-dialog" style="width:635px;">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Tùy chọn bố cục hàng dọc cho hàng @i</h4>
+                                </div>
+                                <div class="modal-body" style="float:left; border-bottom: 1px solid #e5e5e5;margin-bottom:10px;">
+                                    <div style="clear:both;">
+                                        <div style="float: left;width: 100%;">
+                                            <div data-rowid="@i" data-layoutid="1" class="layout-item @(_modelconfig.CauHinhHienThi != null && _modelconfig.CauHinhHienThi.LayOutTypeID == 1 ? "layout-active" : "")" id="layout_100" style="width:171px;">
+                                                <div class="box-layout" style="width: 170px">
+                                                    100%
+                                                </div>
+                                            </div>
+                                            <div data-rowid="@i" data-layoutid="2" class="layout-item @(_modelconfig.CauHinhHienThi != null && _modelconfig.CauHinhHienThi.LayOutTypeID == 2 ? "layout-active" : "")" id="layout_50" style="width:171px;">
+                                                <div class="box-layout" style="width: 85px">
+                                                    50%
+                                                </div>
+                                                <div class="box-layout" style="width: 85px">
+                                                    50%
+                                                </div>
+                                            </div>
+                                            <div data-rowid="@i" data-layoutid="3" class="layout-item @(_modelconfig.CauHinhHienThi != null && _modelconfig.CauHinhHienThi.LayOutTypeID == 3 ? "layout-active" : "")" id="layout_25" style="width:171px;">
+                                                <div class="box-layout" style="width: 42.5px">
+                                                    25%
+                                                </div>
+                                                <div class="box-layout" style="width: 42.5px">
+                                                    25%
+                                                </div>
+                                                <div class="box-layout" style="width: 42.5px">
+                                                    25%
+                                                </div>
+                                                <div class="box-layout" style="width: 42.5px">
+                                                    25%
+                                                </div>
+                                            </div>
+                                            <div data-rowid="@i" data-layoutid="4" class="layout-item @(_modelconfig.CauHinhHienThi != null && _modelconfig.CauHinhHienThi.LayOutTypeID == 4 ? "layout-active" : "")" id="layout_37" style="width:171px;">
+                                                <div class="box-layout" style="width: 51px">
+                                                    30%
+                                                </div>
+                                                <div class="box-layout" style="width: 119px">
+                                                    70%
+                                                </div>
+                                            </div>
+                                            <div data-rowid="@i" data-layoutid="5" class="layout-item @(_modelconfig.CauHinhHienThi != null && _modelconfig.CauHinhHienThi.LayOutTypeID == 5 ? "layout-active" : "")" id="layout_343" style="width:171px;">
+                                                <div class="box-layout" style="width: 51px">
+                                                    30%
+                                                </div>
+                                                <div class="box-layout" style="width: 68px">
+                                                    40%
+                                                </div>
+                                                <div class="box-layout" style="width: 51px">
+                                                    30%
+                                                </div>
+                                            </div>
+                                            <div data-rowid="@i" data-layoutid="6" class="layout-item @(_modelconfig.CauHinhHienThi != null && _modelconfig.CauHinhHienThi.LayOutTypeID == 6 ? "layout-active" : "")" id="layout_73" style="width:171px;">
+                                                <div class="box-layout" style="width: 119px">
+                                                    70%
+                                                </div>
+                                                <div class="box-layout" style="width: 51px">
+                                                    30%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="hidden" value="@(_modelconfig.CauHinhHienThi != null ? _modelconfig.CauHinhHienThi.LayOutTypeID : 2)" name="LayOutTypeID" id="LayOutTypeID_@i" />
+                                    <input type="hidden" value="@i" name="HANG_HIENTHI" id="HANG_HIENTHI_@i" />
+                                    <button type="submit" class="btn btn-primary" id="btnSaveConfig_@i">Lưu</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+
+        <div class="modal fade" id="user-row-config-layout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            @Html.AntiForgeryToken()
+            @using (Ajax.BeginForm("SaveConfigRowHomePage", "Home", new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                OnFailure = "configRowFailure",
+                OnSuccess = "configRowSuccess",
+            }, new { id = "frmSaveRowConfig" }))
+            {
+            <div class="modal-dialog" style="width:635px;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Tùy chọn bố cục theo hàng</h4>
+                    </div>
+                    <div class="modal-body" style="float:left; border-bottom: 1px solid #e5e5e5;margin-bottom:10px;">
+                        <div style="clear:both;">
+                            <div style="float: left;width: 100%;">
+                                <div data-rowid="1" class="layout-item row-item @(Model.CauHinhHangHienThi!=null && Model.CauHinhHangHienThi.SOHANGHIENTHI == 1 ? "layout-active" : "")" id="layout_row_1" style="width:171px;">
+                                    <div class="box-layout" style="width: 170px">
+                                        01 Hàng ngang
+                                    </div>
+                                </div>
+                                <div data-rowid="2" class="layout-item row-item @(Model.CauHinhHangHienThi!=null && Model.CauHinhHangHienThi.SOHANGHIENTHI == 2 ? "layout-active" : "")" id="layout_row_2" style="width:171px;">
+                                    <div class="box-layout" style="width: 170px">
+                                        02 Hàng ngang
+                                    </div>
+                                </div>
+                                <div data-rowid="3" class="layout-item row-item @(Model.CauHinhHangHienThi!=null && Model.CauHinhHangHienThi.SOHANGHIENTHI == 3 ? "layout-active" : "")" id="layout_row_3" style="width:171px;">
+                                    <div class="box-layout" style="width: 170px">
+                                        03 Hàng ngang
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" value="@(Model.CauHinhHangHienThi!=null ? Model.CauHinhHangHienThi.SOHANGHIENTHI : 1)" name="SOHANGHIENTHI" id="SOHANGHIENTHI" />
+                        <button type="submit" class="btn btn-primary" id="btnSaveConfigRow">Lưu</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+
+        <div class="modal fade" id="function-list-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        </div>
+    </div>
+</td>
+
+<script type="text/javascript">
+    //Bắt đầu Cấu hình cột hiển thị
+    function configFailure() {
+        //alert("configFailure");
+    }
+    function configSuccess() {
+        $(".user-config-layout").modal('hide');
+        window.location = "/home/index"
+    }
+    $(".layout-item").click(function () {
+        $(".layout-item").removeClass("layout-check");
+        $(this).addClass("layout-check");
+        var i = $(this).attr("data-rowid");
+        $("#LayOutTypeID_" + i).val($(this).attr("data-layoutid"));
+    });
+    function ConfigHomePage(row) {
+        $("#user-config-layout-" + row).modal('show');
+    }
+    //Kết thúc Cấu hình cột hiển thị
+
+    //Bắt đầu Cấu hình hàng hiển thị
+    function configRowFailure() {
+        //alert("configFailure");
+    }
+    function configRowSuccess() {
+        $("#user-row-config-layout").modal('hide');
+        window.location = "/home/index"
+    }
+    $(".row-item").click(function () {
+        $(".row-item").removeClass("layout-check");
+        $(this).addClass("layout-check");
+        $("#SOHANGHIENTHI").val($(this).attr("data-rowid"));
+    });
+    function ConfigRowHomePage() {
+        //user-row-config-layout
+        $("#user-row-config-layout").modal('show');
+    }
+    function ConfigFunctionList(row)
+    {
+        $.ajax({
+            type: "GET",
+            url: '/Home/FunctionListConfig',
+            cache: false,
+            data: {
+                row: row
+            },
+            success: function (data) {
+                $("#function-list-config").html(data);
+                $("#function-list-config").modal('show');
+            }
+        });
+    }
+    //Kết thúc Cấu hình hàng hiển thị
+    $(function () {
+        //$('.dragbox').each(function () {
+        //    $(this).hover(function () { })
+        //    .find('h2').click(function () {
+        //        $(this).siblings('.dragbox-content').toggle();
+        //    })
+        //    .end()
+        //});
+        $('.column').sortable({
+            connectWith: '.column',
+            handle: 'h2',
+            cursor: 'move',
+            placeholder: 'placeholder',
+            forcePlaceholderSize: true,
+            opacity: 0.4,
+            stop: function (event, ui) {
+                $(ui.item).find('h2').click();
+                var sortorder = '';
+                $('.column').each(function () {
+                    var itemorder = $(this).sortable('toArray');
+                    var columnId = $(this).attr('data-row');
+                    sortorder += itemorder.toString() + '|';
+                    //sortorder += columnId + '_' + itemorder.toString() + '|';
+                });
+                //alert('SortOrder: ' + sortorder);
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/SetFunctionListConfig',
+                    cache: false,
+                    data: {
+                        sortorder: sortorder
+                    },
+                    success: function (data) {
+                        window.location = "/home/index"
+                    }
+                });
+                /*Pass sortorder variable to server using ajax to save state*/
+            }
+        })
+        .disableSelection();
+    });
+</script>
+
+<script>
+    function openMenu(menuID, role, userid) {
+        localStorage.setItem("currentMenuID", menuID);
+        if ($("a[data-parent=" + menuID + "]").parent().hasClass("menu")) {
+            $(".admin-menu-active").removeClass("admin-menu-active");
+            var active = $("ul li a[data-parent=" + menuID + "]");
+            active.addClass("admin-menu-active");
+            var url_loader = "/Common/LoadChucNang";
+            $.ajax({
+                type: 'POST',
+                url: url_loader,
+                cache: false,
+                data: {
+                    parent: menuID,
+                    role: role,
+                    userid: userid
+                },
+                success: function (data) {
+                    var str = "";
+                    var j = 1;
+                    $.each(data, function (i, type) {
+                        //console.log(type);
+                        str += '<div class="item-mn">';
+                        str += '<a class="mn-1-' + j + '" href="' + type.URL + '"><span>' + type.TEN_CHUCNANG + '</span></a>';
+                        str += '</div>';
+                        j++;
+                        if (j > 6) {
+                            j = 1;
+                        }
+                    });
+                    $("#nhapsolieu").html(str);
+                }
+
+            });
+        }
+
+    }
+</script>
+<script type="text/javascript">
+    var tday = new Array("Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy");
+    function GetClock() {
+        var d = new Date();
+        var nday = d.getDay(), nmonth = d.getMonth(), ndate = d.getDate(), nyear = d.getYear();
+        if (nyear < 1000) nyear += 1900;
+        var d = new Date();
+        var nhour = d.getHours(), nmin = d.getMinutes(), nsec = d.getSeconds(), ap;
+        var _nmonth = parseInt(nmonth) + 1;
+        //if (nhour == 0) { ap = " AM"; nhour = 12; }
+        //else if (nhour < 12) { ap = " AM"; }
+        //else if (nhour == 12) { ap = " PM"; }
+        //else if (nhour > 12) { ap = " PM"; nhour -= 12; }
+
+        if (nmin <= 9) nmin = "0" + nmin;
+        if (nsec <= 9) nsec = "0" + nsec;
+        document.getElementById('servertime').innerHTML = "" + tday[nday] + ", " + /*tmonth[nmonth]*/ ndate + "/" + _nmonth + "/" + nyear + " | " + nhour + ":" + nmin + ":" + nsec /*+ ap*/ + "";
+    }
+
+    window.onload = function () {
+        GetClock();
+        setInterval(GetClock, 1000);
+    }
+</script>
+<script>
+    CommonJS.ClearAllCache();
+
+    $(document).ready(
+       function () {
+           $("#DwnloadPopup").dialog({
+               autoOpen: false,
+               modal: true,
+               width: 700,
+               height: 520,
+               resizable: false,
+               show: {
+                   effect: "blind",
+                   duration: 200
+               },
+               hide: {
+                   effect: "blind",
+                   duration: 200
+               }
+           });
+       });
+
+    function DownloadClick() {
+        $("#DwnloadPopup").dialog("open");
+    };
+</script>
+

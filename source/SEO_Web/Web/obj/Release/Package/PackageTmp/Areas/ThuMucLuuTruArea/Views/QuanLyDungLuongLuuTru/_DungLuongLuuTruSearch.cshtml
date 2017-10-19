@@ -1,0 +1,94 @@
+﻿@using System.Web.Mvc
+@model List<SelectListItem>
+@using Web.Models
+@using Business.CommonBusiness
+@using Web.FwCore
+<style>
+    .txt {
+        width: 250px;
+    }
+
+    input[type="checkbox"] {
+        margin: 0 6px 0 !important;
+    }
+    a:hover{
+        cursor:pointer !important;
+    }
+</style>
+
+@Html.AntiForgeryToken()
+@using (Ajax.BeginForm("FindDoiTuong", "QuanLyDungLuongLuuTru", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearch" }))
+{
+    <table style="text-align: center; width: 45%; margin: 0 auto">
+        <tr>
+            <td style="text-align:left">Đơn vị:</td>
+            <td>
+                <div class="input-field4  clearfix" style="float:left">
+                    @Html.DropDownList("DONVI", Model, new { @id = "DONVI", @multiple = "multiple" })
+                </div>
+                <input type="hidden" name="DONVI_ID" id="DONVI_ID" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Người dùng: </td>
+            <td>
+
+                <input style="float:left;width:233px" type="text" id="CHUYEN_VIEN" value="" class="e-input" readonly="readonly" disabled />
+                <a id="Test_Chon" style="">Chọn</a> |
+                <a id="Xoa_ChuyenVien" class="remove-canbo">Xóa chuyên viên</a>
+                <input type="hidden" id="CHUYEN_VIEN_HIDEN" value="" name="NGUOIDUNG_ID">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center">
+                <input type="submit" class="btn btn-success" id="btnSearch" value="Tìm Kiếm" />
+            </td>
+        </tr>
+    </table>
+}
+@{
+    UserInfoBO user = (UserInfoBO)SessionManager.GetUserInfo();
+    ChonNguoiDungModel model_one = new ChonNguoiDungModel();
+    model_one.COSO_ID = user.CoSoID.Value;
+    model_one.DONVI_ID = 0;
+    model_one.PHONGBAN_ID = 0;
+    model_one.TEXT_ID = "CHUYEN_VIEN";
+    model_one.VALUE_ID = "CHUYEN_VIEN_HIDEN";
+    model_one.ID_CLICK = "Test_Chon";
+    model_one.IS_MULTICHOICE = 1;
+    model_one.INDEX = 0;
+    model_one.TITLE = "Tìm kiếm dung lượng lưu trữ theo người dùng";
+}
+@{ Html.RenderPartial("../Common/_ChooseUserV1", model_one);}
+<script>
+    $("#DONVI").multipleSelect({
+        multiple: true,
+        filter: true,
+    });
+    $(function () {
+        $("#Xoa_ChuyenVien").click(function () {
+            $("#CHUYEN_VIEN").val("");
+            $("#CHUYEN_VIEN_HIDEN").val("");
+        });
+        function initialVulue() {
+            $("#DONVI_ID").val($("#DONVI").multipleSelect("getSelects"));
+        }
+        $("#btnSearch").click(function () {
+            initialVulue();
+            return true;
+        });
+    });
+</script>

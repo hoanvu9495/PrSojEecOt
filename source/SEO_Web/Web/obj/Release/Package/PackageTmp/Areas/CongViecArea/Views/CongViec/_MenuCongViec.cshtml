@@ -1,0 +1,288 @@
+﻿@using Web.Areas.CongViecArea.Models;
+@model CongViecCountModel
+@{
+    var hasRoleGiaoViec = bool.Parse(ViewData["ROLE_GIAO_VIEC"].ToString());
+    var active = ViewData["Active"] == null ? -1 : int.Parse(ViewData["Active"].ToString());
+    bool isReportByUser = ViewData["ReportByUser"] == null ? false : bool.Parse(ViewData["ReportByUser"].ToString());
+    bool isReportByDepartment = ViewData["ReportByDepartment"] == null ? false : bool.Parse(ViewData["ReportByDepartment"].ToString());
+    bool isStatistic = ViewData["IsStatistic"] == null ? false : bool.Parse(ViewData["IsStatistic"].ToString());
+}
+<style type="text/css">
+    .bold a {
+        font-size: 15px;
+    }
+
+    .bold {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .admin-menu-child .normal {
+        font-size: 12px !important;
+    }
+
+    .menu-tab {
+        width: calc(100% - 20px);
+        float: left;
+        margin: 0 5px 5px 5px;
+        background: #fff;
+        margin-top: 10px;
+        border-radius: 8px;
+        box-shadow: 0 0 5px 0 rgb(248,140,1);
+    }
+
+        .menu-tab h2 {
+            background: rgb(17,138,203);
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 11px 10px;
+            border-radius: 8px 8px 0 0;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+
+        .menu-tab ul {
+            float: left;
+        }
+</style>
+<div id="menu-left-content-scroll" class="menu-left-content block">
+    <div class="menu-tab">
+        <h2>quản lý công việc</h2>
+        <ul class="admin-menu">
+            <li class="menu">
+                <a href="/CongViecArea/CongViec/Index" class='@(active == CongViecConstant.ALL ? "bold" : "normal")'>
+                    Công việc @(Model.countAll == 0 ? "" : "(" + Model.countAll.ToString() + ")")
+                </a>
+            </li>
+            <li class="menu">
+                <a href='@Url.Action("Index", new { type = CongViecConstant.CANHAN })' class="@(active == CongViecConstant.CANHAN ? "bold" :"normal")">
+                    Công việc cá nhân @(Model.countCaNhan == 0 ? "" : "(" + Model.countCaNhan.ToString() + ")")
+                </a>
+            </li>
+            @if (hasRoleGiaoViec)
+            {
+                <li class="menu">
+                    <a href='@Url.Action("Index", new { type = CongViecConstant.DAGIAO})' class='@(active == CongViecConstant.DAGIAO ? "bold" : "normal")'>
+                        Công việc đã giao @(Model.countDaGiao == 0 ? "" : "(" + Model.countDaGiao.ToString() + ")")
+                    </a>
+                </li>
+            }
+            <li class="menu">
+                <a href='@Url.Action("Index", new { type = CongViecConstant.DANG_XULY})' class='@(active == CongViecConstant.DANG_XULY ? "bold" : "normal")'>
+                    Công việc đang xử lý @(Model.countDangXuLy == 0 ? "" : "(" + Model.countDangXuLy.ToString() + ")")
+                </a>
+            </li>
+            <li class="menu">
+                <a href='@Url.Action("Index", new { type = CongViecConstant.XULYCHINH })' class='@(active == CongViecConstant.XULYCHINH ? "bold" : "normal")'>
+                    Công việc xử lý chính @(Model.countXuLyChinh == 0 ? "" : "(" + Model.countXuLyChinh.ToString() + ")")
+                </a>
+            </li>
+            <li class="menu">
+                <a href='@Url.Action("Index", new { type = CongViecConstant.THAMGIA_XULY})'class='@(active == CongViecConstant.THAMGIA_XULY ? "bold" : "normal")'>
+                    Công việc tham gia xử lý @(Model.countThamGiaXuLy == 0 ? "" : "(" + Model.countThamGiaXuLy.ToString() + ")")
+                </a>
+            </li>
+            <li class="menu">
+                <a href='@Url.Action("Index", new { type = CongViecConstant.THEODOI})' class='@(active == CongViecConstant.THEODOI ? "bold" : "normal")'>
+                    Công việc theo dõi @(Model.countTheoDoi == 0 ? "" : "(" + Model.countTheoDoi.ToString() + ")")
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="menu-tab">
+        <h2>báo cáo công việc</h2>
+        <ul class="admin-menu">
+            <li class="menu">
+                <a href="@Url.Action("ThongKeCongViec")" class="@(isStatistic ? "bold":"normal")">
+                    Thống kê công việc
+                </a>
+            </li>
+            <li class="menu">
+                <a href="@Url.Action("BaoCaoCongViecTheoDonVi")" class="@(isReportByDepartment ? "bold" : "normal")">
+                    Báo cáo theo đơn vị
+                </a>
+            </li>
+            <li class="menu">
+                <a href="@Url.Action("BaoCaoCongViecTheoNguoiDung")" class="@(isReportByUser ? "bold" : "normal")">
+                    Báo cáo theo người dùng
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="menu-tab">
+        <h2>quản lý văn bản đi - đến</h2>
+        <ul class="admin-menu">
+            <li class="menu">
+                <a href="@Url.Action("Index", "HSVanBanDi", new { area = "HSVanBanDiArea" })">
+                    Quản lý Văn bản đi
+                </a>
+            </li>
+            <li class="menu">
+                <a href="@Url.Action("Index", "HSVanBanDen", new { area = "HSVanBanDenArea"})">
+                    Quản lý Văn bản đến
+                </a>
+            </li>
+        </ul>
+    </div>
+    @*<ul class="admin-menu">
+            <li class="menu has-child" style="z-index:10">
+                <a href="/CongViecArea/CongViec/Index" class='@(active == CongViecConstant.ALL ? "bold" : "normal")'>
+                    Quản lý công việc @(Model.countAll == 0 ? "" : "(" + Model.countAll.ToString() + ")")
+                </a>
+                <ul class="admin-menu-child">
+                    <li class='@(active == CongViecConstant.DANG_XULY ? "bold" : "normal")'>
+                        <a href='@Url.Action("Index", new { type = CongViecConstant.DANG_XULY})'>
+                            Công việc đang xử lý @(Model.countDangXuLy == 0 ? "" : "(" + Model.countDangXuLy.ToString() + ")")
+                        </a>
+                    </li>
+                    <li class='@(active == CongViecConstant.CANHAN ? "bold" : "normal")'>
+                        <a href='@Url.Action("Index", new { type = CongViecConstant.CANHAN })'>
+                            Công việc cá nhân @(Model.countCaNhan == 0 ? "" : "(" + Model.countCaNhan.ToString() + ")")
+                        </a>
+                    </li>
+                    <li class='@(active == CongViecConstant.XULYCHINH ? "bold" : "normal")'>
+                        <a href='@Url.Action("Index", new { type = CongViecConstant.XULYCHINH })'>
+                            Công việc xử lý chính @(Model.countXuLyChinh == 0 ? "" : "(" + Model.countXuLyChinh.ToString() + ")")
+                        </a>
+                    </li>
+                    <li class='@(active == CongViecConstant.THAMGIA_XULY ? "bold" : "normal")'>
+                        <a href='@Url.Action("Index", new { type = CongViecConstant.THAMGIA_XULY})'>
+                            Công việc tham gia xử lý @(Model.countThamGiaXuLy == 0 ? "" : "(" + Model.countThamGiaXuLy.ToString() + ")")
+                        </a>
+                    </li>
+                    @if (hasRoleGiaoViec)
+                    {
+                        <li class='@(active == CongViecConstant.DAGIAO ? "bold" : "normal")'>
+                            <a href='@Url.Action("Index", new { type = CongViecConstant.DAGIAO})'>
+                                Công việc đã giao @(Model.countDaGiao == 0 ? "" : "(" + Model.countDaGiao.ToString() + ")")
+                            </a>
+                        </li>
+                    }
+                    <li class='@(active == CongViecConstant.THEODOI ? "bold" : "normal")'>
+                        <a href='@Url.Action("Index", new { type = CongViecConstant.THEODOI})'>
+                            Công việc theo dõi @(Model.countTheoDoi == 0 ? "" : "(" + Model.countTheoDoi.ToString() + ")")
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu has-child" style="z-index:10">
+                <a href="javascript:void(0)">
+                    Báo cáo công việc
+                </a>
+                <ul class="admin-menu-child">
+                    <li>
+                        <a href="@Url.Action("BaoCaoCongViecTheoNguoiDung")" class="@(isReportByUser ? "bold" : "normal")">
+                            Báo cáo theo người dùng
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("BaoCaoCongViecTheoPhongBan")" class="@(isReportByDepartment ? "bold" : "normal")">
+                            Báo cáo theo phòng ban
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("ThongKeCongViec")" class="@(isStatistic ? "bold":"normal")">
+                            Thống kê công việc
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu" style="z-index:10">
+                <a href="@Url.Action("Index", "HSVanBanDen", new { area = "HSVanBanDenArea"})">
+                    Quản lý Văn bản đến
+                </a>
+            </li>
+            <li class="menu" style="z-index:10">
+                <a href="@Url.Action("Index", "HSVanBanDi", new { area = "HSVanBanDiArea" })">
+                    Quản lý Văn bản đi
+                </a>
+            </li>
+        </ul>*@
+
+
+    @*<div class="menu-tab">
+        <h2>Quản lý văn bản đến</h2>
+        <ul class="admin-menu">
+            <li class="menu">
+                <a href="/hsvanbandenarea/hsvanbanden/index" class="@(activeID.Equals(VanBanDenConstant.VANBANDEN_ALL.ToString()) ? "admin-menu-active" : "")">
+                    Văn bản đến @(Model.SoLuongVanBanDen == 0 ? string.Empty : "(" + Model.SoLuongVanBanDen + ")")
+                </a>
+            </li>
+            @if (isNhanVien)
+            {
+                <li style="z-index: 10" class="menu">
+                    <a href="@Url.Action("Index", new { TYPE = VanBanDenConstant.VANBANDEN_MOINHAT})" class="@(activeID.Equals(VanBanDenConstant.VANBANDEN_MOINHAT.ToString()) ? "admin-menu-active" : "")">
+                        Văn bản đến mới nhất @(Model.SoLuongVanbanDenMoiNhat == 0 ? string.Empty : "(" + Model.SoLuongVanbanDenMoiNhat + ")")
+                    </a>
+                </li>
+            }
+            <li style="z-index: 10" class="menu">
+                <a href="@Url.Action("Index", new { TYPE = VanBanDenConstant.VANBANDEN_SAP_HETHAN_XULY })" class="@(activeID.Equals(VanBanDenConstant.VANBANDEN_SAP_HETHAN_XULY.ToString()) ? "admin-menu-active" : "")">
+                    Văn bản sắp hết hạn xử lý @(Model.SoLuongVanBanDenSapHetHanXuLy == 0 ? string.Empty : "(" + Model.SoLuongVanBanDenSapHetHanXuLy + ")")
+                </a>
+            </li>
+            <li style="z-index: 10" class="menu">
+                <a href="@Url.Action("Index", new { TYPE = VanBanDenConstant.VANBANDEN_NOIBO })" class="@(activeID.Equals(VanBanDenConstant.VANBANDEN_NOIBO.ToString()) ? "admin-menu-active" : "")">
+                    Văn bản đến nội bộ @(Model.SoLuongVanBanDenNoiBo == 0 ? string.Empty : "(" + Model.SoLuongVanBanDenNoiBo + ")")
+                </a>
+            </li>
+            @*<li style="z-index:10" class="menu">
+                    <a href="@Url.Action("Index", new { TYPE = VanBanDenConstant.VANBANDEN_CUNGHETHONG })" class="@(activeID.Equals(VanBanDenConstant.VANBANDEN_CUNGHETHONG.ToString()) ? "admin-menu-active" : "")">
+                        Danh sách văn bản đến cùng hệ thống @(Model.SoLuongVanBanDenCungHeThong == 0 ? string.Empty : "(" + Model.SoLuongVanBanDenCungHeThong + ")")
+                    </a>
+                </li>*@
+            @*<li style="z-index:10" class="menu">
+                    <a href="@Url.Action("Index", new { TYPE = VanBanDenConstant.VANBANDEN_DAXOA })" class="@(activeID.Equals(VanBanDenConstant.VANBANDEN_DAXOA.ToString()) ? "admin-menu-active" : "")">
+                        Danh sách văn bản đến đã xóa @(Model.SoLuongVanBanDenDaXoa == 0 ? string.Empty : "(" + Model.SoLuongVanBanDenDaXoa.ToString() + ")")
+                    </a>
+                </li>
+        </ul>
+    </div>
+    <div class="menu-tab">
+        <h2>văn bản đi - công việc</h2>
+        <ul class="admin-menu">
+            <li style="z-index:10" class="menu">
+                <a href="@Url.Action("Index", "HSVanBanDi", new { @area = "HSVanBanDiArea"})">
+                    Quản lý văn bản đi
+                </a>
+            </li>
+            <li style="z-index:10" class="menu">
+                <a href="@Url.Action("Index", "CongViec", new { @area = "CongViecArea"})">
+                    Quản lý Công việc
+                </a>
+            </li>
+        </ul>
+    </div>
+    @if (Model.ListNhomSoVanBan != null && Model.ListNhomSoVanBan.Count() > 0)
+    {
+        <div class="menu-tab">
+            <h2>Nhóm sổ văn bản</h2>
+            <ul class="admin-menu">
+                @foreach (var nhomso in Model.ListNhomSoVanBan)
+                {
+                    <li>
+                        <a href="@Url.Action("Index", new { TYPE = VanBanDenConstant.VANBANDEN_THEONHOMSO, nhomSoID = nhomso.ID })"
+                           class="@((activeID.Equals(VanBanDenConstant.VANBANDEN_THEONHOMSO.ToString()) && nhomso.ID == nhomSoID) ? "bold" : "")">
+                            @nhomso.NHOMSOVANBAN @(nhomso.SOLUONG == 0 ? "" : "(" + nhomso.SOLUONG + ")")
+                        </a>
+                        @if (nhomso.ListSoVanBan != null && nhomso.ListSoVanBan.Count() > 0)
+                        {
+                            <ul class="admin-menu-child">
+                                @foreach (var so in nhomso.ListSoVanBan)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index", new { TYPE = VanBanDenConstant.VANBANDEN_THEOSO, soID = so.ID })"
+                                           class="@((activeID.Equals(VanBanDenConstant.VANBANDEN_THEOSO.ToString()) && so.ID == soID) ? "bold" : "")">
+                                            @so.TENSO @(so.SOLUONG == 0 ? "" : "(" + so.SOLUONG + ")")
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+    }*@
+</div>

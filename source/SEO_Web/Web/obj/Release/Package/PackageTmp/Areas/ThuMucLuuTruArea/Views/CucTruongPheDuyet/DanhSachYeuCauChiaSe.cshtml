@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Danh sách yêu cầu chia sẻ tài liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="menu-toolbar">
+    <div class="left-all-page" style="width:350px">
+        <div id="smart-dms" class="block">
+            <h1>Yêu cầu chia sẻ tài liệu</h1>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left" style="height:100%">
+    <div class="menu-left-content block">
+        <ul class="admin-menu">
+            <li class="menu"><a href="@Url.Action("Index", "CucTruongPheDuyet")">Phê duyệt tài liệu</a></li>
+            <li class="menu"><a href="@Url.Action("DanhSachThuMucGiaHan", "CucTruongPheDuyet")">Gia hạn thời gian lưu trữ</a></li>
+        </ul>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff">
+    <div class="panel-default">
+        <div id="headingOne" class="panel-heading" role="tab">
+            <h4 class="panel-title">
+                <a class="" role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Tìm kiếm yêu cầu chia sẻ</a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" style="" role="tabpanel" aria-expanded="false">
+            <div class="SearchCriterial">
+                @Html.Partial("_DanhSachYeuCauSearch")
+            </div>
+        </div>
+    </div>
+    <div class="SearchResult ">
+        @Html.Partial("_DanhSachYeuCauSearchResult")
+    </div>
+
+</div>
+
+<script>
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadYeuCau", "CucTruongPheDuyet")',
+            data: {
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                //alert(Ten_DanToc);
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+</script>
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+</style>

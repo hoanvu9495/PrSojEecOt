@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Quản lý danh mục phòng ban";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+@section HeaderPopup{
+    <h1>@ViewBag.Title<a href="/" title="Đóng lại"></a></h1>
+}
+<div class="popup-content">
+
+    <table style="width: 100%">
+        <tr>
+            <td>
+                <div class="SearchCriterial clearfix hot-news-list-2">
+                    @Html.Partial("_PhongBanSearch")
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="SearchResult hot-news-list-2 mgt20">
+                    @Html.Partial("_PhongBanSearchResult")
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<script type="text/javascript">
+    function reloadGrid() {
+        var PhongBan = $("#PHONGBAN").val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadGrid", "DMPhongBan")',
+            data: {
+                PhongBan: PhongBan
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                //alert(Ten_DanToc);
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+</script>

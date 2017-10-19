@@ -1,0 +1,45 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@model List<GroupTuDienBO>
+
+<style>
+    .control-label {
+        font-size: small;
+        font-weight: bold;
+        margin-left: 15px;
+    }
+</style>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Quản lý từ thay thế <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+</div>
+<div class="modal-body">
+    <div class="row form">
+        @foreach (var item in Model)
+        {
+            <input class="form-control tagsinput" value="@item.Words" data-role="tagsinput">
+        }
+
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="center">
+        <button class="btn btn-primary btn-sm" id="btn-themmoi-BaiViet">Thêm mới</button>
+    </div>
+</div>
+
+
+<script>
+
+    function PagefunctionCreate() {
+        CKEDITOR.replace('NOIDUNGBaiViet');
+
+    }
+    $(document).ready(function () {
+        loadScript("/js/plugin/bootstrap-tags/bootstrap-tagsinput.min.js", function () {
+            $('.tagsinput').tagsinput('refresh')
+        });
+    });
+
+</script>

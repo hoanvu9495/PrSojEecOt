@@ -1,0 +1,107 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Model.eAita.TAILIEUDINHKEM
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #EDIT_ID, #EDIT_ParentID {
+        display: none;
+    }
+</style>
+@using (Ajax.BeginForm("SaveFileName", "ThuMucLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmRenameThuMuc" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Đổi tên tài liệu</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <table>
+
+                        @Html.TextBox("ITEM_ID", Model.ITEM_ID, new { @style = "width: 20px;display:none", maxlength = "100", @class = "e-input", @id = "ITEM_ID", @readonly = "readonly" })
+                        @Html.TextBox("TAILIEU_ID", Model.TAILIEU_ID, new { @style = "width: 20px;", maxlength = "100", @class = "e-input", @id = "EDIT_ID", @readonly = "readonly" })
+
+                        <tr>
+                            <td style="width:100px">
+                                <label class="lbl" for="TENTAILIEU" style=" width:100px;">Tên file:<span style="color: red;">*</span></label>
+                            </td>
+                            <td>
+                                @Html.TextBox("TENTAILIEU", Model.TENTAILIEU, new { @style = "width: 300px;", maxlength = "50", @class = "e-input", @id = "TENTAILIEU" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 20px;"></td>
+                            <td>
+                                <span class="lb-Check" id="TENTAILIEU_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập tên file</span>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="Đổi tên" id="btnChangeFile" class="btn btn-success" />
+                <input type="button" value="Đóng" data-dismiss="modal" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
+}
+<script>
+    var EDIT_ID = $("#ITEM_ID").val();
+
+    function failure(xhr, error) {
+        notif({
+            type: 'error',
+            position: 'bottom',
+            msg: 'Đã xảy ra lỗi trong quá trình đổi tên file!',
+        });
+        $("#RenameFile").modal('hide');
+        $("#RenameFile").html("");
+    }
+    $("#RENAME").blur(function () {
+        if ($(this).val().trim() == "") {
+            $("#TENTHUMUC_NULL").show();
+        } else {
+            $("#TENTHUMUC_NULL").hide();
+        }
+    });
+    $(document).on('click', '#btnChangeFile', function () {
+        if ($("#TENTAILIEU").val().trim() == "") {
+            $("#TENTAILIEU").focus();
+            $("#TENTAILIEU_NULL").show();
+            return false;
+        } else {
+            return true;
+        }
+    });
+
+    function updateSuccess() {
+
+        LoadDataByID(EDIT_ID);
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Đổi tên tài liệu thành công!',
+        });
+        $("#RenameFile").modal('hide');
+        $("#RenameFile").html("");
+    }
+
+</script>

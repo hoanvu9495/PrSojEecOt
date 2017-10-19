@@ -1,0 +1,29 @@
+﻿@using Web.FwCore;
+@using System.Text;
+@using Business.CommonBusiness;
+@using Model.eAita
+@{
+    List<LuuTruToaNhaBO> lstThuMuc = (List<LuuTruToaNhaBO>)SessionManager.GetValue("ListThuMuc");
+    
+    if (lstThuMuc != null && lstThuMuc.Count > 0)
+    {
+        <ul id="browser" class="filetree treeview-famfamfam">
+            @foreach (var i in lstThuMuc)
+            {
+                <li data-fid="@("F_"+i.ID)">
+                    <span data-loai="tang" class="folder" title="@i.TENTOANHA" data-pid="@i.ID" data-loaded="false">@i.TENTOANHA</span>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <ul id="browser" class="filetree treeview-famfamfam">
+
+            <li>
+                <span  style="color:red">Chưa có tòa nhà nào được tạo</span>
+            </li>
+
+        </ul>
+    }
+}

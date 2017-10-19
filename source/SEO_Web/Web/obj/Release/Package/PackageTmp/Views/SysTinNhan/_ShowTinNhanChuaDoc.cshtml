@@ -1,0 +1,37 @@
+﻿@using Business.CommonBusiness;
+@model List<SysTinNhanBO>
+@*@if (Model != null && Model.Count > 0)
+{
+    <div class="box-notify">
+        <ul class="list-group">
+            @foreach (var item in Model)
+            {
+                <li class="list-group-item">
+                    <a href="@item.URL">
+                        @item.TIEUDE
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div style="padding-top:5px;font-weight:bold;border-top: 1px solid #f2f2f2">
+        <a href="/SysTinNhanArea/SysTinNhan">Xem tất cả</a>
+    </div>
+}*@
+
+<ul class="notification-body">
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var item in Model)
+        {
+            <li>
+                <span class="padding-10 unread">
+                    <a href="@item.URL">
+                        @item.NOIDUNG
+                    </a>
+                    <span class="pull-right font-xs text-muted"><i>@string.Format("{0:dd/MM/yyyy}", item.NGAY_GUI)</i></span>
+                </span>
+            </li>
+        }
+    }
+</ul>

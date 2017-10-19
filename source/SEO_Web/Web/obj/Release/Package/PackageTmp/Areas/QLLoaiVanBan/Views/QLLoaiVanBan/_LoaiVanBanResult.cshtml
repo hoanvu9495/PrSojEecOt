@@ -1,0 +1,148 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common;
+@model Web.Areas.QLLoaiVanBan.Models.LoaiVbViewModel
+
+@{
+    List<HSCV_LOAIVANBAN> lstLoaiVanBan = new List<HSCV_LOAIVANBAN>();
+    if (ViewData["Search"] == "0")
+    {
+        lstLoaiVanBan = (List<HSCV_LOAIVANBAN>)SessionManager.GetValue("ListLoaiVanBan");
+    }
+    if (ViewData["Search"] == "1")
+    {
+        lstLoaiVanBan = (List<HSCV_LOAIVANBAN>)SessionManager.GetValue("ListLoaiVanBanSearch");
+    }
+
+    var grid = new WebGrid(lstLoaiVanBan,
+        rowsPerPage: 10,
+        canPage: true,
+        canSort: false,
+        ajaxUpdateContainerId: "grid",
+        selectionFieldName: "selectedRow"
+        );
+
+}
+@Html.AntiForgeryToken()
+<style>
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .btnImport {
+        display: block;
+        width: 110px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        background-color: green;
+        color: #FFF !important;
+        padding: 8px 5px 4px 20px;
+        border-radius: 4px;
+    }
+
+        .btnImport:hover {
+            background-color: #4cff00;
+        }
+
+    .center; {
+        text-align: center;
+    }
+</style>
+
+<div id="grid" style="height:auto;min-height:300px;">
+    <div style="margin: 20px 0px 10px 10px;">
+        <label id="lblBenhChuanDoan" style="margin-top: 90px; margin-left: 5px; font-weight: bold">@(lstLoaiVanBan == null ? "0" : lstLoaiVanBan.Count.ToString())&nbsp;dự án</label>
+
+        <div style="float: right; margin-right: 2px;">
+            <a class="btnAdd" title="Thêm mới" href='@Url.Action("CreateLoaiVanBan", "QLLoaiVanBan")'>Thêm mới loại văn bản</a>
+        </div>
+    </div>
+
+    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column("TENLOAIVANBAN", "Loại văn bản"),
+                       grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                             "<a href='/QLLoaiVanBan/QLLoaiVanBan/EditLoaiVanBan/" + item.ID + "' class='btnEdit' title = 'Chi tiết thông tin dự án'></a>")), header: "Chi tiết"),
+                        grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                        "<a href='javascript:void(0)' onclick='DeleteLoaiVanBan(" + item.ID + ")'  class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+                        )
+    )
+</div>
+<script>
+    function DeleteLoaiVanBan(ID) {
+        $.confirm({
+            'title': 'Delete Confirmation',
+            'message': 'Bạn có chắc chắn muốn xóa bản ghi này?',
+            'buttons': {
+                'Yes': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "QLLoaiVanBan")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                //CommonJS.alert("Xóa loại văn bản thành công!");
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Delete successfully!',
+                                });
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });                        
+                    }
+                },
+                'No': {
+                    'class': 'btn-info',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });        
+    }
+</script>

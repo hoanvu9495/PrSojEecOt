@@ -1,0 +1,190 @@
+﻿@using Web.Areas.TDKTDanhHieuThiDuaArea.Models;
+@model Web.Areas.TDKTDanhHieuThiDuaArea.Models.DanhHieuCaNhanViewModel
+@{
+    ViewBag.Title = "ViewDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Index = 1;
+    PermissionModel PermissionModel = (PermissionModel)SessionManager.GetValue("PermissionModel");
+}
+
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div class="block" id="smart-dms">
+            <h1 style="font-size: 24px">Thi đua khen thưởng</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none; border:none;">
+        <div id="menu-child">
+            <div class="menu-left" style="display:inline-block">
+            </div>
+            <div class="menu-right">
+                <div class="right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Action("RenderMenu", "QuanLyDanhHieuCaNhan", new { @area = "TDKTDanhHieuThiDuaArea" })
+
+<div class="right-all-page" style="background:#fff;">
+    <div class="panel panel-default" style="border-radius: 0px">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><b>@Model.DanhHieuCaNhan.DANHHIEUTHIDUA</b></div>
+        <div class="panel-body">
+            <h2>@Model.DanhHieuCaNhan.DANHHIEUTHIDUA</h2>
+            <p>@Html.Raw(Model.DanhHieuCaNhan.MOTA)</p>
+            @if (Model.DanhHieuCaNhan.LANHDAOCUCXETDUYET != true)
+            {
+                <div class="alert alert-warning">
+                    <p>Chỉ yêu cầu lãnh đạo đơn vị xét duyệt</p>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    <p>Phải trình lên lãnh đạo cục xét duyệt</p>
+                </div>
+            }
+            @if (Model.DanhHieuCaNhan.YEUCAUXETDUYETNGOAICUC == true)
+            {
+                <div class="alert alert-warning">
+                    <p>Cần sự xét duyệt của cơ quan ngoài cục</p>
+                </div>
+            }
+            @if (Model.DanhHieuCaNhan.TONG_SO_XET_CHON > 0)
+            {
+                <div class="alert alert-warning">
+                    <p>Mỗi đơn vị hàng năm chỉ xét chọn không quá @Model.DanhHieuCaNhan.TONG_SO_XET_CHON cá nhân tiêu biểu để đề nghị tặng danh hiệu</p>
+                </div>
+            }
+            @if (Model.DanhHieuCaNhan.TYLE != null)
+            {
+                if (Model.DanhHieuCaNhan.TYLE_DANHHIEU_ID > 0)
+                {
+                    <div class="alert alert-warning">
+<p>Tỷ lệ cá nhân đạt @Model.DanhHieuCaNhan.DANHHIEUTHIDUA không vượt quá @Model.DanhHieuCaNhan.TYLE% tổng số cá nhân đạt danh hiệu @Model.DanhHieuTyLe.DANHHIEUTHIDUA</p>
+                    </div>
+                }
+            }
+        </div>
+        @if (Model.LstCondDateTime.Count > 0)
+        {
+            <p style="text-align: center">
+                <b>
+                    Để đạt được danh hiệu "@Model.DanhHieuCaNhan.DANHHIEUTHIDUA" cần đạt được một trong số các điều kiện sau:
+                </b>
+            </p>
+        <!-- Table -->
+            foreach (var item in Model.LstCondDateTime)
+            {
+                <table class="webGrid">
+                    <thead>
+                        <tr class="head">
+                            <th style="text-align: center" scope="col">Điều kiện @Index</th>
+                            <th style="text-align: center" scope="col">Số lượng</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label>Số năm công tác lớn hơn</label>
+                            </td>
+                            <td>
+                                @item.SONAMCONGTAC năm
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Số ngày nghỉ trong năm không vượt quá</label>
+                            </td>
+                            <td>
+                                @item.SONGAYNGHI ngày
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Số sáng kiến ý tưởng trong năm</label>
+                            </td>
+                            <td>
+                                @(item.SOSANGKIEN != null ? item.SOSANGKIEN : 0) sáng kiến ý tưởng
+                            </td>
+
+                        </tr>
+                        @{
+                var LstDK = Model.LstCondDanhHieu.Where(x => x.DIEUKIEN_ID == item.ID).ToList();
+                        }
+                        @foreach (var dk_item in LstDK)
+                        {
+                            <tr>
+                                <td style="text-align: center">
+                                    <div class="input-field4">
+                                        @dk_item.TEN_DANH_HIEU_COND
+                                    </div>
+                                </td>
+                                <td style="text-align: center">
+                                    @dk_item.COND_SO_LUONG lần @((dk_item.IS_LIEN_TUC != null) ? ((dk_item.IS_LIEN_TUC == true)?"liên tục":"") : "")
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                        Index = Index + 1;
+            }
+        }
+
+
+        <div style="text-align: center; margin-top: 38px; margin-bottom: 20px;">
+            <a style="border: medium none; color: white; padding: 7px 20px; background-color: seagreen;" href="/TDKTDanhHieuThiDuaArea/QuanLyDanhHieuCaNhan">Quay lại </a>
+            <a style="border: medium none; color: white; padding: 7px 20px; background-color: seagreen; margin-left:10px" href="/TDKTDanhHieuThiDuaArea/QuanLyDanhHieuCaNhan/Edit/@Model.DanhHieuCaNhan.ID">Sửa</a>
+            <a href='javascript:void(0)' onclick='DeleteDanhHieu(" + item.ID + ")' style="border: medium none; color: white; padding: 7px 20px; background-color: red; margin-left:10px" title='Xóa'>Xóa</a>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    function DeleteDanhHieu(id) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa danh hiệu này ?',
+            'buttons': {
+                'Yes': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "QuanLyDanhHieuCaNhan")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: id },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Xóa thành công!',
+                                });
+                                //reloadGrid();
+                                setTimeout('reloadGrid()', 2000);
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'No': {
+                    'class': 'btn-info',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function reloadGrid() {
+        location.reload();
+    }
+</script>

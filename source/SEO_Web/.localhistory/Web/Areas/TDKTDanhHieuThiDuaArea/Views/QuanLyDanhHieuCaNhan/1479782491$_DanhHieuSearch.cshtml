@@ -1,0 +1,65 @@
+﻿@using Web.Common
+@using Web.FwCore;
+@{
+    List<SelectListItem> lstYear = new List<SelectListItem>();
+    int year = DateTime.Now.Year + 10;
+    int begin = year - 20;
+    for (var i = begin; i < year; i++)
+    {
+        if (i == DateTime.Now.Year)
+        {
+            lstYear.Add(new SelectListItem() { Text = i.ToString(), Value = i.ToString(), Selected = true });
+        }
+        else
+        {
+            lstYear.Add(new SelectListItem() { Text = i.ToString(), Value = i.ToString() });
+        }
+    }
+}
+<div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" role="tabpanel" style="">
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindDanhHieu", "QuanLyDanhHieuCaNhan", new { SearchType = "Index" }, new AjaxOptions()
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            //OnFailure = "failure",
+            //OnSuccess = "searchSuccess",
+            UpdateTargetId = "grid",
+        }, new { id = "frmSearh" }))
+    {
+        <div>
+            <center>
+                <table style="width:80%;">
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td width="160">
+                            <label>Tên danh hiệu:</label>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBox("DANHHIEUTHIDUA", "", new { @placeholder = "Tìm theo tên danh hiệu thi đua", id = "DANHHIEUTHIDUA", @style = "width: 655px;", @class = "e-input" })
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td width="160px">
+                            <label>Áp dụng cho năm:</label>
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix fix-width">
+                                @Html.DropDownList("YEAR", lstYear, new { @class = "width_100", @style = "padding-right:30px" })
+                            </div>
+                        </td>                        
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input id="btnSearch" type="submit" value="Tìm kiếm" style="background-color: #336699; height: 35px; border: none; width: 100px; color: white;float:left;margin-left:50%;margin-top:15px;" />
+                            <a class="" style="background-color: #336699;height: 35px;border: none;width: 100px;color: white; line-height:35px;float:left; display:block;margin-left:10px;margin-top:15px;" aria-controls="collapseOne" aria-expanded="false" href="#collapseOne" data-toggle="collapse" role="button">
+                                Đóng
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </div>
+    }
+</div>

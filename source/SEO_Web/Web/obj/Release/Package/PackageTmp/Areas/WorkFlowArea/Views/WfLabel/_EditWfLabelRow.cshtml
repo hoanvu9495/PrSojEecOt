@@ -1,0 +1,36 @@
+﻿@using Web.Areas.WorkFlowArea.Models;
+@model WfLabelEditViewModel
+<tr class="row--wf-label">
+    <td>
+        <div class="form-group" style="margin:0">
+            <input type="hidden" name="WF_LABEL_ID" value="0" />
+            <input type="text" class="form-control LABEL_TEXT required" placeholder="Tên nhãn" name="LABEL_TEXT_@Model.wfLabelEditRowIndex">
+            <div class="note-error">
+                <span class="error mes-note-error"></span>
+            </div>
+        </div>
+    </td>
+    <td>
+        <center>
+            <div class="form-group" style="margin:0">
+                <div style="width:250px;">
+                    @Html.DropDownList("DM_VAITRO_ID_" + Model.wfLabelEditRowIndex, Model.listVaiTros, new { @multiple = "multiple", Class = "select--label-role form-control required" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </center>
+    </td>
+
+    <td>
+        <div class="col-sm-6" style="height: 34px; padding: 5px 0;">
+            <input type="radio" class="css-checkbox" id="IS_MAIN_PROCESS_@Model.wfLabelEditRowIndex" value="true" name="IS_MAIN_PROCESS_@Model.wfLabelEditRowIndex" checked>
+            <label for="IS_MAIN_PROCESS_@Model.wfLabelEditRowIndex" class="css-label">Xử lý chính</label>
+        </div>
+        <div class="col-sm-6" style="height: 34px; padding: 5px 0;">
+            <input type="radio" class="css-checkbox" id="IS_JOIN_PROCESS_@Model.wfLabelEditRowIndex" value="false" name="IS_MAIN_PROCESS_@Model.wfLabelEditRowIndex">
+            <label for="IS_JOIN_PROCESS_@Model.wfLabelEditRowIndex" class="css-label">Tham gia xử lý</label>
+        </div>
+    </td>
+</tr>

@@ -1,0 +1,151 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Model.eAita.TM_LOAIVANBAN
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #EDIT_ID {
+        display: none;
+    }
+</style>
+@using (Ajax.BeginForm("SaveLoaiTaiLieu", "TmLoaiTaiLieu", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmLoaiVanBanEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog" style="width:500px">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cập nhật thuộc tính</h4>
+            </div>
+            <div class="modal-body">
+                <table style="width:80%">
+                    @Html.TextBox("ID", Model.ID, new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "EDIT_ID", @readonly = "readonly" })
+                    <tr>
+                        <td>
+                            <label class="lbl" for="EDIT_LOAITAILIEU" style=" width: 120px;">Loại tài liệu:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("LOAITAILIEU", Model.LOAITAILIEU, new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "EDIT_LOAITAILIEU" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="LOAITAILIEU_ER" style="margin-left: 0px; color: red;">Loại tài liệu đã tồn tại đã tồn tại.</span>
+                            <span class="lb-Check" id="LOAITAILIEU_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập loại tài liệu</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 120px">
+                            <label class="lbl" style=" width: 120px;">Trạng Thái:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div style="float:left; width:50%">
+                                @Html.RadioButton("TRANGTHAI", "true", (Model.TRANGTHAI == true), new { @id = "EDIT_ISACTIVE_HL", @class = "css-checkbox" })
+                                <label class="css-label" for="EDIT_ISACTIVE_HL">Được sử dụng</label>
+                            </div>
+                            <div style="float:left; width:73%">
+                                @Html.RadioButton("TRANGTHAI", "false", (Model.TRANGTHAI == false), new { @id = "EDIT_ISACTIVE_KHL", @class = "css-checkbox" })
+                                <label class="css-label" for="EDIT_ISACTIVE_KHL">Không được sử dụng</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnUpdate">Cập nhật</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $(function () {
+        var isExisted = true;
+        var startLoaiVanBan = $("#EDIT_LOAITAILIEU").val();
+        $("#EDIT_LOAITAILIEU").blur(function () {
+            if ($("#EDIT_LOAITAILIEU").val().trim().length == 0) {
+                $("#LOAITAILIEU_NULL").show();
+            } else {
+                $("#LOAITAILIEU_NULL").hide();
+            }
+        });
+
+        $("#EDIT_LOAIVANBAN").focusout(function () {
+
+        });
+        $("#btnUpdate").click(function () {
+            if ($("#EDIT_LOAITAILIEU").val().trim().length == 0) {
+                $("#LOAITAILIEU_NULL").show();
+                $("#EDIT_LOAITAILIEU").focus();
+                $("#LOAIVANBAN_ER").hide();
+                return false;
+            }
+            var tenloaivanban = $("#EDIT_LOAITAILIEU").val();
+            if (tenloaivanban.trim().length > 0 && tenloaivanban != startLoaiVanBan) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("validateLoaiTaiLieu", "TmLoaiTaiLieu")',
+                    data: {
+                        TAILIEU: tenloaivanban
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        if (data == "True") {
+                            $("#LOAITAILIEU_ER").show();
+                            $("#LOAITAILIEU_NULL").hide();
+                            $("#EDIT_LOAITAILIEU").select();
+                            return false
+                        } else {
+                            $("#LOAIVANBAN_ER").hide();
+                            $("#frmLoaiVanBanEdit").submit();
+                            return true;
+                        }
+                    }, error: function () {
+                        alert("Có lỗi xảy ra.");
+                    }
+                });
+            } else {
+                $("#frmLoaiVanBanEdit").submit();
+                return true;
+            }
+
+
+            return false;
+        });
+    });
+    function OnClose() {
+        $("#PrepareLoaiVanBan").dialog("close");
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function updateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Cập nhật loại tài liệu thành công!',
+        });
+        $("#PrepareLoaiVanBan").modal("hide");
+        reloadGrid();
+    }
+</script>

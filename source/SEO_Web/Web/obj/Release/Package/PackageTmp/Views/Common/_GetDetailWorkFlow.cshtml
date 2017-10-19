@@ -1,0 +1,149 @@
+﻿@using Web.Common
+@model Web.Models.DetailWorkFlowModel
+
+<table class="edit-table" style="width:95.5%">
+    @*Hàng 1*@
+    <tr>
+        <td colspan="5">
+            <center>
+                @*Có quy trình *@
+                <input class="css-checkbox" id="CHK_IS_APDUNGQUYRINH_1" value="1" name="CHK_IS_APDUNGQUYRINH" type="radio" checked="checked">
+                <label style="width:auto;margin-top: -5px;margin-left: 100px;color:rgb(17, 138, 203); text-transform:none;" for="CHK_IS_APDUNGQUYRINH_1" class="css-label">Có áp dụng quy trình</label>
+                @*Không Có quy trình *@
+                <input class="css-checkbox" id="CHK_IS_APDUNGQUYRINH_2" value="2" name="CHK_IS_APDUNGQUYRINH" type="radio">
+                <label style="width:auto;margin-top: -5px;margin-left: 10px; color:#F88C01; text-transform:none;" for="CHK_IS_APDUNGQUYRINH_2" class="css-label">Không áp dụng quy trình</label>
+            </center>
+        </td>
+    </tr>
+    <tr class="showWF">
+        <td width="20%">
+            <label class="lbl">Quy trình đang có hiệu lực:</label>
+        </td>
+        <td colspan="4">
+
+            @if (Model.ListWorkFlow != null && Model.ListWorkFlow.Count > 0)
+            {
+                if (Model.ListWorkFlow.Count > 1)
+                {
+                    <div class="input-field4 clearfix" style="width: 233px; margin-left:10px">
+                        <select name="QUYTRINH_ID" id="QUYTRINH_ID" onchange="ChangeWorkFlow()">
+                            <option value=''>[--- Chọn quy trình xử lý ---]</option>
+                            @foreach (var item in Model.ListWorkFlow)
+                            {
+                                <option value="@item.ID" data-id="@item.ID">@item.TENWF</option>
+                            }
+                        </select>
+                    </div>
+                }
+                else
+                {
+                    <b>@Model.ListWorkFlow[0].TENWF</b>
+                    <input type="hidden" id="QUYTRINH_ID" name="QUYTRINH_ID" value="@Model.ListWorkFlow[0].ID" />
+                }
+            }
+
+        </td>
+    </tr>
+    <tr class="showWF" style="height: 15px;"></tr>
+    <tr class="showWF">
+        <td colspan="5">
+            <div id="thongtinquytrinh">
+                @if (Model.ListWorkFlow != null && Model.ListWorkFlow.Count == 1)
+                {
+                    if (Model.ListStepInWF != null && Model.ListStepInWF.Count > 0)
+                    {
+                        var _buoc = 1;
+                        var has_buoc_1 = false;
+                        var ListStep = new List<int>();
+                        <ul class="mota_wf">
+                            @foreach (var item in Model.ListStepInWF)
+                            {
+                                if (ListStep.Count == 0 || !ListStep.Contains(item.TRANGTHAI_ID))
+                                {
+                                    ListStep.Add(item.TRANGTHAI_ID);
+                                    var list_same_trangthai_2 = Model.ListStepInWF.Where(o => o.TRANGTHAI_ID == item.TRANGTHAI_ID).ToList();
+                                    var is_multi_role = item.ListVaiTro != null && item.ListVaiTro.Count > 0;
+                                    var is_in_role = is_multi_role && item.ListVaiTro.Select(o => o.DM_VAITRO_ID).Contains(Model.VaitroID);
+                                    var style_li = "";
+                                    if (is_in_role)
+                                    {
+                                        style_li = "style=background-color:#C0C185;";
+                                    }
+                                    <li @style_li>
+                                        <p class="buoc">Bước @_buoc</p>
+                                        @if (is_multi_role)
+                                        {
+                                            <p class="vaitro">
+                                                @foreach (var vaitro in item.ListVaiTro)
+                                                {
+                                                    <span>@vaitro.TEN_VAITRO</span>
+                                                }
+                                            </p>
+                                        }
+                                        <p class="tenbuoc">
+                                            @if (is_in_role && _buoc > 1)
+                                            {
+                                                <input class="css-checkbox" id="CHK_IS_TRANGTHAI_@item.TRANGTHAI_ID" value="@item.TRANGTHAI_ID" name="CHK_IS_TRANGTHAI" type="radio" @(has_buoc_1 == false ? "checked='checked'" : "")>
+                                                <label style="width:auto;margin-top: -5px;margin-left: 10px; text-transform:none;" for="CHK_IS_TRANGTHAI_@item.TRANGTHAI_ID" class="css-label">@item.TENBUOC</label>
+                                            }
+                                            else
+                                            {
+                                                @item.TENBUOC
+                                            }
+                                        </p>
+                                        <p class="state">
+                                            @if (list_same_trangthai_2 != null && list_same_trangthai_2.Count > 1)
+                                            {
+                                                foreach (var same_trangthai_2 in list_same_trangthai_2)
+                                                {
+                                                    <span>
+                                                        (Từ: @same_trangthai_2.TRANGTHAI_1     ->     @same_trangthai_2.TRANGTHAI_2)
+                                                    </span><br />
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (_buoc == 1 && is_in_role)
+                                                {
+                                                    has_buoc_1 = true;
+                                                    <input class="css-checkbox" id="CHK_IS_TRANGTHAI_@item.TRANGTHAI_1_ID" value="@item.TRANGTHAI_1_ID" name="CHK_IS_TRANGTHAI" type="radio" checked="checked">
+                                                    <label style="width:auto;margin-top: -5px;margin-left: 10px; text-transform:none;" for="CHK_IS_TRANGTHAI_@item.TRANGTHAI_1_ID" class="css-label">@item.TRANGTHAI_1</label>
+                                                    <span>-></span><input class="css-checkbox" id="CHK_IS_TRANGTHAI_@item.TRANGTHAI_ID" value="@item.TRANGTHAI_ID" name="CHK_IS_TRANGTHAI" type="radio">
+                                                    <label style="width:auto;margin-top: -5px;margin-left: 10px; text-transform:none;" for="CHK_IS_TRANGTHAI_@item.TRANGTHAI_ID" class="css-label">@item.TRANGTHAI_2</label>
+                                                }
+                                                else
+                                                {
+                                                    <span>
+                                                        (Từ: @item.TRANGTHAI_1     ->     @item.TRANGTHAI_2)
+                                                    </span>
+                                                }
+                                            }
+                                        </p>
+                                    </li>
+                                    _buoc++;
+                                }
+                            }
+                        </ul>
+                    }
+                }
+            </div>
+        </td>
+    </tr>
+</table>
+@*Giá trị bằng 1 là có sử dụng quy trình, giá trị bằng 2 là không sử dụng quy trình*@
+<input type="hidden" value="1" id="IS_USE_WF" name="IS_USE_WF" />
+<script>
+    $("input[name='CHK_IS_APDUNGQUYRINH']").change(function () {
+        if ($(this).val() == 1) {
+            $(".showWF").show("slow");
+            $("#IS_USE_WF").val("1");
+        }
+        else {
+            $(".showWF").hide();
+            $("#IS_USE_WF").val("2");
+        }
+    });
+    function ChangeWorkFlow() {
+        alert("Thay đổi WorkFlow");
+    }
+</script>

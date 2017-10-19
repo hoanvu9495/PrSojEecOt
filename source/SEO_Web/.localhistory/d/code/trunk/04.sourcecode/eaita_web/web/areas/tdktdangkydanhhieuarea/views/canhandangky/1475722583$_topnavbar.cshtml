@@ -1,0 +1,85 @@
+﻿@{
+    string HasAction = "0";
+    if (ViewData["HasAction"] != null)
+    {
+        HasAction = ViewData["HasAction"].ToString();
+    }
+}
+<style>
+    #smart-dms h1 {
+        font-size: 20px !important;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div class="block" id="smart-dms">
+            <h1>THI ĐUA KHEN THƯỞNG</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none; border:none;">
+        <div id="menu-child">
+            <div class="menu-left" style="display:inline-block">
+                <div style="">
+                    <div class="btn-group" role="group" aria-label="...">
+                        <div class="btn-group" role="group">
+                            <button type="button" onclick="CheckAll()" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 30px">
+                                <input type="checkbox" class="mark_checkbox">
+                            </button>
+
+                        </div>
+                        <button type="button" class="b_btn b_btn-default" id="btGuiHoiDongTDKT" style="height: 30px">Gửi hội đồng TDKT</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-right">
+                <div class="right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function CheckAll() {
+        if ($(".mark_checkbox").prop("checked") == false) {
+            $(".global_checkbox").prop("checked", "checked");
+            $(".mark_checkbox").prop("checked", "checked");
+        } else {
+            $(".global_checkbox").prop("checked", false);
+            $(".mark_checkbox").prop("checked", false);
+        }
+    };
+    $("#btGuiHoiDongTDKT").click(function () {
+        var idsValue = '';
+        $(".global_checkbox").each(function () {
+            if (this.checked) {
+                idsValue += $(this).val() + ",";
+            }
+        });
+        idsValue = idsValue.substr(0, idsValue.length - 1);
+        if (idsValue.length == 0) {
+            notif({
+                type: 'error',
+                position: 'bottom',
+                msg: 'Bạn phải chọn ít nhất một đơn để gửi!',
+            });
+        } else {
+            $.confirm({
+                'title': 'Xác nhận gửi đơn',
+                'message': 'Bạn có chắc chắn muốn gửi hội đồng TDKT ?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            alert("F");
+                        }
+                    },
+                    'No': {
+                        'class': 'btn-info',
+                        'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+
+        }
+    });
+</script>

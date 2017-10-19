@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Danh sách Luồng xử lý";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+<section id="widget-grid" class="">   
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                    <h2>Danh sách luồng xử lý</h2>
+                    <a class="btn btn-success btn-sm" href="javascript:OnCreate()" style="float: right">
+                        <span>Thêm mới</span>
+                    </a>
+                </header>
+                <div style="padding: 0">
+                    @Html.Partial("_WorkFlowSearchResult")
+                </div>
+            </div>
+        </article>
+    </div>
+</section>

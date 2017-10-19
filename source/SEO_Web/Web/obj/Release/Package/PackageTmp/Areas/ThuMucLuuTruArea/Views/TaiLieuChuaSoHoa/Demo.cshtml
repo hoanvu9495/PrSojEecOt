@@ -1,0 +1,1023 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.ThuMucLuuTruModel
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@{
+    ViewBag.Title = "Quản lý tài liệu chưa số hóa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<link href="~/Content/themes/base/treeview/jquery.treeview.css" rel="stylesheet" />*@
+<script src="~/Scripts/js/jquery.nu-context-menu-version2.js"></script>
+<link href="~/Content/Custom/Font/contextMenu.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(function () {
+        $("#treeview").resizable({
+        });
+        $("#treeview").on("resize", function () {
+            var wRight = 100 - $("#treeview").width() / 10;
+            if ($("#treeview").width() / 10 > 50) {
+                wRight = $("#treeview").width() / 10 - 50 + wRight;
+            }
+            $("#treeview").css("width", $("#treeview").width() / 10 + "%");
+            document.getElementById("treeview").style.maxWidth = "50%";
+            document.getElementById("treeview").style.minWidth = "5%";
+            document.getElementById("treeview").style.minHeight = "100px";
+            document.getElementById("treeview").style.maxHeight = "440px";
+            $("#display").css("width", wRight + "%");
+        });
+
+
+    });
+</script>
+
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" style="width:280px">
+            <h1>Tài liệu chưa số hóa</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;" onclick="location.href='@Url.Action("Index", "QuanLyLuuTru")'" class="b_btn b_btn-default vbdi_search" id="">Quản lý nơi lưu trữ</button>
+                <button style="margin-bottom: 10px;margin-right:10px" onclick="location.href='@Url.Action("Index", "TrangThaiSuDungTaiLieu")'" class="b_btn b_btn-default vbdi_search" id="">Quản lý trạng thái sử dụng tài liệu</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right-all-page" oncontextmenu="return false;" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+    <div style="margin-top:25px;">
+        <div class="THEMTHUMUC" style="margin-top: -10px; float: right;">
+            <img width="24" height="24" src="~/Content/Images/1464768649_Folder.png" id="InputImage" />
+            <a class="btnAdd" id="THEMTHUMUC" title="Thêm mới thư mục" href='javascript:void(0)' data-pid="0">Thêm thư mục</a>
+        </div>
+
+        <div id="UPLOAD_FILE" style="margin-top: -10px; float: right; margin-right: 30px;display:none">
+            <img width="24" height="24" src="~/Content/Images/1464772109_old-go-top.png" id="InputImage" />
+            <a class="btnAdd" id="THEMTAILIEU" title="Tải tài liệu lên" href='javascript:void(0)' data-pid="0">Tải lên tài liệu</a>
+        </div>
+        <div style="margin-top:-14px;float:right;margin-right:30px">
+            <div class="input-group" style="width:300px">
+                <div class="input-group-btn search-panel">
+                    <button type="button" class="btn btn-default btn-select dropdown-toggle" data-toggle="dropdown">
+                        <span id="search_concept">Tên tài liệu</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#contains">Tên tài liệu</a></li>
+                        <li><a href="#its_equal">Mã hàng</a></li>
+                        <li><a href="#greather_than">Mã kệ</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#all">Tất cả</a></li>
+                    </ul>
+                </div>
+                <input type="hidden" name="search_param" value="all" id="search_param">
+                <input type="hidden" name="FILTER_BOX" id="FILTER_BOX" />
+                <input type="text" class="form-control" id="txtSearch" name="x" placeholder="Tìm kiếm......" style="height:35px;min-width:300px">
+                <span class="input-group-btn">
+                    <button id="btnSearch" class="btn btn-default" type="button" style="min-width:30px"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="URLPath">
+        <ul id="Path">
+            <li data-fid='F_0'>
+                <span class='folder' data-loaded='false' data-pid='0'><i class="fa fa-folder-open-o"></i>Gốc<i class="fa fa-chevron-right"></i></span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="folder-content" style="float:left;width:100%">
+        <div id="treeview">
+            @*@Html.Partial("_ThuMucAll")*@
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
+        <div id="display">
+            <form>
+
+                <table class="webGrid">
+                    <thead>
+                        <tr class="head">
+
+                            <th>Tên thư mục</th>
+                            <th>Người tạo</th>
+                            <th>Ngày tạo</th>
+                            <th>Chi tiết</th>
+                        </tr>
+                    </thead>
+                    @*<tbody id="bodyItem">@Html.Partial("_ThuMucTable")</tbody>*@
+                    <tfoot id="footItem"></tfoot>
+                </table>
+
+            </form>
+            <span class="emptydata">Thư mục lưu trữ rỗng</span>
+
+        </div>
+    </div>
+
+    <div style="clear:both"></div>
+</div>
+<input type="hidden" value="0" id="THUMUC_ID_HIDDEN" />
+<input type="hidden" value="0" id="TAILIEU_HIDDEN_ID" />
+<div class="modal fade" id="CreateThuMuc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="CreateTaiLieu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="RenameThuMuc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="FileDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<link href="~/Scripts/treeview/zTreeStyle.css" rel="stylesheet" />
+<script src="~/Scripts/treeview/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.search-panel .dropdown-menu').find('a').click(function (e) {
+            e.preventDefault();
+            var param = $(this).attr("href").replace("#", "");
+            var concept = $(this).text();
+            $('.search-panel span#search_concept').text(concept);
+            $('.input-group #search_param').val(param);
+        });
+        $('#txtSearch').keypress(function (e) {
+            if (e.keyCode == 13) {
+                if (/<[a-z][\s\S]*>/i.test($("#txtSearch").val())) {
+                    $.confirm({
+                        'title': 'Không thể tìm kiếm',
+                        'message': 'Nội dung tìm kiếm không thể chứa ký tự HTML',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                    $("#txtSearch").select();
+                                    return false;
+                                }
+                            }
+                        }
+                    });
+                }
+                Searching();
+            }
+        });
+        $("#btnSearch").click(function () {
+            if (/<[a-z][\s\S]*>/i.test($("#txtSearch").val())) {
+                $.confirm({
+                    'title': 'Không thể tìm kiếm',
+                    'message': 'Nội dung tìm kiếm không thể chứa ký tự HTML',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-confirm-yes',
+                            'action': function () {
+                                $("#txtSearch").select();
+                                return false;
+                            }
+                        }
+                    }
+                });
+            }
+            Searching();
+        });
+        $("#THEMTAILIEU").click(function () {
+            UploadSingle($(this).attr("data-pid"));
+        });
+        function Searching() {
+            if ($('.btn-select').text().trim() == "Tên tài liệu") {
+
+                $("#FILTER_BOX").val("1");
+            }
+            else if ($('.btn-select').text().trim() == "Mã hàng") {
+                $("#FILTER_BOX").val("2");
+            }
+            else if ($('.btn-select').text().trim() == "Mã kệ") {
+                $("#FILTER_BOX").val("3");
+            } else {
+                $("#FILTER_BOX").val("4");
+            }
+
+            $.ajax({
+                url: '@Url.Action("FindTaiLieu", "TaiLieuChuaSoHoa")',
+                type: 'POST',
+                cache: false,
+                data: {
+                    FILTER_BOX: $("#FILTER_BOX").val(),
+                    FILTER: $("#txtSearch").val()
+                },
+                success: function (data) {
+                    $("#footItem").html(data);
+                    $("#bodyItem").html("");
+
+                },
+                error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        }
+    });
+    function UploadSingle(ID) {
+        $.ajax({
+            url: '@Url.Action("CreateTaiLieu", "TaiLieuChuaSoHoa")',
+            type: 'post',
+            cache: false,
+            data: {
+                THUMUC: ID
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#CreateTaiLieu").html(data);
+                    $("#CreateTaiLieu").modal('show');
+
+                } else {
+                    $.confirm({
+                        'title': 'Không thể tải lên tài liệu',
+                        'message': 'Không tồn tại thư mục bạn đang muốn thêm tài liệu',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    $(document).keydown(function (event) {
+        var x = event.keyCode;
+        if (x == 116) {//F5
+            var _data_id = $("#THUMUC_ID_HIDDEN").val();
+            if (parseInt(_data_id) > 0) {
+                $(".folder").each(function () {//data-loaded
+                    if ($(this).attr("data-pid") == _data_id && $(this).attr("data-loaded") != undefined) {
+                        $("#bodyItem").html("");
+                        $("#footItem").html("");
+                        $(this).click();
+                        return false;
+                    }
+                });
+                event.preventDefault();
+            }
+        }
+
+    });
+    //Load lại data khi đổi tên
+    function ReloadData(ID, FName) {
+        $("#treeview li").each(function () {
+            if ($(this).attr("data-fid") == "F_" + ID) {
+                $(this).children("span").html(FName);
+            }
+        });
+        $("#bodyItem td").each(function () {
+            if ($(this).attr("data-pid") == "F_" + ID) {
+                $(this).children("span").html(FName);
+            }
+        });
+    }
+    function ReloadDataRename(ID, FName, IS_CENSOR) {
+        $("#treeview li").each(function () {
+            if ($(this).attr("data-fid") == "F_" + ID) {
+                $(this).children("span").html(FName);
+            }
+        });
+        $("#bodyItem td").each(function () {
+            if ($(this).attr("data-pid") == "F_" + ID) {
+                $(this).children("span").html(FName);
+                if (IS_CENSOR) {
+                    $(this).closest("tr").find("td:first-child").html("<input type='checkbox' class='checkbox1' value='" + ID + "' data-pid='" + ID + "' />");
+                }
+            }
+        });
+    }
+    //Xóa thư mục
+    function RemoveFile(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa tài liệu này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveFile", "TaiLieuChuaSoHoa")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                if (ID == 0) {
+                                    reloadGrid();
+                                    reloadTable();
+                                } else {
+                                    if (data.length > 0) {
+                                        notif({
+                                            type: 'success',
+                                            position: 'bottom',
+                                            msg: 'Đã xóa tài liệu thành công!',
+                                        });
+                                        $("#footItem td").each(function () {
+                                            if ($(this).attr("data-fid") == "F_" + ID) {
+                                                $(this).closest("tr").fadeOut("slow");
+                                            }
+                                        });
+                                    } else {
+                                        notif({
+                                            type: 'success',
+                                            position: 'bottom',
+                                            msg: 'Không tìm thấy tài liệu cần xóa!',
+                                        });
+                                    }
+                                }
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { }
+                }
+            }
+        });
+    }
+
+    //Load lại dữ liệu khi thêm mới
+    function LoadDataByID(ParentID,LOAI) {
+        $(".folder").each(function () {//data-loaded
+            if ($(this).attr("data-pid") == ParentID && $(this).attr("data-loaded") != undefined && $(this).attr("data-loai") == LOAI) {
+                $(this).click();
+                return false;
+            }
+        });
+    }
+    function RenameThuMuc(ID) {
+        $.ajax({
+            url: '@Url.Action("EditThuMuc", "TaiLieuChuaSoHoa")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#RenameThuMuc").html(data);
+                    $("#RenameThuMuc").modal("show");
+                    $("#RenameThuMuc").find(".modal-dialog").css("width", "600px");
+                } else {
+                    $.confirm({
+                        'title': 'Không thể cập nhập!',
+                        'message': 'Thư mục này đang được trình cục trưởng bạn không thể cập nhập vào lúc này!',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function CreateThuMuc(ID) {
+        $.ajax({
+            url: '@Url.Action("CreateThuMuc", "TaiLieuChuaSoHoa")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#CreateThuMuc").html(data);
+                    $("#CreateThuMuc").modal('show');
+                    $("#CreateThuMuc").find(".modal-dialog").css("width", "450px");
+                } else {
+                    $.confirm({
+                        'title': 'Không thể thêm thư mục!',
+                        'message': 'Xin lỗi thư mục này đang chờ phê duyệt.\n Bạn không thể thêm thư mục vào lúc này.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function FileDetail(ID, TRANGTHAI) {
+        $.ajax({
+            url: '@Url.Action("FileDetail", "TaiLieuChuaSoHoa")',
+            type: 'post',
+            cache: false,
+            data: {
+                TAILIEU_ID: ID,
+                TRANGTHAI: TRANGTHAI
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#FileDetail").html(data);
+                    $("#FileDetail").modal('show');
+                } else {
+                    $.confirm({
+                        'title': 'Tài liệu không tồn tại!',
+                        'message': 'Xin lỗi tài liệu bạn đang tìm hiện không có.Vui lòng kiểm tra lại vào lúc khác',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function GetPath(pid, loai) {
+        $.ajax({
+            url: '@Url.Action("GetURLBar", "TaiLieuChuaSoHoa")',
+            type: 'POST',
+            data: {
+                pID: pid,
+                ITEMTYPE: loai
+            },
+            dataType: "json",
+            success: function (d) {
+                $("#URLPath").html("");
+
+                var $ul = $("<ul id='Path' ></ul>");
+                $ul.append($("<li data-fid='F_0'></li>").append(
+                                   "<span class='folder' data-loaded='false' data-pid='0'><i class=\"fa fa-folder-open-o\"></i>Gốc<i class=\"fa fa-chevron-right\"></i></span>"
+                                   )
+                                        )
+                if (d.length > 1) {
+                    for (var i = 0; i < d.length; i++) {
+                        //if (i == 0) {
+                        //    $ul.append(
+                        //           $("<li data-fid='F_" + d[i].ID + "'></li>").append(
+                        //           "<span class='folder' data-loai='" + d[i].ITEMTYPE + "' data-loaded='false' data-pid='" + d[i].ID + "'><i class=\"fa fa-folder-open-o\"></i>" + d[i].TENTOANHA + "</span>"
+                        //           )
+                        //                )
+                        //} else {
+                            $ul.append(
+                                   $("<li data-fid='F_" + d[i].ID + "'></li>").append(
+                                   "<span class='folder' data-loai='" + d[i].ITEMTYPE + "' data-loaded='false' data-pid='" + d[i].ID + "'><i class=\"fa fa-folder-open-o\"></i>" + d[i].TENTOANHA + "<i class=\"fa fa-chevron-right\"></i></span>"
+                                   )
+                                   )
+                        //}
+                    }
+                } else if (d[0] != null) {
+                    $ul.append(
+                               $("<li data-fid='F_" + d[0].ID + "'></li>").append(
+                          "<i class=\"fa fa-folder-open-o\"></i><span class='folder' data-loai='tang' data-loaded='false' data-pid='" + d[0].ID + "'>" + d[0].TENTOANHA + "</span>"
+                               )
+                                    )
+                } else {
+                    $ul.append("");
+                }
+                $("#URLPath").append($ul);
+            },
+            error: function (xhr) {
+                // CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    $(document).on('click', '#THEMTHUMUC', function () {
+        CreateThuMuc($(this).attr('data-pid'));
+    });
+    //Loa du lieu khi click vao thu muc bat ky
+    $(document).on('click', '.folder', function () {
+        var this1 = $(this);
+        this1.closest("li").find("ul").remove("ul");
+        var isLoaded = $(this).attr('data-loaded');
+        var id = $(this1).attr('data-pid');
+        if (id == 0) {
+            reloadGrid();
+            reloadTable();
+            $("#URLPath").html("");
+            $(".webGrid").show();
+            $(".emptydata").hide();
+            $("#THEMTHUMUC").attr("data-pid", "0");
+            $("#UPLOAD_FILE").hide();
+        } else {
+            if (isLoaded == "false") {
+                this1.attr("data-loaded", true);
+                $("#bodyItem").html("");
+                $("#footItem").html("");
+                $.ajax({
+                    url: '@Url.Action("GetChild", "TaiLieuChuaSoHoa")',
+                    type: "POST",
+                    data: { pid: $(this1).attr('data-pid'), loai: $(this1).attr('data-loai') },
+                    dataType: "json",
+                    success: function (d) {
+                        $("#THUMUC_ID_HIDDEN").val($(this1).attr('data-pid'));
+                        $("#THEMTHUMUC").attr("data-pid", $(this1).attr('data-pid'));
+                        $("#THEMTAILIEU").attr("data-pid", $(this1).attr('data-pid'));
+                        $("#UPLOAD_FILE").show();
+                        $(".THEMTHUMUC").show();
+                        GetPath($(this1).attr('data-pid'), $(this1).attr('data-loai'));
+                        if (d.length > 0) {
+                            $(".emptydata").hide();
+                            $(".webGrid").show();
+                            var $ul = $("<ul></ul>");
+                            $.each(d, function (i, ele) {
+                                if (ele.ISTHUMUC) {
+                                    $ul.append(
+                                       $("<li data-fid='F_" + ele.ID + "'></li>").append(
+                                           " <span class='folder' data-loai='" + ele.ITEMTYPE + "' title='" + ele.TENTOANHA + "' data-pid='" + ele.ID + "' data-loaded='false'>" + ele.TENTOANHA + "</span>"
+                                       )
+                                   )
+                                }
+                                var date = ele.NGAYTAO;
+                                var ngaytao = "";
+                                if (date != null) {
+                                    var dt = date.split("T");
+                                    var ngay = dt[0].split("-");
+                                    ngaytao = ngay[2] + "/" + ngay[1] + "/" + ngay[0];
+                                }
+                                var thumuc = "";
+                                var tailieu = "";
+                                var mota = "";
+                                mota == null ? "" : ele.MOTA;
+                                if (ele.ISTHUMUC) {
+                                    thumuc = "<span class='folder item' data-loai='" + ele.ITEMTYPE + "' title='" + ele.TENTOANHA + "' data-pid='" + ele.ID + "' data-loaded='false'>" + ele.TENTOANHA + "</span>";
+                                    //alert(thumuc);
+                                    $("#bodyItem").append("<tr class='folder-item'><td data-fid='F_" + ele.ID + "' style='width:450px'><div style='width:100%;float:left' class='TENTHUMUC'>" + thumuc + "</div></td><td>" + ele.TENNGUOITAO + "</td><td>" + ngaytao + "</td><td>" + mota + "</td></tr>");
+                                } else {
+                                    tailieu = "<span class='filearchive' data-loai='" + ele.ITEMTYPE + "' title='" + ele.TENTOANHA + "' data-pid='" + ele.ID + "' data-loaded='true'>" + ele.TENTOANHA + "</span>";
+                                    $("#footItem").append("<tr class='folder-item'><td data-fid='F_" + ele.ID + "' style='width:450px'><div style='width:100%;float:left' class='TENTHUMUC'>" + tailieu + "</div></td><td>" + ele.TENNGUOITAO + "</td><td>" + ngaytao + "</td><td>" + mota + "</td></tr>");
+                                }
+                            });
+                            if ($("#bodyItem").is(":empty")) {
+                                $("#bodyItem").html("<tr></tr>");
+                            }
+                            $(this1).parent().append($ul);
+                            $(this1).toggleClass('expand');
+                            $(this1).closest('li').children('ul').slideDown();
+                        } else {
+                            $(".webGrid").hide();
+                            $(".emptydata").show();
+                        }
+                    },
+                    error: function (xhr, response) {
+                        //alert(xhr.responseText);
+                    }
+                });
+
+            } else {
+                $(this1).attr("data-loaded", false);
+                $(this1).removeClass('expand');
+            }
+        }
+    });
+    $(document).on('click', '.filearchive', function () {
+        DownloadFile($(this).attr("data-pid"));
+    });
+    var context = $("#browser,#bodyItem ")
+              .nuContextMenu({
+                  hideAfterClick: true,
+                  items: '.folder',
+                  callback: function (key, element) {
+                      if (key == "Edit") {
+                          RenameThuMuc($(element).attr('data-pid'));
+                      }
+                      if (key == "Trash") {
+                          CheckFolderRemove($(element).attr('data-pid'));
+                      }
+                      if (key == "plus") {
+                          CreateThuMuc($(element).attr('data-pid'));
+                      }
+
+                      if (key == "single") {
+                          UploadSingle($(element).attr('data-pid'));
+                      }
+
+                  },
+                  menu: [
+                    {
+                        name: 'single',
+                        title: 'Thêm mới tài liệu',
+                        icon: 'cloud-upload',
+                    },
+                    {
+                        name: 'plus',
+                        title: 'Thêm folder con',
+                        icon: 'folder-open-o',
+                    },
+                    {
+                        name: 'Edit',
+                        title: 'Cập nhật',
+                        icon: 'edit',
+                    },
+                     {
+                         name: 'Trash',
+                         title: 'Xóa',
+                         icon: 'trash'
+
+                     }
+
+                  ]
+
+              });
+    var context1 = $("#footItem ")
+             .nuContextMenu({
+                 hideAfterClick: true,
+                 items: '.filearchive',
+                 callback: function (key, element) {
+                     if (key == "Edit") {
+                         DoiTenFile($(element).attr('data-pid'));
+                     }
+                     if (key == "Trash") {
+
+                         RemoveFile($(element).attr('data-pid'));
+                     }
+                     if (key == "download") {
+
+                         DownloadFile($(element).attr('data-pid'));
+                     }
+                     if (key == "Link") {
+                         var linkdownload = window.location.href + $(element).attr('data-pid');
+                         alert(linkdownload);
+                         ReceiverLink(linkdownload);
+                     }
+                     if (key == "View") {
+                         FileDetail($(element).attr('data-pid'), "chitiet");
+                     }
+                     if (key == "Modify") {
+                         FileDetail($(element).attr('data-pid'), "capnhat");
+                     }
+                     if (key == "Manager") {
+                         ManagerVersion($(element).attr('data-pid'));
+                     }
+                     if (key == "Share") {
+                         ShareFile($(element).attr('data-pid'), false);
+                     }
+                 },
+                 menu: [
+
+                   {
+                       name: 'Modify',
+                       title: 'Cập nhật',
+                       icon: 'edit',
+                   },
+                   {
+                       name: 'View',
+                       title: 'Chi tiết',
+                       icon: 'eye',
+                   },
+                   {
+                       name: 'Trash',
+                       title: 'Xóa',
+                       icon: 'trash',
+                   }
+
+                 ]
+             });
+
+    //load lại treeview
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadTree", "TaiLieuChuaSoHoa")',
+            data: {
+
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+
+                $("#browser").html(data);
+
+            }
+        });
+    }
+    function reloadTable() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadTable", "TaiLieuChuaSoHoa")',
+            data: {
+
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#footItem").html("");
+                $("#bodyItem").html(data);
+
+            }
+        });
+    }
+
+    function DoiTenFile(ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("RenameFile", "TaiLieuChuaSoHoa")',
+            data: {
+                ID: ID
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#RenameFile").html(data);
+                $("#RenameFile").modal('show');
+            }
+        });
+    }
+
+
+    function CheckFolderRemove(THUMUC_ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa thư mục này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("RemoveFolder", "TaiLieuChuaSoHoa")',
+                            data: {
+                                ID: THUMUC_ID
+                            },
+                            cache: false,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.length > 0) {
+                                    if (THUMUC_ID == 0) {
+                                        reloadGrid();
+                                        reloadTable();
+                                    } else {
+                                        notif({
+                                            type: 'success',
+                                            position: 'bottom',
+                                            msg: 'Xóa thư mục thành công!',
+                                        });
+                                        $("#treeview li").each(function () {
+                                            if ($(this).attr("data-fid") == "F_" + THUMUC_ID) {
+                                                $(this).fadeOut("slow");
+                                            }
+                                        });
+                                        $("#bodyItem td").each(function () {
+                                            if ($(this).attr("data-fid") == "F_" + THUMUC_ID) {
+                                                $(this).closest("tr").fadeOut("slow");
+                                                //alert("ok");
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    $.confirm({
+                                        'title': 'Không thể xóa thư mục này!',
+                                        'message': 'Không tìm thấy thư mục cần xóa!',
+                                        'buttons': {
+                                            'Đóng': {
+                                                'class': 'btn-info',
+                                                'action': function () { }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { }
+                }
+            }
+        });
+    }
+</script>
+<style>
+    .line{
+        border:none !important;
+    }
+     .filearchive {
+        background: rgba(0, 0, 0, 0) url("/Content/themes/base/images/ChuaSoHoa.png") no-repeat scroll 4px 2px;
+        float: left;
+        line-height: 1.3em;
+        margin: 0 15px 0 0;
+        padding: 10px 15px 10px 38px;
+        text-align: center;
+    }
+
+    .webGrid td:nth-child(2) span, .webGrid td:nth-child(1) span {
+        text-align: left !important;
+    }
+
+    .right-content {
+        padding: 0 !important;
+    }
+
+    td {
+        vertical-align: middle !important;
+    }
+
+    img:hover {
+        cursor: pointer;
+    }
+
+    .share-file:hover {
+        cursor: pointer;
+    }
+
+    .TENTHUMUC {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 450px !important;
+        text-overflow: ellipsis;
+    }
+
+
+
+    .popup-content {
+        width: 97% !important;
+    }
+
+    #browser li {
+        margin-top: 3px;
+    }
+
+    #display {
+        width: 84%;
+        height: 420px;
+        float: left;
+        min-height: 80%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-top: 10px;
+    }
+
+    .AddFolder {
+        cursor: pointer;
+        border-radius: 8px;
+    }
+
+
+    #treeview {
+        float: left;
+        width: 15%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 420px;
+        margin-top: 10px;
+    }
+
+    #Path li {
+        float: left;
+    }
+
+    .ui-resizable-se {
+        display: none !important;
+    }
+
+    .SearchResult.hot-news-list-2.mgt20 > #URLPath {
+        margin-bottom: 3%;
+    }
+
+    #right ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        padding: 10px 25px;
+        border-radius: 5px;
+    }
+
+    #right li {
+        float: left;
+        margin-right: 10px;
+    }
+
+    #right i {
+        -moz-user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        padding: 6px 12px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    #right li a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    #right li:hover {
+        color: #357ae8;
+        cursor: pointer;
+    }
+
+
+
+    #THEMTHUMUC {
+        /*width: 135px;*/
+        background: #4479BA;
+        color: #FFF;
+        margin-top: -26px;
+        margin-left: -3px;
+        margin-right: 10px;
+    }
+
+    #THEMTAILIEU {
+        /*width: 134px;*/
+        background: #4479BA;
+        color: #FFF;
+        margin-top: -26px;
+        margin-left: -3px;
+    }
+
+        #DUTHAO:hover, #THEMTHUMUC:hover, #THEMTAILIEU:hover, #YEUCAUSHARE:hover, #DANHSACHYEUCAUSHARE:hover, #YEUCAUSHARED:hover {
+            cursor: pointer;
+        }
+
+
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        /*height: 26px;*/
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .close-modal:hover {
+        cursor: pointer;
+    }
+
+    #footItem tr td {
+        border: 1px solid #e8e8e8 !important;
+    }
+</style>
+<script type="text/javascript">
+		<!--
+		var setting = {
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+		var zNodes =[
+			{ id:1, pId:0, name:"pNode 1", open:true},
+			{ id:11, pId:1, name:"pNode 11"},
+			{ id:111, pId:11, name:"leaf node 111"},
+			{ id:112, pId:11, name:"leaf node 112"},
+			{ id:113, pId:11, name:"leaf node 113"},
+			{ id:114, pId:11, name:"leaf node 114"},
+			{ id:12, pId:1, name:"pNode 12"},
+			{ id:121, pId:12, name:"leaf node 121"},
+			{ id:122, pId:12, name:"leaf node 122"},
+			{ id:123, pId:12, name:"leaf node 123"},
+			{ id:124, pId:12, name:"leaf node 124"},
+			{ id:13, pId:1, name:"pNode 13 - no child", isParent:true},
+			{ id:2, pId:0, name:"pNode 2"},
+			{ id:21, pId:2, name:"pNode 21", open:true},
+			{ id:211, pId:21, name:"leaf node 211"},
+			{ id:212, pId:21, name:"leaf node 212"},
+			{ id:213, pId:21, name:"leaf node 213"},
+			{ id:214, pId:21, name:"leaf node 214"},
+			{ id:22, pId:2, name:"pNode 22"},
+			{ id:221, pId:22, name:"leaf node 221"},
+			{ id:222, pId:22, name:"leaf node 222"},
+			{ id:223, pId:22, name:"leaf node 223"},
+			{ id:224, pId:22, name:"leaf node 224"},
+			{ id:23, pId:2, name:"pNode 23"},
+			{ id:231, pId:23, name:"leaf node 231"},
+			{ id:232, pId:23, name:"leaf node 232"},
+			{ id:233, pId:23, name:"leaf node 233"},
+			{ id:234, pId:23, name:"leaf node 234"},
+			{ id:3, pId:0, name:"pNode 3 - no child", isParent:true}
+		];
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		});
+		//-->
+</script>

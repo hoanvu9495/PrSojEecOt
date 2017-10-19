@@ -1,0 +1,24 @@
+﻿@using Web.Areas.VanBanDenArea.Models
+@model VanBanDenEditViewModel
+
+<textarea name="NOIDUNGVANBAN" id="NOIDUNGVANBAN" cols="30" rows="10" class="e-input" maxlength="500">@Model.vanBanDen.NOIDUNGVANBAN</textarea>
+<script>
+    tinymce.init({
+        selector: 'textarea#NOIDUNGVANBAN',
+        language: 'vi_VN',
+        width: '100%',
+        height: 250,
+        plugins: [
+                "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+        ],
+        toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+        toolbar2: "cut copy paste pastetext | bullist numlist | outdent indent | undo redo | link unlink code | forecolor backcolor",
+        toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | insertdatetime preview | print fullscreen | ltr rtl | pagebreak restoredraft",
+        menubar: false,
+        convert_urls: false,
+        paste_data_images: true,
+        toolbar_items_size: 'small'
+    });
+</script>

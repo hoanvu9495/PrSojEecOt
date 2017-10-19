@@ -1,0 +1,1184 @@
+﻿@using Model.eAita
+@using Web.FwCore;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@model Web.Areas.ThuMucLuuTruArea.Models.LoaiTaiLieu
+
+@using (Html.BeginForm("SaveSingleFile", "ThuMucLuuTru", FormMethod.Post, new { id = "UploadFileFrm", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Lựa chọn file để tải lên</h4>
+            </div>
+            <div class="modal-body">
+                <div id="loading">Đang tải lên file....</div>
+                <div id="including">Đang tải thuộc tính...</div>
+                <input type="hidden" value="@ViewData["FOLDER_ID"]" name="FOLDER_ID" id="FOLDER_ID" />
+                <input type="hidden" name="TAILIEU_ID" value="0" />
+                <div style="height:450px;overflow-y:auto" id="TaiLieuModal">
+                    <table class="Upload">
+                        <tr>
+                            <td><label class="lbl" style=" width:140px;"> Đường dẫn:</label></td>
+                            <td id="DUONGDAN">&nbsp;</td>
+                        </tr>
+                        <tbody id="UpLoadSingleFile">
+                            <tr>
+                                <th colspan="4">
+                                    <h3 class="group-tittle mt10" style="margin-bottom:10px">Thông tin tài liệu đã số hóa</h3>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>Tên tài liệu :</td>
+                                <td>
+                                    <input maxlength="500" style="width: 233px;float:left" type="text" class="e-input form-control" placeholder="Nhập tên tài liệu" name="filename" id="filename" />
+                                </td>
+                                @*<td colspan="2" valign="top">
+                                        <h3 class="group-tittle mt10" style="margin-bottom:10px;width:100%">Danh mục thông tin tài liệu</h3>
+                                    </td>*@
+                                @*<td style="width:100px !important">Loại tài liệu</td>*@
+                                <td colspan="2">
+                                    @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                                    {
+                                        <h3 class="group-tittle mt10" style="margin-bottom:10px;width:100%;padding:0 !important">Danh mục thông tin tài liệu</h3>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td colspan="3">
+                                    <span style="color:red;display:none;float:left" id="FILENAME_NULL">Vui lòng nhập tên tài liệu</span>
+                                    <span style="color: red; display: none; float: left" id="FILENAME_ERROR">Tên tài liệu không được chứa ký tự dạng HTML</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Chọn tài liệu :</td>
+                                <td style="text-align:left">
+                                    <input type="file" value="Chọn tài liệu" id="filebase" name="filebase" style="width:100%;float:left;border:none" />
+                                    <input type="hidden" value="@Model.FILESIZE" id="FILESIZE" />
+                                    <input type="hidden" value="@Model.EXTENSION" id="EXTENSION" />
+                                </td>
+                                <td rowspan="6" colspan="2" class="position-fixed" width="50%" valign="top">
+                                    @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                                    {
+                                        <div id="DanhSachThuocTinh" style="height:150px;overflow-y:auto">
+                                        </div>
+                                    }
+
+                                </td>
+                            </tr>
+                            <tr style="height:20px;">
+                                <td>&nbsp;</td>
+                                <td>
+                                    <span style="color:red;display:none;float:left" id="FILE_ERROR">Vui lòng kiểm tra định dạng file hoặc dung lượng file cho phép</span>
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tên tác giả:</td>
+                                <td>
+                                    <input type="text" name="AUTHOR" id="TACGIA" class="e-input" style="width:233px" placeholder="Nhập tên tác giả" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <span style="color:red;display:none" id="TACGIA_HTML">Tên tác giả không được chứa các ký tự dạng HTML</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Ngày phát hành:
+                                </td>
+                                <td>
+                                    <input type="text" name="NGAYPHATHANH" id="NGAYPHATHANH" class="e-input" style="width:233px" placeholder="Nhập ngày phát hành tài liệu" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <span style="color:red;display:none" id="NGAYPHATHANH_ERROR">Ngày phát hành sai định dạng.Mời nhập lại</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:100px">
+                                    Số hiệu :
+                                </td>
+                                <td>
+                                    <input maxlength="50" style="width: 233px; float: left" type="text" class="e-input form-control" placeholder="Nhập mã tài liệu" name="filecode" id="filecode" />
+                                </td>
+                            </tr>
+                            <tr style="height:20px;">
+                                <td colspan="2">
+                                    <span style="color: red; display: none; float: left" id="FILECODE_NULL">Vui lòng nhập số hiệu tài liệu</span>
+                                    <span style="color: red; display: none; float: left" id="FILECODE_ERROR">Số hiệu tài liệu không được chứa ký tự dạng HTML</span>
+                                    <span style="color: red; display: none; float: left" id="FILECODE_EXIST">Số hiệu này đã tồn tại.Vui lòng chọn số hiệu khác</span>
+                                </td>
+                                
+                            </tr>
+                            <tr>
+                                <td>Mô tả</td>
+                                <td style="text-align:left">
+                                    <input type="text" class="e-input" id="filedescription" style="width:100%;" placeholder="Nhập mô tả cho tài liệu" name="filedescription" />
+                                </td>
+                            </tr>
+                            <tr style="height:20px;">
+                                <td colspan="2">
+                                    <span style="color:red;display:none" id="filedescription_html">Mô tả không được chứa thẻ HTML</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Phiên bản</td>
+                                <td style="text-align:left">
+                                    <input type="text" class="e-input" id="VERSION" style="width:100%;" placeholder="Nhập phiên bản của tài liệu" name="VERSION" />
+                                </td>
+                                <td><span>Trạng thái:</span></td>
+                                <td>
+                                    <div class="input-field4 clearfix fix-width">
+                                        @Html.DropDownList("TRANGTHAI", Model.ListTrangThai, new { @style = "width: 100%", @id = "TRANGTHAI" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="height:20px;">
+                                <td colspan="2">
+                                    <span style="color:red;display:none" id="VERSION_HTML">Phiên bản không được chứa thẻ HTML</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" style="text-align: left !important; border: none !important; ">
+                                    <span style="color:#ff6a00">Định dạng cho phép: @Model.EXTENSION</span>
+                                    <br />
+                                    Dung lượng tối đa: @(long.Parse(Model.FILESIZE) / 1048576) Mb
+                                    <br />
+                                    @if (Model.FREESPACE > 0)
+                                    {
+                                        <span style="float:left">Dung lượng khả dụng:</span>
+                                        <div class="container" style="width:384px;float:left">
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: @((((Model.USEDSPACE) / Model.FREESPACE) * 100).ToString().Replace(',','.'))%">
+                                                    @(Model.USEDSPACE > 0 ? string.Format("{0:#,##}", Model.USEDSPACE) : "0") Mb của @string.Format("{0:#,##}", Model.FREESPACE) Mb
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <div style="float:left">
+                                        <h3 class="group-tittle mt10" style="margin-bottom:10px">Thông tin tài liệu chưa số hóa</h3>
+                                    </div>
+                                    <div class="onoffswitch" style="float:left;margin-left:15px;margin-top:8px">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+                                        <label class="onoffswitch-label" for="myonoffswitch"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <table class="tblPaper" style="display:none">
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div style="float:left">
+                                    Nơi lưu nâng cao:
+                                </div>
+                                <div class="onoffswitch" style="float:left;margin-left:15px;margin-top:-10px">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch1">
+                                    <label class="onoffswitch-label" for="myonoffswitch1"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr class="Storage">
+                            <td>Nơi lưu :<span style="color:red">*</span></td>
+                            <td>
+                                <input type="text" name="NOILUU" id="NOILUU" class="e-input" style="width:233px" placeholder="Nhập nơi lưu trữ tài liệu" />
+                            </td>
+                            <td>
+                                Tác giả :
+                            </td>
+                            <td>
+                                <input maxlength="50" style="width: 233px" type="text" class="e-input form-control" placeholder="Nhập tên tác giả" name="TACGIA" id="TACGIA" />
+                            </td>
+                        </tr>
+                        <tr class="StorageDetail" style="display:none">
+                            <td>Nơi lưu :<span style="color:red">*</span></td>
+                            <td>
+                                <select name="HANG_ID" class="chosen-select" id="HANG_ID">
+                                    @foreach (var item in Model.KeLuuTru)
+                                    {
+                                        var lstHang = Model.HangLuuTru.Where(x => x.KE_ID == item.ID).ToList();
+                                        if (lstHang.Count > 0)
+                                        {
+                                            <optgroup label="@item.TENTOANHA">
+                                                @foreach (var ele in lstHang)
+                                                {
+                                                    <option value="@ele.ID">@ele.TENHANG</option>
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                Tác giả :
+                            </td>
+                            <td>
+                                <input maxlength="50" style="width: 233px" type="text" class="e-input form-control" placeholder="Nhập tên tác giả" name="TACGIA" id="TACGIA" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td scope="col">Số trang :</td>
+                            <td>
+                                <input style="width: 255px" type="text" class="e-input form-control" placeholder="Nhập số trang của tài liệu" name="SOTRANG" id="SOTRANG" />
+                            </td>
+                            <td>
+                                Số lượng :
+                            </td>
+                            <td>
+                                <input maxlength="50" style="width: 233px" type="text" class="e-input form-control" placeholder="Nhập số lượng tài liệu" name="SOLUONG" id="SOLUONG" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>Ảnh bìa: </td>
+                            <td>
+                                <input type="file" name="imagecover" id="COVER_IMAGE" placeholder="Lựa chọn ảnh bìa" style="border:none" accept="image/*" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @if (Model.THUMUC.IS_CENSOR.HasValue && Model.THUMUC.IS_CENSOR.Value)
+                {
+                    if (Model.THUMUC.IS_PRIVATE.Value)
+                    {
+                        <input type="hidden" value="@TaiLieuDinhKemConstant.DADUYET" name="DUYETTAILIEU" id="DUYETTAILIEU" />
+                        <input type="submit" value="Lưu" id="btnCreateFileSingle" class="btn btn-success" />
+                    }
+                    else
+                    {
+                        if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                        {
+                            <input type="hidden" value="@TaiLieuDinhKemConstant.DUTHAO" name="DUYETTAILIEU" id="DUYETTAILIEU" />
+                            <input type="submit" value="Lưu và duyệt" id="btnCreateApprovalSingle" class="btn btn-success" />
+                            <input type="submit" value="Lưu" id="btnCreateSingle" class="btn btn-success" />
+                        }
+                        else
+                        {
+                            <input type="hidden" value="@TaiLieuDinhKemConstant.DUTHAO" name="DUYETTAILIEU" id="DUYETTAILIEU" />
+                            <input type="submit" value="Lưu" id="btnCreateSingle" class="btn btn-success" />
+                            <input type="submit" value="Lưu và trình" id="btnApprovalSingle" class="btn btn-success" />
+                        }
+                    }
+                }
+                else
+                {
+                    <input type="hidden" value="@TaiLieuDinhKemConstant.DADUYET" name="DUYETTAILIEU" id="DUYETTAILIEU" />
+                    <input type="submit" value="Lưu" id="btnCreateFileSingle" class="btn btn-success" />
+                }
+                <input type="button" value="Đóng" id="btnClose" data-dismiss="modal" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+    <input type="hidden" value="off" name="Digital" id="Digital" />
+    <input type="hidden" value="off" name="AdvanStorage" id="AdvanStorage" />
+    <input type="hidden" id="USEDSPACE" value="@Model.USEDSPACE" />
+}
+<script src="~/Scripts/jquerychosen/chosen.jquery.min.js"></script>
+<link href="~/Scripts/jquerychosen/chosen.min.css" rel="stylesheet" />
+<script>
+    function CheckStorage(DUNGLUONG) {
+        var flag = true;
+        if (parseFloat($("#USEDSPACE").val()) > 0) {
+            if (DUNGLUONG > parseFloat($("#USEDSPACE").val())) {
+                flag = false;
+            }
+        }
+        return flag;
+    }
+    function LoadData() {
+        $.ajax({
+            url: '@Url.Action("InitDanhMucThongTin", "ThuMucLuuTru")',
+            type: 'POST',
+            cache: false,
+            data: {
+                QUY: '@Model.THUMUC.QUY',
+                NAM: '@Model.THUMUC.NAM',
+                TAILIEU_ID: 0,
+                FOLDER_ID:'@Model.THUMUC.ID'
+            },
+            success: function (data) {
+                $("#DanhSachThuocTinh").html(data);
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    $(".chosen-select").chosen({
+        disable_search_threshold: 10,
+        no_results_text: "Oops, Không có kết quả nào",
+        width: "95%"
+    });
+    function LoadMetaData(MaCode) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("LoadMetaData", "ThuMucLuuTru")',
+            data: {
+                MATAILIEU: MaCode
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                if (data.length > 0) {
+                    $.each(data, function (i, ele) {
+                        $('#HANG_ID').val(ele.HANG_ID);
+                        $('#HANG_ID').trigger("chosen:updated");
+                        $("#SOTRANG").val(ele.SOTRANG);
+                        $("#SOLUONG").val(ele.SOLUONG);
+                        $("#TACGIA").val(ele.TACGIA);
+                        $("#filename").val(ele.TENTAILIEU);
+                        $("#filedescription").val(ele.MOTA);
+                    });
+                } else {
+
+                }
+            }, error: function (xrt) {
+                alert(xrt.responseText);
+            }
+        });
+    }
+    function KiemTra(Macode, FOLDER_ID, Status) {
+        var exist = false;
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckCodeFile", "ThuMucLuuTru")',
+            data: {
+                MATAILIEU: Macode,
+                FOLDER_ID: FOLDER_ID,
+                STATUS: Status
+            },
+            cache: false,
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (Macode.trim().length > 0) {
+                    if (data.length > 0) {
+                        exist = true;
+                    } else {
+                        exist = false;
+                    }
+                }
+            }, error: function (xrt) {
+                alert(xrt.responseText);
+            }
+        });
+        return exist;
+    }
+    $(function () {
+
+        $(document).on('click', '.TENDANHMUCTAILIEU', function () {
+            $("#filename").val($(this).html());
+        });
+        var parent = $("#FOLDER_ID").val();
+        //if ($("#URLPath").val() != "") {
+        //    $("#DUONGDAN").html($("#URLPath").html());
+        //} else {
+        //    GetPathUrl(parent);
+        //}
+        GetFullPath(parent);
+        $("#NGAYPHATHANH").datepicker({
+            changeMonth: true,
+            changeYear: true
+        }).datepicker("setDate", new Date());
+        $("#filecode").blur(function () {
+            if ($("#Digital").val().trim() == "on") {
+                LoadMetaData($("#filecode").val().trim());
+            }
+        });
+        $("#myonoffswitch").change(function () {
+            if ($("#myonoffswitch:checked").length == 1) {
+                $("#Digital").val("on");
+                $(".tblPaper").show();
+                if ($("#filecode").val().trim() != "") {
+                    LoadMetaData($("#filecode").val().trim());
+                }
+                $('#TaiLieuModal').animate({ scrollTop: $('.modal-body').prop("scrollHeight") }, 1000);
+            } else {
+                $('#TaiLieuModal').animate({ scrollTop: $('.modal-body').prop("scrollHeight") }, 1000);
+                $(".tblPaper").hide();
+                $("#Digital").val("off");
+            }
+        });
+        $("#myonoffswitch1").change(function () {
+            if ($("#myonoffswitch1:checked").length == 1) {
+                $("#AdvanStorage").val("on");
+                $(".StorageDetail").show();
+                $(".Storage").hide();
+            } else {
+                $("#AdvanStorage").val("off");
+                $(".StorageDetail").hide();
+                $(".Storage").show();
+            }
+        });
+        $('#Uploadfile_TM').on('hidden.bs.modal', function () {
+            $("#Uploadfile_TM").html("");
+            $("#Uploadfile_TM").modal('hide');
+
+        });
+        $(".close,#btnClose").click(function () {
+            $("#UploadSingle").modal("hide");
+            $("#UploadSingle").html("");
+        });
+        @*$("#LOAITAILIEU_ID").change(function () {
+            if ($("#LOAITAILIEU_ID").val().trim() != "") {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetThuocTinh", "ThuMucLuuTru")',
+                    data: {
+                        LOAITAILIEU: $("#LOAITAILIEU_ID").val()
+                    },
+                    cache: false,
+                    dataType: "html",
+                    beforeSend: function () {
+                        $("#including").show();
+                    },
+                    success: function (data) {
+                        $("#including").hide();
+                        $("#DanhSachThuocTinh").html(data);
+                        $("#h3Thuoctinh").show();
+                        //$("#TRINHCUC_TBL1").html(data);
+                    }, error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            } else {
+                $("#h3Thuoctinh").hide();
+                $("#DanhSachThuocTinh").html("");
+            }
+        });*@
+
+        $("#btnApprovalSingle").click(function () {
+            //if ($("#filecode").val().trim() == "") {
+            //    $("#filecode").focus();
+            //    $("#FILECODE_NULL").show();
+            //    return false;
+            //} else {
+            //    $("#FILECODE_NULL").hide();
+            //}
+            var size = 0;
+            if (/<[a-z][\s\S]*>/i.test($("#filecode").val())) {
+                $("#filecode").focus();
+                $("#FILECODE_ERROR").show();
+                return false;
+            } else {
+                $("#FILECODE_ERROR").hide();
+            }
+            if (KiemTra($("#filecode").val().trim(), $("#FOLDER_ID").val(), $("#Digital").val())) {
+                $("#filecode").focus();
+                $("#FILECODE_EXIST").show();
+                return false;
+            } else {
+                $("#FILECODE_EXIST").hide();
+            }
+            if ($("#filebase").val() != "") {
+                //if ($("#filename").val().trim() == "") {
+                //    $("#filename").focus();
+                //    $("#FILENAME_NULL").show();
+                //    return false;
+                //} else {
+                //    $("#FILENAME_NULL").hide();
+                //}
+                if (/<[a-z][\s\S]*>/i.test($("#filename").val())) {
+                    $("#filename").focus();
+                    $("#FILENAME_ERROR").show();
+                    return false;
+                } else {
+                    $("#FILENAME_ERROR").hide();
+                }
+            } else {
+                var fname = $('#filebase')[0].files[0].name;
+                $("#filename").val(fname);
+                $("#FILENAME_NULL").hide();
+                $("#FILENAME_ERROR").hide();
+            }
+            if (!checkDateTime($("#NGAYPHATHANH").val().trim())) {
+                $("#NGAYPHATHANH_ERROR").show();
+                return false;
+            } else {
+                $("#NGAYPHATHANH_ERROR").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#filedescription").val())) {
+                $("#filedescription").focus();
+                $("#filedescription_html").show();
+                return false;
+            } else {
+                $("#filedescription_html").hide();
+            }
+            if ($("#VERSION").val().trim().length > 0) {
+                if (/<[a-z][\s\S]*>/i.test($("#VERSION").val())) {
+                    $("#VERSION").focus();
+                    $("#VERSION_HTML").show();
+                    return false;
+                } else {
+                    $("#VERSION_HTML").hide();
+                }
+            }
+            if ($("#filebase").val().length > 0) {
+                var fSize = $("#filebase")[0].files[0].size;
+                var fType = $("#filebase").val();
+                fType = "." + fType.substr((fType.lastIndexOf('.') + 1));
+                size = fSize;
+                var maxsize = $("#FILESIZE").val();
+                var extension = $("#EXTENSION").val().split(',');
+                var acceptex = jQuery.inArray(fType, extension) != '-1';
+                if (fSize > maxsize || !acceptex) {
+                    $("#FILE_ERROR").show()
+                    return false;
+                }
+            } else {
+                alert("Chưa có file nào được lựa chọn");
+                return false;
+            }
+            if ($("#SOLUONG").val() != "") {
+                if (!/^\d+$/.test($("#SOLUONG").val())) {
+                    $("#SOLUONG").focus();
+                    $("#SOLUONG_ERROR").show();
+                    return false;
+                } else {
+                    $("#SOLUONG_ERROR").hide();
+                }
+            }
+            if ($("#SOTRANG").val() != "") {
+                if (!/^\d+$/.test($("#SOTRANG").val())) {
+                    $("#SOTRANG").focus();
+                    $("#SOTRANG_ERROR").show();
+                    return false;
+                } else {
+                    $("#SOTRANG_ERROR").hide();
+                }
+            }
+            if ($("#COVER_IMAGE").val() != "") {
+                var fsize = $('#COVER_IMAGE')[0].files[0].size;
+                var ftype = $('#COVER_IMAGE')[0].files[0].type;
+                var fname = $('#COVER_IMAGE')[0].files[0].name;
+                switch (ftype) {
+                    case 'image/png':
+                    case 'image/gif':
+                    case 'image/jpeg':
+                    case 'image/pjpeg':
+                        $("#COVERIMAGE_NULL").hide();
+                        break;
+                    default:
+                        $("#COVERIMAGE_NULL").show();
+                }
+            }
+            if (!CheckStorage(parseFloat(size) / 1048576)) {
+                $.confirm({
+                    'title': 'Không thể tải lên tài liệu',
+                    'message': 'Dung lượng tài liệu bạn tải lên đang vượt quá dung lượng được cấp',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-info',
+                            'action': function () { }
+                        }
+                    }
+                });
+                return false;
+            }
+            $("#DUYETTAILIEU").val("@TaiLieuDinhKemConstant.TRINHDUYET");
+            return true;
+        });
+        $("#btnCreateSingle").click(function () {
+            //if ($("#filecode").val().trim() == "") {
+            //    $("#filecode").focus();
+            //    $("#FILECODE_NULL").show();
+            //    return false;
+            //} else {
+            //    $("#FILECODE_NULL").hide();
+            //}
+            var size = 0;
+            if (/<[a-z][\s\S]*>/i.test($("#filecode").val())) {
+                $("#filecode").focus();
+                $("#FILECODE_ERROR").show();
+                return false;
+            } else {
+                $("#FILECODE_ERROR").hide();
+            }
+            if (KiemTra($("#filecode").val().trim(), $("#FOLDER_ID").val(), $("#Digital").val())) {
+                $("#filecode").focus();
+                $("#FILECODE_EXIST").show();
+                return false;
+            } else {
+                $("#FILECODE_EXIST").hide();
+            }
+            if ($("#filebase").val() == "") {
+                //if ($("#filename").val().trim() == "") {
+                //    $("#filename").focus();
+                //    $("#FILENAME_NULL").show();
+                //    return false;
+                //} else {
+                //    $("#FILENAME_NULL").hide();
+                //}
+                if (/<[a-z][\s\S]*>/i.test($("#filename").val())) {
+                    $("#filename").focus();
+                    $("#FILENAME_ERROR").show();
+                    return false;
+                } else {
+                    $("#FILENAME_ERROR").hide();
+                }
+            } else {
+                var fname = $('#filebase')[0].files[0].name;
+                $("#filename").val(fname);
+                $("#FILENAME_NULL").hide();
+                $("#FILENAME_ERROR").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#TACGIA").val())) {
+                $("#TACGIA").focus();
+                $("#TACGIA_HTML").show();
+                return false;
+            } else {
+                $("#TACGIA_HTML").hide();
+            }
+            if (!checkDateTime($("#NGAYPHATHANH").val().trim())) {
+                $("#NGAYPHATHANH_ERROR").show();
+                return false;
+            } else {
+                $("#NGAYPHATHANH_ERROR").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#filedescription").val())) {
+                $("#filedescription").focus();
+                $("#filedescription_html").show();
+                return false;
+            } else {
+                $("#filedescription_html").hide();
+            }
+            if ($("#VERSION").val().trim().length > 0) {
+                if (/<[a-z][\s\S]*>/i.test($("#VERSION").val())) {
+                    $("#VERSION").focus();
+                    $("#VERSION_HTML").show();
+                    return false;
+                } else {
+                    $("#VERSION_HTML").hide();
+                }
+            }
+            if ($("#filebase").val().length > 0) {
+                var fSize = $("#filebase")[0].files[0].size;
+                var maxsize = $("#FILESIZE").val();
+                var fType = $("#filebase").val();
+                fType = "." + fType.substr((fType.lastIndexOf('.') + 1));
+                var maxsize = $("#FILESIZE").val();
+                var extension = $("#EXTENSION").val().split(',');
+                var acceptex = jQuery.inArray(fType, extension) != '-1';
+                if (fSize > maxsize || !acceptex) {
+                    $("#FILE_ERROR").show()
+                    return false;
+                }
+                size = fSize;
+            } else {
+                alert("Chưa có file nào được lựa chọn");
+                return false;
+            }
+            if ($("#SOLUONG").val() != "") {
+                if (!/^\d+$/.test($("#SOLUONG").val())) {
+                    $("#SOLUONG").focus();
+                    $("#SOLUONG_ERROR").show();
+                    return false;
+                } else {
+                    $("#SOLUONG_ERROR").hide();
+                }
+            }
+            if ($("#SOTRANG").val() != "") {
+                if (!/^\d+$/.test($("#SOTRANG").val())) {
+                    $("#SOTRANG").focus();
+                    $("#SOTRANG_ERROR").show();
+                    return false;
+                } else {
+                    $("#SOTRANG_ERROR").hide();
+                }
+            }
+            if ($("#COVER_IMAGE").val() != "") {
+                var fsize = $('#COVER_IMAGE')[0].files[0].size;
+                var ftype = $('#COVER_IMAGE')[0].files[0].type;
+                var fname = $('#COVER_IMAGE')[0].files[0].name;
+                switch (ftype) {
+                    case 'image/png':
+                    case 'image/gif':
+                    case 'image/jpeg':
+                    case 'image/pjpeg':
+                        $("#COVERIMAGE_NULL").hide();
+                        break;
+                    default:
+                        $("#COVERIMAGE_NULL").show();
+                }
+            }
+            if (!CheckStorage(parseFloat(size) / 1048576)) {
+                $.confirm({
+                    'title': 'Không thể tải lên tài liệu',
+                    'message': 'Dung lượng tài liệu bạn tải lên đang vượt quá dung lượng được cấp',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-info',
+                            'action': function () { }
+                        }
+                    }
+                });
+                return false;
+            }
+            $("#DUYETTAILIEU").val("@TaiLieuDinhKemConstant.DUTHAO");
+            return true;
+        });
+        $("#btnCreateFileSingle").click(function () {
+            var size = 0;
+            if ($("#filebase").val().length > 0) {
+                var fSize = $("#filebase")[0].files[0].size;
+                var maxsize = $("#FILESIZE").val();
+                var fType = $("#filebase").val().toLowerCase();
+                fType = "." + fType.substr((fType.lastIndexOf('.') + 1));
+                var maxsize = $("#FILESIZE").val();
+                var extension = $("#EXTENSION").val().split(',');
+                var acceptex = jQuery.inArray(fType, extension) != '-1';
+                if (fSize > maxsize || !acceptex) {
+                    $("#FILE_ERROR").show()
+                    return false;
+                }
+                size = fSize;
+            } else {
+                alert("Chưa có file nào được lựa chọn");
+                return false;
+            }
+            //if ($("#filecode").val().trim() == "") {
+            //    $("#filecode").focus();
+            //    $("#FILECODE_NULL").show();
+            //    return false;
+            //} else {
+            //    $("#FILECODE_NULL").hide();
+            //}
+            if (/<[a-z][\s\S]*>/i.test($("#filecode").val())) {
+                $("#filecode").focus();
+                $("#FILECODE_ERROR").show();
+                return false;
+            } else {
+                $("#FILECODE_ERROR").hide();
+            }
+            if (KiemTra($("#filecode").val().trim(), $("#FOLDER_ID").val(), $("#Digital").val())) {
+                $("#filecode").focus();
+                $("#FILECODE_EXIST").show();
+                return false;
+            } else {
+                $("#FILECODE_EXIST").hide();
+            }
+            if ($("#filebase").val() != "") {
+                //if ($("#filename").val().trim() == "") {
+                //    $("#filename").focus();
+                //    $("#FILENAME_NULL").show();
+                //    return false;
+                //} else {
+                //    $("#FILENAME_NULL").hide();
+                //}
+                if (/<[a-z][\s\S]*>/i.test($("#filename").val())) {
+                    $("#filename").focus();
+                    $("#FILENAME_ERROR").show();
+                    return false;
+                } else {
+                    $("#FILENAME_ERROR").hide();
+                }
+            } else {
+                var fname = $('#filebase')[0].files[0].name;
+                $("#filename").val(fname);
+                $("#FILENAME_NULL").hide();
+                $("#FILENAME_ERROR").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#TACGIA").val())) {
+                $("#TACGIA").focus();
+                $("#TACGIA_HTML").show();
+                return false;
+            } else {
+                $("#TACGIA_HTML").hide();
+            }
+            if (!checkDateTime($("#NGAYPHATHANH").val().trim())) {
+                $("#NGAYPHATHANH_ERROR").show();
+                return false;
+            } else {
+                $("#NGAYPHATHANH_ERROR").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#filedescription").val())) {
+                $("#filedescription").focus();
+                $("#filedescription_html").show();
+                return false;
+            } else {
+                $("#filedescription_html").hide();
+            }
+            if ($("#VERSION").val().trim().length > 0) {
+                if (/<[a-z][\s\S]*>/i.test($("#VERSION").val())) {
+                    $("#VERSION").focus();
+                    $("#VERSION_HTML").show();
+                    return false;
+                } else {
+                    $("#VERSION_HTML").hide();
+                }
+            }
+            if ($("#SOLUONG").val() != "") {
+                if (!/^\d+$/.test($("#SOLUONG").val())) {
+                    $("#SOLUONG").focus();
+                    $("#SOLUONG_ERROR").show();
+                    return false;
+                } else {
+                    $("#SOLUONG_ERROR").hide();
+                }
+            }
+            if ($("#SOTRANG").val() != "") {
+                if (!/^\d+$/.test($("#SOTRANG").val())) {
+                    $("#SOTRANG").focus();
+                    $("#SOTRANG_ERROR").show();
+                    return false;
+                } else {
+                    $("#SOTRANG_ERROR").hide();
+                }
+            }
+            if ($("#COVER_IMAGE").val() != "") {
+                var fsize = $('#COVER_IMAGE')[0].files[0].size;
+                var ftype = $('#COVER_IMAGE')[0].files[0].type;
+                var fname = $('#COVER_IMAGE')[0].files[0].name;
+                switch (ftype) {
+                    case 'image/png':
+                    case 'image/gif':
+                    case 'image/jpeg':
+                    case 'image/pjpeg':
+                        $("#COVERIMAGE_NULL").hide();
+                        break;
+                    default:
+                        $("#COVERIMAGE_NULL").show();
+                }
+            }
+            if (!CheckStorage(parseFloat(size) / 1048576)) {
+                $.confirm({
+                    'title': 'Không thể tải lên tài liệu',
+                    'message': 'Dung lượng tài liệu bạn tải lên đang vượt quá dung lượng được cấp',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-info',
+                            'action': function () { }
+                        }
+                    }
+                });
+                return false;
+            }
+            return true;
+        });
+        $("#btnCreateApprovalSingle").click(function () {
+            //if ($("#filecode").val().trim() == "") {
+            //    $("#filecode").focus();
+            //    $("#FILECODE_NULL").show();
+            //    return false;
+            //} else {
+            //    $("#FILECODE_NULL").hide();
+            //}
+            var size = 0;
+            if (/<[a-z][\s\S]*>/i.test($("#filecode").val())) {
+                $("#filecode").focus();
+                $("#FILECODE_ERROR").show();
+                return false;
+            } else {
+                $("#FILECODE_ERROR").hide();
+            }
+            if (KiemTra($("#filecode").val().trim(), $("#FOLDER_ID").val(), $("#Digital").val())) {
+                $("#filecode").focus();
+                $("#FILECODE_EXIST").show();
+                return false;
+            } else {
+                $("#FILECODE_EXIST").hide();
+            }
+            if ($("#filebase").val() != "") {
+                //if ($("#filename").val().trim() == "") {
+                //    $("#filename").focus();
+                //    $("#FILENAME_NULL").show();
+                //    return false;
+                //} else {
+                //    $("#FILENAME_NULL").hide();
+                //}
+                if (/<[a-z][\s\S]*>/i.test($("#filename").val())) {
+                    $("#filename").focus();
+                    $("#FILENAME_ERROR").show();
+                    return false;
+                } else {
+                    $("#FILENAME_ERROR").hide();
+                }
+            } else {
+                var fname = $('#filebase')[0].files[0].name;
+                $("#filename").val(fname);
+                $("#FILENAME_NULL").hide();
+                $("#FILENAME_ERROR").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#TACGIA").val())) {
+                $("#TACGIA").focus();
+                $("#TACGIA_HTML").show();
+                return false;
+            } else {
+                $("#TACGIA_HTML").hide();
+            }
+            if (!checkDateTime($("#NGAYPHATHANH").val().trim())) {
+                $("#NGAYPHATHANH_ERROR").show();
+                return false;
+            } else {
+                $("#NGAYPHATHANH_ERROR").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#filedescription").val())) {
+                $("#filedescription").focus();
+                $("#filedescription_html").show();
+                return false;
+            } else {
+                $("#filedescription_html").hide();
+            }
+            if ($("#VERSION").val().trim().length > 0) {
+                if (/<[a-z][\s\S]*>/i.test($("#VERSION").val())) {
+                    $("#VERSION").focus();
+                    $("#VERSION_HTML").show();
+                    return false;
+                } else {
+                    $("#VERSION_HTML").hide();
+                }
+            }
+            if ($("#filebase").val().length > 0) {
+                var fSize = $("#filebase")[0].files[0].size;
+                var maxsize = $("#FILESIZE").val();
+                var fType = $("#filebase").val();
+                fType = "." + fType.substr((fType.lastIndexOf('.') + 1));
+                var maxsize = $("#FILESIZE").val();
+                var extension = $("#EXTENSION").val().split(',');
+                var acceptex = jQuery.inArray(fType, extension) != '-1';
+                if (fSize > maxsize || !acceptex) {
+                    $("#FILE_ERROR").show()
+                    return false;
+                }
+                size = fSize;
+            } else {
+                alert("Chưa có file nào được lựa chọn");
+                return false;
+            }
+            if ($("#SOLUONG").val() != "") {
+                if (!/^\d+$/.test($("#SOLUONG").val())) {
+                    $("#SOLUONG").focus();
+                    $("#SOLUONG_ERROR").show();
+                    return false;
+                } else {
+                    $("#SOLUONG_ERROR").hide();
+                }
+            }
+            if ($("#SOTRANG").val() != "") {
+                if (!/^\d+$/.test($("#SOTRANG").val())) {
+                    $("#SOTRANG").focus();
+                    $("#SOTRANG_ERROR").show();
+                    return false;
+                } else {
+                    $("#SOTRANG_ERROR").hide();
+                }
+            }
+            if ($("#COVER_IMAGE").val() != "") {
+                var fsize = $('#COVER_IMAGE')[0].files[0].size;
+                var ftype = $('#COVER_IMAGE')[0].files[0].type;
+                var fname = $('#COVER_IMAGE')[0].files[0].name;
+                switch (ftype) {
+                    case 'image/png':
+                    case 'image/gif':
+                    case 'image/jpeg':
+                    case 'image/pjpeg':
+                        $("#COVERIMAGE_NULL").hide();
+                        break;
+                    default:
+                        $("#COVERIMAGE_NULL").show();
+                }
+            }
+            if (!CheckStorage(parseFloat(size) / 1048576)) {
+                $.confirm({
+                    'title': 'Không thể tải lên tài liệu',
+                    'message': 'Dung lượng tài liệu bạn tải lên đang vượt quá dung lượng được cấp',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-info',
+                            'action': function () { }
+                        }
+                    }
+                });
+                return false;
+            }
+            $("#DUYETTAILIEU").val("@TaiLieuDinhKemConstant.DADUYET");
+            return true;
+        });
+    });
+    $("form").ajaxForm({
+        beforeSend: function () {
+            $("#loading").show();
+            $("#btnCreateFileSingle").prop('disabled', true);
+            $("#btnApprovalSingle").prop('disabled', true);
+            $("#btnCreateSingle").prop('disabled', true);
+            $("#btnClose").prop('disabled', true);
+            $("#btnCreateApprovalSingle").prop('disabled', true);
+        },
+        uploadProgress: function () {
+        },
+        success: function (data) {
+            $("#loading").hide();
+            $("#Uploadfile_TM").html("");
+            LoadDataByID($("#FOLDER_ID").val());
+            notif({
+                type: 'success',
+                position: 'bottom',
+                msg: data,
+            });
+        },
+        complete: function () {
+            $("#UploadSingle").modal('hide');
+            $("#UploadSingle").html("");
+        }, error: function (data) {
+            notif({
+                type: 'error',
+                position: 'bottom',
+                msg: data,
+            });
+        }
+    });
+</script>
+@if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+{
+    <script>
+        $(function () {
+            LoadData();
+        });
+    </script>
+}
+<style>
+    .Upload td {
+        vertical-align: middle;
+    }
+
+    #DanhSachThuocTinh {
+        vertical-align: top !important;
+    }
+
+    .Upload td:first-child, .Upload td:nth-child(3) {
+        text-align: left !important;
+    }
+
+    .onoffswitch {
+        position: relative;
+        width: 65px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .onoffswitch-checkbox {
+        display: none;
+    }
+
+    .chooseplace {
+        display: none;
+    }
+
+    .onoffswitch-label {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        height: 28px;
+        padding: 0;
+        line-height: 28px;
+        border: 2px solid #CCCCCC;
+        border-radius: 28px;
+        background-color: #FFFFFF;
+        transition: background-color 0.3s ease-in;
+    }
+
+        .onoffswitch-label:before {
+            content: "";
+            display: block;
+            width: 28px;
+            margin: 0px;
+            background: #FFFFFF;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 35px;
+            border: 2px solid #CCCCCC;
+            border-radius: 28px;
+            transition: all 0.3s ease-in 0s;
+        }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label {
+        background-color: #49E845;
+    }
+
+        .onoffswitch-checkbox:checked + .onoffswitch-label, .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+            border-color: #49E845;
+        }
+
+            .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+                right: 0px;
+            }
+
+    .e-input {
+        width: 223px;
+        height: 26px !important;
+        font-size: 13px !important;
+    }
+
+    #loading, #including {
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        background: #000 url('/Content/Images/loadajax.gif') no-repeat 50% 4px;
+        bottom: 50%;
+        color: #fff;
+        text-align: center;
+        line-height: 166px;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0.7;
+        border-radius: 5px;
+        filter: alpha(opacity=70);
+        font-size: 12px;
+        text-shadow: none;
+        display: none;
+    }
+
+    #UpLoadSingleFile tr td:nth-child(2) {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 350px !important;
+        text-overflow: ellipsis;
+    }
+
+    table.Upload tr td {
+        border: none;
+    }
+
+    table.UploadSingle td {
+        border: none !important;
+    }
+
+    #filedescription {
+        resize: none;
+    }
+</style>

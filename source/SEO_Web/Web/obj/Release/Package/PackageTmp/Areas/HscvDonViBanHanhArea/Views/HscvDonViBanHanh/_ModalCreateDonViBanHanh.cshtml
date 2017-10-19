@@ -1,0 +1,85 @@
+﻿@using Web.Areas.HscvDonViBanHanhArea.Models;
+@model DonViBanHanhViewModel
+<style type="text/css">
+    .height-15 {
+        height: 15px !important;
+    }
+</style>
+<table style="width:100% !important">
+    <tbody>
+        <tr>
+            <td>
+                <label class="lbl-title" for="MODAL_TEN_DONVI">
+                    Cơ quan ban hành :<span class="red">*</span>
+                </label>
+            </td>
+            <td>
+                <input type="text" name="MODAL_TEN_DONVI" id="MODAL_TEN_DONVI" placeholder="Tên đơn vị ban hành" class="form-control" autocomplete="off" />
+            </td>
+        </tr>
+        <tr class="height-15">
+            <td></td>
+            <td>
+                <span class="red" id="ERR_MODAL_TENDONVI"></span>
+            </td>
+        </tr><!--Tên đơn vị ban hành-->
+
+        <tr>
+            <td>
+                <label class="lbl-title" for="MODAL_MA_DONVI">
+                    Mã đơn vị:
+                </label>
+            </td>
+            <td>
+                <input type="text" name="MODAL_MA_DONVI" id="MODAL_MA_DONVI" class="form-control" placeholder="Mã đơn vị" autocomplete="off" />
+            </td>
+        </tr>
+        <tr class="height-15">
+            <td></td>
+            <td>
+                <span class="red" id="ERR_MODAL_MA_DONVI"></span>
+            </td>
+        </tr><!--Mã đơn vị-->
+        <tr>
+            <td>
+                <label class="lbl-title" for="MODAL_DONVI_CHA">
+                    Đơn vị cấp trên:
+                </label>
+            </td>
+            <td>
+                @Html.Raw(Model.ListDonViBanHanhDropdownStr)
+            </td>
+
+        </tr>
+        <tr class="height-15">
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>
+                <label class="lbl-title" for="MODAL_DIACHI">
+                    Địa chỉ:
+                </label>
+            </td>
+            <td>
+                <textarea id="MODAL_DIACHI" name="MODAL_DIACHI" placeholder="Địa chỉ cơ quan" class="form-control"></textarea>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $("#MODAL_DONVI_CHA").chosen({
+        width: '100%'
+    });
+
+    $('#MODAL_TEN_DONVI').on('keyup', function () {
+        if ($(this).val().trim() !== '') {
+            document.getElementById('ERR_MODAL_TENDONVI').innerHTML = '';
+        }
+    });
+    $('#MODAL_MA_DONVI').on('keyup', function () {
+        if ($(this).val().trim() !== '') {
+            document.getElementById('ERR_MODAL_MA_DONVI').innerHTML = '';
+        }
+    });
+</script>

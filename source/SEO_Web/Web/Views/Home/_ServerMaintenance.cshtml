@@ -1,0 +1,84 @@
+﻿@using Model.DBTool;
+@{
+    ViewBag.Title = "Hệ thống quản lý thi THPT quốc gia";
+    Layout = null;
+}
+@{
+    var time = "";
+    if (ViewData["MAINTAIN_TIME"] != null)
+    {
+        time = (string)ViewData["MAINTAIN_TIME"];
+    }
+}
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>@ViewBag.Title</title>
+    <link rel="icon" type="image/png" href="~/Content/Images/QuocHuy.png" />
+    <link href="@Url.Content("~/Content/Custom/css/style.css")" rel="stylesheet" type="text/css" />
+    <style>
+        .ErrorMsgStyle {
+            font-size: 12px;
+            color: red;
+            margin: 0 0 4px 104px;
+        }
+    </style>
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/bundles/Custom/css")
+</head>
+<body class="body_login" style="margin: 0 auto;">
+    <!--MAINTAIN_PAGE-->
+    <form action="Login" method="post">
+        <div class="top-main">
+            <div class="wrap">
+                <div class="logo">
+                    <h1><a href="#" title="KỲ THI THPT QUỐC GIA & TUYỂN SINH ĐH,d CĐ"></a></h1>
+                </div>
+            </div>
+        </div>
+        <div class="content-main" style="min-height: 400px; background: #efefef">
+            <div class="Maintenance">
+            <p style="color: black; font-family: tahoma,arial,serif; text-align: center; padding: 10px; line-height: 32px">
+                <br />
+                @time
+            </p>
+        </div>
+        </div>
+        <div class="clean"></div>
+        <div class="footer-main">
+            <div class="wrap">
+                <p>
+                    Bản quyền thuộc về: Bộ Giáo dục và Đào tạo
+                    <br />
+                    Thiết kế bởi Trung tâm Giải pháp CNTT & VT Viettel
+                </p>
+            </div>
+        </div>
+        <div id="fogotCode" title="Lấy lại mã đăng nhập">
+        </div>
+    </form>
+
+    @*<div id="bottombar">
+        HOTLINE : 1900 8098 nhánh số 2
+    </div>*@
+    <script>
+        
+        $(document).ready(function () {
+           
+
+            $(window).resize(function () {
+                $(".content-main").css({ "min-height": $(window).height() - $(".top-main").height() - $(".footer-main").height() - 28 });
+            });
+            $(".content-main").css({ "min-height": $(window).height() - $(".top-main").height() - $(".footer-main").height() - 28 });
+
+        });
+        
+    </script>
+   
+</body>
+</html>

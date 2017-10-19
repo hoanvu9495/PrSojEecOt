@@ -1,0 +1,103 @@
+.column{
+    min-height: 300px;
+    float: left;
+    margin-right: .5%;
+    width:99.5%;
+}
+.column .dragbox{
+	margin: 5px 5px 10px;
+	background:#fff;
+	position:relative;
+	border:1px solid #ddd;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+    border:1px solid #bfbfbf;
+        float: left;
+}
+.column .dragbox h2{
+	margin:0;
+	font-size:12px;
+	padding:5px;
+	background:#fff;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	cursor:move;
+    line-height:20px;
+}
+.column .dragbox h2 a{
+    color: #005c9c;
+    cursor:pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+.dragbox-content{
+    border-top: 1px solid #dbdbdb;
+    padding:5px 10px;
+    height: auto;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x:hidden;
+}
+.column  .placeholder{
+	background: #f0f0f0;
+	border:1px dashed #ddd;
+}
+.dragbox h2.collapse{
+	background:#f0f0f0 url('collapse.png') no-repeat top right;
+}
+.dragbox h2 .configure{
+	font-size:11px; font-weight:normal;
+	margin-right:30px; float:right;
+}
+.conf-bar{
+    float:left;width:100%; padding:5px; 
+    /*text-align:center;*/
+    /*border-bottom: 1px solid #bfbfbf;*/
+}
+.conf-home{
+    float:right;color:#015bb4;font-weight:bold;
+    text-decoration:none;
+}
+.conf-home:hover{
+    color:#003479;
+    text-decoration:none;
+}
+.conf-home:active{
+    text-decoration:none;
+}
+.box-layout{
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #dcdcdc;
+    border-right: 1px solid #dcdcdc;
+    color: #333;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 23px 0;
+    height: 150px;
+    text-align: center;
+    line-height:110px;
+    float: left;
+}
+.layout-item{
+    float: left;
+    border-top: 1px solid #dcdcdc;
+    border-left: 1px solid #dcdcdc;
+    border-radius: 2px;
+    margin: 15px;
+    height: 150px;
+    cursor:pointer;
+}
+.layout-active{
+    outline: 3px solid #fbf99a;
+}
+.layout-check{
+    outline: 3px solid #def1ff;
+}
+.conf-col-bar{
+    float: left;
+    width: 100%;
+    border-bottom: 1px dotted #ccc;
+    margin-top: 10px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+}

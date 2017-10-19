@@ -1,0 +1,125 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Model.eAita.THUMUC_LUUTRU
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #PARENT_ID {
+        display: none;
+    }
+</style>
+@using (Ajax.BeginForm("SaveThuMuc", "ThuMucLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "createSuccess"
+}, new { id = "frmCreateThuMuc" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table>
+            <tr style="height:20px"></tr>
+            @Html.TextBox("PARENT_ID", Model.PARENT_ID, new { @style = "width: 20px;", maxlength = "50", @class = "e-input", @id = "PARENT_ID", @readonly = "readonly" })
+
+
+            <tr>
+                <td>
+                    <label class="lbl" for="CREATE_NAME" style=" width:140px;">Tên thư mục:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("TENTHUMUC", "", new { @style = "width: 190px;", maxlength = "50", @class = "e-input", @id = "CREATE_NAME" })
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px;"></td>
+                <td>
+                    <span class="lb-Check" id="TENTHUMUC_ER" style="margin-left: 0px; color: red;">Thư mục đã tồn tại.</span>
+                    <span class="lb-Check" id="TENTHUMUC_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập tên thư mục</span>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div style="margin-top: 15px; text-align:center;">
+        <input type="button" value="Thêm folder" id="btnCreate" style="background-color: #336699; height: 30px; border: none; width: 130px; color: white;" />
+        <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+
+    </div>
+
+}
+<script>
+
+    function OnClose() {
+        $("#CreateThuMuc").dialog("close");
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    var folder = $("#CREATE_NAME").val();
+    var tontai = false;
+    var parent = $("#PARENT_ID").val();
+    $("#CREATE_NAME").blur(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#TENTHUMUC_NULL").show();
+        } else {
+            $("#TENTHUMUC_NULL").hide();
+        }
+    });
+
+    $("#CREATE_NAME").focusout(function () {
+        var thumuc = $("#CREATE_NAME").val();
+        if (thumuc.trim() != "") {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("FolderChecking", "ThuMucLuuTru")',
+                data: {
+                    name: thumuc,
+                    parentID: parent
+                },
+                cache: false,
+                dataType: "html",
+                success: function (data) {
+                    if (data == "True") {
+                        if (folder != thumuc) {
+                            tontai = true;
+                            $("#TENTHUMUC_ER").show();
+                        } else {
+                            $("#TENTHUMUC_ER").hide();
+                            tontai = false;
+                        }
+                    } else {
+                        $("#TENTHUMUC_ER").hide();
+                        tontai = false;
+                    }
+                }, error: function () {
+                    alert("Có lỗi xảy ra");
+                }
+            });
+        }
+    });
+    //$("#btnCreate").live("click", function () {
+    //    if (($("#CREATE_NAME").val().trim() == null || $("#CREATE_NAME").val().trim() == "") || tontai == true) {
+    //        $("#CREATE_NAME").focus();
+    //        return false;
+    //    }
+    //    $("#frmCreateThuMuc").submit();
+    //    return true;
+    //});
+    function createSuccess() {
+        $("#CreateThuMuc").html("");
+        LoadDataByID(parent);
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Thêm mới thư mục thành công!',
+        });
+
+        $("#CreateThuMuc").dialog("close");
+    }
+</script>

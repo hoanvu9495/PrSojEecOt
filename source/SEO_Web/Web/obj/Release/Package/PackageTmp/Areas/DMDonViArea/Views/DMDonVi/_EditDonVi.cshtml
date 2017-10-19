@@ -1,0 +1,148 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Model.eAita.DM_DONVI
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #EDIT_ID {
+        display: none;
+    }
+</style>
+@using (Ajax.BeginForm("SaveDonVi", "DMDonVi", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmDonViEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table>
+            <tr style="height: 20px;"></tr>
+
+            @Html.TextBox("ID", Model.ID, new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "EDIT_ID", @readonly = "readonly" })
+
+
+            <tr>
+                <td>
+                    <label class="lbl" style=" width: 150px;">Tên đơn vị:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("TEN_DONVI", Model.TEN_DONVI, new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "EDIT_DONVI" })
+                </td>
+
+            </tr>
+            <tr>
+                <td style="height: 20px;"></td>
+                <td>
+                    <span class="lb-Check" id="EDIT_DONVI_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập tên đơn vị </span>
+                    <span class="lb-Check" id="EDIT_DONVI_ERROR" style="margin-left: 0px; color: red;">Tên đơn vị đã tồn tại</span>
+                    <span class="lb-Check" id="EDIT_DONVI_HTML" style="margin-left: 0px; color: red;">Tên đơn vị không được chứa ký tự dạng thẻ HTML</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl" style=" width: 150px;">Trạng Thái:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text = "Có sử dụng", Value = "true" },
+                        new SelectListItem{ Text = "Không sử dụng", Value = "false" }
+                    })
+                </td>
+            </tr>
+
+
+        </table>
+    </div>
+    <div style="margin-top: 15px; text-align:center;">
+        <input type="button" value="Lưu" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+        <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+
+    </div>
+
+}
+<script type="text/javascript">
+    var tontai = false;
+    var donvi = $("#EDIT_DONVI").val();
+    function OnClose() {
+        $("#PrepareDonVi").dialog("close");
+    }
+    $("#EDIT_DONVI").blur(function () {
+        if ($(this).val().trim() != "") {
+            $("#EDIT_DONVI_NULL").hide();
+        }
+        if (/<[a-z][\s\S]*>/i.test($(this).val()) == false) {
+            $("#CREATE_DONVI_HTML").hide();
+        }
+    });
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function updateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Cập nhật đơn vị thành công!',
+        });
+        $("#PrepareDonVi").modal("hide");
+        reloadGrid();
+    }
+    $("#btnSave").click(function () {
+        if ($("#EDIT_DONVI").val().trim() == null || $("#EDIT_DONVI").val().trim() == "") {
+            $("#EDIT_DONVI_NULL").show();
+            $("#EDIT_DONVI").focus();
+            return false;
+        } else {
+            $("#EDIT_DONVI_NULL").hide();
+            alert(/<[a-z][\s\S]*>/i.test($("#EDIT_DONVI").val()));
+            if (/<[a-z][\s\S]*>/i.test($("#EDIT_DONVI").val())) {
+                $("#EDIT_DONVI").select();
+                $("#EDIT_DONVI_HTML").show();
+                return false;
+            } else {
+
+                $("#EDIT_DONVI_HTML").hide();
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("validateDonVi", "DMDonVi")',
+                    data: {
+                        tendonvi: $("#EDIT_DONVI").val()
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        if (data == "existed") {
+                            if (donvi != tendonvi) {
+                                tontai = true;
+                                $("#EDIT_DONVI_ERROR").show();
+                                return false;
+                            } else {
+                                document.getElementById("frmDonViEdit").submit();
+                                return true;
+                            }
+
+                        }
+                        else {
+                            document.getElementById("frmDonViEdit").submit();
+                            return true;
+                        }
+                    }, error: function () {
+
+                    }
+                });
+            }
+        }
+        return false;
+
+    });
+
+</script>

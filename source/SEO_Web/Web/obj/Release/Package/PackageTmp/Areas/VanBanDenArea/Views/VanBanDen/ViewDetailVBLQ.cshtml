@@ -1,0 +1,63 @@
+﻿@using Web.Common;
+@{
+    ViewBag.Title = "[eAita] Điều hành tác nghiệp > Quản lý văn bản đến > Chi tiết văn bản đến";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/van_ban_den/van_ban_den.css">
+<script src="~/Scripts/workflow.js"></script>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div class="block" id="smart-dms">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none; border:none;">
+        <div id="menu-child">
+            <div class="menu-left" style="display:inline-block">
+                <div class="btn-group" role="group" aria-label="..." style="">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Theo dõi văn bản
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="">Tạo hồ sơ</a></li>
+                            <li><a href="/congviecarea/congviec/create?vbType=@LOAITAILIEU.VANBANDEN&vbId=@Model.vbDen.ID">Tạo công việc</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Tác vụ khác
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="">Sửa</a></li>
+                            <li><a href="">Xóa</a></li>
+                            <li><a href="">Bỏ duyệt</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-right">
+                <div class="right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_MenuVanBanDen", new ViewDataDictionary { { "active", "o-1" } })
+<div class="right-all-page" style="background:#fff;" id="ViewVanBanDen">
+    @Html.Partial("_ViewVanBanDen")
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#block-search-form #search-form").hide();
+    });
+    function PrintDetailVanBan() {
+        $("#ViewVanBanDen").printElement();
+        return false;
+    }
+    function reloadPage() {
+        location.reload();
+    }
+</script>

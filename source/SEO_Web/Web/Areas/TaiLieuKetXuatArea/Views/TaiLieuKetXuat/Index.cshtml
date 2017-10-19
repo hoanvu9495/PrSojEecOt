@@ -1,0 +1,320 @@
+﻿@{
+    ViewBag.Title = "Quản lý tài liệu kết xuất";
+    Layout = "~/Views/Shared/_LayoutSmartDms.cshtml";
+}
+@using Model.DBTool;
+@using Newtonsoft.Json;
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@model List<TaiLieuKetXuatBO>
+@{
+    var lstData = Html.Raw(JsonConvert.SerializeObject(Model));
+
+}
+
+<div id="ribbon" style=" background-color:#57889c">
+
+    @*<span class="ribbon-button-alignment">
+            <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh" rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true" data-reset-msg="Would you like to RESET all your saved widgets and clear LocalStorage?"><i class="fa fa-refresh"></i></span>
+        </span>*@
+    <div class="col-md-6 col-sm-6">
+        <ol class="breadcrumb">
+            <!-- This is auto generated -->
+        </ol>
+    </div>
+    <!-- breadcrumb -->
+    <!-- end breadcrumb -->
+
+    <div class="col-md-6 col-sm-6">
+        <a class="btn btn-default btn-flat pull-right" href="javascript:ThemTaiLieu()">
+            <i class="fa fa-plus"></i> <span>Thêm mới tài liệu</span>
+        </a>
+    </div>
+</div>
+<!-- #MAIN CONTENT -->
+<div id="content">
+
+
+    <div class="jarviswidget" id="wid-id-0">
+        <header role="heading">
+            <h2 class="group-tittle mt10">
+                Danh sách tài liệu <span id="totalItem" class="red">(@(Model == null ? "0" : Model.Count.ToString()))</span>
+            </h2>
+
+        </header>
+        <div class="widge-t-body no-padding">
+            <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+                <table class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Mã tài liệu</th>
+                            <th>Tên tài liệu</th>
+                            <th>Trạng thái sử dụng</th>
+                            <th>Ngày tạo</th>
+                            <th>Tải xuống</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @*BEGIN::Model tạo mới tài liệu 02/10/2017 - Hoàn*@
+    <div id="CreateTaiLieu" title="Thêm mới tài liệu kết xuất" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" id="div_formThemMoi_taiLieu">
+
+            </div>
+        </div>
+
+    </div>
+    @*END::Model tạo mới tài liệu 02/10/2017 - Hoàn*@
+
+    @*BEGIN::Model sửa tài liệu 03/10/2017 - Hoàn*@
+    <div id="EditTaiLieu" title="Sửa tài liệu kết xuất" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" id="div_formCapNhat_taiLieu">
+
+            </div>
+        </div>
+
+    </div>
+    @*END::Model sửa tài liệu 03/10/2017 - Hoàn*@
+
+</div>
+
+<script>
+
+    $('#CreateTaiLieu').on('hidden.bs.modal', function (e) {
+        $("#div_formThemMoi_taiLieu").empty();
+    })
+    $('#EditTaiLieu').on('hidden.bs.modal', function (e) {
+        $("#div_formCapNhat_taiLieu").empty();
+    })
+
+    var JsonDatas = eval(@lstData);
+
+    var loadDataTable = function (item) {
+        var table = $('.wtfayo').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "iDisplayLength": 20,
+            paging: true,
+            "aoColumns": [
+                 {
+                     "mData": function (data, type, dataToSet) {
+                         return '<input class="global_checkbox" ' + ((data.IS_READ == true) ? "is_read" : "is_unread") + ' type="checkbox" name="ids" value="' + data.ID + '" />';
+                     },
+                     "orderable": false,
+                 },
+
+                    //{
+                    //    "class": 'details-control',
+                    //    "orderable": false,
+                    //    "data": null,
+                    //    "defaultContent": ''
+                    //},
+                      {
+                          "mData": function (data, type, dataToSet) {
+                              return data.MA_TAILIEU;
+                          },
+
+                      },
+                  {
+                      "mData": function (data, type, dataToSet) {
+                          return data.TENTAILIEU;
+                      },
+
+                  },
+                  {
+                      "mData": function (data, type, dataToSet) {
+                          return data.LstStatus;
+                      },
+
+                  },
+
+                   {
+
+                       "mData": function (data, type, dataToSet) {
+                           return convertDate(data.NGAYTAO);
+                       },
+
+                   },
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            var str = "";
+                            if (data.PathDownload != "") {
+                                str += "<a href='" + data.PathDownload + "' download><i class='fa fa-download'></i>Tải xuống</a>";
+                            }
+                            return str;
+                        },
+
+                    },
+
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            var result = "<div class='btn-group'>";
+                            result += "<a href='javascript:void(0)' onclick='ConfigTaiLieu(" + data.ID + ")'   title = 'Cấu hình'><i class='glyphicon glyphicon-cog'> </i></a>&nbsp";
+                            result += "<a href='javascript:void(0)' onclick='EditTaiLieu(" + data.ID + ")'   title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>&nbsp";
+                            result += "<a href='javascript:void(0)' onclick='DeleteTaiLieu(" + data.ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
+
+
+                            result += "</div>";
+                            return result;
+                        },
+
+                    },
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                //runAllCharts()
+            }
+        });
+    }
+
+    function ConfigTaiLieu(id) {
+
+        location.href = "/TaiLieuKetXuatArea/TaiLieuKetXuat/ConfigTaiLieu/" + id;
+
+    }
+
+    function DeleteTaiLieu(id) {
+        if (id > 0) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa tài liệu này?',
+                'buttons': {
+                    'Đồng ý': {
+                        'class': 'btn-confirm-yes btn-primary',
+                        'action': function () {
+                            $.ajax({
+                                url: '@Url.Action("Delete", "TaiLieuKetXuat", new { @area = "TaiLieuKetXuatArea" })',
+                                type: 'post',
+                                cache: false,
+                                data: { 'id': id },
+                                success: function (rs) {
+                                    if (rs.Status) {
+                                        NotiSuccess("Xóa thành công");
+                                        reloadData();
+                                    } else {
+                                        NotiError(rs.Message);
+                                    }
+                                },
+                                error: function (err) {
+                                    NotiError("Không thực hiện được thao tác");
+                                }
+                            });
+                        }
+                    },
+                    'Hủy bỏ': {
+                        'class': 'btn-default',
+                        'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+        } else {
+            NotiError("Không tìm thấy nội dung.");
+        }
+
+
+    }
+
+    function EditTaiLieu(id) {
+        if (id > 0) {
+            $.ajax({
+                url: '/TaiLieuKetXuatArea/TaiLieuKetXuat/Edit/' + id,
+                type: 'Get',
+                success: function (rs) {
+                    $("#div_formCapNhat_taiLieu").html(rs);
+                    $("#EditTaiLieu").modal("show");
+                }, error: function () {
+                    NotiError("Không thực hiện được thao tác");
+                }
+            });
+        } else {
+            NotiError("Không tìm thấy nội dung.");
+        }
+
+    }
+
+
+    function ThemTaiLieu() {
+
+        $.ajax({
+            url: '/TaiLieuKetXuatArea/TaiLieuKetXuat/ThemMoi',
+            type: 'Get',
+            success: function (rs) {
+                $("#div_formThemMoi_taiLieu").html(rs);
+                $("#CreateTaiLieu").modal("show");
+            }, error: function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+
+    }
+
+
+
+    function CloseThemMoiModal() {
+        $("#CreateTaiLieu #form_themmoi_tailieu")[0].reset();
+        $("#CreateTaiLieu").modal("hide");
+    }
+
+
+    function CloseCapNhatModal() {
+        $("#EditTaiLieu #form_CapNhat_tailieu")[0].reset();
+        $("#EditTaiLieu").modal("hide");
+    }
+
+    var pagefunction = function () {
+        drawBreadCrumbManual("Quản lý tài liệu/Danh sách tài liệu");
+        loadDataTable(JsonDatas);
+    };
+
+    var reloadData = function () {
+        $.ajax({
+            url: '/TaiLieuKetXuatArea/TaiLieuKetXuat/reloadPage',
+            type: 'post',
+            success: function (rs) {
+                $("#totalItem").html('(' + rs.length + ')');
+                for (var i = 0; i < rs.length; i++) {
+                   rs[i].NGAYTAO = GetTextDateTime(rs[i].NGAYTAO);
+                }
+                loadDataTable(rs);
+            },
+            error: function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+
+    }
+
+
+    $(document).ready(function () {
+        loadScript("/js/plugin/datatables/jquery.dataTables.min.js", function () {
+            loadScript("/js/plugin/datatables/dataTables.colVis.min.js", function () {
+                loadScript("/js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                    loadScript("/js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                        loadScript("/js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                            loadScript("/js/plugin/select2/select2.min.js", function () {
+                                loadScript("/Scripts/jquery.unobtrusive-ajax.min.js", pagefunction)
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    })
+</script>

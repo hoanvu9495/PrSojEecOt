@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>AE.Net.Mail</id>
+    <version>1.7.10.0</version>
+    <title>AE.Net.Mail</title>
+    <authors>Andy Edinborough</authors>
+    <owners>Andy Edinborough</owners>
+    <projectUrl>https://github.com/andyedinborough/aenetmail</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>POP/IMap Client Library</description>
+    <summary />
+    <releaseNotes />
+    <language>en-US</language>
+  </metadata>
+</package>

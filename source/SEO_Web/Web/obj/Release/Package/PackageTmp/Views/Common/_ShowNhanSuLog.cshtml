@@ -1,0 +1,146 @@
+﻿@model Web.Models.ListLogNhanSuViewModel
+<style type="text/css">
+    #log-content {
+        height: 90%;
+        overflow-y: auto;
+    }
+
+    .tree_ul {
+        list-style: none;
+    }
+
+    .tree_li {
+        padding-top: 10px;
+    }
+
+
+    .tree_ul, .tree_li, .tree_div {
+        float: left;
+        padding-left: 10px;
+    }
+
+    .left_tree_ul {
+        padding-left: 45px;
+    }
+
+    .tree_ul, .tree_li {
+        width: 100%;
+    }
+
+    .pop_expand {
+        width: 15px;
+        height: 15px;
+    }
+
+    .pop_collapse {
+        width: 15px;
+        height: 15px;
+        display: none;
+    }
+
+    .root_tree {
+        background: rgba(0, 0, 0, 0) url('/Content/Images/folder-horizontal.png') no-repeat scroll 15px 1px;
+    }
+
+        .root_tree label {
+            margin-left: 30px;
+        }
+
+    .modal-dialog {
+        width: 1150px;
+        margin: 30px auto;
+    }
+
+</style>
+<div class="modal fade" id="nhan_su_dialog_z" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">@(string.IsNullOrEmpty(Model.title) ? "Lịch sử" : Model.title) <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+            </div>
+            <div class="modal-body" id="modal_body" style="height:400px; overflow-x:hidden; overflow-y:auto">
+                <div style="width:100%; margin:auto;">
+                    <div style="overflow-x: hidden;">
+                        <div id="log-content">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="border-radius: 3px;" onclick="OnCloseLog()">
+                    Đóng
+                </button>
+                @*<button type="button" class="btn btn-default" onclick="OnCloseLog()" data-dismiss="modal">Đóng</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function OnCloseLog() {
+        $("#log-content").html("");
+        $("#nhan_su_dialog_z").modal("hide");
+    }
+    function ShowLog(ID) {
+        $("#detail").html($("#detail_" + ID).val());
+        $.ajax({
+            type: 'Post',
+            cache: false,
+            url: '/Common/GetLog',
+            data: { ID: ID, TYPE: '@Model.type_log', exclude: '@Model.exclude' },
+            success: function (data) {
+                $("#log-content").html(data);
+                $("#nhan_su_dialog_z").modal("show");
+            }
+
+        })
+    }
+    $(document).ready(function () {
+        //$("#nhan_su_dialog").dialog({
+        //    autoOpen: false,
+        //    modal: true,
+        //    width: 1150,
+        //    height: 550,
+        //    resizable: false,
+        //    show: {
+        //        effect: "blind",
+        //        duration: 200
+        //    },
+        //    hide: {
+        //        effect: "blind",
+        //        duration: 200
+        //    }
+        //});
+
+        @*$("#" + '@Model.ID_CLICK').click(function () {
+            //getDataByAjax();
+            var keyword = $("#KEYWORD_NGUOIDUNG_" + '@Model.INDEX').val();
+            var ids = $("#" + '@Model.VALUE_ID').val();
+            $.ajax({
+                type: "POST",
+                url: '/Common/ListNhanSu',
+                cache: false,
+                data: {
+                    COSO_ID: '@Model.COSO_ID',
+                    DONVI_ID: '@Model.DONVI_ID',
+                    PHONGBAN_ID: '@Model.PHONGBAN_ID',
+                    TEXT_ID: '@Model.TEXT_ID',
+                    VALUE_ID: '@Model.VALUE_ID',
+                    IS_MULTICHOICE: '@Model.IS_MULTICHOICE',
+                    IDS: ids,
+                    KEYWORD: keyword,
+                    CALLBACK_FUNCTION: '@Model.CALLBACK_FUNCTION',
+                    INDEX: '@Model.INDEX',
+                    SHOW_CHUC_VU_ID: '@Model.SHOW_CHUC_VU_ID',
+                    EXCLUDE_IDS: '@Model.EXCLUDE_IDS'
+                },
+                success: function (data) {
+                    $("#nhan_su_result_dialog_" + '@Model.INDEX').html(data);
+                }
+            });
+            $("#nhan_su_dialog_" + '@Model.INDEX').dialog("open");
+        });*@
+    });
+</script>

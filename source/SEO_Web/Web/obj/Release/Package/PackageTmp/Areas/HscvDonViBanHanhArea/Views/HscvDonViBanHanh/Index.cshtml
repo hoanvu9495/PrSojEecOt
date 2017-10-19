@@ -1,0 +1,208 @@
+﻿@using Web.FwCore
+@using Business.CommonBusiness
+@using Model.eAita
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@{
+    ViewBag.Title = "Hồ sơ công việc đơn vị ban hành";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    List<HscvDonViBanHanhBO> lstDonVi = new List<HscvDonViBanHanhBO>();
+    lstDonVi = (List<HscvDonViBanHanhBO>)SessionManager.GetValue("ListDVBanHanh");
+
+    var jsonDatas = Html.Raw(JsonConvert.SerializeObject(lstDonVi));
+}
+<style>
+    .menu-left-content {
+        height: 494px;
+        overflow-y: auto;
+    }
+</style>
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <h2 class="group-tittle mt10">Hồ sơ công việc đơn vị ban hành
+        </h2>
+        <a class="btn btn-success btn-sm" href="javascript:OnCreate()" style="float: right">
+            <i class="fa fa-plus"></i><span>Thêm mới đơn vị ban hành</span>
+        </a>
+    </header>
+    <div class="widge-t-body no-padding">
+        <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+            <table class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        @*<th></th>*@
+                        <th>Tên đơn vị</th>
+                        <th>Mã đơn vị</th>
+                        <th>Cấp trên</th>
+                        <th>Địa chỉ</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CreateDVBanHanh" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="PrepareDVBanHanh" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+
+
+<script type="text/javascript">
+
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("AddFormDVBanHanh", "HscvDonViBanHanh")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#CreateDVBanHanh").html(data);
+                $("#CreateDVBanHanh").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+    function EditDVBanHanh(ID) {
+        $.ajax({
+            url: '@Url.Action("EditFormDVBanHanh", "HscvDonViBanHanh")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#PrepareDVBanHanh").html(data);
+                $("#PrepareDVBanHanh").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function RemoveDVBanHanh(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa đơn vị ban hành này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveDVBanHanh", "HscvDonViBanHanh")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                NotiSuccess("Xóa đơn vị ban hành thành công!");
+                                //notif({
+                                //    type: 'success',
+                                //    position: 'bottom',
+                                //    msg: 'Xóa đơn vị ban hành thành công!',
+                                //});
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    pageSetUp();
+    var JsonDatas = eval(@jsonDatas);
+
+    var loadDataTable = function (item) {
+        var table = $('.wtfayo').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "iDisplayLength": 20,
+            paging: true,
+            "aoColumns": [
+                  {
+                      "mData": function (data, type, dataToSet) {
+                          return "<span class='tr_left'>" + data.TENDONVI + "</span>";
+                      },
+
+                  },
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            return "<span >" + data.MADONVI + "</span>";
+                        },
+
+                    },
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            return "<span >" + (data.CAPTREN == null ? "" : data.CAPTREN) + "</span>";
+                        },
+
+                    },
+                     {
+                         "sClass": "center",
+                         "mData": function (data, type, dataToSet) {
+                             return "<span >" + (data.DIACHI == null ? "" : data.DIACHI) + "</span>";
+                         },
+
+                     },
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            var result = "<div class='btn-group'>";
+                            result += "<a href='javascript:void(0)' onclick='EditDVBanHanh(" + data.ID + ")'   title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>";
+                            result += "<a href='javascript:void(0)' onclick='RemoveDVBanHanh(" + data.ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
+                            result += "</div>";
+                            return result;
+                        },
+
+                    },
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                runAllCharts()
+            }
+        });
+    }
+    var pagefunction = function () {
+
+        loadDataTable(JsonDatas);
+    };
+
+    function reloadGrid() {
+        setTimeout(function () {
+            location.reload();
+        }, 1500);
+    }
+    $(document).ready(function () {
+        $('.grid tbody').on('hover', function () {
+            $(this).toggleClass('clickable');
+        });
+    });
+
+    loadScript("js/plugin/datatables/jquery.dataTables.min.js", function () {
+        loadScript("js/plugin/datatables/dataTables.colVis.min.js", function () {
+            loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                loadScript("js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                    loadScript("js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
+                });
+            });
+        });
+    });
+
+</script>

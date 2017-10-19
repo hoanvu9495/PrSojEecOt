@@ -1,0 +1,490 @@
+﻿@using Web.FwCore
+@using Business.CommonBusiness
+@using System.Text
+@using Model.eAita
+@using Web.Common
+@using Web.Areas.MarkItemArea.Models
+@using Newtonsoft.Json;
+@using System.Data;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@using PagedList.Mvc;
+@using PagedList;
+@model PageListResultBO<VanBanDenBO>
+@{
+    ViewBag.Title = "VanBanChuaXuLy";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    MarkItemViewModel mark_model = new MarkItemViewModel();
+    mark_model.ITEM_TYPE = LOAITAILIEU.VANBANDEN;
+    mark_model.RELOAD_FUNCTION = "ReloadPage";
+    var JsonData = Html.Raw(JsonConvert.SerializeObject(Model.ListItem));
+}
+<style>
+    .red {
+        color: red;
+    }
+    .center{
+        text-align:center;
+    }
+    .justify {
+        text-align: justify;
+    }
+</style>
+
+<div class="row" style=" margin-bottom:7px;">
+    
+    <div class="col-sm-3">
+        @Html.Partial("~/Areas/MarkItemArea/Views/_ActionMarkItem.cshtml", mark_model)
+
+    </div>
+    <div class="col-sm-9">
+        <a href="#collapseOne" class="btn btn-labeled btn-primary" aria-controls="collapseOne" data-toggle="collapse" role="button" style="float: right;  margin-right:5px;">
+            <span class="btn-label">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+            Tìm kiếm nâng cao
+        </a>
+    </div>
+
+</div>
+<div id="search_vb_den">
+    @Html.Partial("_SearchVanBanDenChuaXuLyPartial")
+</div>
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <h2>
+            <i>Danh sách văn bản đến chưa xử lý </i><strong class="text-danger" id="countTotal">(@Model.Count)</strong>
+        </h2>
+    </header>
+    <div role="content">
+    
+        <div class="widget-body no-padding">
+
+            <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+                <table class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            @*<th></th>
+                                <th></th>
+                                <th></th>*@
+                            @*<th></th>*@
+                            <th></th>
+                            <th>Đánh dấu</th>
+                            <th>Số ký hiệu</th>
+                            <th>Trích yếu</th>
+                            <th>ĐV ban hành</th>
+                            <th>Ngày đến</th>
+                            <th>Độ khẩn</th>
+                            <th>Loại văn bản</th>
+
+                            <th>Thao tác</th>
+
+                        </tr>
+                    </thead>
+                </table>
+                <div class="center">
+                    <ul class="pagination pagination-sm" id="paging1"></ul>
+                </div>
+            </div>
+            <!-- end widget content -->
+        </div>
+    </div>
+</div>
+
+
+<div id="modal--wf-stepchange" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" style="width:1000px;" role="document">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div><!--end modal--wf-stepchange-->
+
+<div id="modal--wf-additional-recipient" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width:900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 class="modal-title text-primary" style="text-align:center;font-weight:bold;">
+                    THÊM NGƯỜI XỬ LÝ
+                </h1>
+            </div>
+            <div class="modal-body clearfix" style="padding:10px 0">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addNewRecipient()">Lưu thông tin</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    var currentPage=1;
+    var JsonDatas = eval(@JsonData);
+    PageSetup();
+
+    function GetDataPage(id) {
+        $.ajax({
+            url: '@Url.Action("ReloadDataVanBanChuaXuLy", "VanBanDen")',
+            type: 'post',
+            async:false,
+            data:{'page':id},
+            success: function (data) {
+                $('#countTotal').html('('+data.Count+')');
+                for (var i = 0; i < data.ListItem.length; i++) {
+                    if (data.ListItem[i].NGAYDEN != null) {
+                        var str = data.ListItem[i].NGAYDEN;
+                        data.ListItem[i].NGAYDEN = ConvertToDateISO(str);
+                    }
+                };
+                currentPage=id;
+                loadData(data.ListItem);
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+
+    GenPaging(1, @Model.TotalPage, "paging1", GetDataPage);
+
+
+    function format(d) {
+        // `d` is the original data object for the row
+        var tabledata = '<table cellpadding="5" cellspacing="0" border="0" class="table table-hover table-condensed">' +
+            '<tr>' +
+                '<td style="width:140px">Sổ văn bản đến:</td>' +
+                '<td>' + d.SOVANBANDEN_ID + '</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>Ngày văn bản:</td>' +
+                '<td>' + $.date(d.NGAYVANBAN) + '</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>Số trang:</td>' +
+                '<td>';
+        if (d.SOTRANG != null) {
+            tabledata += d.SOTRANG;
+        }
+        tabledata += '</td>' +
+            '</tr>' +
+        '<tr>' +
+           '<td>Người ký:</td>' +
+           '<td>';
+        if (d.NGUOIKY != null) {
+            tabledata += d.NGUOIKY;
+        }
+        tabledata += '</td>' +
+'</tr>';
+        tabledata += '<tr>' +
+            '<td>Thời hạn xử lý:</td>' +
+            '<td>' +
+            "<label>";
+        if (d.THOIHAN_XULY != null) {
+            tabledata += $.date(d.THOIHAN_XULY);
+        }
+        //if (d.THOIHANXULY_BATDAU != null) {
+        //    tabledata += "Từ ngày " + $.date(d.THOIHANXULY_BATDAU);
+        //}
+        //if (d.THOIHANXULY_KETTHUC != null) {
+        //    tabledata += " đến ngày " + $.date(d.THOIHANXULY_KETTHUC);
+        //}
+        tabledata += "</label>";
+        + '</td>' +
+    '</tr>'
+
+
+        tabledata +=
+            '<tr>' +
+                '<td>Nội dung văn bản:</td>' +
+                '<td>';
+
+        if (d.NOIDUNGVANBAN != null) {
+            tabledata += d.NOIDUNGVANBAN;
+        }
+        tabledata += '</td>' +
+                '</tr>';
+
+
+        //'<tr>' +
+        //    '<td>Tài liệu đính kèm:</td>' +
+        //    '<td>' + d.LOAIVANBAN + '</td>' +
+        //'</tr>' +
+        tabledata += '</table>';
+        return tabledata;
+    }
+
+    var loadData = function (item) {
+        /* Formatting function for row details - modify as you need */
+
+
+
+        var table = $('.wtfayo').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+					"t" +
+					"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "bInfo":false,
+            "iDisplayLength": 20,
+            paging: false,
+            "aoColumns": [
+                 {
+                     "mData": function (data, type, dataToSet) {
+                         return '<input class="global_checkbox ' + ((data.IS_READ == true) ? "is_read" : "is_unread") + '" type="checkbox" name="ids" value="' + data.ID + '" />';
+                     },
+                     "orderable": false,
+                 },
+
+                    {
+                        "class": 'details-control',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": ''
+                    },
+                    {
+                        "width": "45px",
+                        "class": 'center',
+                        "mData": function (data, type, dataToSet) {
+                            var str = "<div class='btn-group'>";
+                            str += (data.IS_FAVORITE != null && data.IS_FAVORITE == true) ? "<a class='favorite' style='margin-right:5px' href='javascript:void(0)' onclick='ActionDauSao(" + data.ID + ",false)'><i class='fa fa-star text-success'></i></a>" : "<a class='notset_favorite' href='javascript:void(0)' onclick='ActionDauSao(" + data.ID + ",true)' style='margin-right:5px'><i class='fa fa-star-o text-muted'></i></a>";
+                            str += (data.IS_IMPORTANT != null && data.IS_IMPORTANT == true) ? "<a class='important' href='javascript:void(0)' onclick='ActionQuanTrong(" + data.ID + ",false)'><i class='fa fa-bookmark text-success'></i></a> " : "<a class='notset_important' href='javascript:void(0)' onclick='ActionQuanTrong(" + data.ID + ",true)'><i class='fa   fa-bookmark-o text-muted'></i></a> ";
+                            str += (data.HAS_FILE != null && data.HAS_FILE == true) ? "<a  href='javascript:void(0)' onclick=''><i class='fa fa-paperclip text-success'></i></a>" : "";
+
+                            str += "</div>";
+                            return str;
+                        },
+
+                        "orderable": false,
+
+                    },
+                  {
+                      "width": "100px",
+                      "mData": function (data, type, dataToSet) {
+                          var tmp_html = "<br><span><b>"+(data.YKIENCHIDAO == null ? "" : data.YKIENCHIDAO)+"</b></span><br><div class='project-members'>"+data.AvatarMember+"</div>";
+                          return (data.IS_READ != true) ? "<span style='font-weight:bold' >" + data.SOKYHIEU + "</span>" + tmp_html : "<span class='tr_left'>" + data.SOKYHIEU + "</span>" + tmp_html;
+                          //return (data.IS_READ != true) ? "<span style='font-weight:bold' >" + data.SOKYHIEU + "</span>" : "<span class='tr_left'>" + data.SOKYHIEU + "</span>";
+                      },
+
+                  },
+                   {
+                       "class":"justify",
+                       "mData": function (data, type, dataToSet) {
+                           return (data.IS_READ != true) ? "<a style='font-weight:bold' href='javascript:ViewDetail(" + data.ID + ")' >" + data.TRICHYEU + "</a>" : "<a class='tr_left tr_trich_yeu' href='javascript:ViewDetail(" + data.ID + ")' >" + data.TRICHYEU + "</a>";
+                       },
+
+                   },
+
+                   {
+                       "width": "120px",
+                       "mData": function (data, type, dataToSet) {
+                           return (data.COQUANBANHANH_ID > 0) ? "<span class='' style='" + ((data.IS_READ != true) ? "font-weight:bold" : "") + "'>" + data.DONVIBANHANH + "</span>" : "<span class='' style='" + ((data.IS_READ == true) ? "font-weight:bold" : "") + "'>" + data.COQUANBANHANHTEXT + "</span>";
+                       },
+
+                   },
+                    {
+                        "width": "80px",
+                        "mData": function (data, type, dataToSet) {
+                            return (data.IS_READ != true) ? "<span style='font-weight:bold' >" + $.date(data.NGAYDEN) + "</span>" : "<span>" + $.date(data.NGAYDEN) + "</span>";
+                        },
+                    },
+                     {
+                         "width": "60px",
+                         "mData": function (data, type, dataToSet) {
+                             return (data.IS_READ != true) ? "<span style='font-weight:bold' >" + data.DOKHAN + "</span>" : "<span>" + data.DOKHAN + "</span>";
+                         },
+                     },
+
+
+
+                      {
+                          "width": "90px",
+                          "mData": function (data, type, dataToSet) {
+                              return (data.IS_READ != true) ? "<span style='font-weight:bold'>" + data.LOAIVANBAN + "</span>" : data.LOAIVANBAN;
+                          },
+                      },
+                      {
+                          "orderable": false,
+                          "mData": function (data, type, dataToSet) {
+                              var btn_htmp = data.GenerateButtonStr;
+                              var str = "<div class='project-members'>" + btn_htmp;
+                              str += "</div>";
+                              return str;
+                          },
+                      },
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                runAllCharts()
+            }
+        });
+        var columns = table.columns('.sorting_1');
+        // Add event listener for opening and closing details
+        $('.wtfayo tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child(format(row.data())).show();
+                tr.addClass('shown');
+            }
+        });
+    }
+    $.date = function (dateObject) {
+        var d = new Date(dateObject);
+        var day = d.getDate();
+        var month = d.getMonth() + 1;
+        var year = d.getFullYear();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+        var date = day + "/" + month + "/" + year;
+
+        return date;
+    };
+
+    function ViewDetail(id){
+        window.location.href="#VanBanDenArea/VanBanDen/ViewDetail/"+id;
+    }
+
+    function ReloadPage() {
+        $.ajax({
+            url: '@Url.Action("ReloadDataVanBanChuaXuLy", "VanBanDen")',
+            type: 'post',
+            cache: false,
+            data:{"page":currentPage},
+            success: function (data) {
+                $("#countTotal").html("("+data.Count+")");
+                for (var i = 0; i < data.ListItem.length; i++) {
+                    if (data.ListItem[i].NGAYDEN != null) {
+                        var str = data.ListItem[i].NGAYDEN;
+                        data.ListItem[i].NGAYDEN = ConvertToDateISO(str);
+                    }
+                }
+                loadData(data.ListItem);
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+
+    function ActionQuanTrong(id, status) {
+        $.ajax({
+            url: '@Url.Action("SetQuanTrong", "VanBanDen")',
+            type: 'post',
+            cache: false,
+            data: { id: id, status: status },
+            success: function (data) {
+                if (data) {
+                    NotiSuccess("Thao tác thành công");
+                    ReloadPage();
+                } else {
+                    NotiError("Thao tác thất bại");
+                }
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function ActionDauSao(id, status) {
+        $.ajax({
+            url: '@Url.Action("SetDauSao", "VanBanDen")',
+            type: 'post',
+            cache: false,
+            data: { id: id, status: status },
+            success: function (data) {
+                if (data) {
+                    NotiSuccess("Thao tác thành công");
+                    ReloadPage();
+
+                } else {
+                    NotiError("Thao tác thất bại");
+
+                }
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    function DeleteVanBanDen(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa văn bản đến này?',
+            'buttons': {
+                'Đồng ý': {
+                    'class': 'btn-confirm-yes btn-primary',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "VanBanDen")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID, SearchType: "Soft" },
+                            success: function (data) {
+                                NotiSuccess("Xóa thành công");
+                                ReloadPage();
+
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Hủy bỏ': {
+                    'class': 'btn-danger',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    
+
+    // pagefunction
+    var pagefunction = function () {
+
+
+        loadData(JsonDatas);
+
+    };
+    //load related plugins & run pagefunction
+    loadScript("/js/plugin/datatables/jquery.dataTables.min.js", function () {
+        loadScript("/js/plugin/datatables/dataTables.colVis.min.js", function () {
+            loadScript("/js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                loadScript("/js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                    loadScript("/js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
+                });
+            });
+        });
+    });
+</script>
+<script src="/js/generateBtn.js"></script>
+
+
+
+
+

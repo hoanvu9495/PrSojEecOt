@@ -1,0 +1,164 @@
+﻿@using Web.FwCore;
+@using System.Text;
+@using Business.CommonBusiness
+@{
+    List<LuuTruKeBO> lstMoiQuanHe = new List<LuuTruKeBO>();
+    if (ViewData["Search"] == "0")
+    {
+        lstMoiQuanHe = (List<LuuTruKeBO>)SessionManager.GetValue("ListKe");
+    }
+    if (ViewData["Search"] == "1")
+    {
+        lstMoiQuanHe = (List<LuuTruKeBO>)SessionManager.GetValue("ListKeSearch");
+    }
+    var grid = new WebGrid(lstMoiQuanHe,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+
+}
+@Html.AntiForgeryToken()
+@if (lstMoiQuanHe.Count > 0)
+{
+
+    <div id="grid">
+        <div id="HeaderGrid">
+            <div style="margin:20px 0px 10px 10px;">
+                <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">@(lstMoiQuanHe == null ? "0" : lstMoiQuanHe.Count.ToString()) &nbsp; kết quả</label>
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                               grid.Column("TENTOANHA", "Tòa nhà"),
+                                grid.Column("TENTANG", "Tên tầng"),
+                                  grid.Column("TENPHONG", "Tên phòng"),
+                                 grid.Column("MAKE", "Mã kệ"),
+                                  grid.Column("TENKE", "Tên kệ", format: (item) => new MvcHtmlString(string.Format("<a href='" + Url.Action("ChiTietKe/" + item.ID, "QuanLyLuuTru") + "'>" + item.TENKE + "</a>"))),
+                                         grid.Column("TRANGTHAI", "Trạng Thái", format: (item) =>
+        (bool)item.TRANGTHAI == true
+             ? Html.Raw("<span>Sử dụng</span>")
+              : Html.Raw("<span style='color:red'>Không sử dụng</span>")),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                   "<a href='javascript:void(0)' onclick='EditKe(" + item.ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                  "<a href='javascript:void(0)' onclick='RemoveKe(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+
+                 )
+    )
+
+        @if (lstMoiQuanHe.Count == 0)
+        {
+
+            <div id="Empty" style="color: red;">
+                Không tìm thấy dữ liệu phù hợp
+            </div>
+        }
+    </div>
+}
+else
+{
+
+    <div id="Empty" style="color: red;">
+        Không có kệ lưu trữ nào
+    </div>
+}
+<div class="modal fade" id="CreateKe" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="EditKe" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+
+
+<style>
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .webGrid tbody tr td:first-child {
+        width: 30px;
+    }
+</style>
+<script type="text/javascript">
+
+    
+    function RemoveKe(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa kệ lưu trữ này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveKe", "QuanLyLuuTru")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: data,
+                                });
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    
+</script>

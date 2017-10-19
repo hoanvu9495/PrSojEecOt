@@ -1,0 +1,10 @@
+﻿@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.TDKTPhongTraoThiDuaArea.Models;
+@model Web.Areas.TDKTPhongTraoThiDuaArea.Models.PhongTraoThiDuaViewModel
+
+@if (Model.PhongTraoThiDua.TRANGTHAI == PhongTraoThiDuaConstant.TT_MOITAO || Model.PhongTraoThiDua.TRANGTHAI == PhongTraoThiDuaConstant.TT_TUCHOI)
+{
+    <input type="submit" value="Lưu toàn bộ thông tin" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" />   
+}

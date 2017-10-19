@@ -1,0 +1,294 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Web.Areas.HscvSoVanBanArea.Models;
+@model HscvSoVanBanEditViewModel
+<style type="text/css">
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #EDIT_ID {
+        display: none;
+    }
+
+    .modal-title {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .modal-dialog .height-20 {
+        height: 20px;
+    }
+
+    .modal-dialog .red {
+        color: red;
+    }
+
+    .modal-dialog .width-100 {
+        width: 100%;
+    }
+
+    .ms-drop input[type=radio] {
+        margin: 0 5px 0 0;
+    }
+
+    label[for=EDIT_NHOMSOVANBAN_ID], label[for=EDIT_MUCDICHTAO], label[for=EDIT_SOVANBANTOIDA], label[for=EDIT_SOVBTHEOSO] {
+        width: 150px;
+    }
+
+    #block--select-edit-nhomso {
+        width: 233px;
+    }
+
+    #EDIT_SOVANBAN, #EDIT_MUCDICHTAO, #EDIT_SOVBTHEOSO, #EDIT_SOVANBANTOIDA, #EDIT_TENSO, #EDIT_NAM_SOVANBAN {
+        width: 233px;
+    }
+</style>
+@using (Ajax.BeginForm("SaveSoVanBan", "HscvSoVanBan", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmSoVanBanEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cập nhật nhóm sổ văn bản</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr class="height-20">
+                        <td colspan="2">
+                            <input type="hidden" name="ID" value="@Model.SOVANBAN.ID" id="ID"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="EDIT_NHOMSOVANBAN_ID">
+                                Nhóm sổ văn bản<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <div class="input-field4 clearfix" id="block--select-edit-nhomso">
+                                @Html.DropDownList("NHOMSOVANBAN_ID", Model.listNhomSoVanBan, new { @class = "width-100", @id = "EDIT_NHOMSOVANBAN_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="height-20"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="EDIT_TENSO">
+                                Tên sổ văn bản : <span class="red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <input type="text" name="TENSO" id="EDIT_TENSO" maxlength="50" class="e-input" value="@Model.SOVANBAN.TENSO" autocomplete="off"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="height-20"></td>
+                        <td>
+                            <span class="lb-Check" id="ERR_EDIT_TENSO"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="EDIT_SOVANBANTOIDA">
+                                Số văn bản tối đa :<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <input type="text" name="SOVANBANTOIDA" id="EDIT_SOVANBANTOIDA" maxlength="50" class="e-input" value="@Model.SOVANBAN.SOVANBANTOIDA" autocomplete="off" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="height-20"></td>
+                        <td>
+                            <span id="ERR_EDIT_SOVANBANTOIDA" class="lb-Check"></span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="EDIT_SOVBTHEOSO">
+                                Số văn bản hiện tại :<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <input type="text" id="EDIT_SOVBTHEOSO" name="SOVBTHEOSO" class="e-input" maxlength="50" value="@Model.SOVANBAN.SOVBTHEOSO" autocomplete="off" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="height-20"></td>
+                        <td>
+                            <span class="lb-Check" id="ERR_EDIT_SOVBTHEOSO"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="EDIT_NAM_SOVANBAN">
+                                Năm đi theo sổ :<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <input type="text" name="NAM_SOVANBAN" id="EDIT_NAM_SOVANBAN" maxlength="50" class="e-input" value="@Model.SOVANBAN.NAM_SOVANBAN" autocomplete="off" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="height-20"></td>
+                        <td>
+                            <span class="lb-Check" id="ERR_EDIT_NAM_SOVANBAN"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="EDIT_MUCDICHTAO">
+                                Mục đích tạo :
+                            </label>
+                        </td>
+                        <td>
+                            <input type="text" class="e-input" name="MUCDICHTAO" maxlength="50" id="EDIT_MUCDICHTAO" value="@Model.SOVANBAN.MUCDICHTAO" autocomplete="off" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="height-20"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSave">Cập nhật</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $(function () {
+        var isExisted = false;
+        var infoRequired = 'Bạn cần nhập thông tin';
+        var infoInValid = 'Bạn cần nhập đúng định dạng';
+        var infoEmpty = '';
+        $('#EDIT_NHOMSOVANBAN_ID').multipleSelect({
+            single:true
+        });
+        $('#EDIT_TENSO').on('keyup', function () {
+            if ($(this).val().trim() !== '') {
+                document.getElementById('ERR_EDIT_TENSO').innerHTML = infoEmpty;
+            }
+        });
+        $('#EDIT_SOVANBANTOIDA').on('keyup', function () {
+            if ($(this).val().trim() !== '') {
+                document.getElementById('ERR_EDIT_SOVANBANTOIDA').innerHTML = infoEmpty;
+            }
+        });
+        $('#EDIT_SOVBTHEOSO').on('keyup', function () {
+            if ($(this).val().trim() !== '') {
+                document.getElementById('ERR_EDIT_SOVBTHEOSO').innerHTML = infoEmpty;
+            }
+        });
+        $('#btnSave').click(function () {
+            var id = document.getElementById('ID').value.trim();
+            var nhomso_id = document.getElementById('EDIT_NHOMSOVANBAN_ID').value.trim();
+            var tenso = document.getElementById('EDIT_TENSO').value.trim();
+            var sovb_toida = document.getElementById('EDIT_SOVANBANTOIDA').value.trim();
+            var sovb_theoso = document.getElementById('EDIT_SOVBTHEOSO').value.trim();
+            var nam_sovb = document.getElementById('EDIT_NAM_SOVANBAN').value.trim();
+            var mucdich = document.getElementById('EDIT_MUCDICHTAO').value.trim();
+
+            if (tenso == infoEmpty) {
+                document.getElementById('EDIT_TENSO').focus();
+                document.getElementById('ERR_EDIT_TENSO').innerHTML = infoRequired;
+                document.getElementById('ERR_EDIT_TENSO').style.display = 'inline';
+                return false;
+            }
+            if (sovb_toida.length == 0) {
+                document.getElementById('EDIT_SOVANBANTOIDA').focus();
+                document.getElementById('ERR_EDIT_SOVANBANTOIDA').innerHTML = infoRequired;
+                document.getElementById('ERR_EDIT_SOVANBANTOIDA').style.display = 'inline';
+                return false;
+            } else if (!checkRightNumberFormat(sovb_toida)) {
+                document.getElementById('EDIT_SOVANBANTOIDA').focus();
+                document.getElementById('ERR_EDIT_SOVANBANTOIDA').innerHTML = infoInValid;
+                document.getElementById('ERR_EDIT_SOVANBANTOIDA').style.display = 'inline';
+                return false;
+            }
+            if (sovb_theoso.length == 0) {
+                document.getElementById('EDIT_SOVBTHEOSO').focus();
+                document.getElementById('ERR_EDIT_SOVBTHEOSO').innerHTML = infoRequired;
+                document.getElementById('ERR_EDIT_SOVBTHEOSO').style.display = 'inline';
+                return false;
+            } else if (!(checkRightNumberFormat(sovb_theoso))) {
+                document.getElementById('EDIT_SOVBTHEOSO').focus();
+                document.getElementById('ERR_EDIT_SOVBTHEOSO').innerHTML = infoInValid;
+                document.getElementById('ERR_EDIT_SOVBTHEOSO').style.display = 'inline';
+                return false;
+            }
+
+            if (nam_sovb.length == 0) {
+                document.getElementById('EDIT_NAM_SOVANBAN').focus();
+                document.getElementById('ERR_EDIT_NAM_SOVANBAN').innerHTML = infoRequired;
+                document.getElementById('ERR_EDIT_NAM_SOVANBAN').style.display = 'inline';
+                return false;
+            } else if (!checkRightNumberFormat(nam_sovb)) {
+                document.getElementById('EDIT_NAM_SOVANBAN').focus();
+                document.getElementById('ERR_EDIT_NAM_SOVANBAN').innerHTML = infoInValid;
+                document.getElementById('ERR_EDIT_NAM_SOVANBAN').style.display = 'inline';
+                return false;
+            }
+            var HSCV_SOVANBAN = {
+                ID : id ,
+                TENSO: tenso,
+                NHOMSOVANBAN_ID: nhomso_id
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CheckExistedSoVanBan")',
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(HSCV_SOVANBAN),
+                cache: false,
+                success: function (result) {
+                    if (result.isExisted == true) {
+                        document.getElementById('EDIT_TENSO').focus();
+                        document.getElementById('ERR_EDIT_TENSO').innerHTML = 'Sổ văn bản đã tồn tại';
+                        document.getElementById('ERR_EDIT_TENSO').style.display = 'inline';
+                        return false;
+                    } else {
+                        $("#frmSoVanBanEdit").submit();
+                    }
+                }
+            });
+        });
+    });
+    function checkRightNumberFormat(value) {
+        if (value.match(/[a-z]/i) != null) {
+            return false;
+        }
+        return true;
+    }
+    function OnClose() {
+        $("#PrepareSoVanBan").dialog("close");
+    }
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function updateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Sửa sổ văn bản thành công!',
+        });
+        $("#PrepareSoVanBan").modal("hide");
+        reloadGrid();
+    }
+</script>

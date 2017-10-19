@@ -1,0 +1,93 @@
+﻿@using Web.Areas.TaiLieuKetXuatArea.Models;
+@model ConfigFieldVM
+
+
+@using (Ajax.BeginForm("savesettingfield", "TaiLieuKetXuat",
+    new
+    {
+        ID = Model.ConfigField.ID,
+        FIELD_KEY = Model.ConfigField.FIELD_KEY,
+        ID_TAILIEU = Model.Tailieu.ID
+    },
+    new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmconfigfieldCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">
+            Cấu hình trường dữ liệu <span style="color:red;">[[@Model.ConfigField.FIELD_KEY]]</span>
+            <span id="detail" style="color: yellow; text-transform: none"></span>
+        </h4>
+    </div>
+    <div class="modal-body">
+
+
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="lbl1">Dữ liệu mặc định</label>
+            </div>
+            <div class=" col-sm-8">
+                <div class="form-group">
+                    @Html.DropDownList("COLUM_MIX", new SelectList(Model.DsColumn, "Value", "Text",Model.ConfigField.COLUM_MIX), "Chọn trường dữ liệu", new { @class = "cbxSelect", @style = "width:100%" })
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="modal-footer center">
+        <button type="submit" class="btn btn-primary" id="btnSave" style="border-radius: 3px;">
+            Lưu
+        </button>
+        <button type="button" class="btn btn-default" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+    </div>
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        if ($("#IS_COMBOBOX").is(":checked")) {
+            $("#danhmuccombobox").css("display", "block");
+        } else {
+            $("#danhmuccombobox").css("display", "none");
+        }
+    })
+
+
+
+
+    function failure(xhr, error) {
+        NotiError("Không thực hiện được hành động");
+    }
+    function CreateSuccess(rs) {
+        if (rs.Status) {
+            NotiSuccess("Cấu hình trường dữ liệu thành công");
+            OnCloseLog();
+        }
+
+    }
+    function OnClose() {
+        $("#settingfield-" + '@Model.Tailieu.ID').dialog("close");
+        $("#formCreate-" + '@Model.Tailieu.ID').html("");
+    }
+    function OnCloseLog() {
+        $("#settingfield-" + '@Model.Tailieu.ID').modal("hide");
+        $("#formCreate-" + '@Model.Tailieu.ID').html("");
+    }
+
+    function pageFunctionConfig() {
+        $(".cbxSelect").select2();
+    }
+
+    loadScript("/js/plugin/select2/select2.min.js", function () {
+        loadScript("/Scripts/autoNumeric.min.js", pageFunctionConfig);
+    });
+
+</script>

@@ -1,0 +1,191 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common;
+@using Business.Business;
+@using Web.Models;
+@model Web.Models.ChonNguoiDungModel
+
+@Html.AntiForgeryToken()
+@{
+    List<COSO> LstCoSo = new List<COSO>();
+    LstCoSo = (List<COSO>)SessionManager.GetValue("LstCoSo");
+
+    List<DM_DONVI> LstDonVi = new List<DM_DONVI>();
+    LstDonVi = (List<DM_DONVI>)SessionManager.GetValue("LstDonVi");
+
+    List<DM_PHONGBAN> LstPhongBan = new List<DM_PHONGBAN>();
+    LstPhongBan = (List<DM_PHONGBAN>)SessionManager.GetValue("LstPhongBan");
+
+    List<DM_PHONGBAN> LstPhongBanSearch = new List<DM_PHONGBAN>();
+    LstPhongBanSearch = Model.LstPhongBanSearch;
+}
+
+
+
+<div class="wfm">
+
+    <ul class="tree_ul">
+
+        @foreach (var coso in LstCoSo)
+        {
+            <li class="tree_li">
+                <div class="tree_div">
+                    <img alt="" class="pop_expand" src="/Content/Images/Minus.png" />
+                    <img alt="" class="pop_collapse" src="/Content/Images/Plus.png" />
+                </div>
+                <div class="tree_div">
+                    @if (Model.IS_MULTICHOICE == 1)
+                    {
+                        <input type="checkbox" />
+                    }
+                </div>
+                <div class="tree_div root_tree">
+                    <a href="javascript:void(0)" class="parent_check_box_@Model.INDEX">
+                        <label>@coso.TENCOSO</label>
+                    </a>
+                </div>
+                <ul class="tree_ul">
+                    @foreach (var donvi in LstDonVi)
+                    {
+                        int tmp_count_pb = LstPhongBan.Where(x => x.DM_DONVI_ID == donvi.ID).Count();
+                        int tmp_search_count_pb = LstPhongBanSearch.Where(x => x.DM_DONVI_ID == donvi.ID).Count();
+                        if ((tmp_count_pb > 0) && (donvi.COSO_ID == coso.COSO_ID))
+                        {
+                            <li class="tree_li" style="@(tmp_search_count_pb > 0 ? "display:block" : "display:none")">
+                                <div class="tree_div">
+                                    <img alt="" class="pop_expand" src="/Content/Images/minus.png" />
+                                    <img alt="" class="pop_collapse" src="/Content/Images/Plus.png" />
+                                </div>
+                                <div class="tree_div">
+                                    @if (Model.IS_MULTICHOICE == 1)
+                                    {
+                                        <input type="checkbox" />
+                                    }
+                                </div>
+                                <div class="tree_div root_tree">
+                                    <a href="javascript:void(0)" class="parent_check_box_@Model.INDEX">
+                                        <label>@donvi.TEN_DONVI</label>
+                                    </a>
+                                </div>
+                                <ul class="tree_ul">
+                                    @{
+                                    List<DM_PHONGBAN> PhongBanSet = new List<DM_PHONGBAN>();
+                                    PhongBanSet = LstPhongBanSearch.Where(x => x.DM_DONVI_ID == donvi.ID).ToList();
+                                    }
+                                    @foreach (var phongban in PhongBanSet)
+                                    {
+                                        int tmp_check = Array.IndexOf(Model.IDS, phongban.DM_PHONGBAN_ID.ToString());
+                                        <li class="tree_li">
+                                            <div class="tree_div">
+                                            </div>
+                                            <div class="tree_div" style="padding-left:16px">
+                                                @if (Model.IS_MULTICHOICE == 1)
+                                                {
+                                                    <input @(tmp_check > -1 ? "checked" : "") class="checkbox_phongban" type="checkbox" value="@phongban.DM_PHONGBAN_ID" />
+                                                }
+                                            </div>
+                                            <div class="tree_div root_tree">
+                                                <a href="javascript:void(0)" class="parent_check_box_@Model.INDEX">
+                                                    <label id="label_phong_ban_@phongban.DM_PHONGBAN_ID">
+                                                        @phongban.TENPHONGBAN
+                                                    </label>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    }
+                </ul>
+            </li>
+        }
+
+    </ul>
+
+</div>
+
+
+
+
+<script type="text/javascript" language="javascript">
+    $(".pop_expand").click(function () {
+        $(this).toggle();
+        $(this).next().toggle();
+        $(this).parent().parent().children().last().toggle();
+    });
+    $(".pop_collapse").click(function () {
+        $(this).toggle();
+        $(this).prev().toggle();
+        $(this).parent().parent().children().last().toggle();
+    });
+
+    $("#phong_ban_dialog_" + '@Model.INDEX' + " input[type='checkbox']").click(function () {
+        if ($(this).prop("checked") == false || $(this).prop("checked") == undefined) {
+            $(this).parent().find("input[type='checkbox']").each(function () {
+                $(this).prop("checked", false);
+            });
+            $(this).parent().parent().find("input[type='checkbox']").each(function () {
+                $(this).prop("checked", false);
+            });
+        }
+        else {
+            $(this).parent().parent().find("input[type='checkbox']").each(function () {
+                $(this).prop("checked", true);
+            });
+        }
+    });
+
+    $("#btnSave_choose_phong_ban_ids_" + '@Model.INDEX').click(function () {
+        var textValue = "";
+        var idsValue = "";
+        var chuc_vu = "";
+        $("#phong_ban_dialog_" + '@Model.INDEX' + " .checkbox_phongban").each(function () {
+            if (this.checked) {
+                textValue += $("#label_phong_ban_" + $(this).val()).html().trim() + ", ";
+                idsValue += $(this).val() + ",";
+            }
+        });
+        textValue = textValue.substr(0, textValue.length - 2);
+        idsValue = idsValue.substr(0, idsValue.length - 1);
+        if ($("#" + '@Model.TEXT_ID').attr("type") == "text") {
+            $("#" + '@Model.TEXT_ID').val(textValue);
+        } else {
+            $("#" + '@Model.TEXT_ID').html(textValue);
+        }
+
+        if ($("#" + '@Model.SHOW_CHUC_VU_ID').length > 0) {
+            if ($("#" + '@Model.SHOW_CHUC_VU_ID').attr("type") == "text") {
+                $("#" + '@Model.SHOW_CHUC_VU_ID').val(chuc_vu);
+            } else {
+                $("#" + '@Model.SHOW_CHUC_VU_ID').html(chuc_vu);
+            }
+        }
+        $("#" + '@Model.VALUE_ID').val(idsValue);
+
+        var call_back_function = '@Model.CALLBACK_FUNCTION';
+        if (call_back_function.length > 0) {
+            var cb_fn = window[call_back_function];
+            cb_fn();
+        }
+        $("#phong_ban_dialog_" + '@Model.INDEX').modal("hide");
+
+    });
+
+    $(".label_item_" + '@Model.INDEX').click(function () {
+        if ($(this).parent().parent().find("input").attr("checked") == "checked") {
+            $(this).parent().parent().find("input").attr("checked", false);
+        } else {
+            $(this).parent().parent().find("input").attr("checked", true);
+        }
+    });
+    $(".parent_check_box_" + '@Model.INDEX').click(function () {
+        if ($(this).parent().parent().find("input").attr("checked") == "checked") {
+            $(this).parent().parent().find("input").attr("checked", false);
+        } else {
+            $(this).parent().parent().find("input").attr("checked", true);
+        }
+    });
+</script>

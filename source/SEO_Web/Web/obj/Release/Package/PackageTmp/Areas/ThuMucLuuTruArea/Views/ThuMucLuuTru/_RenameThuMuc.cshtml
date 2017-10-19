@@ -1,0 +1,1575 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Web.Areas.ThuMucLuuTruArea.Models
+@model Web.Areas.ThuMucLuuTruArea.Models.CreateThuMucModel
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #GHICHU {
+        resize: none;
+    }
+
+    #EDIT_ID, #EDIT_ParentID {
+        display: none;
+    }
+
+    .onoffswitch, .onoffswitch2 {
+        position: relative;
+        width: 77px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        float: left;
+    }
+
+    .onoffswitch-checkbox, .onoffswitch-checkbox2 {
+        display: none;
+    }
+
+    .onoffswitch-label, .onoffswitch-label2 {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid #999999;
+        border-radius: 29px;
+    }
+
+    .onoffswitch-inner, .onoffswitch-inner2 {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+        .onoffswitch-inner:before, .onoffswitch-inner:after, .onoffswitch-inner2:before, .onoffswitch-inner2:after {
+            display: block;
+            float: left;
+            width: 50%;
+            height: 25px;
+            padding: 0;
+            line-height: 25px;
+            font-size: 14px;
+            color: white;
+            font-family: Trebuchet, Arial, sans-serif;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .onoffswitch-inner:before, .onoffswitch-inner2:before {
+            content: "Bật";
+            padding-left: 10px;
+            background-color: #1DB1EB;
+            color: #FFFFFF;
+        }
+
+        .onoffswitch-inner:after, .onoffswitch-inner2:after {
+            content: "Tắt";
+            padding-right: 10px;
+            background-color: #EEEEEE;
+            color: #999999;
+            text-align: right;
+        }
+
+    .onoffswitch-switch, .onoffswitch-switch2 {
+        display: block;
+        width: 18px;
+        margin: 3.5px;
+        background: #FFFFFF;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 48px;
+        border: 2px solid #999999;
+        border-radius: 29px;
+        transition: all 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner, .onoffswitch-checkbox2:checked + .onoffswitch-label2 .onoffswitch-inner2 {
+        margin-left: 0;
+    }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch, .onoffswitch-checkbox2:checked + .onoffswitch-label2 .onoffswitch-switch2 {
+        right: 0px;
+    }
+
+    .onoffswitch1 {
+        position: relative;
+        width: 77px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .onoffswitch-checkbox1 {
+        display: none;
+    }
+
+    .onoffswitch-label1 {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid #999999;
+        border-radius: 29px;
+    }
+
+    .onoffswitch-inner1 {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+        .onoffswitch-inner1:before, .onoffswitch-inner1:after {
+            display: block;
+            float: left;
+            width: 50%;
+            height: 25px;
+            padding: 0;
+            line-height: 25px;
+            font-size: 14px;
+            color: white;
+            font-family: Trebuchet, Arial, sans-serif;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .onoffswitch-inner1:before {
+            content: "Bật";
+            padding-left: 10px;
+            background-color: #1DB1EB;
+            color: #FFFFFF;
+        }
+
+        .onoffswitch-inner1:after {
+            content: "Tắt";
+            padding-right: 10px;
+            background-color: #EEEEEE;
+            color: #999999;
+            text-align: right;
+        }
+
+    .onoffswitch-switch1 {
+        display: block;
+        width: 18px;
+        margin: 3.5px;
+        background: #FFFFFF;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 48px;
+        border: 2px solid #999999;
+        border-radius: 29px;
+        transition: all 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-checkbox1:checked + .onoffswitch-label1 .onoffswitch-inner1 {
+        margin-left: 0;
+    }
+
+    .onoffswitch-checkbox1:checked + .onoffswitch-label1 .onoffswitch-switch1 {
+        right: 0px;
+    }
+</style>
+@if (Model.ThuMuc.IS_PRIVATE.HasValue && Model.ThuMuc.IS_PRIVATE.Value == true)
+{
+    <style>
+        .modal-body {
+            height: auto !important;
+        }
+    </style>
+}
+@using (Ajax.BeginForm("SaveThuMuc", "ThuMucLuuTru", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmRenameThuMuc" }))
+{
+    UserInfoBO user = (UserInfoBO)SessionManager.GetUserInfo();
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">
+                    Cập nhật thư mục
+                    @if (Model.ThuMuc.EXPIRE_DATE < DateTime.Now)
+                    {
+                        <span> - Thư mục này đã hết hạn lưu trữ</span>
+                    }
+                </h4>
+            </div>
+            <div class="modal-body" style="overflow-y:auto;height:460px">
+
+                <table>
+                    @*<tr>
+                            <td>
+                                Thư mục cá nhân
+                            </td>
+                            <td>
+                                @if (Model.ThuMuc.IS_PRIVATE.Value)
+                                {
+                                    <div class="onoffswitch2">
+                                        <input disabled type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox2" id="myonoffswitch2" checked>
+                                        <label class="onoffswitch-label2" for="myonoffswitch2">
+                                            <span class="onoffswitch-inner2"></span>
+                                            <span class="onoffswitch-switch2"></span>
+                                        </label>
+                                    </div>
+                                    <input type="hidden" name="IS_PRIVATE" id="IS_PRIVATE" value="true" />
+                                }
+                                else
+                                {
+                                    <div class="onoffswitch2">
+                                        <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox2" id="myonoffswitch2">
+                                        <label class="onoffswitch-label2" for="myonoffswitch2">
+                                            <span class="onoffswitch-inner2"></span>
+                                            <span class="onoffswitch-switch2"></span>
+                                        </label>
+                                    </div>
+                                    <input type="hidden" name="IS_PRIVATE" id="IS_PRIVATE" value="false" />
+                                }
+                            </td>
+                        </tr>*@
+                    <tr>
+                        <td colspan="2">
+                            <input type="hidden" name="IS_PRIVATE" id="IS_PRIVATE" value="false" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="CREATE_NAM" style=" width:140px;">Năm sử dụng:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @if (Model.ThuMuc.PARENT_ID == 0)
+                            {
+                                @Html.TextBox("NAM", Model.ThuMuc.NAM, new { @style = "width: 190px;", maxlength = "10", @class = "e-input", @id = "CREATE_NAM" })
+                            }
+                            else
+                            {
+                                @Html.TextBox("NAM", Model.ThuMuc.NAM, new { @style = "width: 190px;", @readonly = "true", maxlength = "10", @class = "e-input", @id = "CREATE_NAM" })
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="NAM_ERROR" style="margin-left: 0px; color: red;">Năm sử dụng phải là số</span>
+                            <span class="lb-Check" id="NAM_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập năm sử dụng</span>
+                        </td>
+                    </tr>
+                    @Html.TextBox("ID", Model.ThuMuc.ID, new { @style = "width: 20px;", maxlength = "100", @class = "e-input", @id = "EDIT_ID", @readonly = "readonly" })
+                    @Html.TextBox("PARENT_ID", Model.ThuMuc.PARENT_ID, new { @style = "width: 20px;", maxlength = "50", @class = "e-input", @id = "EDIT_ParentID", @readonly = "readonly" })
+                    @if (Model.ThuMuc.IS_PRIVATE.HasValue && Model.ThuMuc.IS_PRIVATE.Value == false)
+                    {
+                        if (Model.ChinhSach != null)
+                        {
+                            foreach (var item in Model.ChinhSach)
+                            {
+                                if (item.MACHINHSACH == ChinhSachQuanLiTaiLieuConstant.PHEDUYETTAILIEU && item.TRANGTHAI == true)
+                                {
+
+                                    if (Model.ThuMuc.IS_PRIVATE.Value)
+                                    {
+                                        <tr class="turn-thoihan" style="display:none">
+                                            <td>Phê duyệt tài liệu</td>
+                                            <td>
+                                                @if (Model.ThuMuc.IS_CENSOR.Value)
+                                                {
+                                                    <div class="onoffswitch1">
+                                                        <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox1" id="myonoffswitch1" checked>
+                                                        <label class="onoffswitch-label1" for="myonoffswitch1">
+                                                            <span class="onoffswitch-inner1"></span>
+                                                            <span class="onoffswitch-switch1"></span>
+                                                        </label>
+                                                    </div>
+                                                    <input type="hidden" name="IS_CENSOR" id="IS_CENSOR" value="true" />
+                                                }
+                                                else
+                                                {
+                                                    <div class="onoffswitch1">
+                                                        <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox1" id="myonoffswitch1">
+                                                        <label class="onoffswitch-label1" for="myonoffswitch1">
+                                                            <span class="onoffswitch-inner1"></span>
+                                                            <span class="onoffswitch-switch1"></span>
+                                                        </label>
+                                                    </div>
+                                                    <input type="hidden" name="IS_CENSOR" id="IS_CENSOR" value="true" />
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr class="turn-thoihan" style="display:none">
+                                            <td colspan="2">&nbsp;</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr class="turn-thoihan">
+                                            <td>Phê duyệt tài liệu</td>
+                                            <td>
+                                                @if (Model.ThuMuc.IS_CENSOR.Value)
+                                                {
+                                                    <div class="onoffswitch1">
+                                                        <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox1" id="myonoffswitch1" checked>
+                                                        <label class="onoffswitch-label1" for="myonoffswitch1">
+                                                            <span class="onoffswitch-inner1"></span>
+                                                            <span class="onoffswitch-switch1"></span>
+                                                        </label>
+                                                    </div>
+                                                    <input type="hidden" name="IS_CENSOR" id="IS_CENSOR" value="true" />
+                                                }
+                                                else
+                                                {
+                                                    <div class="onoffswitch1">
+                                                        <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox1" id="myonoffswitch1">
+                                                        <label class="onoffswitch-label1" for="myonoffswitch1">
+                                                            <span class="onoffswitch-inner1"></span>
+                                                            <span class="onoffswitch-switch1"></span>
+                                                        </label>
+                                                    </div>
+                                                    <input type="hidden" name="IS_CENSOR" id="IS_CENSOR" value="false" />
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr class="turn-thoihan">
+                                            <td colspan="2">&nbsp;</td>
+                                        </tr>
+                                    }
+
+                                }
+                                if (item.MACHINHSACH == ChinhSachQuanLiTaiLieuConstant.HANSUDUNG && item.TRANGTHAI == true)
+                                {
+                                    if (Model.ThuMuc.IS_PRIVATE.Value)
+                                    {
+                                        <tr class="turn-thoihan" style="display:none">
+                                            <td>Thời hạn lưu trữ:</td>
+                                            <td>
+                                                <div class="onoffswitch">
+                                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                                        <span class="onoffswitch-inner"></span>
+                                                        <span class="onoffswitch-switch"></span>
+                                                    </label>
+                                                    <input type="hidden" name="TRANGTHAI" id="TRANGTHAI" value="true" />
+                                                </div>
+                                                <div class="THOIHAN" style="margin-left:20px;float:left">
+                                                    Từ:
+                                                    @Html.TextBox("EXPIRE_DATEFROM", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATEFROM" })
+                                                    Đến:
+                                                    @Html.TextBox("EXPIRE_DATE", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATE" })
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="turn-thoihan" style="display:none">
+                                            <td style="height: 20px;"></td>
+                                            <td>
+                                                <span class="lb-Check" id="EXPIRE_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập thời hạn lưu trữ</span>
+                                                <span class="lb-Check" id="EXPIRE_ERROR" style="margin-left: 0px; color: red;">Thời hạn lưu trữ sai định dạng</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr class="turn-thoihan">
+                                            <td>Thời hạn lưu trữ:</td>
+                                            <td>
+                                                <div class="onoffswitch">
+                                                    @if (Model.ThuMuc.IS_NEEDREVIEW != ThuMucConstant.DADUYET)
+                                                    {
+                                                        if (!Model.ThuMuc.EXPIRE_DATE.HasValue && !Model.ThuMuc.EXPIRE_DATEFROM.HasValue)
+                                                        {
+                                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+                                                            <label class="onoffswitch-label" for="myonoffswitch">
+                                                                <span class="onoffswitch-inner"></span>
+                                                                <span class="onoffswitch-switch"></span>
+                                                            </label>
+                                                            <input type="hidden" name="TRANGTHAI" id="TRANGTHAI" value="false" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                                                            <label class="onoffswitch-label" for="myonoffswitch">
+                                                                <span class="onoffswitch-inner"></span>
+                                                                <span class="onoffswitch-switch"></span>
+                                                            </label>
+                                                            <input type="hidden" name="TRANGTHAI" id="TRANGTHAI" value="true" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (!Model.ThuMuc.EXPIRE_DATE.HasValue && !Model.ThuMuc.EXPIRE_DATEFROM.HasValue)
+                                                        {
+                                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+                                                            <label class="onoffswitch-label" for="myonoffswitch">
+                                                                <span class="onoffswitch-inner"></span>
+                                                                <span class="onoffswitch-switch"></span>
+                                                            </label>
+                                                            <input type="hidden" name="TRANGTHAI" id="TRANGTHAI" value="false" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                                                            <label class="onoffswitch-label" for="myonoffswitch">
+                                                                <span class="onoffswitch-inner"></span>
+                                                                <span class="onoffswitch-switch"></span>
+                                                            </label>
+                                                            <input type="hidden" name="TRANGTHAI" id="TRANGTHAI" value="true" />
+                                                        }
+                                                    }
+                                                </div>
+
+                                                @if (Model.ThuMuc.IS_NEEDREVIEW != ThuMucConstant.DADUYET)
+                                                {
+                                                    if (Model.ThuMuc.EXPIRE_DATE.HasValue || Model.ThuMuc.EXPIRE_DATEFROM.HasValue)
+                                                    {
+                                                        <div class="THOIHAN" style="margin-left:20px;float:left">
+                                                            Từ:
+                                                            @Html.TextBox("EXPIRE_DATEFROM", String.Format("{0:dd/M/yyyy}", Model.ThuMuc.EXPIRE_DATEFROM), new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATEFROM" })
+                                                            Đến:
+                                                            @Html.TextBox("EXPIRE_DATE", String.Format("{0:dd/M/yyyy}", Model.ThuMuc.EXPIRE_DATE), new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATE" })
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="THOIHAN" style="margin-left:20px;float:left;display:none">
+                                                            Từ:
+                                                            @Html.TextBox("EXPIRE_DATEFROM", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATEFROM" })
+                                                            Đến:
+                                                            @Html.TextBox("EXPIRE_DATE", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATE" })
+
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if ((Model.ThuMuc.EXPIRE_DATE.HasValue || Model.ThuMuc.EXPIRE_DATEFROM.HasValue) && Model.ThuMuc.PARENT_ID > 0)
+                                                    {
+                                                        <div class="THOIHAN" style="margin-left:20px;float:left">
+                                                            Từ:
+                                                            @Html.TextBox("EXPIRE_DATEFROM", String.Format("{0:dd/M/yyyy}", Model.ThuMuc.EXPIRE_DATEFROM), new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATEFROM" })
+                                                            Đến:
+                                                            @Html.TextBox("EXPIRE_DATE", String.Format("{0:dd/M/yyyy}", Model.ThuMuc.EXPIRE_DATE), new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATE" })
+                                                        </div>
+                                                    }
+                                                    else if (Model.ThuMuc.EXPIRE_DATE.HasValue || Model.ThuMuc.EXPIRE_DATEFROM.HasValue)
+                                                    {
+                                                        <div class="THOIHAN" style="margin-left:20px;float:left">
+                                                            Từ:
+                                                            @Html.TextBox("EXPIRE_DATEFROM", String.Format("{0:dd/M/yyyy}", Model.ThuMuc.EXPIRE_DATEFROM), new { @style = "width: 110px;", maxlength = "10", disabled = "true", @class = "e-input", @id = "EXPIRE_DATEFROM" })
+                                                            Đến:
+                                                            @Html.TextBox("EXPIRE_DATE", String.Format("{0:dd/M/yyyy}", Model.ThuMuc.EXPIRE_DATE), new { @style = "width: 110px;", maxlength = "10", disabled = "true", @class = "e-input", @id = "EXPIRE_DATE" })
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="THOIHAN" style="margin-left:20px;float:left;display:none">
+                                                            Từ:
+                                                            @Html.TextBox("EXPIRE_DATEFROM", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATEFROM" })
+                                                            Đến:
+                                                            @Html.TextBox("EXPIRE_DATE", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "EXPIRE_DATE" })
+                                                        </div>
+                                                    }
+                                                }
+
+                                            </td>
+                                        </tr>
+                                        <tr class="turn-thoihan">
+                                            <td style="height: 20px;"></td>
+                                            <td align="right">
+
+                                                <span class="lb-Check" id="EXPIRE_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập thời hạn lưu trữ</span>
+                                                <span class="lb-Check" id="EXPIRE_ERROR" style="margin-left: 0px; color: red;">Thời hạn lưu trữ sai định dạng</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <input type="hidden" name="TRANGTHAI" id="TRANGTHAI" value="false" />
+                    }
+
+                    <tr>
+                        <td>
+                            <label class="lbl" for="RENAME" style=" width:140px;">Tên thư mục:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("TENTHUMUC", Model.ThuMuc.TENTHUMUC, new { @style = "width: 387px;", maxlength = "50", @class = "e-input", @id = "RENAME" })
+                            @Html.TextBox("IS_NEEDREVIEW", Model.ThuMuc.IS_NEEDREVIEW, new { @style = "width: 387px;display:none", maxlength = "50", @class = "e-input", @id = "IS_NEEDREVIEW" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+
+                            <span class="lb-Check" id="TENTHUMUC_HTML" style="margin-left: 0px; color: red;">Tên thư mục không được chưa thẻ html</span>
+                            <span class="lb-Check" id="EDIT_TENTHUMUC_ER" style="margin-left: 0px; color: red;">Thư mục đã tồn tại.</span>
+                            <span class="lb-Check" id="EDIT_TENTHUMUC_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập tên thư mục</span>
+                            <span class="lb-Check" id="TENTHUMUC_INVALID" style="margin-left: 0px; color: red;">Tên folder không thể chứa bất kỳ các ký tự nào sau đây: \ / : ? * " < > |</span>
+                        </td>
+                    </tr>
+
+                    @if (Model.ThuMuc.IS_PRIVATE.HasValue && Model.ThuMuc.IS_PRIVATE.Value == false)
+                    {
+                        if (Model.ThuMuc.ID > 0 && Model.ThuMuc.PARENT_ID > 0)
+                        {
+                            if (Model.ThuMuc.EXPIRE_DATE < DateTime.Now && Model.ThuMuc.IS_NEEDREVIEW == ThuMucConstant.DADUYET && (Model.ThuMuc.DM_NGUOIDUNG_ID == user.UserID && !SessionManager.GetValue("ISTRUONGDONVI").Equals("true")))
+                            {
+                                <tr class="turn-thoihan">
+                                    <td colspan="2">
+                                        <h3 class="group-tittle mt10" style="margin-bottom:30px">Thông tin xin gia hạn</h3>
+                                    </td>
+                                </tr>
+                                <tr class="turn-thoihan">
+                                    <td>
+                                        Thời hạn:
+                                    </td>
+                                    <td>
+                                        @if (Model.GiaHan.ID > 0)
+                                        {
+                                            if (SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                                            {
+                                                @Html.TextBox("NGAYGIAHAN", String.Format("{0:dd/M/yyyy}", Model.GiaHan.NGAYGIAHAN), new { @style = "width: 110px;disabled:true", maxlength = "10", @class = "e-input", @id = "NGAYGIAHAN" })
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBox("NGAYGIAHAN", String.Format("{0:dd/M/yyyy}", Model.GiaHan.NGAYGIAHAN), new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "NGAYGIAHAN" })
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBox("NGAYGIAHAN", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "NGAYGIAHAN" })
+                                        }
+                                    </td>
+                                </tr>
+                                <tr class="turn-thoihan">
+                                    <td colspan="2" align="left">
+                                        &nbsp;
+                                        <span class="lb-Check" id="NGAYGIAHAN_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập thời gian xin gia hạn</span>
+                                        <span class="lb-Check" id="NGAYGIAHAN_ERROR" style="margin-left: 0px; color: red;">Thời gian xin gia hạn sai định dạng</span>
+                                    </td>
+                                </tr>
+                                <tr class="turn-thoihan">
+                                    <td>Ghi chú:</td>
+                                    <td>
+                                        @if (Model.GiaHan != null)
+                                        {
+                                            if (SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                                            {
+                                                <span>@Html.Raw(String.Format(Model.GiaHan.GHICHU))</span>
+                                            }
+                                            else
+                                            {
+                                                @Html.TextArea("GHICHU", Model.GiaHan.GHICHU, new { @style = "width:345px;height:60px", maxlenght = "500", @class = "e-input", @id = "GHICHU" })
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @Html.TextArea("GHICHU", "", new { @style = "width:345px;height:60px", maxlenght = "500", @class = "e-input", @id = "GHICHU" })
+                                        }
+                                    </td>
+
+                                </tr>
+                                <tr class="turn-thoihan">
+                                    <td>&nbsp;</td>
+                                    <td><span style="color:red;display:none" id="GHICHU_NULL">Bạn cần phải nhập ghi chú</span></td>
+                                </tr>
+                                if (Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.TRINHDONVI && SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                                {
+                                    <tr class="turn-thoihan">
+                                        <td>Ghi chú gia hạn</td>
+                                        <td>
+                                            @Html.TextArea("NOIDUNG", "", new { @style = "width:345px;height:60px", maxlenght = "500", @class = "e-input", @id = "NOIDUNG" })
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td><span style="color:red;display:none" id="NOIDUNG_NULL">Bạn cần nhập lý do gia hạn / không gia hạn</span></td>
+                                    </tr>
+                                }
+                                <tr class="turn-thoihan">
+                                    <td colspan="2">
+                                        @Html.Partial("_LichSuGiaHanTaiLieu")
+                                    </td>
+                                </tr>
+                            }
+                            else if (SessionManager.GetValue("ISTRUONGDONVI").Equals("true") && Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.TRINHDONVI)
+                            {
+                                <tr class="turn-thoihan">
+                                    <td colspan="2">
+                                        <h3 class="group-tittle mt10" style="margin-bottom:30px">Thông tin xin gia hạn</h3>
+                                    </td>
+                                </tr>
+                                <tr class="turn-thoihan">
+                                    <td>
+                                        Thời hạn:
+                                    </td>
+                                    <td>
+                                        @if (Model.GiaHan.ID > 0)
+                                        {
+                                            if (SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                                            {
+                                                @Html.TextBox("NGAYGIAHAN", String.Format("{0:dd/M/yyyy}", Model.GiaHan.NGAYGIAHAN), new { @style = "width: 110px;disabled:true", maxlength = "10", @class = "e-input", @id = "NGAYGIAHAN" })
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBox("NGAYGIAHAN", String.Format("{0:dd/M/yyyy}", Model.GiaHan.NGAYGIAHAN), new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "NGAYGIAHAN" })
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBox("NGAYGIAHAN", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "NGAYGIAHAN" })
+                                        }
+                                    </td>
+                                </tr>
+                                <tr class="turn-thoihan">
+                                    <td colspan="2" align="left">
+                                        &nbsp;
+                                        <span class="lb-Check" id="NGAYGIAHAN_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập thời gian xin gia hạn</span>
+                                        <span class="lb-Check" id="NGAYGIAHAN_ERROR" style="margin-left: 0px; color: red;">Thời gian xin gia hạn sai định dạng</span>
+                                    </td>
+                                </tr>
+                                <tr class="turn-thoihan">
+                                    <td>Ghi chú</td>
+                                    <td>
+                                        @if (Model.GiaHan != null)
+                                        {
+                                            if (SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                                            {
+                                                @Html.Raw(String.Format(Model.GiaHan.GHICHU))
+                                            }
+                                            else
+                                            {
+                                                @Html.TextArea("GHICHU", Model.GiaHan.GHICHU, new { @style = "width:345px;height:60px", maxlenght = "500", @class = "e-input", @id = "GHICHU" })
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @Html.TextArea("GHICHU", "", new { @style = "width:345px;height:60px", maxlenght = "500", @class = "e-input", @id = "GHICHU" })
+                                        }
+                                    </td>
+
+                                </tr>
+                                <tr class="turn-thoihan">
+                                    <td>&nbsp;</td>
+                                    <td><span style="color:red;display:none" id="GHICHU_NULL">Bạn cần phải nhập ghi chú</span></td>
+                                </tr>
+                                if (Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.TRINHDONVI && SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                                {
+                                    <tr class="turn-thoihan">
+                                        <td>Ghi chú gia hạn</td>
+                                        <td>
+                                            @Html.TextArea("NOIDUNG", "", new { @style = "width:345px;height:60px", maxlenght = "500", @class = "e-input", @id = "NOIDUNG" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td><span style="color:red;display:none" id="NOIDUNG_NULL">Bạn cần nhập lý do gia hạn / không gia hạn</span></td>
+                                    </tr>
+                                }
+                                <tr class="turn-thoihan">
+                                    <td colspan="2">
+                                        @Html.Partial("_LichSuGiaHanTaiLieu")
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+                        else if (Model.ThuMuc.PARENT_ID == 0 && Model.ThuMuc.EXPIRE_DATE.HasValue && Model.ThuMuc.EXPIRE_DATE < DateTime.Now)
+                        {
+                            <tr class="turn-thoihan">
+                                <td colspan="2">
+                                    <h3 class="group-tittle mt10" style="margin-bottom:30px">Thông tin xin gia hạn</h3>
+                                </td>
+                            </tr>
+                            <tr class="turn-thoihan">
+                                <td>
+                                    Thời hạn:
+                                </td>
+                                <td>
+                                    @if (Model.GiaHan.ID > 0)
+                                    {
+                                        @Html.TextBox("NGAYGIAHAN", String.Format("{0:dd/M/yyyy}", Model.GiaHan.NGAYGIAHAN), new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "NGAYGIAHAN" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBox("NGAYGIAHAN", "", new { @style = "width: 110px;", maxlength = "10", @class = "e-input", @id = "NGAYGIAHAN" })
+                                    }
+                                </td>
+                            </tr>
+                            <tr class="turn-thoihan">
+                                <td colspan="2" align="left">
+                                    &nbsp;
+                                    <span class="lb-Check" id="NGAYGIAHAN_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập thời gian xin gia hạn</span>
+                                    <span class="lb-Check" id="NGAYGIAHAN_ERROR" style="margin-left: 0px; color: red;">Thời gian xin gia hạn sai định dạng</span>
+                                </td>
+                            </tr>
+                            <tr class="turn-thoihan">
+                                <td>Ghi chú</td>
+                                <td>
+                                    @if (Model.GiaHan != null)
+                                    {
+                                        @Html.TextArea("GHICHU", Model.GiaHan.GHICHU, new { @style = "width:345px;height:60px", maxlenght = "500", @class = "e-input", @id = "GHICHU" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextArea("GHICHU", "", new { @style = "width:345px;height:60px", maxlenght = "500", @class = "e-input", @id = "GHICHU" })
+                                    }
+                                </td>
+
+                            </tr>
+                            <tr class="turn-thoihan">
+                                <td>&nbsp;</td>
+                                <td><span style="color:red;display:none" id="GHICHU_NULL">Bạn cần phải nhập ghi chú</span></td>
+                            </tr>
+                            if (!SessionManager.GetValue("ISTRUONGDONVI").Equals("true") && Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.TRINHDONVI && SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                            {
+                                <tr class="turn-thoihan">
+                                    <td>Ghi chú gia hạn</td>
+                                    <td>
+                                        @Html.TextArea("NOIDUNG", "", new { @style = "width:345px;height:60px", maxlenght = "500", @class = "e-input", @id = "NOIDUNG" })
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td><span style="color:red;display:none" id="NOIDUNG_NULL">Bạn cần nhập lý do gia hạn / không gia hạn</span></td>
+                                </tr>
+                            }
+                            <tr class="turn-thoihan">
+                                <td colspan="2">
+                                    @Html.Partial("_LichSuGiaHanTaiLieu")
+                                </td>
+                            </tr>
+                        }
+                        if (!SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                        {
+                            if ((Model.ThuMuc.IS_NEEDREVIEW == ThuMucConstant.DUTHAO || ThuMucConstant.CHODUYET == Model.ThuMuc.IS_NEEDREVIEW || Model.ThuMuc.IS_NEEDREVIEW == ThuMucConstant.CUC_TRAVE && Model.ThuMuc.PARENT_ID > 0))
+                            {
+                                <tr>
+                                    <td>
+                                        Ghi chú:<span style="color:red">*</span>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control" name="MOTA" id="MOTA" placeholder="Nhập thông tin xin duyệt" style="resize:vertical;width:387px;height:100px"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td><span style="color:red;display:none" id="MOTA_NULL">Vui lòng nhập thông tin xin duyệt thư mục</span></td>
+                                </tr>
+                            }
+
+                        }
+                        else if (Model.ThuMuc.DM_NGUOIDUNG_ID != user.UserID && SessionManager.GetValue("ISTRUONGDONVI").Equals("true") && Model.ThuMuc.IS_NEEDREVIEW == ThuMucConstant.DATRINH)
+                        {
+                            <tr>
+                                <td>
+                                    Ghi chú:<span style="color:red">*</span>
+                                </td>
+                                <td>
+                                    <textarea class="form-control" name="MOTA" id="MOTA" placeholder="Nhập thông tin xin duyệt" style="resize:vertical;width:387px;height:100px"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td><span style="color:red;display:none" id="MOTA_NULL">Vui lòng nhập thông tin xin duyệt thư mục</span></td>
+                            </tr>
+                        }
+                    }
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                @if (Model.ThuMuc.IS_PRIVATE.HasValue && Model.ThuMuc.IS_PRIVATE.Value == false)
+                {
+                    if (Model.ThuMuc.IS_NEEDREVIEW == ThuMucConstant.DADUYET)
+                    {
+                        if (Model.ThuMuc.IS_NEEDREVIEW != ThuMucConstant.DATRINH)
+                        {
+                            if (Model.ThuMuc.ID > 0 && Model.ThuMuc.DM_NGUOIDUNG_ID == user.UserID && !Model.ThuMuc.IS_PRIVATE.Value)
+                            {
+                                if (!Model.ThuMuc.EXPIRE_DATE.HasValue || (DateTime.Now >= Model.ThuMuc.EXPIRE_DATEFROM && DateTime.Now <= Model.ThuMuc.EXPIRE_DATE && Model.ThuMuc.IS_NEEDREVIEW != ThuMucConstant.DADUYET) && !SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                                {
+                                    if (!SessionManager.GetValue("ISTRUONGDONVI").Equals("true") && Model.ThuMuc.IS_NEEDREVIEW != ThuMucConstant.DADUYET)
+                                    {
+                                        <input type="submit" value="Lưu và trình" id="btnSaveApproval" class="btn btn-submit" />
+                                    }
+
+                                    if (Model.ThuMuc.DM_NGUOIDUNG_ID == user.UserID && SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                                    {
+                                        <input type="submit" value="Cập nhật" id="btnRename" class="btn btn-warning" />
+                                    }
+                                }
+                                else if ((Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.LUULAI || Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.KHONGDUYET) && Model.ThuMuc.PARENT_ID > 0)
+                                {
+
+                                    <input type="button" value="Xin gia hạn" id="btnGiaHan" class="btn btn-primary" />
+
+                                    <input type="button" value="Lưu gia hạn" id="btnLuuGiaHan" class="btn-success btn" />
+                                    if (Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.LUULAI)
+                                    {
+                                        <input type="button" value="Hủy gia hạn" id="btnHuyGiaHan" class="btn btn-close" />
+                                    }
+                                }
+                                else if ((Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.DUYET && Model.ThuMuc.EXPIRE_DATE < DateTime.Now) && Model.ThuMuc.PARENT_ID > 0)
+                                {
+
+                                    <input type="button" value="Xin gia hạn" id="btnGiaHan" class="btn btn-success" />
+
+                                    <input type="button" value="Lưu gia hạn" id="btnLuuGiaHan" class="btn-success btn" />
+                                    if (Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.LUULAI)
+                                    {
+                                        <input type="button" value="Hủy gia hạn" id="btnHuyGiaHan" class="btn btn-default" />
+                                    }
+                                }
+                                else if (Model.ThuMuc.DM_NGUOIDUNG_ID == user.UserID)
+                                {
+                                    <input type="submit" value="Cập nhật" id="btnRename" class="btn btn-success" />
+                                }
+                            }
+                            else if (Model.ThuMuc.DM_NGUOIDUNG_ID == user.UserID)
+                            {
+                                <input type="submit" value="Cập nhật" id="btnRename" class="btn btn-success" />
+                            }
+                        }
+                        if ((Model.ThuMuc.IS_NEEDREVIEW.Value == ThuMucConstant.DUTHAO || Model.ThuMuc.IS_NEEDREVIEW.Value == 0 || Model.ThuMuc.IS_NEEDREVIEW.Value == ThuMucConstant.DATRINH) && Model.ThuMuc.PARENT_ID > 0 && Model.IS_TRUONGDONVI && !Model.ThuMuc.IS_PRIVATE.Value)
+                        {
+                            <input type="button" id="PheDuyetThuMuc" value="Phê duyệt" class="btn-success btn" />
+                            if (Model.ThuMuc.DM_NGUOIDUNG_ID != user.UserID && SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                            {
+                                <input type="button" id="TraVeThuMuc" value="Trả về" class="btn btn-danger" />
+                            }
+
+                        }
+                        if (Model.ThuMuc.IS_NEEDREVIEW == ThuMucConstant.DADUYET && Model.ThuMuc.EXPIRE_DATE < DateTime.Now && (Model.ThuMuc.DM_NGUOIDUNG_ID == user.UserID && !SessionManager.GetValue("ISTRUONGDONVI").Equals("true")) && Model.GiaHan.ID == 0)
+                        {
+                            <input type="button" value="Xin gia hạn" id="btnGiaHan" class="btn btn-success" />
+                            <input type="button" value="Lưu gia hạn" id="btnLuuGiaHan" class="btn btn-success" />
+
+                            if (Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.LUULAI)
+                            {
+                                <input type="button" value="Hủy gia hạn" id="btnHuyGiaHan" class="btn btn-danger" />
+                            }
+                        }
+                        else if (Model.ThuMuc.PARENT_ID == 0)
+                        {
+                            if (Model.GiaHan.TRANGTHAI != GiaHanTaiLieuModel.GIAHAN && Model.ThuMuc.EXPIRE_DATE.HasValue && Model.ThuMuc.EXPIRE_DATE < DateTime.Now)
+                            {
+                                <input type="button" value="Xin gia hạn" id="btnGiaHan" class="btn btn-success" />
+                                <input type="button" value="Lưu gia hạn" id="btnLuuGiaHan" class="btn btn-success" />
+
+                            }
+                            if (Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.LUULAI)
+                            {
+                                <input type="button" value="Hủy" id="btnHuyGiaHan" class="btn btn-danger" />
+                            }
+                        }
+                        if (Model.GiaHan.TRANGTHAI == GiaHanTaiLieuModel.TRINHDONVI && SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                        {
+                            <input type="button" value="Duyệt gia hạn" id="btnDuyetGiaHan" class="btn btn-submit" />
+                            <input type="button" value="Không duyệt" id="btnKhongDuyetGiaHan" class="btn btn-warning" />
+
+                        }
+                    }
+                    else
+                    {
+                        if (!SessionManager.GetValue("ISTRUONGDONVI").Equals("true") && Model.ThuMuc.IS_NEEDREVIEW == ThuMucConstant.DUTHAO || Model.ThuMuc.IS_NEEDREVIEW == ThuMucConstant.CUC_TRAVE)
+                        {
+                            <input type="submit" value="Lưu và trình" id="btnSaveApproval" class="btn btn-submit" />
+                        }
+                        if ((Model.ThuMuc.IS_NEEDREVIEW.Value == ThuMucConstant.DUTHAO || Model.ThuMuc.IS_NEEDREVIEW.Value == 0 || Model.ThuMuc.IS_NEEDREVIEW.Value == ThuMucConstant.DATRINH) && Model.ThuMuc.PARENT_ID > 0 && Model.IS_TRUONGDONVI && !Model.ThuMuc.IS_PRIVATE.Value)
+                        {
+                            <input type="button" id="PheDuyetThuMuc" value="Phê duyệt" class="btn btn-success" />
+                            if (Model.ThuMuc.DM_NGUOIDUNG_ID != user.UserID && SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                            {
+                                <input type="button" id="TraVeThuMuc" value="Trả về" class="btn btn-warning" />
+                            }
+
+                        }
+                        if (Model.ThuMuc.DM_NGUOIDUNG_ID == user.UserID && (Model.ThuMuc.IS_NEEDREVIEW == ThuMucConstant.DUTHAO || Model.ThuMuc.IS_NEEDREVIEW == ThuMucConstant.CUC_TRAVE))
+                        {
+                            <input type="submit" value="Cập nhật" id="btnRename" class="btn btn-submit" />
+                        }
+                    }
+                }
+                else
+                {
+                    <input type="submit" value="Cập nhật" id="btnRename" class="btn btn-submit" />
+                }
+                <input type="button" value="Đóng" data-dismiss="modal" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
+
+}
+<script>
+    var EDIT_ID = $("#EDIT_ID").val();
+    function failure(xhr, error) {
+        $("#RenameThuMuc").modal('hide');
+    }
+    var folder = $("#RENAME").val();
+    var tontai = false;
+    $("#RENAME").blur(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#EDIT_TENTHUMUC_NULL").show();
+        } else {
+            $("#EDIT_TENTHUMUC_NULL").hide();
+        }
+    });
+
+    function updateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Cập nhật thư mục thành công!',
+        });
+        var FName = $("#RENAME").val();
+        if ($("#EDIT_ParentID").val() > 0) {
+            LoadDataByID($("#EDIT_ParentID").val());
+            $("#UPLOAD_FILE").show();
+            $("#THEMTHUMUC").show();
+        }
+        if ($("#EDIT_ParentID").val() == 0) {
+            $("#THEMTHUMUC").attr("data-id","0");
+            reloadGrid();
+            reloadTable();
+        }
+        $("#RenameThuMuc").modal('hide');
+        $("#RenameThuMuc").html("");
+    }
+    $(function () {
+        $('#RenameThuMuc').on('hidden.bs.modal', function () {
+            $("#RenameThuMuc").html("");
+        });
+        if ($("#EXPIRE_DATE").val() >= new Date()) {
+            $("#NGAYGIAHAN").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                minDate: $("#EXPIRE_DATE").val()
+            });
+        } else {
+            $("#NGAYGIAHAN").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                minDate: new Date()
+            });
+        }
+        $("#PheDuyetThuMuc").click(function () {
+            if ($("#MOTA").val() != undefined) {
+                if ($("#MOTA").val().trim() == "") {
+                    $("#MOTA").focus();
+                    $("#MOTA_NULL").show();
+                    return false;
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("PheDuyetThuMuc", "ThuMucLuuTru")',
+                        data: {
+                            FOLDER_ID: $("#EDIT_ID").val(),
+                            TRANGTHAI: "pheduyet",
+                            MOTA: $("#MOTA").val()
+                        },
+                        cache: false,
+                        dataType: "json",
+                        success: function (data) {
+                            notif({
+                                type: 'success',
+                                position: 'bottom',
+                                msg: data,
+                            });
+                            LoadDataByID($("#EDIT_ParentID").val());
+                            $("#THEMTHUMUC").attr("data-pid", $("#EDIT_ParentID").val());
+                            $("#THEMTAILIEU").attr("data-pid", $("#EDIT_ParentID").val());
+                            $("#UPLOAD_FILE").show();
+                            $("#RenameThuMuc").modal('hide');
+                        }, error: function (xrt) {
+                            alert(xrt.responseText);
+                        }
+                    });
+                }
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("PheDuyetThuMuc", "ThuMucLuuTru")',
+                    data: {
+                        FOLDER_ID: $("#EDIT_ID").val(),
+                        TRANGTHAI: "pheduyet"
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        notif({
+                            type: 'success',
+                            position: 'bottom',
+                            msg: data,
+                        });
+                        LoadDataByID($("#EDIT_ParentID").val());
+                        $("#THEMTHUMUC").attr("data-pid", $("#EDIT_ParentID").val());
+                        $("#THEMTAILIEU").attr("data-pid", $("#EDIT_ParentID").val());
+                        $("#UPLOAD_FILE").show();
+                        $("#RenameThuMuc").modal('hide');
+                    }, error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            }
+
+        });
+        $("#TraVeThuMuc").click(function () {
+            if ($("#MOTA").val().trim() == "") {
+                $("#MOTA").focus();
+                $("#MOTA_NULL").show();
+                return false;
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("PheDuyetThuMuc", "ThuMucLuuTru")',
+                    data: {
+                        FOLDER_ID: $("#EDIT_ID").val(),
+                        TRANGTHAI: "trave",
+                        MOTA: $("#MOTA").val().trim()
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        notif({
+                            type: 'success',
+                            position: 'bottom',
+                            msg: data,
+                        });
+                        LoadDataByID($("#EDIT_ParentID").val());
+                        $("#THEMTHUMUC").attr("data-pid", $("#EDIT_ParentID").val());
+                        $("#THEMTAILIEU").attr("data-pid", $("#EDIT_ParentID").val());
+                        $("#UPLOAD_FILE").show();
+                        $("#RenameThuMuc").modal('hide');
+                    }, error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            }
+        });
+        $("#TrinhDuyetThuMuc").click(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("PheDuyetThuMuc", "ThuMucLuuTru")',
+                data: {
+                    FOLDER_ID: $("#EDIT_ID").val(),
+                    TRANGTHAI: "trinhduyet",
+                    MOTA: $("#MOTA").val().trim()
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: data,
+                    });
+                    LoadDataByID($("#EDIT_ParentID").val());
+                    $("#THEMTHUMUC").attr("data-pid", $("#EDIT_ParentID").val());
+                    $("#THEMTAILIEU").attr("data-pid", $("#EDIT_ParentID").val());
+                    $("#UPLOAD_FILE").show();
+                    $("#RenameThuMuc").modal('hide');
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+        $("#btnGiaHan").click(function () {
+            var giahan = false;
+            if ($("#NGAYGIAHAN").val() == "") {
+                $("#NGAYGIAHAN_NULL").show();
+                $("#NGAYGIAHAN").focus();
+                return false;
+            } else {
+                $("#NGAYGIAHAN_NULL").hide();
+                if (!checkDateTime($("#NGAYGIAHAN").val())) {
+                    $("#NGAYGIAHAN_ERROR").show();
+                    $("#NGAYGIAHAN").focus();
+                    return false;
+                } else {
+                    $("#NGAYGIAHAN_ERROR").hide();
+                }
+            }
+            if ($("#GHICHU").val() == "") {
+                $("#GHICHU_NULL").show();
+                $("#GHICHU").focus();
+                return false;
+            } else {
+                $("#GHICHU_NULL").hide();
+                giahan = true;
+            }
+            if (giahan) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SaveGiaHanFolder", "ThuMucLuuTru")',
+                    data: {
+                        FOLDER_ID: $("#EDIT_ID").val(),
+                        GHICHU: $("#GHICHU").val(),
+                        NGAYGIAHAN: $("#NGAYGIAHAN").val(),
+                        TRANGTHAI: "giahan"
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        notif({
+                            type: 'success',
+                            position: 'bottom',
+                            msg: data,
+                        });
+                        $("#RenameThuMuc").modal('hide');
+                    }, error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            }
+        });
+        $("#btnLuuGiaHan").click(function () {
+            var giahan = false;
+            if ($("#NGAYGIAHAN").val() == "") {
+                $("#NGAYGIAHAN_NULL").show();
+                $("#NGAYGIAHAN").focus();
+                return false;
+            } else {
+                $("#NGAYGIAHAN_NULL").hide();
+                if ($("#NGAYGIAHAN").val() != undefined && !checkDateTime($("#NGAYGIAHAN").val())) {
+                    $("#NGAYGIAHAN_ERROR").show();
+                    $("#NGAYGIAHAN").focus();
+                    return false;
+                } else {
+                    $("#NGAYGIAHAN_ERROR").hide();
+                }
+            }
+            if ($("#GHICHU").val() == "") {
+                $("#GHICHU_NULL").show();
+                $("#GHICHU").focus();
+                return false;
+            } else {
+                $("#GHICHU_NULL").hide();
+                giahan = true;
+            }
+            if (giahan) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SaveGiaHanFolder", "ThuMucLuuTru")',
+                    data: {
+                        FOLDER_ID: $("#EDIT_ID").val(),
+                        GHICHU: $("#GHICHU").val(),
+                        NGAYGIAHAN: $("#NGAYGIAHAN").val(),
+                        TRANGTHAI: "luulai"
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        notif({
+                            type: 'success',
+                            position: 'bottom',
+                            msg: data,
+                        });
+                        $("#RenameThuMuc").modal('hide');
+                    }, error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            }
+        });
+        $("#btnHuyGiaHan").click(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveGiaHanFolder", "ThuMucLuuTru")',
+                data: {
+                    FOLDER_ID: $("#EDIT_ID").val(),
+                    GHICHU: $("#GHICHU").val(),
+                    NGAYGIAHAN: $("#NGAYGIAHAN").val(),
+                    TRANGTHAI: "huy"
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: data,
+                    });
+                    $("#RenameThuMuc").modal('hide');
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+        $("#CREATE_NAM").keypress(function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                $("#NAM_ERROR").show();
+                return false;
+            } else {
+                $("#NAM_ERROR").fadeOut("slow");
+            }
+        });
+        $("#myonoffswitch").change(function () {
+            var checked = $(".onoffswitch-checkbox:checked").length;
+            if (checked == 1) {
+                $(".THOIHAN").show();
+                $("#TRANGTHAI").val("true");
+            } else {
+                $(".THOIHAN").hide();
+                $("#TRANGTHAI").val("false");
+            }
+            $("#EXPIRE_ERROR").hide();
+            $("#EXPIRE_NULL").hide();
+        });
+        $("#myonoffswitch1").change(function () {
+            var checked = $(".onoffswitch-checkbox1:checked").length;
+            if (checked == 1) {
+                $("#IS_CENSOR").val("true");
+            } else {
+                $("#IS_CENSOR").val("false");
+            }
+        });
+        $("#myonoffswitch2").change(function () {
+            var checked = $(".onoffswitch-checkbox2:checked").length;
+            if (checked == 1) {
+                $("#IS_PRIVATE").val("true");
+                $(".turn-thoihan").hide();
+            } else {
+                $("#IS_PRIVATE").val("false");
+                $(".turn-thoihan").show();
+            }
+        });
+
+        if ($("#EXPIRE_DATE").val() == "") {
+            $("#EXPIRE_DATE").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                minDate: new Date($("#EXPIRE_DATE").val()),
+                onClose: function (selectedDate) {
+                    $("#EXPIRE_DATEFROM").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+            $('#EXPIRE_DATE').datepicker('option', 'minDate', $('#EXPIRE_DATEFROM').datepicker('getDate'));
+        }
+        else {
+            $("#EXPIRE_DATE").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                //minDate: new Date($("#EXPIRE_DATE").val()),
+                onClose: function (selectedDate) {
+                    $("#EXPIRE_DATEFROM").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+            // alert($('#EXPIRE_DATEFROM').val());
+            $('#EXPIRE_DATE').datepicker('option', 'minDate', $('#EXPIRE_DATEFROM').val());
+        }
+        if ($("#EXPIRE_DATEFROM").val() == "") {
+            $("#EXPIRE_DATEFROM").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                minDate: 0,
+                onClose: function (selectedDate) {
+                    $("#EXPIRE_DATE").datepicker("option", "minDate", selectedDate);
+                }
+
+            });
+        } else {
+            $("#EXPIRE_DATEFROM").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                //minDate: $(this).datepicker('getDate'),
+                onClose: function (selectedDate) {
+                    $("#EXPIRE_DATE").datepicker("option", "minDate", selectedDate);
+                }
+
+            });
+
+            if (new Date() < $('#EXPIRE_DATEFROM').datepicker('getDate')) {
+                $('#EXPIRE_DATEFROM').datepicker('option', 'minDate', new Date());
+            } else {
+                $('#EXPIRE_DATEFROM').datepicker('option', 'minDate', $('#EXPIRE_DATEFROM').datepicker('getDate'));
+            }
+        }
+
+        $("#btnSaveApproval").click(function () {
+            $("#IS_NEEDREVIEW").val('@ThuMucConstant.DATRINH');
+            var existed_tm = true;
+            var thumuc = $("#RENAME").val();
+            if ($("#RENAME").val().trim() == "") {
+                $("#CREATE_NAME").focus();
+                $("#EDIT_TENTHUMUC_NULL").show();
+                return false;
+            } else {
+                $("#EDIT_TENTHUMUC_NULL").hide();
+            }
+            if ($("#CREATE_NAM").val().trim() == "") {
+                $("#CREATE_NAM").focus();
+                $("#NAM_NULL").show();
+                return false;
+            } else {
+                $("#NAM_NULL").hide();
+            }
+            if ($("#IS_PRIVATE").val() != "true") {
+                if ($(".onoffswitch-checkbox:checked").length == 1) {
+                    var is_fill = false;
+                    if (($("#EXPIRE_DATEFROM").val().trim() == null || $("#EXPIRE_DATEFROM").val().trim() == "")) {
+                        $("#EXPIRE_NULL").show();
+                        $("#EXPIRE_DATEFROM").focus();
+                        return false;
+                    } else {
+                        is_fill = true;
+                        $("#EXPIRE_NULL").hide();
+                        if (!checkDateTime($("#EXPIRE_DATEFROM").val())) {
+                            $("#EXPIRE_ERROR").show();
+                            $("#EXPIRE_DATEFROM").focus();
+                            return false;
+                        } else {
+                            $("#EXPIRE_ERROR").hide();
+                        }
+                    }
+                    if (!is_fill) {
+                        if (($("#EXPIRE_DATE").val().trim() == null || $("#EXPIRE_DATE").val().trim() == "")) {
+                            $("#EXPIRE_NULL").show();
+                            $("#EXPIRE_DATE").focus();
+                            return false;
+                        } else {
+                            $("#EXPIRE_NULL").hide();
+                            if (!checkDateTime($("#EXPIRE_DATE").val())) {
+                                $("#EXPIRE_ERROR").show();
+                                $("#EXPIRE_DATE").focus();
+                                return false;
+                            } else {
+                                $("#EXPIRE_ERROR").hide();
+                            }
+                        }
+                    }
+
+                }
+            }
+            if ($("#RENAME").val().trim() != "" && folder != thumuc) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("FolderChecking", "ThuMucLuuTru")',
+                    data: {
+                        name: thumuc,
+                        parentID: parent
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data == "true") {
+                            $("#EDIT_TENTHUMUC_ER").show();
+                            $("#CREATE_NAME").focus();
+                            return false;
+                        } else {
+                            $("#EDIT_TENTHUMUC_ER").hide();
+                            if ($("#MOTA").val().trim() == "") {
+                                $("#MOTA_NULL").show();
+                                $("#MOTA").focus();
+                                return false;
+                            } else {
+                                $("#MOTA_NULL").hide();
+                                return true;
+                            }
+
+                        }
+                    }, error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            } else {
+                if ($("#MOTA").val().trim() == "") {
+                    $("#MOTA_NULL").show();
+                    $("#MOTA").focus();
+                    return false;
+                } else {
+                    $("#MOTA_NULL").hide();
+                    return true;
+                }
+
+            }
+        });
+
+        $("#btnKhongDuyetGiaHan").click(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("PheDuyetGiaHanFolder", "ThuMucLuuTru")',
+                data: {
+                    FOLDER_ID: $("#EDIT_ID").val(),
+                    GHICHU: $("#NOIDUNG").val(),
+                    NGAYGIAHAN: $("#NGAYGIAHAN").val(),
+                    TRANGTHAI: "trave"
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: data,
+                    });
+                    $("#RenameThuMuc").modal('hide');
+                    if ($("#EDIT_ParentID").val() > 0) {
+                        LoadDataByID($("#EDIT_ParentID").val());
+                        $("#UPLOAD_FILE").show();
+                        $("#THEMTHUMUC").show();
+                    }
+                    if ($("#EDIT_ParentID").val() == 0) {
+                        reloadGrid();
+                        reloadTable();
+                    }
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+        $("#btnDuyetGiaHan").click(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("PheDuyetGiaHanFolder", "ThuMucLuuTru")',
+                data: {
+                    FOLDER_ID: $("#EDIT_ID").val(),
+                    GHICHU: $("#NOIDUNG").val(),
+                    NGAYGIAHAN: $("#NGAYGIAHAN").val(),
+                    TRANGTHAI: "pheduyet"
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: data,
+                    });
+                    if ($("#EDIT_ParentID").val() > 0) {
+                        LoadDataByID($("#EDIT_ParentID").val());
+                        $("#UPLOAD_FILE").show();
+                        $("#THEMTHUMUC").show();
+                    }
+                    if ($("#EDIT_ParentID").val() == 0) {
+                        reloadGrid();
+                        reloadTable();
+                    }
+                    $("#RenameThuMuc").modal('hide');
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+
+    });
+    $(document).on('click', '#btnRename', function () {
+        if ($("#RENAME").val().trim() == "") {
+            $("#RENAME").focus();
+            $("#EDIT_TENTHUMUC_NULL").show();
+            return false;
+        } else {
+            $("#EDIT_TENTHUMUC_NULL").hide();
+        }
+        if (/[\\/:?*"<>|]/i.test($("#RENAME").val().trim())) {
+            $("#RENAME").focus();
+            $("#TENTHUMUC_INVALID").show();
+            return false;
+        } else {
+            $("#TENTHUMUC_INVALID").hide();
+        }
+        if (/<[a-z][\s\S]*>/i.test($("#RENAME").val())) {
+            $("#RENAME").focus();
+            $("#TENTHUMUC_HTML").show();
+            return false;
+        } else {
+            $("#TENTHUMUC_ERROR").hide();
+        }
+        if ($("#CREATE_NAM").val().trim() == "") {
+            $("#CREATE_NAM").focus();
+            $("#NAM_NULL").show();
+            return false;
+        } else {
+            $("#NAM_NULL").hide();
+        }
+        if ($("#CREATE_NAM").val().trim() == "") {
+            $("#CREATE_NAM").focus();
+            $("#NAM_NULL").show();
+            return false;
+        } else {
+            $("#NAM_NULL").hide();
+        }
+        if ($("#IS_PRIVATE").val() != "true") {
+            if ($(".onoffswitch-checkbox:checked").length == 1) {
+                var is_fill = false;
+                if (($("#EXPIRE_DATEFROM").val().trim() == null || $("#EXPIRE_DATEFROM").val().trim() == "")) {
+                    $("#EXPIRE_NULL").show();
+                    $("#EXPIRE_DATEFROM").focus();
+                    return false;
+                } else {
+                    is_fill = true;
+                    $("#EXPIRE_NULL").hide();
+                    if (!checkDateTime($("#EXPIRE_DATEFROM").val())) {
+                        $("#EXPIRE_ERROR").show();
+                        $("#EXPIRE_DATEFROM").focus();
+                        return false;
+                    } else {
+                        $("#EXPIRE_ERROR").hide();
+                    }
+                }
+                if (!is_fill) {
+                    if (($("#EXPIRE_DATE").val().trim() == null || $("#EXPIRE_DATE").val().trim() == "")) {
+                        $("#EXPIRE_NULL").show();
+                        $("#EXPIRE_DATE").focus();
+                        return false;
+                    } else {
+                        $("#EXPIRE_NULL").hide();
+                        if (!checkDateTime($("#EXPIRE_DATE").val())) {
+                            $("#EXPIRE_ERROR").show();
+                            $("#EXPIRE_DATE").focus();
+                            return false;
+                        } else {
+                            $("#EXPIRE_ERROR").hide();
+                        }
+                    }
+                }
+
+            }
+        }
+        if ($("#RENAME").val().trim() != "" && folder != thumuc) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("FolderChecking", "ThuMucLuuTru")',
+                data: {
+                    name: thumuc,
+                    parentID: parent
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data.trim().length > 0) {
+                        $("#EDIT_TENTHUMUC_ER").show();
+                        $("#CREATE_NAME").focus();
+                        return false;
+                    } else {
+                        $("#EDIT_TENTHUMUC_ER").hide();
+                        $("#frmRenameThuMuc").submit();
+                        return true;
+                    }
+                }, error: function (xrt) {
+                    // alert(xrt.responseText);
+                }
+            });
+        } else {
+            return true;
+        }
+        //return true;
+    });
+
+</script>

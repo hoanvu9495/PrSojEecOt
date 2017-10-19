@@ -1,0 +1,117 @@
+﻿@using Web.Areas.ReportVanBanArea.Models;
+@model VanBanDenThongKeModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+<!-- new widget -->
+<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false" data-widget-fullscreenbutton="false">
+
+    <header>
+
+        <h2> Thống kê </h2>
+        <div class="widget-toolbar">
+
+            <div class="btn-group">
+                <button class="btn dropdown-toggle btn-xs btn-success" data-toggle="dropdown">
+                    Loại thống kê <i class="fa fa-caret-down"></i>
+                </button>
+                <ul class="dropdown-menu pull-right js-status-update">
+                    <li>
+                        <a href="javascript:changePartial(1);"><i class="fa fa-circle txt-color-green"></i> Ngày</a>
+                    </li>
+                    <li>
+                        <a href="javascript:changePartial(2);"><i class="fa fa-circle txt-color-red"></i> Tháng</a>
+                    </li>
+                    <li>
+                        <a href="javascript:changePartial(3);"><i class="fa fa-circle txt-color-orange"></i> Năm</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- widget div-->
+    <div>
+        <!-- widget edit box -->
+        <div class="jarviswidget-editbox">
+            <div>
+                <label>Title:</label>
+                <input type="text" />
+            </div>
+        </div>
+        <!-- end widget edit box -->
+
+        <div class="widget-body widget-hide-overflow" id="divPartial">
+            
+                
+            @Html.Partial("_ThongKeNamPartial", Model.LstTheoNam)
+        </div>
+
+    </div>
+    <!-- end widget div -->
+</div>
+
+<script>
+    pageSetUp();
+
+    function changePartial(id) {
+        switch (id) {
+
+            case 1:
+                $.ajax({
+                    url: '@Url.Action("GetThongKeNgay", "reportvanban", new { @area="reportvanbanarea"})',
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (result) {
+                        $("#divPartial").html(result);
+                    }, error: function (result) {
+                        alert(result.responseText);
+                    }
+                });
+                break;
+            case 2:
+                $.ajax({
+                    url: '@Url.Action("GetThongKeThang", "reportvanban", new { @area = "reportvanbanarea" })',
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (result) {
+                        $("#divPartial").html(result);
+                    }, error: function (result) {
+                        alert(result.responseText);
+                    }
+                });
+                break;
+
+            case 3:
+                $.ajax({
+                    url: '@Url.Action("GetThongKeNam", "reportvanban", new { @area = "reportvanbanarea" })',
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (result) {
+                        $("#divPartial").html(result);
+                    }, error: function (result) {
+                        alert(result.responseText);
+                    }
+                });
+                break;
+
+
+        }
+
+    }
+    $(document).ready(function () {
+        $(".js-status-update a").click(function () {
+            var selText = $(this).text();
+            var $this = $(this);
+            $this.parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+            $this.parents('.dropdown-menu').find('li').removeClass('active');
+            $this.parent().addClass('active');
+            
+        });
+    })
+    loadScript("js/plugin/moment/moment.min.js", function () {
+        loadScript("js/plugin/chartjs/chart.min.js", pagefunction)
+    });
+</script>

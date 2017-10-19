@@ -1,0 +1,487 @@
+﻿@using Business.CommonBusiness;
+@using Web.Areas.HSVanBanDiArea.Models;
+@model VanBanDiWfStepChangeViewModel
+@{
+}
+<style>
+    .ui-datepicker {
+        z-index: 99999 !important;
+    }
+
+    #block--select-recipients .table thead,
+    #block--select-recipients .table tbody,
+    #block--select-recipients .table tr,
+    #block--select-recipients .table tr th,
+    #block--select-recipients .table tr td {
+        display: block;
+        /*overflow:hidden;*/
+    }
+
+    #block--select-recipients tbody {
+        height: 300px;
+        overflow-y: auto;
+    }
+
+    #block--select-recipients tr td.clearfix {
+        height: 25px;
+        padding: 5px 0;
+    }
+</style>
+@using (Ajax.BeginForm("CompleteWfStepChange", "hsvanbandi", new AjaxOptions()
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmCompleteWfStepChangeVanBanDi", onsubmit = "return submitChangeWfStatus()" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="START_STATUS" value="@Model.startStatus" />
+    <input type="hidden" name="END_STATUS" value="@Model.endStatus" />
+    <input type="hidden" name="VANBANDI_ID" value="@Model.vanBanDiId">
+    <div class="modal-header" style="padding:0 0;background:#3276b1;">
+        <button type="button" class="close" data-dismiss="modal" style="color:#fff">&times;</button>
+        <h1 class="modal-title" style="text-align:center;font-weight:bold;color:#fff" id="myModalLabel">
+            @Model.stepName.ToUpper()
+        </h1>
+    </div>
+    <div class="modal-body clearfix" style="padding:10px 0">
+        <div id="block--select-recipients">
+            <section>
+                @if (Model.listWfMainProcess != null && Model.listWfMainProcess.Count > 0)
+                {
+                    <div class="table-responsive smart-form @Model.mainProcessCSS">
+                        <table id="table--select-main-process" class="table table-striped table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th style="border:none">
+                                        <h3 class="text-primary" style="margin:0">
+                                            XỬ LÝ CHÍNH
+                                            @if (Model.wfStepChangeTransition.IS_ALLOW_ADD_MAIN_PROCESS == true)
+                                            {
+                                                <a href="javascript:void(0)" onclick="showAdditionalUser(true)" class="btn btn-primary" title="Thêm người xử lý chính" style="padding:0 5px;float:right">
+                                                    <i class="glyphicon glyphicon-plus"></i>
+                                                </a>
+                                            }
+                                        </h3>
+                                        <label for="input--sm-xulychinh" class="input">
+                                            <input type="text" class="input-sm" placeholder="Họ tên" id="input--sm-xulychinh" onkeyup="searchMainProcess(event)">
+                                        </label>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                    var mainProcessCount = Model.listWfMainProcess.Count;
+                                }
+                                @for (int i = 0; i < mainProcessCount; i++)
+                                {
+                                    <tr class="clearfix">
+                                        <td class="clearfix">
+                                            <div class="col-sm-12 pull-right">
+                                                <strong>@Model.listWfMainProcess[i].LABEL_TEXT.ToUpper()</strong>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    var listDepartments = Model.listWfMainProcess[i].listWfDepartments;
+                                    int departmentCount = listDepartments.Count;
+                                    for (int k = 0; k < departmentCount; k++)
+                                    {
+                                        <tr class="clearfix">
+                                            <td class="clearfix">
+                                                <div class="col-sm-11 pull-right">
+                                                    <span>
+                                                        <strong style="color:#000;">
+                                                            @listDepartments[k].departmentName
+                                                        </strong>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        var listRoles = listDepartments[k].listWfRoles;
+                                        int roleCount = listRoles.Count;
+                                        for (int j = 0; j < roleCount; j++)
+                                        {
+                                            <tr class="clearfix">
+                                                <td class="clearfix">
+                                                    <div class="col-sm-10 pull-right">
+                                                        <span>
+                                                            @listRoles[j].tenVaiTro
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            var listUsers = listRoles[j].listUsers;
+                                            var userCount = listUsers.Count;
+                                            for (int l = 0; l < userCount; l++)
+                                            {
+                                                <tr class="clearfix">
+                                                    <td class="clearfix">
+                                                        <div class="col-sm-9 pull-right">
+                                                            @if (userCount == 1 && roleCount == 1 && departmentCount == 1)
+                                                            {
+                                                                <label class="radio">
+                                                                    <input name="USER_MAIN_PROCESS" type="radio" value="@listUsers[l].DM_NGUOIDUNG_ID" class="USER_PROCESS" onchange="onChangeUserMainProcess(@listUsers[l].DM_NGUOIDUNG_ID,this)" data-department="@listDepartments[k].departmentId" data-role="@listRoles[j].vaiTroId" checked="checked">
+                                                                    <i></i><span class="USER_NAME">@listUsers[l].HOTEN</span>
+                                                                </label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="radio">
+                                                                    <input name="USER_MAIN_PROCESS" type="radio" value="@listUsers[l].DM_NGUOIDUNG_ID" class="USER_PROCESS" onchange="onChangeUserMainProcess(@listUsers[l].DM_NGUOIDUNG_ID,this)" data-department="@listDepartments[k].departmentId" data-role="@listRoles[j].vaiTroId">
+                                                                    <i></i><span class="USER_NAME">@listUsers[l].HOTEN</span>
+                                                                </label>
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+                @if (Model.listWfJoinProcess != null && Model.listWfJoinProcess.Count > 0)
+                {
+                    <div class="table-responsive smart-form @Model.joinProcessCSS">
+                        <table id="table--select-join-process" class="table table-striped table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th style="border:none">
+                                        <h3 class="text-primary" style="margin:0">
+                                            THAM GIA XỬ LÝ
+                                            @if (Model.wfStepChangeTransition.IS_ALLOW_ADD_JOIN_PROCESS == true)
+                                            {
+                                                <a href="javascript:void(0)" onclick="showAdditionalUser(false)" class="btn btn-primary" title="Thêm người tham gia xử lý" style="padding:0 5px;float:right">
+                                                    <i class="glyphicon glyphicon-plus"></i>
+                                                </a>
+                                            }
+                                        </h3>
+                                        <label for="input--sm-xulychinh" class="input">
+                                            <input type="text" class="input-sm" placeholder="Họ tên" id="input--sm-xulychinh" onkeyup="searchJoinProcess(event)">
+                                        </label>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                    var joinProcessCount = Model.listWfJoinProcess.Count;
+                                }
+                                @for (int i = 0; i < joinProcessCount; i++)
+                                {
+                                    <tr class="clearfix">
+                                        <td class="clearfix">
+                                            <div class="col-sm-12 pull-right">
+                                                <strong>@Model.listWfJoinProcess[i].LABEL_TEXT.ToUpper()</strong>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    var listDepartments = Model.listWfJoinProcess[i].listWfDepartments;
+                                    int departmentCount = listDepartments.Count;
+                                    for (int k = 0; k < departmentCount; k++)
+                                    {
+                                        <tr class="clearfix">
+                                            <td class="clearfix">
+                                                <div class="col-sm-11 pull-right">
+                                                    <label class="checkbox" for="DEPARTMENT_JOIN_PROCESS_@listDepartments[k].departmentId">
+                                                        <input type="checkbox" name="DEPARTMENT_JOIN_PROCESS" id="DEPARTMENT_JOIN_PROCESS_@listDepartments[k].departmentId" class="DEPARTMENT_PROCESS" value="@listDepartments[k].departmentId" onchange="onChangeDepartmentJoinProcess(@listDepartments[k].departmentId,this)" />
+                                                        <i></i><span class="DEPARTMENT_NAME"><strong>@listDepartments[k].departmentName</strong></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        var listRoles = listDepartments[k].listWfRoles;
+                                        int roleCount = listRoles.Count;
+                                        for (int j = 0; j < roleCount; j++)
+                                        {
+                                            <tr class="clearfix">
+                                                <td class="clearfix">
+                                                    <div class="col-sm-10 pull-right">
+                                                        <label class="checkbox" for="ROLE_JOIN_PROCESS_@(listRoles[j].vaiTroId+"_"+@listDepartments[k].departmentId)">
+                                                            <input type="checkbox" name="ROLE_JOIN_PROCESS" class="ROLE_PROCESS" value="@listRoles[j].vaiTroId" id="ROLE_JOIN_PROCESS_@(listRoles[j].vaiTroId+"_"+@listDepartments[k].departmentId)" data-department="@listDepartments[k].departmentId" onchange="onChangeRoleJoinProcess(@listRoles[j].vaiTroId,this)">
+                                                            <i></i><span class="ROLE_NAME">@listRoles[j].tenVaiTro</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            var listUsers = listRoles[j].listUsers;
+                                            int userCount = listUsers.Count;
+                                            for (int l = 0; l < userCount; l++)
+                                            {
+                                                <tr class="clearfix">
+                                                    <td class="clearfix">
+                                                        <div class="col-sm-9 pull-right">
+                                                            <label class="checkbox" for="USER_JOIN_PROCESS_@listUsers[l].DM_NGUOIDUNG_ID">
+                                                                <input name="USER_JOIN_PROCESS" type="checkbox" value="@listUsers[l].DM_NGUOIDUNG_ID" id="USER_JOIN_PROCESS_@listUsers[l].DM_NGUOIDUNG_ID" class="USER_PROCESS" data-department="@listDepartments[k].departmentId" data-role="@listRoles[j].vaiTroId" onchange="onChangeUserJoinProcess(@listUsers[l].DM_NGUOIDUNG_ID,this)">
+                                                                <i></i><span class="USER_NAME">@listUsers[l].HOTEN</span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </section>
+            @if (Model.isAllowChangeDeadline == true)
+            {
+                <div class="clearfix"></div>
+                <div class="smart-form col-sm-12" style="margin-top:10px;">
+                    <center>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label for="WF_THOIHAN_XULY">
+                                    <b>Thời hạn xử lý</b>
+                                </label>
+                                <div class="input-group">
+                                    <input name="WF_THOIHAN_XULY" id="WF_THOIHAN_XULY" type="text" class="form-control datepicker" validatedate" data-mask="99/99/9999" data-mask-placeholder="-" value="@Model.deadLine">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </center>
+                </div>
+            }
+            <div class="clearfix"></div>
+            <div class="smart-form col-sm-12">
+                <section style="margin-top:15px;">
+                    <label for="WF_COMMENT" class="textarea">
+                        <textarea name="WF_COMMENT" id="WF_COMMENT" cols="30" rows="2" placeholder="Ghi chú"></textarea>
+                    </label>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+        <a class="btn btn-default" data-dismiss="modal">
+            Đóng
+        </a>
+    </div>
+}
+<script>
+
+    //set disabled default checked
+    $.each($('input[name=USER_MAIN_PROCESS][type=radio]'), function (index, item) {
+        if (item.checked) {
+            var userId = item.value;
+            $.each($('input[name=USER_JOIN_PROCESS][type=checkbox]'), function (indexJoin, itemJoin) {
+                if (itemJoin.value == userId) {
+                    itemJoin.setAttribute('disabled', 'dislabed');
+                    $(itemJoin).closest('.checkbox').addClass('state-disabled');
+                }
+            });
+            return;
+        }
+    });
+
+
+    $(".datepicker").datepicker({
+        dateFormat: 'dd/mm/yy',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-20:+20",
+        minDate: '@Model.deadLine'
+    });
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function updateSuccess() {
+        NotiSuccess('@Model.stepName' + ' thành công');
+        $('#modal--wf-stepchange .modal-content').html('');
+        $('#modal--wf-stepchange').modal('hide');
+        setTimeout(function () {
+            location.reload();
+        }, 500);
+    }
+
+    function searchMainProcess(event) {
+        var value = $(event.currentTarget).val().trim();
+        value = CommonJS.removeVietnameseChars(value);
+        if (value !== '') {
+            $.each($('#table--select-main-process tbody tr'), function (index, item) {
+                $col = $(this);
+                if ($col.find('input[name=USER_MAIN_PROCESS]').length > 0) {
+                    var name = $col.find('input[name=USER_MAIN_PROCESS]').next('i').next('.USER_NAME').text();
+                    name = CommonJS.removeVietnameseChars(name);
+                    if (name.indexOf(value) === -1) {
+                        $(item).hide();
+                    } else {
+                        $(item).show();
+                    }
+                } else {
+                    $col.hide();
+                }
+            });
+        } else {
+            $("#table--select-main-process tbody tr").show();
+        }
+    }
+
+    function searchJoinProcess(event) {
+        var value = $(event.currentTarget).val().trim();
+        value = CommonJS.removeVietnameseChars(value);
+        if (value !== '') {
+            $.each($('#table--select-join-process tbody tr'), function (index, item) {
+                $col = $(this);
+                if ($col.find('input[name=USER_JOIN_PROCESS]').length > 0) {
+                    var name = $col.find('input[name=USER_JOIN_PROCESS]').next('i').next('.USER_NAME').text();
+                    name = CommonJS.removeVietnameseChars(name);
+                    if (name.indexOf(value) === -1) {
+                        $(item).hide();
+                    } else {
+                        $(item).show();
+                    }
+                } else {
+                    $col.hide();
+                }
+            });
+        } else {
+            $("#table--select-join-process tbody tr").show();
+        }
+    }
+
+    function onChangeDepartmentJoinProcess(id, obj) {
+        var checked = $(obj).is(':checked');
+        var mainProcessCheckedArr = null;
+        if (checked) {
+            mainProcessCheckedArr = [];
+            $('input[type=checkbox].ROLE_PROCESS, input[type=checkbox].USER_PROCESS').filter(function (index, item) {
+                if ($(item).hasClass('USER_PROCESS') && $(item).data('department') == id && $(item).is(':disabled') == false) {
+                    mainProcessCheckedArr.push(item.value);
+                }
+                return $(this).data('department') == id && $(this).is(':disabled') == false
+            }).prop('checked', true);
+
+            $.each($('input[name=USER_MAIN_PROCESS][type=radio]'), function (index, item) {
+                if (mainProcessCheckedArr.indexOf(item.value) != -1) {
+                    item.setAttribute('disabled', 'disabled');
+                    $(item).closest('.radio').addClass('state-disabled');
+                }
+            });
+        } else {
+            mainProcessCheckedArr = [];
+            $('input[type=checkbox].ROLE_PROCESS, input[type=checkbox].USER_PROCESS').filter(function (index, item) {
+                if ($(item).hasClass('USER_PROCESS') && $(item).data('department') == id && $(item).is(':disabled') == false) {
+                    mainProcessCheckedArr.push(item.value);
+                }
+                return $(this).data('department') == id && $(this).is(':disabled') == false
+            }).prop('checked', false);
+
+            $.each($('input[name=USER_MAIN_PROCESS][type=radio]'), function (index, item) {
+                if (mainProcessCheckedArr.indexOf(item.value) != -1) {
+                    item.removeAttribute('disabled', 'disabled');
+                    $(item).closest('.radio').removeClass('state-disabled');
+                }
+            });
+        }
+    }
+
+    function onChangeRoleJoinProcess(id, obj) {
+        var checked = $(obj).is(':checked');
+        var departmentId = $(obj).data('department');
+        var mainProcessCheckedArr = null;
+        if (checked) {
+            mainProcessCheckedArr = [];
+            $('input[name=USER_JOIN_PROCESS][type=checkbox]').filter(function (index, item) {
+                if ($(item).hasClass('USER_PROCESS') && $(item).data('role') == id && $(item).data('department') == departmentId && $(item).is(':disabled') == false) {
+                    mainProcessCheckedArr.push(item.value);
+                }
+                return $(this).data('role') == id && $(this).data('department') == departmentId && $(this).is(':disabled') == false
+            }).prop('checked', true);
+
+            $.each($('input[name=USER_MAIN_PROCESS][type=radio]'), function (index, item) {
+                if (mainProcessCheckedArr.indexOf(item.value) != -1) {
+                    item.setAttribute('disabled', 'disabled');
+                    $(item).closest('.radio').addClass('state-disabled');
+                }
+            });
+        } else {
+            mainProcessCheckedArr = [];
+            $('input[name=USER_JOIN_PROCESS][type=checkbox]').filter(function (index, item) {
+                if ($(item).hasClass('USER_PROCESS') && $(item).data('department') == departmentId && $(item).is(':disabled') == false) {
+                    mainProcessCheckedArr.push(item.value);
+                }
+                return $(this).data('role') == id && $(this).data('department') == departmentId && $(this).is(':disabled') == false
+            }).prop('checked', false);
+
+            $.each($('input[name=USER_MAIN_PROCESS][type=radio]'), function (index, item) {
+                if (mainProcessCheckedArr.indexOf(item.value) != -1) {
+                    item.removeAttribute('disabled', 'disabled');
+                    $(item).closest('.radio').removeClass('state-disabled');
+                }
+            });
+        }
+    }
+
+    function onChangeUserJoinProcess(id, obj) {
+        var checked = $(obj).is(':checked');
+        if (checked) {
+            $.each($('input[name=USER_MAIN_PROCESS][type=radio]'), function (index, item) {
+                if (item.value == id) {
+                    item.setAttribute('disabled', 'dislabed');
+                    $(item).closest('.radio').addClass('state-disabled');
+                }
+            });
+        } else {
+            $.each($('input[name=USER_MAIN_PROCESS][type=radio]'), function (index, item) {
+                if (item.value == id) {
+                    item.removeAttribute('disabled');
+                    $(item).closest('.radio').removeClass('state-disabled');
+                }
+            });
+        }
+    }
+
+    function onChangeUserMainProcess(id, obj) {
+        var checked = $(obj).is(':checked');
+        clearDisabledJoinProcess();
+        if (checked) {
+            $.each($('input[name=USER_JOIN_PROCESS][type=checkbox]'), function (index, item) {
+                if (item.value == id) {
+                    item.setAttribute('disabled', 'dislabed');
+                    $(item).closest('.checkbox').addClass('state-disabled');
+                }
+            });
+        } else {
+            $.each($('input[name=USER_JOIN_PROCESS][type=checkbox]'), function (index, item) {
+                if (item.value == id) {
+                    item.removeAttribute('disabled');
+                    $(item).closest('.checkbox').removeClass('state-disabled');
+                }
+            });
+        }
+    }
+
+    function clearDisabledJoinProcess() {
+        $.each($('input[name=USER_JOIN_PROCESS][type=checkbox]'), function (index, item) {
+            item.removeAttribute('disabled');
+            $(item).closest('.checkbox').removeClass('state-disabled');
+        });
+    }
+
+    function submitChangeWfStatus() {
+        //check has main processors
+        var listEleMainProcess = $('input[name=USER_MAIN_PROCESS][type=radio]');
+        var listEleMainProcessChecked = $('input[name=USER_MAIN_PROCESS][type=radio]:checked');
+        if (listEleMainProcess != null && listEleMainProcess.length > 0) {
+            if (listEleMainProcessChecked == null || listEleMainProcessChecked.length == 0) {
+                NotiError('Vui lòng chọn người xử lý chính');
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+</script>

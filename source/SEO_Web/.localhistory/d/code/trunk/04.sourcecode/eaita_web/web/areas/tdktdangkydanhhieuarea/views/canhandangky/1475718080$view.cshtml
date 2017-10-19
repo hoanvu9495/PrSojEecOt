@@ -1,0 +1,81 @@
+﻿@using Web.FwCore
+@using Business.Business
+@using Business.CommonBusiness
+@using Web.Models
+@using Web.Areas.TDKTDangKyDanhHieuArea.Models
+@model Web.Areas.TDKTDangKyDanhHieuArea.Models.CaNhanDangKyViewModel
+@{
+    ViewBag.Title = "Phong trào thi đua khen thưởng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #collapseThongTinChinh {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+</style>
+<script src="~/Scripts/tiny_mce/tinymce.min.js"></script>
+@Html.Partial("_TopNavbar")
+@Html.Partial("_MenuLeft")
+
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <h3 class="group-tittle mt10" style="height: 41px">Đơn đăng ký thi đua cá nhân</h3>
+    <div style="margin:auto; margin-top:20px" id="collapseThongTinChinh" class="panel-collapse collapse in" aria-expanded="true">
+        <table class="webGrid" style="width: 80% !important">
+            <tr>
+                <td style="width:20%">
+                    <label class="lbl-title">Người đăng ký:</label>
+                </td>
+                <td colspan="3">
+                    <div class="input-field4 clearfix fix-width" style="width:100%">
+                        <label>
+                            @Model.DonDangKyCaNhan.HO_TEN
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:20%">
+                    <label class="lbl-title">Đơn vị:</label>
+                </td>
+                <td colspan="3">
+                    <div class="input-field4 clearfix fix-width" style="width:100%">
+                        <label>
+                            @Model.DonDangKyCaNhan.DON_VI
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:20%">
+                    <label class="lbl-title">Đã đăng ký đạt các danh hiệu sau:</label>
+                </td>
+                <td colspan="3">
+                    <div class="input-field4 clearfix fix-width" style="width:100%">
+                        @foreach (var item in Model.LstDanhHieuCaNhan)
+                        {
+                            <label>
+                                @item.Text
+                            </label>
+                            <br />
+                        }
+                    </div>
+                </td>
+            </tr>
+            @*End*@
+            <tr>
+                <td>
+                    <label class="lbl-title">Nội dung phong trào thi đua:</label>
+                </td>
+                <td colspan="3">
+                    @Html.Raw(Model.DonDangKyCaNhan.TUDANHGIA)
+                </td>
+            </tr>            
+            @*end*@
+        </table>
+    </div>
+    <div style="margin-top: 15px; text-align: center; margin-bottom:100px">
+        @if(Model.DonDangKyCaNhan.TRANGTHAI == DonDangKyThiDuaCaNhanConstant.)
+        <a style="border: medium none; color: white; padding: 7px 20px; background-color: seagreen;" href="/TDKTDangKyDanhHieuArea/CaNhanDangKy">Quay lại </a>
+    </div>
+</div>

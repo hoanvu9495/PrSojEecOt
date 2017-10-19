@@ -1,0 +1,107 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@{
+    List<ThuMucLuuTruBO> lstTrinhDuyet = (List<ThuMucLuuTruBO>)SessionManager.GetValue("ThuMucTrinhDuyet");
+}
+@if (lstTrinhDuyet != null && lstTrinhDuyet.Count > 0)
+{
+    foreach (var i in lstTrinhDuyet)
+    {
+        <tr>
+            <td><input type="checkbox" class="checkbox1" value="@i.ID" /></td>
+            <td data-pid="@("F_"+i.ID)">
+                <span class='folder item' data-loaded='false' data-pid="@i.ID">
+                    @i.TENTHUMUC
+                </span>
+            </td>
+            <td>@i.TENDANGNHAP</td>
+            <td>Có @i.SLTHUMUC thư mục</td>
+
+            <td>@String.Format("{0:dd/M/yyyy}", @i.NGAYTAO)</td>
+            <td>
+                @if (i.IS_APPROVE == true)
+                {
+                    <span style='color:green;text-align:center;'>Đã duyệt</span>
+                }
+                else
+                {
+                    <span style='color: red; text-align: center;'>Chưa duyệt</span>
+                }
+            </td>
+            <td>
+                @switch (i.IS_NEEDREVIEW)
+                {
+                    case ThuMucConstant.DUTHAO:
+                        <span class="trangthai" data-id="@i.PHONG_ID" title="Chi tiết lịch sử tiếp nhận" style='color:#CCC'>
+                            Dự thảo
+                        </span>;
+                        break;
+                    case ThuMucConstant.DATRINH:
+                    <span class="trangthai" data-id="@i.PHONG_ID" title="Chi tiết lịch sử tiếp nhận" style='color:red'>
+                        Chờ duyệt
+                    </span>;
+                    break;
+
+                    case ThuMucConstant.CUC_TRAVE:
+                    <span class="trangthai" data-id="@i.PHONG_ID" title="Chi tiết lịch sử tiếp nhận" style='color:red'>
+                        Cục trả về
+                    </span>;
+                    break;
+                    case ThuMucConstant.DADUYET:
+                    <span class="trangthai" data-id="@i.PHONG_ID" title="Chi tiết lịch sử tiếp nhận" style='color:green'>
+                        Đã duyệt
+                    </span>;
+                    break;
+                }
+
+            </td>
+        </tr>
+    }
+
+}
+else
+{
+    <span style="color:red">Không có thư mục nào cần phê duyệt</span>
+}
+<script>
+    function ChuyenTrangThai() {
+        $.ajax({
+            url: '@Url.Action("ChuyenTrangThai", "ThuMucLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+            },
+            success: function (data) {
+                $("#chuyentrangthai_dialog").html(data);
+                $("#chuyentrangthai_dialog").dialog("open");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    $(function () {
+        $(".trangthai").click(function () {
+            var phong = $(this).attr("data-id");
+            $.ajax({
+                url: '@Url.Action("GetLichSuPheDuyet", "ThuMucLuuTru")',
+                type: 'post',
+                cache: false,
+                data: {
+                    phong: phong
+                },
+                success: function (data) {
+                    $("#lichsutiepnhan").html(data);
+                    $("#lichsutiepnhan").dialog("open");
+                },
+                error: function (xhr) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        });
+    });
+
+</script>

@@ -1,0 +1,152 @@
+﻿@using Model.eAita
+@{
+    ViewBag.Title = "Quản lý danh sách danh hiệu thi đua cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div class="block" id="smart-dms">
+            <h1 style="font-size: 24px">Thi đua khen thưởng</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none; border:none;">
+        <div id="menu-child">
+            <div class="menu-left" style="display:inline-block">
+            </div>
+            <div class="menu-right">
+                <div class="right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_MenuLeft", null, new ViewDataDictionary { { "active", 5 } })
+<div class="right-all-page" style="background:#fff;">
+    @Html.Partial("_DanhHieuResult")
+</div>
+
+<script type="text/javascript">
+    function reloadGrid() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("reloadGrid", "QLLoaiVanBan")',
+            cache: false,
+            data: {
+                TENLOAIVB: $("#TENLOAIVB").val()
+            },
+            dataType: "html",
+            success: function (data) {
+                $("#SearchResult").html(data);
+            }
+        });
+    }
+    $(document).ready(function () {
+        if ('@ViewData["Noti"]' == "1") {
+            notif({
+                type: 'success',
+                position: 'bottom',
+                msg: 'Thêm mới thành công loại văn bản!',
+            });
+        }
+    });
+</script>
+
+
+<script>
+    var count = 0;
+    $(function () {
+        $("#btnAdd").click(function () {
+            count += 1;
+            $("#UpLoadFile").append(CreateFile(count));
+        });
+    });
+    function XoaTaiLieuDaLuu(id, stt) {
+        var file_id = "filesave_" + stt;
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa không, tài liệu này sẽ không thể phục hồi?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        //Call ajax to delete TAILIEU in TAILIEUDINHKEM Table
+                        //DeleteFile
+                        $.ajax({
+                            type: "POST",
+                            url: '/Common/DeleteFile',
+                            cache: false,
+                            data: {
+                                id: id
+                            },
+                            success: function (data) {
+                                if (data == "1") {
+                                    $("#" + file_id).remove();
+                                    notif({
+                                        type: 'success',
+                                        position: 'bottom',
+                                        msg: 'Xóa tài liệu thành công!',
+                                    });
+                                }
+                                else {
+                                    notif({
+                                        type: 'error',
+                                        position: 'bottom',
+                                        msg: 'Có lỗi trong quá trình xóa tài liệu, vui lòng thử lại!',
+                                    });
+                                }
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+
+    };
+    function XoaTaiLieu(id) {
+        var file_id = "file_" + id;
+        var filename = $("#" + file_id + " input[name='filename']").val();
+        var fileupload = $("#" + file_id + " input[name='filebase']").val();
+        if (filename.length > 0 || fileupload.length > 0) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa tài liệu này?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#" + file_id).remove();
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+        } else {
+            $("#" + file_id).remove();
+        }
+
+    };
+    @*function CreateFile(count) {
+        return '<tr id="file_' + count + '"> ' +
+            '<td>' +
+            +'</td>' +
+                '<td><input type=\"file\" name=\"filebase\" value=\"Chọn tài liệu\" /></td><td><a title="Xóa tài liệu" href="javascript:XoaTaiLieu(' + count + ')" class="remove"><img src="../../../Content/Images/Delete.png" /></a></td></tr>';
+    }*@
+
+    function CreateFile(count) {
+        return '<tr id="file_' + count + '"> ' +
+            '<td>' +
+        $("#ListDanhHieuHiddenId").html()
+            + '</td>' +
+                '<td><input type="text" value="" style="width: 220px;" name="SOLUONG_TYPE_' + count + '" maxlength="255" id="SOLUONG_TYPE_' + count + '" class="e-input"></td><td><a title="Xóa tài liệu" href="javascript:XoaTaiLieu(' + count + ')" class="remove"><img src="../../../Content/Images/Delete.png" /></a></td></tr>';
+    }
+
+</script>

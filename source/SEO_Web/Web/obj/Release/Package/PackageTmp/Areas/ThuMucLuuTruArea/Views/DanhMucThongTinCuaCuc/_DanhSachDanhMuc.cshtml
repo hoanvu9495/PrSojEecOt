@@ -1,0 +1,420 @@
+﻿@using Web.Models
+@using Business.CommonBusiness
+@model Web.Areas.ThuMucLuuTruArea.Models.DanhMucThongTinModel
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using Model.eAita
+@{
+    if (Model.THONGTIN.Count > 0)
+    {
+        List<DM_DONVI> ListDonVi = Model.LISTDONVI;
+        int count = 0;
+        string Folder_ID = "";
+        foreach (var dv in ListDonVi)
+        {
+            var lstParent = Model.THONGTIN.Where(x => x.PARENT_ID == null && x.DONVI_ID == dv.ID).ToList();
+            if (lstParent.Count > 0)
+            {
+                count += 1;
+                <div style="font-weight:bold">@count. @dv.TEN_DONVI (Ngày gửi: @string.Format("{0:dd/MM/yyyy}", lstParent[0].NGAYTAO))</div>
+                <table class="table">
+                    <thead class="tbl-head">
+                        <tr>
+                            <th rowspan="2" style="width:20px;display:none"><input checked data-id="@dv.ID" type="checkbox" id="selectAll" title="Chọn tất cả" /></th>
+                            <th class="auto-style2" rowspan="2" style="width:150px">Tên thông tin</th>
+                            <th class="auto-style3" rowspan="2" style="width:200px">Các văn bản tài liệu thuộc hồ sơ</th>
+                            <th colspan="2" style="width:150px">Định dạng lưu trữ</th>
+                            <th rowspan="2" style="width:100px !important">
+                                Thời gian bắt đầu hình thành thông tin,tài liệu
+                            </th>
+                            <th colspan="2" style="width:150px">Địa điểm lưu trữ</th>
+                            <th rowspan="2" style="width:130px">Ghi chú</th>
+                            <th rowspan="2" style="width: 130px; vertical-align: top; font-weight: bold; ">Trạng thái</th>
+                        </tr>
+                        <tr>
+                            <th style="width:80px">
+                                Bản giấy
+                            </th>
+                            <th style="width:90px">Bản điện tử</th>
+                            <th style="width:70px">Tại đơn vị</th>
+                            <th style="width:120px">Nơi khác</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tbl-body" id="tbl-body"></tbody>
+                    @{
+                foreach (var item in lstParent)
+                {
+                    Folder_ID += item.ID + ",";
+                    if (item.TRANGTHAI == DanhMucThongTinTrangThai.TRAVE)
+                    {
+                        <tr style="background-color: pink">
+                            <td style="display:none">
+                                <input checked type="checkbox" name="CHECKED_@item.ID" data-id="@item.ID" class="selectedItem checked checked_@dv.ID" />
+                            </td>
+                            <td colspan="2">
+                                <span title="@item.TENTHONGTIN" class="THONGTIN" style="font-weight:bold">@item.TENTHONGTIN</span>
+                            </td>
+                            @if (item.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.DIGITAL)
+                            {
+                                <td>
+                                    <a class="uncheckbox-item"></a>
+                                </td>
+                                <td>
+                                    <a class="checkbox-item"></a>
+                                </td>
+                            }
+                            else if (item.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.PAPER)
+                            {
+                                <td>
+                                    <a class="checkbox-item"></a>
+                                </td>
+                                <td>
+                                    <a class="uncheckbox-item"></a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a class="checkbox-item"></a>
+                                </td>
+                                <td>
+                                    <a class="checkbox-item"></a>
+                                </td>
+                            }
+                            <td>
+                                <span style="font-weight:bold">@string.Format("{0:dd/MM/yyyy}", item.THOIGIAN_HINHTHANH)</span>
+                            </td>
+                            <td>
+                                @if (item.TAI_DONVI.Value)
+                                {
+                                    <a class="checkbox-item"></a>
+                                }
+                            </td>
+                            <td>
+                                <span title="@item.DIADIEM_LUUTRU" class="DIADIEM" style="font-weight:bold">@item.DIADIEM_LUUTRU</span>
+                            </td>
+                            <td>
+                                <span class="GHICHU" title="@item.GHICHU" style="font-weight:bold">@item.GHICHU</span>
+                            </td>
+                            <td>
+                                @switch (item.TRANGTHAI)
+                                {
+                                    case DanhMucThongTinTrangThai.CUCTRUONG:
+                                        <span style="color:red">Chờ duyệt</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.VANPHONG:
+                                    <span style="color:red">Chờ tổng hợp</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.PHEDUYET:
+                                    <span style="color:green">Đã duyệt</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.TRAVE:
+                                    <span style="color:red">Không duyệt</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.DUOCCHON:
+                                    <span style="color:red">Chờ duyệt</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.TAOTHUMUC:
+                                    <span style="color:green">Đã tạo thư mục</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.TAOTAILIEU:
+                                    <span style="color:green">Đã tạo tài liệu</span>
+                                        break;
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr style="background-color: #f2f2f2">
+                            <td style="display:none">
+                                <input checked type="checkbox" name="CHECKED_@item.ID" data-id="@item.ID" class="selectedItem checked checked_@dv.ID" />
+                            </td>
+                            <td colspan="2">
+                                <span title="@item.TENTHONGTIN" class="THONGTIN" style="font-weight:bold">@item.TENTHONGTIN</span>
+                            </td>
+                            @if (item.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.DIGITAL)
+                            {
+                                <td>
+                                    <a class="uncheckbox-item"></a>
+                                </td>
+                                <td>
+                                    <a class="checkbox-item"></a>
+                                </td>
+                            }
+                            else if (item.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.PAPER)
+                            {
+                                <td>
+                                    <a class="checkbox-item"></a>
+                                </td>
+                                <td>
+                                    <a class="uncheckbox-item"></a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a class="checkbox-item"></a>
+                                </td>
+                                <td>
+                                    <a class="checkbox-item"></a>
+                                </td>
+                            }
+                            <td>
+                                <span style="font-weight:bold">@string.Format("{0:dd/MM/yyyy}", item.THOIGIAN_HINHTHANH)</span>
+                            </td>
+                            <td>
+                                @if (item.TAI_DONVI.Value)
+                                {
+                                    <a class="checkbox-item"></a>
+                                }
+                            </td>
+                            <td>
+                                <span title="@item.DIADIEM_LUUTRU" class="DIADIEM" style="font-weight:bold">@item.DIADIEM_LUUTRU</span>
+                            </td>
+                            <td>
+                                <span class="GHICHU" title="@item.GHICHU" style="font-weight:bold">@item.GHICHU</span>
+                            </td>
+                            <td>
+                                @switch (item.TRANGTHAI)
+                                {
+                                    case DanhMucThongTinTrangThai.CUCTRUONG:
+                                        <span style="color:red">Chờ duyệt</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.PHEDUYET:
+                                    <span style="color:green">Đã duyệt</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.VANPHONG:
+                                    <span style="color:red">Chờ tổng hợp</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.TRAVE:
+                                    <span style="color:red">Không duyệt</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.DUOCCHON:
+                                    <span style="color:red">Chờ duyệt</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.TAOTHUMUC:
+                                    <span style="color:green">Đã tạo thư mục</span>
+                                        break;
+                                    case DanhMucThongTinTrangThai.TAOTAILIEU:
+                                    <span style="color:green">Đã tạo tài liệu</span>
+                                        break;
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                    var lstChild = Model.THONGTIN.Where(x => x.PARENT_ID == item.ID).ToList();
+                    foreach (var ele in lstChild)
+                    {
+                        if (ele.TRANGTHAI == DanhMucThongTinTrangThai.TRAVE)
+                        {
+                            <tr style="background-color:pink">
+                                <td style="display: none">
+                                    <input checked type="checkbox" data-id="@ele.ID" name="CHECKED_@(item.ID)_@ele.ID" class="selectedItem checked_@item.ID checked_@dv.ID" />
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <span title="@ele.TENTHONGTIN" class="TAILIEU">@ele.TENTHONGTIN</span>
+                                </td>
+                                @if (ele.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.DIGITAL)
+                                {
+                                    <td>
+                                        <a class="uncheckbox-item"></a>
+                                    </td>
+                                    <td>
+                                        <a class="checkbox-item"></a>
+                                    </td>
+                                }
+                                else if (ele.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.PAPER)
+                                {
+                                    <td>
+                                        <a class="checkbox-item"></a>
+                                    </td>
+                                    <td>
+                                        <a class="uncheckbox-item"></a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a class="checkbox-item"></a>
+                                    </td>
+                                    <td>
+                                        <a class="checkbox-item"></a>
+                                    </td>
+                                }
+
+                                <td>
+                                    <span>@string.Format("{0:dd/MM/yyyy}", ele.THOIGIAN_HINHTHANH)</span>
+                                </td>
+                                <td>
+                                    @if (ele.TAI_DONVI.Value)
+                                    {
+                                        <a class="checkbox-item"></a>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="DIADIEM" title="@ele.DIADIEM_LUUTRU">@ele.DIADIEM_LUUTRU</span>
+                                </td>
+                                <td>
+                                    <span class="GHICHU" title="@ele.GHICHU">@ele.GHICHU</span>
+                                </td>
+                                <td>
+                                    @switch (ele.TRANGTHAI)
+                                    {
+                                        case DanhMucThongTinTrangThai.CUCTRUONG:
+                                            <span style="color:red">Chờ duyệt</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.PHEDUYET:
+                                        <span style="color:green">Đã duyệt</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.VANPHONG:
+                                        <span style="color:red">Chờ tổng hợp</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.TRAVE:
+                                        <span style="color:red">Không duyệt</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.DUOCCHON:
+                                        <span style="color:red">Chờ duyệt</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.TAOTHUMUC:
+                                        <span style="color:green">Đã tạo thư mục</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.TAOTAILIEU:
+                                        <span style="color:green">Đã tạo tài liệu</span>
+                                            break;
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td style="display: none">
+                                    <input checked type="checkbox" data-id="@ele.ID" name="CHECKED_@(item.ID)_@ele.ID" class="selectedItem checked_@item.ID checked_@dv.ID" />
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <span title="@ele.TENTHONGTIN" class="TAILIEU">@ele.TENTHONGTIN</span>
+                                </td>
+                                @if (ele.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.DIGITAL)
+                                {
+                                    <td>
+                                        <a class="uncheckbox-item"></a>
+                                    </td>
+                                    <td>
+                                        <a class="checkbox-item"></a>
+                                    </td>
+                                }
+                                else if (ele.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.PAPER)
+                                {
+                                    <td>
+                                        <a class="checkbox-item"></a>
+                                    </td>
+                                    <td>
+                                        <a class="uncheckbox-item"></a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a class="checkbox-item"></a>
+                                    </td>
+                                    <td>
+                                        <a class="checkbox-item"></a>
+                                    </td>
+                                }
+
+                                <td>
+                                    <span>@string.Format("{0:dd/MM/yyyy}", ele.THOIGIAN_HINHTHANH)</span>
+                                </td>
+                                <td>
+                                    @if (ele.TAI_DONVI.Value)
+                                    {
+                                        <a class="checkbox-item"></a>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="DIADIEM" title="@ele.DIADIEM_LUUTRU">@ele.DIADIEM_LUUTRU</span>
+                                </td>
+                                <td>
+                                    <span class="GHICHU" title="@ele.GHICHU">@ele.GHICHU</span>
+                                </td>
+                                <td>
+                                    @switch (ele.TRANGTHAI)
+                                    {
+                                        case DanhMucThongTinTrangThai.CUCTRUONG:
+                                            <span style="color:red">Chờ duyệt</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.VANPHONG:
+                                        <span style="color:red">Chờ tổng hợp</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.PHEDUYET:
+                                        <span style="color:green">Đã duyệt</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.TRAVE:
+                                        <span style="color:red">Không duyệt</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.DUOCCHON:
+                                        <span style="color:red">Chờ duyệt</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.TAOTHUMUC:
+                                        <span style="color:green">Đã tạo thư mục</span>
+                                            break;
+                                        case DanhMucThongTinTrangThai.TAOTAILIEU:
+                                        <span style="color:green">Đã tạo tài liệu</span>
+                                            break;
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+                    }
+                </table>
+            }
+        }
+        <script>
+            $(function () {
+                $("input[type='checkbox']").change(function () {
+                    var ID = $(this).attr("data-id");
+                    $('.checked_' + ID).prop('checked', this.checked);
+                    var totalRows = $("#CHONNGUOIDUNG td :checkbox").length;
+                    var checked = $("#CHONNGUOIDUNG td :checkbox:checked").length;
+                    if (checked == totalRows) {
+                        $("#CHONNGUOIDUNG").find("input:checkbox").each(function () {
+                            this.checked = true;
+                        });
+                    }
+                    else {
+                        $("#selectAll").removeAttr("checked");
+                    }
+                });
+                //$("#btnSaveData").click(function () {
+
+            });
+        </script>
+        <style>
+            .checkbox-item {
+                background: url('/Content/themes/base/images/TM_DANHMUC_Checkbox.png') no-repeat;
+                display: block;
+                width: 26px;
+                height: 26px;
+                margin: 0 auto;
+            }
+
+            /*.uncheckbox-item {
+                background: url('/Content/themes/base/images/TM_DANHMUC_UnCheckbox.png') no-repeat;
+                display: block;
+                width: 26px;
+                height: 26px;
+                margin: 0 auto;
+            }*/
+        </style>
+    }
+    @*else
+        {
+            <div style="color:red">Không tìm thấy dữ liệu phù hợp</div>
+        }*@
+}

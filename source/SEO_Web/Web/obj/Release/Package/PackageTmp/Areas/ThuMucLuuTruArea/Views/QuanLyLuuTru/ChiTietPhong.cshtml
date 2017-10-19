@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "Chi tiết phòng lưu trữ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Web.Areas.ThuMucLuuTruArea.Models.QuanLyKeModel
+<style>
+    .menu-left-content {
+        height: 494px;
+        overflow-y: auto;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" style="width:280px">
+            <h1>Chi tiết phòng lưu trữ</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;margin-right:50px" type="button" onclick="OnCreate()" class="b_btn b_btn-default vbdi_search">Thêm mới kệ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="left-all-page" id="menu-middle-left" style="height:100%">
+    <div id="block-search-form">
+
+        @using (Ajax.BeginForm("FindKe", "QuanLyLuuTru", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "search-form" }))
+        {
+            <input type="text" placeholder="" value="" name="TENKE" id="" />
+            <input type="hidden" placeholder="" value="0" name="TOANHA_ID" id="" />
+            <input type="hidden" placeholder="" value="0" name="TANG_ID" id="" />
+            <input type="hidden" placeholder="" value="0" name="PHONG_ID" id="" />
+            <input type="submit" value="search" name="" id="" />
+        }
+    </div>
+    <div class="menu-left-content block">
+        <ul class="admin-menu">
+            <li class="menu"><a href="@Url.Action("Index", "QuanLyLuuTru")">Danh sách tòa nhà</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyTangLuuTru", "QuanLyLuuTru")">Danh sách tầng lưu trữ</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyPhongLuuTru", "QuanLyLuuTru")">Danh sách phòng lưu trữ</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyKeLuuTru", "QuanLyLuuTru")">Danh sách kệ lưu trữ</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyHangLuuTru", "QuanLyLuuTru")">Danh sách hàng lưu trữ</a></li>
+        </ul>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div class="SearchResult">
+                    @Html.Partial("_DanhSachKeResult")
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<script type="text/javascript">
+    function reloadGrid() {
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadKe", "QuanLyLuuTru")',
+            data: {
+                PHONG: '@Model.KE.PHONG_ID'
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+    function failure(xrt) {
+        alert(xrt.responseText);
+    }
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("CreateKe", "QuanLyLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+                PHONG: '@Model.KE.PHONG_ID'
+            },
+            success: function (data) {
+                $("#CreateKe").html(data);
+                $("#CreateKe").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+    function EditKe(ID) {
+        $.ajax({
+            url: '@Url.Action("EditKe", "QuanLyLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#EditKe").html(data);
+                $("#EditKe").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>

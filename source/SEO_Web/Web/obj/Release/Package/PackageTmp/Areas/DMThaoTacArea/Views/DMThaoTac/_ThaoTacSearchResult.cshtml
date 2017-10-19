@@ -1,0 +1,316 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Business.CommonBusiness;
+@using Web.Common;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@model List<DmThaoTacBO>
+<style>
+    .modal-dialog {
+        width: 950px;
+        margin: 50px auto;
+        margin-top: 5%;
+    }
+
+    .modal-backdrop {
+        z-index: 99 !important;
+    }
+    .center{
+        text-align:center;
+    }
+</style>
+@{
+    //List<DmThaoTacBO> listThaoTac = new List<DmThaoTacBO>();
+
+    //if (ViewData["Search"] == "0")
+    //{
+    //    listThaoTac = (List<DmThaoTacBO>)SessionManager.GetValue("ListThaoTac");
+    //}
+    //if (ViewData["Search"] == "1")
+    //{
+    //    listThaoTac = (List<DmThaoTacBO>)SessionManager.GetValue("ListThaoTacSearch");
+    //}
+    //var grid = new WebGrid(listThaoTac,
+    //                      rowsPerPage: 10,
+    //                      canPage: true,
+    //                      canSort: false,
+    //                      ajaxUpdateContainerId: "grid",
+    //                       selectionFieldName: "selectedRow"
+    //                      );
+    var jsonDatas = Html.Raw(JsonConvert.SerializeObject(Model));
+}
+@Html.AntiForgeryToken()
+
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <h2 class="group-tittle mt10">
+            Danh sách thao tác (@(Model == null ? "0" : Model.Count.ToString()))
+        </h2>
+    </header>
+    <div class="widge-t-body no-padding">
+        <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+            <table class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tên thao tác</th>
+                        <th>Trạng thái</th>
+                        <th>Chức năng</th>
+                        <th>Thao tác</th>
+
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+@*<div id="grid" style="margin-bottom:35px">
+        <div id="HeaderGrid">
+            <div class="margin">
+                <label id="lblChucNang" class="label_danhmuc">@(listThaoTac == null ? "0" : listThaoTac.Count.ToString())&nbsp;kết quả</label>
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                                        grid.Column(format: (item) => new MvcHtmlString(string.Format(Ultilities.Truncate(item.TEN_THAOTAC, 40))), header: "Tên thao tác", style: "center"),
+                grid.Column(format: (item) => new MvcHtmlString(item.TRANGTHAI == 0 ? "<span style='color:red; text-align:center;'>Không hiệu lực</span>" : "<span style='color:green;text-align:center;'>Hiệu lực</span>"), header: "Trạng thái", style: "center"),
+                                                  grid.Column("TenChucNang", "Chức năng", style: "center"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                        "<a href='javascript:void(0)' onclick='EditThaoTac(" + item.DM_THAOTAC_ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                        "<a href='javascript:void(0)' onclick='RemoveThaoTac(" + item.DM_THAOTAC_ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+                )
+    )
+        @if (listThaoTac.Count == 0)
+        {
+            <div id="Empty" class="color-red">
+                Không tìm thấy dữ liệu phù hợp
+            </div>
+        }
+    </div>*@
+
+
+
+<div class="modal fade" id="nhan_su_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="create_user">
+        </div>
+    </div>
+</div>
+<div id="CreateThaoTac" title="Thêm mới thao tác">
+</div>
+
+<div id="PrepareThaoTac" title="Sửa thao tác">
+</div>
+
+<script type="text/javascript">
+
+
+    pageSetUp();
+    var JsonDatas = eval(@jsonDatas);
+    
+    var LoadData = function (item) {
+        var table = $('.wtfayo').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "iDisplayLength": 20,
+            paging: true,
+            "aoColumns": [
+                 {
+                     "mData": function (data, type, dataToSet) {
+                         return '<input class="global_checkbox" ' + ((data.IS_READ == true) ? "is_read" : "is_unread") + ' type="checkbox" name="ids" value="' + data.ID + '" />';
+                     },
+                     "orderable": false,
+                 },
+
+                    //{
+                    //    "class": 'details-control',
+                    //    "orderable": false,
+                    //    "data": null,
+                    //    "defaultContent": ''
+                    //},
+
+                  {
+                      "mData": function (data, type, dataToSet) {
+                          return data.TEN_THAOTAC;
+                      },
+
+                  },
+
+
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            return data.TRANGTHAI == 0 ? "<span style='color:red; text-align:center;'>Không hiệu lực</span>" : "<span style='color:green;text-align:center;'>Hiệu lực</span>"
+                        },
+
+                    },
+                    {
+
+                        "mData": function (data, type, dataToSet) {
+                            return data.TenChucNang;
+                        },
+
+                    },
+
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            var result = "<div class='btn-group'>";
+                            result += "<a href='javascript:void(0)' onclick='EditThaoTac(" + data.DM_THAOTAC_ID + ")'   title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>";
+                            result += "<a href='javascript:void(0)' onclick='RemoveThaoTac(" + data.DM_THAOTAC_ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
+                            result += "</div>";
+                            return result;
+                        },
+
+                    },
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                runAllCharts()
+            }
+        });
+    }
+
+    var pagefunction = function () {
+        LoadData(JsonDatas);
+    };
+
+    $(document).ready(function () {
+        $('.grid tbody').on('hover', function () {
+            $(this).toggleClass('clickable');
+        })
+        $("#CreateThaoTac").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 860,
+            height: 280,
+            resizable: false,
+            show: {
+                effect: "blind",
+                duration: 200
+            },
+            hide: {
+                effect: "blind",
+                duration: 200
+            }
+        });
+
+        $("#PrepareThaoTac").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 860,
+            height: 280,
+            resizable: false,
+            show: {
+                effect: "blind",
+                duration: 200
+            },
+            hide: {
+                effect: "blind",
+                duration: 200
+            }
+        });
+    });
+
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("AddFormThaoTac", "DMThaoTac")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                //$("#CreateThaoTac").html(data);
+                //$("#CreateThaoTac").dialog("open");
+                $("#create_user").html(data);
+                $("#nhan_su_dialog").modal("show");
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+    function EditThaoTac(DM_THAOTAC_ID) {
+        $.ajax({
+            url: '@Url.Action("EditFromThaoTac", "DMThaoTac")',
+            type: 'post',
+            cache: false,
+            data: {
+                DM_THAOTAC_ID: DM_THAOTAC_ID
+            },
+            success: function (data) {
+                //$("#PrepareThaoTac").html(data);
+                //$("#PrepareThaoTac").dialog("open");
+                $("#create_user").html(data);
+                $("#nhan_su_dialog").modal("show");
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+
+    function RemoveThaoTac(DM_THAOTAC_ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn muốn xóa thao tác này này?',
+            'buttons': {
+                'Đồng ý': {
+                    'class': 'btn-confirm-yes btn-primary',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("DeleteThaoTac", "DMThaoTac")',
+                            type: 'POST',
+                            cache: false,
+                            data: {
+                                DM_THAOTAC_ID: DM_THAOTAC_ID
+                            },
+                            success: function (data) {
+                                NotiSuccess("Xóa thao tác thành công");
+                                reloadGrid();
+                            },
+                            error: function (xhr) {
+                                alert(xhr.responseText);
+                            }
+                        });
+                    }
+                },
+                'Hủy bỏ': {
+                    'class': 'btn-default',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+
+
+
+    }
+
+    loadScript("js/plugin/datatables/jquery.dataTables.min.js", function () {
+        loadScript("js/plugin/datatables/dataTables.colVis.min.js", function () {
+            loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                loadScript("js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                    loadScript("js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
+                });
+            });
+        });
+    });
+</script>

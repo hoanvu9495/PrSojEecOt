@@ -1,0 +1,247 @@
+﻿@using Web.Areas.QLUyQuyenArea.Models;
+@using Model.eAita;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@model QLUyQuyenFormModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+
+}
+<link href="/Content/vanbandi-edit.css" rel="stylesheet" type="text/css" />
+<link href="/Content/Custom/css/multiple-select.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+    .div-form {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .wid-100 {
+        width: 100%;
+    }
+
+    .required-mark {
+        color: red;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .lbl {
+        margin-top: 7px;
+    }
+
+     .ms-drop {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+            width: 100%;
+    }
+    /*.wid-100{
+        width:100%;
+    }*/
+    .ms-parent{
+        width:100%;
+    }
+    .ms-choice > span{
+        width:100%;
+    }
+</style>
+<div class="row" style="margin-bottom:7px;">
+    <div class=" col-sm-3">
+
+    </div>
+    <div class="col-sm-9">
+        <a href="#QLUyQuyenArea/QLUyQuyen/index" class="btn btn-primary" style="float: right; ">
+            <i class="fa fa-reply"></i> <span class="hidden-mobile">Quay lại</span>
+        </a>
+    </div>
+</div>
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <span class="widget-icon"> <i class="fa fa-file-image-o txt-color-darken"></i> </span>
+        <h2 class="hidden-xs hidden-sm">Thêm mới Ủy quyền </h2>
+
+    </header>
+    <div role="content">
+        <div class="widget-body">
+            @using (Ajax.BeginForm("Create", "QLUyQuyen", new AjaxOptions
+            {
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "Post",
+                OnSuccess = "ActionCreateSuccess",
+                OnFailure = "ActionCreateFailure"
+            },
+                new { Id = "frmCreate" }))
+            {
+                <div class="tab-content custom-scroll" style=" ">
+                    
+                    @Html.AntiForgeryToken()
+                    <div class="div-form">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                    <label class="lbl" for="TRICHYEU">
+                                        Người ủy quyền
+                                    </label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="text" name="NGUOI_UYQUYEN" class="form-control" readonly value="@Model.NguoiUyQuyen" />
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+
+                                    <label class="lbl" for="TRICHYEU">
+                                        Module<span class="required-mark">*</span>
+                                    </label>
+                                </div>
+                                <div class="col-sm-5">
+                                    @Html.DropDownList("MODULE_ID", Model.DSModule, new { @class = "wid-100", })
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                    <label class="lbl" for="TRICHYEU">
+                                        Người được ủy quyền<span class="required-mark">*</span>
+                                    </label>
+                                </div>
+                                <div class="col-sm-5">
+                                    @Html.DropDownList("NGUOI_DUOC_UYQUYEN", Model.DSNguoiDcUyQuyen, new { @class = "wid-100", })
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                    <label class="lbl" for="TRICHYEU">
+                                        Thời gian bắt đầu<span class="required-mark">*</span>
+                                    </label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="text" name="TIME_START" id="TIME_START" class="form-control validateDate input_datepicker" />
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                    <label class="lbl" for="TRICHYEU">
+                                        Thời gian kết thúc<span class="required-mark">*</span>
+                                    </label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="text" name="TIME_END" id="TIME_END" class="form-control validateDate input_datepicker" />
+                                    <div class="note-error">
+                                        <span id="errTIME_END" class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions center">
+                    <button type="button" id="btnCreate" class="btn btn-primary btn-sm">Tạo mới</button>
+                </div>
+            }
+
+        </div>
+
+    </div>
+</div>
+<script>
+    pageSetUp();
+    function  PageFunction() {
+        $("#btnCreate").click(function () {
+            var err = 0;
+            var errDate = ValidateFieldDate("frmCreate");
+            if (!errDate) {
+                err++;
+            } else {
+                var isVaildTime = CheckRangeDate("frmCreate", "TIME_START", "TIME_END")
+                if (!isVaildTime) {
+                    err++;
+                    $("#errTIME_END").html("Thời gian kết thúc phải lớn hơn thời gian bắt đầu");
+                    $("#errTIME_END").css("display", "inline");
+                    $("#TIME_END").val("");
+                } else {
+                    $("#errTIME_END").css("display", "none");
+
+                }
+            }
+            if (err == 0) {
+                $("#frmCreate").submit();
+                return true;
+            } else {
+                NotiError("Có lỗi. Vui lòng kiểm tra lại");
+                return false;
+
+            }
+
+        })
+        $(".input_datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true, yearRange: "-50:+20",
+            showWeek: false, weekHeader: "Tuần",
+            language: 'vi',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            onSelect: function (date) {
+
+            }
+        });
+        $("#MODULE_ID").multipleSelect({
+            single: true,
+            filter: true,
+        });
+        $("#NGUOI_DUOC_UYQUYEN").multipleSelect({
+            single: true,
+            filter: true,
+        });
+
+    }
+   
+    function ActionCreateSuccess(rs) {
+        if (rs.Status) {
+            NotiSuccess("Thêm mới ủy quyền thành công");
+            setTimeout(function () {
+                window.location.href = "#QLUyQuyenArea/QLUyQuyen/index";
+            }, 1000);
+        } else {
+            NotiError(rs.Message);
+        }
+    }
+
+    function ActionCreateFailure(rs) {
+        NotiError("Có lỗi");
+    }
+    loadScript("Scripts/jquery.unobtrusive-ajax.min.js", function () {
+        loadScript("Scripts/multiple-select.js", PageFunction);
+    });
+</script>
+
+@*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@

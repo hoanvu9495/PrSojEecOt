@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "ThongKeVBDiDen";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+@using Business.CommonBusiness
+@using Web.Areas.ReportVanBanArea.Models;
+@model CountVBModel
+@Html.Partial("CountVBDiDenPartial", Model)
+    <script>
+        pageSetUp();
+    </script>

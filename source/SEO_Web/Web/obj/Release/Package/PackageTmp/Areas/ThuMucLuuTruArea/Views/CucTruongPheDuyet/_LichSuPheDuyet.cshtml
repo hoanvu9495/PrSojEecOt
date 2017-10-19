@@ -1,0 +1,141 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@{
+    List<ThuMucLichSuPheDuyetBO> lstLichSu = (List<ThuMucLichSuPheDuyetBO>)SessionManager.GetValue("ListLichSu"); ;
+}
+<style>
+    .tbl-History th {
+        text-align: center !important;
+    }
+
+    .tbl-History td:nth-child(7) span {
+        text-align: left !important;
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 536px !important;
+        text-overflow: ellipsis;
+    }
+</style>
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Lịch sử phê duyệt của thư mục</h4>
+        </div>
+        <div class="modal-body">
+            <table class="webGrid tbl-History" data-swhgajax="true" data-swhgcontainer="grid" data-swhgcallback="">
+                <thead>
+                    <tr class="head">
+                        <th scope="col">
+                            STT
+                        </th>
+                        <th scope="col">
+                            Ngày Trình
+                        </th>
+                        <th scope="col">
+                            Đơn vị
+                        </th>
+                        @*<th scope="col">
+                                Phòng
+                            </th>*@
+                        <th scope="col">
+                            Người thực hiện
+                        </th>
+                        <th scope="col">
+                            Trạng thái trước
+                        </th>
+                        <th scope="col">
+                            Trạng thái sau
+                        </th>
+                        <th scope="col">
+                            Mô tả
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (lstLichSu.Count > 0 && lstLichSu != null)
+                    {
+                        var i = 0;
+                        foreach (var item in lstLichSu)
+                        {
+                            i++;
+                            <tr>
+                                <td class="center">@i</td>
+                                <td>@(string.Format("{0:dd/MM/yyyy}", item.THOIGIAN_THUCHIEN))</td>
+                                <td>@item.TENDONVI</td>
+                                @*<td>@item.TENPHONGBAN</td>*@
+                                <td>@item.NGUOITHUCHIEN</td>
+                                <td>
+                                    @if (item.TRANGTHAI1 == GiaHanTaiLieuModel.DUTHAO)
+                                    {
+                                        <span style="color:#CCC">Dự thảo</span>
+                                    }
+                                    else if (item.TRANGTHAI1 == GiaHanTaiLieuModel.DATRINH)
+                                    {
+                                        <span style="color: #00CCEF">Đã trình</span>
+                                    }
+                                    else if (item.TRANGTHAI1 == GiaHanTaiLieuModel.TRAVE)
+                                    {
+                                        <span style="color: red">Bị trả về</span>
+                                    }
+                                    else if (item.TRANGTHAI1 == GiaHanTaiLieuModel.DUYET)
+                                    {
+                                        <span style='color:green'>Đã được tiếp nhận</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.TRANGTHAI2 == 1)
+                                    {
+                                        <span style="color:#CCC">Dự thảo</span>
+                                    }
+                                    else if (item.TRANGTHAI2 == 2)
+                                    {
+                                        <span style="color: #00CCEF">Đã trình</span>
+                                    }
+                                    else if (item.TRANGTHAI2 == 3)
+                                    {
+                                        <span style="color: red">Bị trả về</span>
+                                    }
+                                    else if (item.TRANGTHAI2 == 4)
+                                    {
+                                        <span style='color:green'>Đã được tiếp nhận</span>
+                                    }
+                                </td>
+                                <td>
+                                    <span title="@item.MOTA">
+                                        @item.MOTA
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+
+</div>
+
+@*<center>
+        <div style="margin-top: 15px; text-align: center;">
+            <input type="button" value="Đóng" id="btnDong" style="background-color: #336699; height: 30px; border: none; color: white;" />
+        </div>
+    </center>*@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnDong").click(function () {
+            $("#lichsutiepnhan").dialog("close");
+        });
+    });
+</script>

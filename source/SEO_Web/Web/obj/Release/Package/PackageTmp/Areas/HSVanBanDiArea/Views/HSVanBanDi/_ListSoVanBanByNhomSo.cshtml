@@ -1,0 +1,12 @@
+﻿@using Model.eAita
+@model List<HSCV_SOVANBAN>
+
+@if (Model != null && Model.Count > 0)
+{
+    foreach (var item in Model)
+    {
+        <option data-sovb="@item.SOVBTHEOSO" value="@item.ID" @(item.NAM_SOVANBAN == DateTime.Now.Year ? "selected" : "")>
+            @item.TENSO
+        </option>
+    }
+}

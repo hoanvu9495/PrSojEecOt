@@ -1,0 +1,106 @@
+﻿@model Web.Areas.HscvDonViBanHanhArea.Models.DonViBanHanhViewModel
+<style>
+    .txt {
+        width: 250px;
+    }
+
+    .btn {
+        height: 30px;
+        background: #0099CC;
+        font-weight: bold;
+        color: white;
+        border: none;
+    }
+
+</style>
+
+@Html.AntiForgeryToken()
+@using (Ajax.BeginForm("FindDVBanHanh", "HscvDonViBanHanh", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearch" }))
+{
+
+    @*<div style="margin-top:20px;text-align:center">
+            <label class="lblDiemThi" style="margin-left:130px;width:80px">Tên đơn vị ban hành:</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.TextBox("DVBANHANH", "", new { @style = "width:233px;", @class = "e-input" })
+
+            <br /><label class="lblDiemThi" style="margin-left:130px;width:80px">Đơn vị cấp trên:</label>
+
+            <div class="input-field4  clearfix" style="width: 233px;">
+                @Html.DropDownList("PARENTID", new SelectList(Model.listDonViBanHanh, "Value", "Text"), "", new { @style = "width:233px", @id = "PARENTID" })
+            </div>
+            <br />
+            <input type="submit" id="btnSearch" value="Tìm Kiếm" style="background-color:#336699;font-weight:bold;height:35px;border:none;width:100px;color:white" />
+
+        </div>*@
+    <table style="margin:0 auto;width:50%">
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="width:140px">Đơn vị ban hành:</td>
+            <td>
+
+                @Html.TextBox("DVBANHANH", "", new { @style = "width:233px;", @class = "e-input", @id = "DVBANHANH_T" })
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Đơn vị cấp trên:</td>
+            <td>
+                <div class="input-field4  clearfix" style="width: 233px;">
+                    @Html.DropDownList("PARENTID", new SelectList(Model.listDonViBanHanh, "Value", "Text"), "", new { @style = "width:233px", @id = "PARENTID" })
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center">
+                <input type="submit" id="btnTimKiem" value="Tìm Kiếm" class="btn btn-success" />
+            </td>
+        </tr>
+    </table>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#DVBANHANH").val(@ViewData["DVBanHanh"]);
+    });
+    function failure(xhr, response) {
+        CommonJS.alert(xhr.responseText);
+        $("#DVBANHANH").val("");
+    }
+    $(function () {
+        $("#btnTimKiem").click(function () {
+            if (/<[a-z][\s\S]*>/i.test($("#DVBANHANH_T").val())) {
+                $.confirm({
+                    'title': 'Không thể tìm kiếm',
+                    'message': 'Nội dung tìm kiếm không thể chứa ký tự HTML',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-confirm-yes',
+                            'action': function () {
+                                $("#DVBANHANH_T").focus();
+                                return false;
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            $("#DVBANHANH").val($("#DVBANHANH_T").val());
+            return true;
+        });
+    });
+</script>

@@ -1,0 +1,86 @@
+﻿@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.TDKTPhongTraoThiDuaArea.Models;
+@model Web.Areas.TDKTPhongTraoThiDuaArea.Models.PhongTraoThiDuaViewModel
+@{
+
+    List<TDKT_PHONGTRAO_THIDUA> LstPhongTrao = Model.LstPhongTrao;
+
+
+    var grid = new WebGrid(LstPhongTrao,
+             rowsPerPage: 10,
+             canPage: true,
+             canSort: true,
+             ajaxUpdateContainerId: "grid",
+             selectionFieldName: "selectedRow"
+               );
+
+}
+<div id="grid">
+    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(                
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                    "<a href='/TDKTPhongTraoThiDuaArea/PhongTraoThiDua/View/" + item.ID + "' >" + item.KE_HOACH_THI_DUA + "</a>")), header: "Phong trào thi đua"),
+                grid.Column(format: (item) =>
+                    {
+                        if (item.TRANGTHAI == PhongTraoThiDuaConstant.TT_MOITAO)
+                        {
+                            return "Mới tạo";
+                        }
+                        else if (item.TRANGTHAI == PhongTraoThiDuaConstant.TT_TRINHLANDAO)
+                        {
+                            return "Đã trình lãnh đạo";
+                        }
+                        else if (item.TRANGTHAI == PhongTraoThiDuaConstant.TT_PHEDUYET)
+                        {
+                            return "Đã phê duyệt";
+                        }
+                        else if (item.TRANGTHAI == PhongTraoThiDuaConstant.TT_TUCHOI)
+                        {
+                            return "Từ chối phê duyệt";
+                        }
+                        else if (item.TRANGTHAI == PhongTraoThiDuaConstant.TT_BANHANH)
+                        {
+                            return "Đã phê duyệt";
+                        }
+                    }
+                    , header: "Trạng thái"),                                
+                           grid.Column(format: (item) =>
+                                    {
+                                        if (item.CHUYENVIENXULY_ID != null)
+                                        {
+
+                                            if (item.TRANGTHAI == NangLuongTTHConstant.CHUYENVIEN_TRINH_CUCTRUONG || item.CUCTRUONG_PHEDUYET == true)
+                                            {
+                                                return item.CHUYENVIENXULY;
+                                            }
+                                            else
+                                            {
+                                                return new MvcHtmlString(string.Format(
+                                                   "<a href='javascript:chonChuyenVien(" + item.ID + ")' title = 'Chọn chuyên viên xử lý' id='chonchuyenvien_" + item.ID + "'>" + item.CHUYENVIENXULY + "</a>"));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (item.CHUYENCHOCHUYENVIEN == true)
+                                            {
+                                                return item.CHUYENVIENXULY;
+                                            }
+                                            else
+                                            {
+                                                return new MvcHtmlString(string.Format(
+                                                    "<a href='javascript:chonChuyenVien(" + item.ID + ")' title = 'Chọn chuyên viên xử lý' id='chonchuyenvien_" + item.ID + "'>Chọn</a>"));
+                                            }
+                                        }
+                                    }
+                           , header: "Chọn chuyên viên xử lý")
+                )
+                )
+</div>

@@ -1,0 +1,50 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@model Web.Areas.ThuMucLuuTruArea.Models.CreateThuMucModel
+@using Web.Areas.ThuMucLuuTruArea.Models
+
+@{
+    List<TM_GIAHAN_LICHSU> lstGiaHan = Model.lstLichSu;
+    if (lstGiaHan == null)
+    {
+        lstGiaHan = new List<TM_GIAHAN_LICHSU>();
+    }
+    var grid = new WebGrid(lstGiaHan,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+
+}
+@{
+    if (lstGiaHan.Count > 0)
+    {
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                                grid.Column("NOIDUNG", "Nội dung"),
+                                          grid.Column("THOIGIANTHUCHIEN", "Ngày gửi", format: (item) => new MvcHtmlString(string.Format("{0:dd/MM/yyyy}", item.THOIGIANTHUCHIEN))),
+                                          grid.Column("TRANGTHAI1", "Trạng thái 1", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI1 == GiaHanTaiLieuModel.HUY ? "Đã hủy" : item.TRANGTHAI1 == GiaHanTaiLieuModel.GIAHAN ? "Xin gia hạn" : item.TRANGTHAI1 == GiaHanTaiLieuModel.LUULAI ? "Lưu lại" : item.TRANGTHAI1 == GiaHanTaiLieuModel.TRINHDONVI ? "Xin gia hạn" : item.TRANGTHAI1 == GiaHanTaiLieuModel.KHONGDUYET ? "Trả về" : item.TRANGTHAI1 == GiaHanTaiLieuModel.DUYET ? "Đã duyệt" : ""))),
+                                                                             grid.Column("TRANGTHAI2", "Trạng thái 2", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI2 == GiaHanTaiLieuModel.HUY ? "Đã hủy" : item.TRANGTHAI2 == GiaHanTaiLieuModel.GIAHAN ? "Xin gia hạn" : item.TRANGTHAI2 == GiaHanTaiLieuModel.LUULAI ? "Lưu lại" : item.TRANGTHAI2 == GiaHanTaiLieuModel.TRINHDONVI ? "Xin gia hạn" : item.TRANGTHAI2 == GiaHanTaiLieuModel.KHONGDUYET ? "Trả về" : item.TRANGTHAI2 == GiaHanTaiLieuModel.DUYET ? "Đã duyệt" : "")))
+
+
+                 )
+    )
+    }
+    else
+    {
+        <span>
+            Chưa có lịch sử gia hạn cho thư mục này
+        </span>
+    }
+}

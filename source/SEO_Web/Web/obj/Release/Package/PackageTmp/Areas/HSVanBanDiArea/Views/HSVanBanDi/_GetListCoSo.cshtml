@@ -1,0 +1,27 @@
+﻿@model List<Model.eAita.COSO>
+@{ var List_coso_dachon = (List<int>)ViewBag.List_coso_dachon;}
+@if (Model != null && Model.Count > 0)
+{
+    <ul>
+        @foreach (var item in Model)
+        {
+            if (List_coso_dachon != null && List_coso_dachon.Count > 0)
+            {
+                if (!List_coso_dachon.Contains(item.COSO_ID))
+                {
+                    <li id="li_@item.COSO_ID" data-cap-id ="@item.CAPCOSO_ID">
+                        <input class="css-checkbox" id="CHK_@item.COSO_ID" value="@item.COSO_ID" name="CHK_COSO" type="checkbox">
+                        <label style="width:auto;" for="CHK_@item.COSO_ID" class="css-label2">@item.TENCOSO</label>
+                    </li>
+                }
+            }
+            else
+            {
+                <li id="li_@item.COSO_ID" data-cap-id ="@item.CAPCOSO_ID">
+                    <input class="css-checkbox" id="CHK_@item.COSO_ID" value="@item.COSO_ID" name="CHK_COSO" type="checkbox">
+                    <label style="width:auto;" for="CHK_@item.COSO_ID" class="css-label2">@item.TENCOSO</label>
+                </li>
+            }
+        }
+    </ul>
+}

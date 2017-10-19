@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Quản lý loại tài liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Quản lý loại tài liệu</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;width:calc(100% - 450px)">
+        <div id="menu-child">
+            <div class="menu-left">
+            </div>
+            <div class="menu-right" style="margin-right:20px">
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" onclick="OnCreate()">Thêm mới loại tài liệu</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left" style="height:100%">
+    <div id="block-search-form">
+
+        @using (Ajax.BeginForm("FindLoaiTaiLieu", "TmLoaiTaiLieu", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "search-form" }))
+        {
+            <input type="text" placeholder="Loại tài liệu" value="" name="LOAITAILIEU" id="LOAITAILIEU" />
+
+            <input type="submit" value="search" name="" id="btnSearch" />
+        }
+    </div>
+    <div class="menu-left-content block">
+        <ul class="admin-menu">
+            <li class="menu"><a href="@Url.Action("Index", "ThuMucLuuTru")">Quản lý tài liệu</a></li>
+            <li class="menu"><a href="@Url.Action("Index", "TmLoaiTaiLieuThuocTinh")">Quản lý thuộc tính của tài liệu</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="right-all-page">
+
+    <table style="width: 100%">
+        <tr>
+            <td>
+                <div class="SearchResult">
+                    @Html.Partial("_LoaiTaiLieuSearchResult")
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<script type="text/javascript">
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadGrid", "TmLoaiTaiLieu")',
+            data: {},
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,377 @@
+﻿@{
+    ViewBag.Title = "Chỉnh sửa yêu cầu chia sẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeModel
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@using Business.CommonBusiness;
+<div id="menu-toolbar">
+    <div class="left-all-page" style="width:350px">
+        <div id="smart-dms" class="block">
+            <h1>Chỉnh sửa yêu cầu chia sẻ</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border: 0px; background: none; width: calc(100% - 350px)">
+        <div id="menu-child">
+            <div class="menu-left">
+            </div>
+            <div class="menu-right" style="">
+                <button style="margin-bottom: 10px" type="button" onclick="location.href = '@Url.Action("Index", "ThuMucLuuTru" )'" class="b_btn b_btn-default vbdi_search">Quản lý tài liệu</button>
+                <div class="btn-group" role="group" style="margin-bottom: 10px;">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Yêu cầu chia sẻ
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("Danhsachyeucauduocchiase", "ThuMucLuuTru")">Xử lý yêu cầu chia sẻ</a></li>
+                        <li><a href="@Url.Action("Danhsachyeucauchiase", "ThuMucLuuTru")">Danh sách yêu cầu chia sẻ</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group" role="group" style="margin-bottom: 10px;margin-right:20px">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chia sẻ tài liệu
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("DanhSachTaiLieuDaChiaSe", "ThuMucLuuTru")">Đang chia sẻ</a></li>
+                        <li><a href="@Url.Action("DanhSachTaiLieuDuocChiaSe", "ThuMucLuuTru")">Được chia sẻ</a></li>
+                        <li><a href="@Url.Action("YeuCauCanChiaSe", "YeuCauChiaSe")">Xử lý yêu cầu chia sẻ</a></li>
+                        <li><a href="@Url.Action("Index", "YeuCauChiaSe")">Yêu cầu chia sẻ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("SaveYeuCauChiaSe", "YeuCauChiaSe", FormMethod.Post, new { enctype = "multipart/form-data", Id = "frmCreateYeuCau" }))
+{
+    <input type="hidden" name="ID" value="@Model.YEUCAU.ID" />
+    <div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+        <div class="right-content clearfix" style="margin-top:20px">
+            <div class="SearchResult">
+                <div class="folder-content" style="margin-top:-30px">
+                    <div id="display">
+                        <div>
+                            <div style="float:left">
+                                Năm:
+                                @Html.DropDownList("NAM", Model.ListNam, new { @style = "width: 100px", @id = "NAM" })
+                            </div>
+                            <div style="float:left">
+                                Quý :
+                                <select style="width:100px" name="QUY" id="QUY">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                            <div class="input-field4 clearfix fix-width" style="float:right">
+                                @Html.DropDownList("DONVI_ID", Model.ListDonVi, "[---Lựa chọn đơn vị---]", new { @style = "", @id = "DONVI_ID" })
+                            </div>
+                        </div>
+                        <br />
+                        <div id="URLPath" style="margin-top:24px"></div>
+                        <div style="height:450px;overflow-y:auto;overflow-x:hidden" class="tblDanhMuc">
+                            @Html.Partial("_YeuCauChiaSe")
+                        </div>
+                        @*<span class="emptydata">Thư mục lưu trữ rỗng</span>*@
+                    </div>
+                    <div style="float: left;margin-top:17%">
+                        <button class="btn btn-success" id="btnChoose" type="button">Chọn</button>
+                    </div>
+                    <div id="treeview">
+                        <h3 class="group-tittle mt10" style="margin-top:30px ;margin-bottom:22px">Các tài liệu đã được lựa chọn</h3>
+                        <table class="YeuCau" >
+                            <tr>
+                                <td>Lý do yêu cầu:<span style="color:red">*</span></td>
+                                <td>
+                                    <textarea class="e-input" style="width:400px;height:60px" name="LYDO" id="LYDO" maxlength="500" placeholder="Nhập lý do cho yêu cầu chia sẻ này">@Model.YEUCAU.LYDO</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <span style="color:red;display:none" id="LYDO_NULL">Bạn chưa nhập lý do cho yêu cầu chia sẻ này</span>
+                                    <span style="color:red;display:none" id="LYDO_ERROR">Lý do không được chứa thẻ HTML</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="tblResult">
+                            @Html.Partial("_DanhSachDanhMuc")
+                        </div>
+                        <div style="margin-top:30px;" class="YeuCau">
+                            <input type="hidden" name="TRANGTHAI" id="TRANGTHAI" value="@YeuCauChiaSeConstant.DUTHAO" />
+                            <input type="hidden" name="COMMENT" id="COMMENT" value="" />
+                            <input type="button" value="Gửi Cục trưởng" id="btnSendMan" class="btn btn-success" />
+                            <input type="submit" value="Lưu lại" id="btnSave" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+    <input type="hidden" name="COMMENT" id="COMMENT" />
+    <div class="modal fade" id="TrinhDuyetYeuCau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+}
+<style>
+    #NAM, #QUY {
+        -moz-user-select: none;
+        background-image: none;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        padding: 2px 12px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+        color: black !important;
+    }
+
+    #display {
+        width: 40%;
+        margin-right: 10px;
+        float: left;
+        min-height: 80%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #treeview {
+        float: left;
+        width: 49%;
+    }
+
+    #Path li {
+        float: left;
+    }
+
+    .tblDanhMuc .webGrid th:nth-child(4), .tblDanhMuc .webGrid th:nth-child(5) {
+        text-align: left !important;
+    }
+
+    .webGrid th {
+        text-align: center !important;
+    }
+</style>
+<script>
+    $(function () {
+        var date = new Date();
+        var curMonth = date.getMonth() + 1;
+        if (curMonth >= 1 && curMonth <= 3) {
+            $("#QUY").val("1");
+        } else if (curMonth >= 4 && curMonth <= 6) {
+            $("#QUY").val("2");
+        } else if (curMonth >= 7 && curMonth <= 9) {
+            $("#QUY").val("3");
+        } else {
+            $("#QUY").val("4");
+        }
+        $("#QUY,#NAM").change(function () {
+            LoadData($("#QUY").val(), $("#NAM").val());
+        });
+        $("#DONVI_ID").change(function () {
+            var ID = $(this).val();
+            if ($(this).val() != "") {
+                $('.tblDanhMuc .webGrid > tbody  > tr').each(function () {
+                    if ($(this).attr("data-id") != ID) {
+                        $(".donvi_" + $(this).attr("data-id")).hide();
+                    } else {
+                        $(".donvi_" + $(this).attr("data-id")).show();
+                    }
+                });
+            } else {
+                $(".donvishow").show();
+            }
+        });
+        $("#btnChoose").click(function () {
+            var DANHMUC = "";
+            $('.tblDanhMuc .webGrid > tbody  > tr').each(function () {
+                var row = $(this);
+                if (row.find('input[type="checkbox"]').is(':checked')) {
+                    DANHMUC += row.find('input[type="checkbox"]').val() + ",";
+                    row.hide();
+                }
+            });
+            if (DANHMUC == "") {
+                $.confirm({
+                    'title': 'Không thể thực hiện hành động',
+                    'message': 'Không tìm thấy danh mục thông tin, tài liệu được chọn',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-info',
+                            'action': function () {
+                                return false;
+                            }
+                        }
+                    }
+                });
+                return false;
+            } else {
+                AddDanhMuc(DANHMUC);
+                LoadData($("#QUY").val(), $("#NAM").val());
+            }
+        });
+        
+        $("#btnSave").click(function () {
+            if ($("#LYDO").val() == "") {
+                $("#LYDO").focus();
+                $("#LYDO_NULL").show();
+                return false;
+            } else {
+                $("#LYDO_NULL").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#LYDO").val()) || /<[a-z][\s\S]*/i.test($("#LYDO").val())) {
+                $("#LYDO").focus();
+                $("#LYDO_ERROR").show();
+                $("html, body").animate({
+                    scrollTop: 0
+                }, 500);
+                return false;
+            } else {
+                $("#LYDO_ERROR").hide();
+            }
+            return true;
+        });
+        $("#btnSendMan").click(function () {
+            if ($("#LYDO").val() == "") {
+                $("#LYDO").focus();
+                $("#LYDO_NULL").show();
+                return false;
+            } else {
+                $("#LYDO_NULL").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#LYDO").val()) || /<[a-z][\s\S]*/i.test($("#LYDO").val())) {
+                $("#LYDO").focus();
+                $("#LYDO_ERROR").show();
+                $("html, body").animate({
+                    scrollTop: 0
+                }, 500);
+                return false;
+            } else {
+                $("#LYDO_ERROR").hide();
+            }
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TrinhCucTruong", "YeuCauChiaSe")',
+                data: {
+                    ID: 0
+                },
+                cache: false,
+                dataType: "html",
+                success: function (data) {
+                    $("#TrinhDuyetYeuCau").html(data);
+                    $("#TrinhDuyetYeuCau").modal('show');
+                }
+            });
+            return false;
+        });
+    });
+    function AddDanhMuc(DANHMUC) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("LuaChonDanhMuc", "YeuCauChiaSe")',
+            data: {
+                DANHMUC_ID: DANHMUC
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $(".YeuCau").show();
+                $("#tblResult").html(data);
+            }
+        });
+    }
+    function LoadData(QUY, NAM) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("LoadDanhMuc", "YeuCauChiaSe")',
+            data: {
+                QUY: QUY,
+                NAM: NAM
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $(".tblDanhMuc").html(data);
+            }
+        });
+    }
+    function XoaDanhMuc(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa danh mục thông tin,tài liệu này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            type: "GET",
+                            url: '@Url.Action("XoaDanhMuc", "YeuCauChiaSe")',
+                            data: {
+                                ID:ID
+                            },
+                            cache: false,
+                            dataType: "json",
+                            success: function (data) {
+                            }
+                        });
+                        LoadData($("#QUY").val(), $("#NAM").val());
+                        AddDanhMuc("");
+                        $("#DANHMUC_" + ID).remove();
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function XoaDanhMucDaLuu(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa danh mục thông tin,tài liệu này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("RemoveDanhMucDaLuu")',
+                            data: {
+                                ID: ID
+                            },
+                            cache: false,
+                            dataType: "json",
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: data,
+                                });
+                                AddDanhMuc("");
+                            }, error: function () {
+                                notif({
+                                    type: 'error',
+                                    position: 'bottom',
+                                    msg: "Có lỗi xảy ra",
+                                });
+                            }
+                        });
+                        LoadData($("#QUY").val(), $("#NAM").val());
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+</script>

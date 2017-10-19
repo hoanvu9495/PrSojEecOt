@@ -1,0 +1,283 @@
+﻿@using Model.eAita;
+@using Web.FwCore;
+@using Web.Common;
+@using Web.Areas.CongViecArea.Models;
+@using Web.Areas.MarkItemArea.Models;
+@{
+    ViewBag.Title = "Quản lý Công việc | Smart DMS | eGovOffice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    MarkItemViewModel mark_model = new MarkItemViewModel();
+    mark_model.ITEM_TYPE = LOAITAILIEU.CONGVIEC;
+    mark_model.RELOAD_FUNCTION = "refreshPage";
+    CongViecIndexViewModel model = new CongViecIndexViewModel();
+    if (ViewBag.Search == CongViecConstant.NO_SEARCH)
+    {
+        model = (CongViecIndexViewModel)SessionManager.GetValue("CongViecViewModel");
+    }
+    else
+    {
+        model = (CongViecIndexViewModel)SessionManager.GetValue("CongViecViewModelSearch");
+    }
+}
+<style type="text/css">
+    #menu-toolbar .btnAddNew {
+        margin-right: 10px;
+    }
+
+    #menu-toolbar .right-all-page {
+        background: none;
+        border: 0;
+    }
+
+    input[type="radio"], input[type="checkbox"] {
+        margin: 3px 0 0;
+    }
+
+    label {
+        font-weight: normal !important;
+    }
+
+    table.webGrid tr.head th, table.webGrid tr.head td {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    table.webGrid tr td {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    #block--mark-item {
+        margin-bottom: 10px;
+        float: left;
+        margin-right: 10px;
+    }
+    .vbdi_search{
+        margin-bottom: 10px;
+    }
+    #menu-middle-left .left-content{
+        overflow:auto;
+    }
+    #TXT_DELETE_REASON{
+        width:100%;
+        height:140px;
+    }
+</style>
+<div id="menu-toolbar" class="date-time">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+    <div class="right-all-page">
+        <div class="menu-left">
+            @if (model.HAS_ROLE_GIAOVIEC)
+            {
+                <div class="btnAddNew">
+                    <a href="@Url.Action("Create")">
+                        <span>Giao việc</span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="btnAddNew">
+                    <a href="/congviecarea/congviec/create?myjob=1">
+                        <span>Việc cá nhân</span>
+                    </a>
+                </div>
+            }
+            <div id="block--mark-item">
+                @Html.Partial("~/Areas/MarkItemArea/Views/_ActionMarkItem.cshtml", mark_model)
+            </div>
+            <button type="button" class="b_btn b_btn-default vbdi_search">
+                Tìm kiếm nâng cao
+            </button>
+        </div>
+        <div class="menu-right">
+            @if (model.HAS_ROLE_GIAOVIEC)
+            {
+                <div class="btnAddNew">
+                    <a href="/congviecarea/congviec/create?myjob=1">
+                        <span>Việc cá nhân</span>
+                    </a>
+                </div>
+            }
+            <div class="btn-group" role="group">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div id="block-search-form">
+        <div id="search-form">
+            <input type="text" placeholder="Từ khóa tìm kiếm" value="" name="txtQuickSearch" id="txtQuickSearch" />
+            <input type="button" value="search" name="btnQuickSearch" id="btnQuickSearch" />
+        </div>
+    </div>
+    <div class="left-content block">
+        @Html.Partial("_MenuCongViec", model.CongViecCounter, new ViewDataDictionary { { "ROLE_GIAO_VIEC",model.HAS_ROLE_GIAOVIEC }, { "Active", ViewBag.Active.ToString() } })
+    </div>
+</div>
+
+<div class="right-all-page">
+    <div class="right-content clearfix">
+        <div class="clearfix">
+            @Html.Partial("_SearchCongViec", model)
+        </div><!--TÌM KIẾM CÔNG VIỆC-->
+        @Html.Partial("_SearchCongViecResult", model)
+    </div>
+</div>
+
+<div id="modal--delete-task" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>XÁC NHẬN XÓA CÔNG VIỆC</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="CONGVIEC_ID"/>
+                <textarea placeholder="Lý do" id="TXT_DELETE_REASON" autofocus="autofocus"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="deleteCongViec()">Xác nhận</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {        
+        if ('@TempData["CreateCongViecSucceed"]' !== '') {
+            notif({
+                msg: 'Tạo công việc thành công',
+                position: 'bottom',
+                type: 'success'
+            });
+        }
+        if ('@TempData["UpdateSucceed"]' !== '') {
+            notif({
+                msg: 'Cập nhật công việc thành công',
+                position: 'bottom',
+                type: 'success'
+            });
+        }
+    });
+    function reloadGrid() {
+        $("#reload").val("1");
+        $("#frmSearh").submit();
+    };
+    $('#txtQuickSearch').keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            $("#keyword").val($(this).val());
+            $("#mark_item").val($("#list_mark_item").multipleSelect("getSelects"));
+            $("#reload").val("0");
+            $("#frmSearh").submit();
+        }
+    });
+    $('#txtQuickSearch').on('keyup', function (event) {
+        if (event.keyCode === 13) {
+            $('#btnQuickSearch').trigger('click');
+        }
+    });
+    $("#btnQuickSearch").click(function () {
+        var keyword = $('#txtQuickSearch').val().trim();
+        $('#frmSearch #QUERY_TUKHOA').val(keyword);
+        $("#frmSearch").submit();
+    });
+    function ShowNguoiXuLyChinh(id) {
+        $(".job-content").hide();
+        $("#xlc_content_" + id).toggle();
+    }
+    function ShowNguoiThamGiaXuLy(id) {
+        $(".job-content").hide();
+        $("#thamgia_content_" + id).toggle();
+    }
+    function ShowNguoiTheoDoi(id) {
+        $(".job-content").hide();
+        $("#theodoi_content_" + id).toggle();
+    }
+    $(".right-all-page").click(function (e) {
+        var target = $(e.target);
+        if (!target.is('.job-img') && !target.is('.job-content')) {
+            $(".job-content").hide();
+        }
+    });
+
+    //kiểm tra xóa công việc
+    function checkCanDelete(id) {
+        $.ajax({
+            url: '@Url.Action("CanDelete")',
+            type: 'POST',
+            data: { id: id },
+            success: function (result) {
+                if (result.canDelete === true) {
+                    $('#modal--delete-task #CONGVIEC_ID').val(id);
+                    $("#modal--delete-task").modal('show');
+                } else {
+                    notif({
+                        msg: 'Bạn không có quyền xóa công việc',
+                        type: 'error',
+                        position:'bottom'
+                    })
+                }
+            }
+        });
+    }
+    //xóa công việc
+    function deleteCongViec() {
+        var id = $('#modal--delete-task #CONGVIEC_ID').val().trim();
+        var lydo = $('#TXT_DELETE_REASON').val().trim();
+        $.ajax({
+            url: '@Url.Action("Delete")',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify({ id: id, lydo: lydo }),
+            success: function (result) {
+                if (result.success === true) {
+                    $('#modal--delete-task').modal('hide');
+                    notif({
+                        msg: 'Xóa công việc thành công !',
+                        type: 'success',
+                        position: 'bottom'
+                    });
+                    setTimeout(function () {
+                        refreshPage();
+                    }, 1000);
+                } else {
+                    notif({
+                        msg: 'Xóa công việc không thành công !',
+                        type: 'error',
+                        position: 'bottom'
+                    });
+                }
+            }, error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    function refreshPage() {
+        var currentPageIndex = parseInt($('#grid tfoot td').clone().children('a').remove().end().text().trim(), 10) - 1;
+        if (isNaN(currentPageIndex)) {
+            currentPageIndex = 0;
+        }
+        $.ajax({
+            url: '@Url.Action("RefreshPage")',
+            type: 'GET',
+            dataType: 'html',
+            data: {
+                pageIndex: currentPageIndex,
+                type: '@(model.TYPE)'
+            },
+            success: function (view) {
+                $('#grid').html(view);
+            }, error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+</script>

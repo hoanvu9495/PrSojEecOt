@@ -1,0 +1,33 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.TaiLieuChuaSoHoaModel
+@using Business.CommonBusiness
+@{
+    List<TaiLieuLichSuChoMuonBO> lstLog = Model.lstLog;
+    var grid = new WebGrid(lstLog,
+                           rowsPerPage: 10,
+                           canPage: false,
+                           canSort: false,
+                           ajaxUpdateContainerId: "grid",
+                           selectionFieldName: "selectedRow"
+                          );
+    if (lstLog.Count > 0)
+    {
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                    grid.Column("TENNGUOICHOMUON", "Người cho sử dụng"),
+                      grid.Column("TENNGUOIMUON", "Người sử dụng"),
+                      grid.Column("NGAYMUON", "Từ ngày", format: (item) => new MvcHtmlString(string.Format("{0:dd/MM/yyyy}", item.NGAYMUON))),
+                      grid.Column("NGAYTRA", "Đến ngày", format: (item) => new MvcHtmlString(item.NGAYTRA == null ? "" : string.Format("{0:dd/MM/yyyy}", item.NGAYTRA))),
+                      grid.Column("TRANGTHAITRUOC", "Trước sử dụng", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI1))),
+                           grid.Column("TRANGTHAITRA", "Sau sử dụng", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAITRA == null ? "Đang sử dụng" : item.TRANGTHAI1)))
+                 )
+    )
+    }
+
+}

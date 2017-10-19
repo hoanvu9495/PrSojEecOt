@@ -1,0 +1,339 @@
+﻿@using Model.eAita;
+@using Web.Models;
+@using Web.FwCore;
+@using Web.Common;
+@using Web.Areas.CongViecArea.Models;
+@using Web.Areas.MarkItemArea.Models;
+@using Web.Common;
+@model ReportCongViecByDepartmentViewModel
+@{
+    ViewBag.Title = "Quản lý Công việc | Smart DMS | eGovOffice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    #menu-toolbar .btnAddNew {
+        margin-right: 10px;
+    }
+
+    #menu-toolbar .right-all-page {
+        background: none;
+        border: 0;
+    }
+
+    #frmReport .ms-drop input[type="radio"], #frmReport .ms-drop input[type="checkbox"] {
+        margin: 3px;
+    }
+
+    label {
+        font-weight: normal !important;
+    }
+
+    table.webGrid tr.head th, table.webGrid tr.head td {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    table.webGrid tr td {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    #block--mark-item {
+        margin-bottom: 10px;
+        float: left;
+        margin-right: 10px;
+    }
+
+    .vbdi_search {
+        margin-bottom: 10px;
+    }
+
+    #menu-middle-left .left-content {
+        overflow: auto;
+    }
+
+    #block--congviec-report-criteria {
+        display: block;
+    }
+
+    #btnCreateReport {
+        background-color: #336699;
+        border: none;
+        width: 100px;
+        color: white;
+    }
+
+    #block--form-report-buttons {
+        text-align: center;
+        margin: 0 0 20px 0;
+        /*margin: 20px 0 0 0;*/
+    }
+
+    .height-10 {
+        height: 10px;
+    }
+
+    .height-20 {
+        height: 20px;
+    }
+
+    .e-input {
+        height: 30px !important;
+    }
+
+    /*#QUERY_NGUOITHAMGIA {
+        width: 80%;
+    }*/
+
+    #frmReport table {
+        width: 65%;
+        margin: 0 auto;
+    }
+
+        #frmReport table input[type=text][class~=datepicker] {
+            width: 233px;
+        }
+
+        #frmReport table .input-field4 {
+            margin: 0 0 0 10px;
+        }
+
+        #frmReport table #QUERY_DONVITHAMGIA {
+            width: 80%;
+        }
+
+    #CHONDONVITHAMGIA, #XOADONVITHAMGIA {
+        margin: 0 0 0 10px;
+    }
+
+</style>
+<div id="menu-toolbar" class="date-time">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+    <div class="right-all-page">
+        <div class="menu-left">
+            @if (Model.HAS_ROLE_GIAOVIEC)
+            {
+                <div class="btnAddNew">
+                    <a href="@Url.Action("Create")">
+                        <span>Giao việc</span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="btnAddNew">
+                    <a href="/congviecarea/congviec/create?myjob=1">
+                        <span>Việc cá nhân</span>
+                    </a>
+                </div>
+            }
+            <div id="block--mark-item">
+            </div>
+        </div>
+        <div class="menu-right">
+            @if (Model.HAS_ROLE_GIAOVIEC)
+            {
+                <div class="btnAddNew">
+                    <a href="/congviecarea/congviec/create?myjob=1">
+                        <span>Việc cá nhân</span>
+                    </a>
+                </div>
+            }
+            <div class="btn-group" role="group">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div id="block-search-form">
+        <div id="search-form">
+            <input type="text" placeholder="Từ khóa tìm kiếm" value="" name="txtQuickSearch" id="txtQuickSearch" />
+            <input type="button" value="search" name="btnQuickSearch" id="btnQuickSearch" />
+        </div>
+    </div>
+    <div class="left-content block">
+        @Html.Partial("_MenuCongViec", Model.CongViecCounter, new ViewDataDictionary { { "ROLE_GIAO_VIEC", Model.HAS_ROLE_GIAOVIEC }, { "ReportByDepartment", true } })
+    </div>
+</div>
+<div class="right-all-page">
+    <div class="right-content clearfix">
+        <div class="clearfix">
+            <h3 class="group-tittle">
+                Báo cáo công việc theo phòng ban
+            </h3>
+            <div id="block--congviec-report-criteria">
+                @Html.AntiForgeryToken()
+                @using (Ajax.BeginForm("ReportCongViecByDepartment", new { }, new AjaxOptions()
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            UpdateTargetId = "grid",
+        }, new { id = "frmReport" }))
+                {
+                    <table class="width-100">
+                        <tr class="height-20"></tr>
+                        <tr>
+                            <td>
+                                <label class="lbl-search" for="QUERY_DONVITHAMGIA">
+                                    Đơn vị tham gia :
+                                </label>
+                            </td>
+                            <td colspan="3">
+                                <input type="text" name="QUERY_DONVITHAMGIA" class="e-input mf10" placeholder="Đơn vị tham gia" id="QUERY_DONVITHAMGIA" />
+                                <input type="hidden" name="QUERY_DONVITHAMGIA_ID" id="QUERY_DONVITHAMGIA_ID" />
+                                <a href="javascript:void(0)" id="CHONDONVITHAMGIA">
+                                    Chọn
+                                </a> |
+                                <a href="javascript:XoaDonViThamGia()" id="XOADONVITHAMGIA">
+                                    Xóa
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="height-10">
+                            <td></td>
+                            <td colspan="3">
+                                <span class="lb-Check" id="QUERY_DONVITHAMGIA_NULL">
+                                    Bạn hãy chọn phòng tham gia
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="QUERY_VAITRO" class="lbl-search">
+                                    Vai trò :
+                                </label>
+                            </td>
+                            <td>
+                                <div class="input-field4 clearfix">
+                                    @Html.DropDownList("QUERY_VAITRO", Model.ListVaiTro, new { @class = "create-phanloai width-100" })
+                                </div>
+                            </td>
+                            <td>
+                                <label for="QUERY_TRANGTHAI" class="lbl-search">
+                                    Trạng thái :
+                                </label>
+                            </td>
+                            <td>
+                                <div class="input-field4 clearfix">
+                                    @Html.DropDownList("QUERY_TRANGTHAI", Model.ListTrangThaiCongViec, new { @class = "create-phanloai width-100", @multiple = "multiple" })
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="height-10"></tr>
+                        <tr>
+                            <td>
+                                <label class="lbl-search" for="QUERY_NGAYBATDAU_FROM">
+                                    Ngày bắt đầu :
+                                </label>
+                            </td>
+                            <td>
+                                <input type="text" name="QUERY_NGAYBATDAU_FROM" id="QUERY_NGAYBATDAU_FROM" placeholder="Từ ngày" class="e-input mf10 datepicker" />
+                            </td>
+                            <td></td>
+                            <td>
+                                <input type="text" id="QUERY_NGAYBATDAU_TO" name="QUERY_NGAYBATDAU_TO" placeholder="Đến ngày" class="e-input mf10 datepicker" />
+                            </td>
+                        </tr>
+                        <tr class="height-10"></tr>
+                        <tr>
+                            <td>
+                                <label class="lbl-search" for="QUERY_HANKETTHUC_FROM">
+                                    Hạn kết thúc :
+                                </label>
+                            </td>
+                            <td>
+                                <input type="text" id="QUERY_HANKETTHUC_FROM" name="QUERY_HANKETTHUC_FROM" placeholder="Từ ngày" class="e-input mf10 datepicker" />
+                            </td>
+                            <td></td>
+                            <td>
+                                <input type="text" id="QUERY_HANKETTHUC_TO" name="QUERY_HANKETTHUC_TO" placeholder="Từ ngày" class="e-input mf10 datepicker" />
+                            </td>
+                        </tr>
+                        <tr class="height-10"></tr>
+                    </table>
+                    <div id="block--form-report-buttons">
+                        <input type="submit" value="Tạo báo cáo" id="btnCreateReport" />
+                    </div>
+                }
+            </div>
+        </div><!--TÌM KIẾM CÔNG VIỆC-->
+        <div id="grid">
+
+        </div>
+    </div>
+</div>
+@{
+    //tạo model cho phòng xử lý chính
+    ChonNguoiDungModel DonViChuTri = new ChonNguoiDungModel();
+    DonViChuTri.COSO_ID = Model.UserInfo.CoSoID.Value;
+    DonViChuTri.DONVI_ID = 0;
+    DonViChuTri.TEXT_ID = "QUERY_DONVITHAMGIA";
+    DonViChuTri.VALUE_ID = "QUERY_DONVITHAMGIA_ID";
+    DonViChuTri.ID_CLICK = "CHONDONVITHAMGIA";
+    DonViChuTri.IS_MULTICHOICE = 1;
+    DonViChuTri.INDEX = 1;
+    DonViChuTri.TITLE = "chọn đơn vị chủ trì";
+    Html.RenderPartial("../Common/_ChooseDonViV1", DonViChuTri);
+}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#QUERY_VAITRO').multipleSelect({
+            single: true
+        });
+        $('#QUERY_TRANGTHAI').multipleSelect({
+            multiple: true
+        });
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-50:+20"
+        });
+        $('#btnCreateReport').on('click', function () {
+            if (validate_element($("#QUERY_DONVITHAMGIA"), $("#QUERY_DONVITHAMGIA_NULL"), "", "", "0") === 0) {
+                $("#QUERY_DONVITHAMGIA").focus();
+                return false;
+            }
+            return true;
+        });
+        $('#QUERY_DONVITHAMGIA').on('keyup change', function () {
+            if (this.value === '') {
+                $('#QUERY_DONVITHAMGIA').focus();
+                $("#QUERY_DONVITHAMGIA_NULL").show();
+            } else {
+                $("#QUERY_DONVITHAMGIA_NULL").hide();
+            }
+        });
+    });
+    function XoaDonViThamGia() {
+        $('#QUERY_DONVITHAMGIA').val('');
+        $('#QUERY_DONVITHAMGIA_ID').val('');
+    }
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart(var1, var2, var3, var4, var5) {
+        google.charts.load('current', { 'packages': ['corechart'] });
+        var data = google.visualization.arrayToDataTable([
+          ['Task', ''],
+          ['Đã hoàn thành', var1],
+          ['Chưa bắt đầu', var2],
+          ['Đang thực hiện', var3],
+          ['Hủy bỏ', var4],
+          ['Đang tạm dừng', var5]
+        ]);
+
+        var options = {
+            title: 'BIỂU ĐỒ CÔNG VIỆC',
+            is3D: true,
+            width: 500,
+            height: 300,
+            colors: ['#cc0000', '#cc00ff', '#cc99ff', '#330099', '#336699']
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    }
+</script>

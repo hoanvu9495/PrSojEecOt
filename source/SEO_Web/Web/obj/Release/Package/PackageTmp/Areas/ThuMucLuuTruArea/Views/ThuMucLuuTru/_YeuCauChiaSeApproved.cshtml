@@ -1,0 +1,75 @@
+﻿@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@using Business.CommonBusiness;
+@{
+
+    List<ThuMucLuuTruBO> lstThuMuc = new List<ThuMucLuuTruBO>();
+    List<TmYeuCauChiaSeChiTietBO> lstSelected = new List<TmYeuCauChiaSeChiTietBO>();
+    if (ViewData["Search"] == "0")
+    {
+        lstThuMuc = (List<ThuMucLuuTruBO>)SessionManager.GetValue("ListChiaSe");
+    }
+    else
+    {
+        lstThuMuc = (List<ThuMucLuuTruBO>)SessionManager.GetValue("ListChiaSeSearch");
+    }
+    lstSelected = (List<TmYeuCauChiaSeChiTietBO>)SessionManager.GetValue("ListItemSelected");
+    if (lstThuMuc != null && lstThuMuc.Count > 0)
+    {
+        foreach (var i in lstThuMuc)
+        {
+            var lstChiTiet = lstSelected.Where(x => x.TAILIEU_ID == i.ID).ToList();
+            if (lstChiTiet.Count > 0)
+            {
+                <tr style="display:none">
+                    <td data-pid="@("F_"+i.ID)">
+                        @if (i.EXPIRE_DATEFROM.HasValue && i.EXPIRE_DATE.HasValue)
+                        {
+                            if (DateTime.Now >= i.EXPIRE_DATEFROM && DateTime.Now <= i.EXPIRE_DATE)
+                            {
+                                <span class="folder unexpired" data-donvi="@i.DONVI_ID" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                            else
+                            {
+                                <span data-donvi="@i.DONVI_ID" class="folder item" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="folder item" title="@i.TENTHUMUC" data-donvi="@i.DONVI_ID" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                    </td>
+                    <td>@i.TENDONVI</td>
+                    <td>Foleder: @i.SLTHUMUC ,File:@i.SL_FILE</td>
+
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td data-pid="@("F_"+i.ID)">
+                        @if (i.EXPIRE_DATEFROM.HasValue && i.EXPIRE_DATE.HasValue)
+                        {
+                            if (DateTime.Now >= i.EXPIRE_DATEFROM && DateTime.Now <= i.EXPIRE_DATE)
+                            {
+                                <span class="folder unexpired" data-donvi="@i.DONVI_ID" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                            else
+                            {
+                                <span data-donvi="@i.DONVI_ID" class="folder item" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="folder item" title="@i.TENTHUMUC" data-donvi="@i.DONVI_ID" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                    </td>
+                    <td>@i.TENDONVI</td>
+                    <td>Folder: @i.SLTHUMUC ,File:@i.SL_FILE</td>
+
+                </tr>
+            }
+        }
+
+    }
+}

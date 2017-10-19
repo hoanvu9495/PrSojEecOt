@@ -1,0 +1,81 @@
+﻿@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.TDKTDangKyDanhHieuArea.Models;
+@model Web.Areas.TDKTDangKyDanhHieuArea.Models.CaNhanDangKyViewModel
+@{
+
+    var grid = new WebGrid(Model.LstDanhHieuCaNhan,
+             rowsPerPage: 10,
+             canPage: true,
+             canSort: true,
+             ajaxUpdateContainerId: "grid",
+             selectionFieldName: "selectedRow"
+               );
+
+}
+<div id="grid">
+    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column(format: (item) =>
+                    {
+                        //var PhongTrao = Model.LstPhongTraoThiDua.Where(x => x.Value == item.PHONG_TRAO_ID.ToString()).FirstOrDefault();
+                        return new MvcHtmlString(string.Format(
+                        "<a href='/TDKTDangKyDanhHieuArea/CaNhanDangKy/View/" + item.ID + "' >" + "</a>"));
+                    }
+                    , header: "Phong trào thi đua", style: "left"),
+                    grid.Column(format: (item) => item.HO_TEN, header: "Người đăng ký"),
+                grid.Column("NGAYDANGKY", format: (item) => new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + string.Format("{0:dd/MM/yyyy}", item.NGAYDANGKY) + "</span>")), header: "Ngày đăng ký"),
+                grid.Column(format: (item) =>
+                    {
+                        var str_return = "";
+                        if (item.TRANGTHAI == DonDangKyThiDuaCaNhanConstant.TT_MOITAO)
+                        {
+                            str_return = "Mới tạo";
+                        }
+                        else if (item.TRANGTHAI == DonDangKyThiDuaCaNhanConstant.TT_DAGUI)
+                        {
+                            str_return = "Đã trình lãnh đạo";
+                        }                        
+                        return str_return;
+                    }
+                            , header: "Trạng thái", style: "left"),
+                  grid.Column(format: (item) =>
+                    {
+                        if (item.TRANGTHAI == DonDangKyThiDuaCaNhanConstant.TT_MOITAO)
+                        {
+                            return new MvcHtmlString(string.Format(
+                             "<a href='/TDKTDangKyDanhHieuArea/CaNhanDangKy/Edit/" + item.ID + "'  class='btnEdit' title = 'Chỉnh sửa'></a>"));
+                        }
+                        else
+                        {
+                            return "";
+                        }
+
+                    }
+                            , header: ""),
+                grid.Column(format: (item) =>
+                    {
+                        if (item.TRANGTHAI == DonDangKyThiDuaCaNhanConstant.TT_MOITAO)
+                        {
+                            return new MvcHtmlString(string.Format(
+                            "<a href='javascript:void(0)' onclick='DeleteDonDangKy(" + item.ID + ")'  class='btnDelete' title = 'Xóa'></a>"));
+
+                        }
+                        else
+                        {
+                            return "";
+                        }
+
+                    }
+                        ,
+                           header: "")
+                )
+    )
+</div>

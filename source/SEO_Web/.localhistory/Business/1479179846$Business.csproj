@@ -1,0 +1,651 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{581AC6D4-65EC-4CC9-88EB-140CE3F04117}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Business</RootNamespace>
+    <AssemblyName>Business</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\DLLOUTPUT\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AE.Net.Mail">
+      <HintPath>..\packages\AE.Net.Mail.1.7.10.0\lib\net45\AE.Net.Mail.dll</HintPath>
+    </Reference>
+    <Reference Include="BarcodeLib">
+      <HintPath>..\lib\BarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Ciloci.Flee">
+      <HintPath>..\lib\Ciloci.Flee.dll</HintPath>
+    </Reference>
+    <Reference Include="DAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\eAita_Model\DLLOUTPUT\DAL.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Extended, Version=5.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\EntityFramework.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\lib\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Web\DLL\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\eAita_Model\DLLOUTPUT\Model.dll</HintPath>
+    </Reference>
+    <Reference Include="NativeExcel, Version=2.0.18.0, Culture=neutral, PublicKeyToken=8e39ab1f1c5149a0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Web\DLL\NativeExcel.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Web\DLL\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Web\DLL\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Web\DLL\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Web\DLL\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Business\BhBaoHiemYTeBusiness.cs" />
+    <Compile Include="Business\BhBenhVienBusiness.cs" />
+    <Compile Include="Business\BhSoBaoHiemBusiness.cs" />
+    <Compile Include="Business\DmBacLuongVienChucBusiness.cs" />
+    <Compile Include="Business\DmPhuCapBusiness.cs" />
+    <Compile Include="Business\DtnsDauThauBusiness.cs" />
+    <Compile Include="Business\DtnsDuAnBusiness.cs" />
+    <Compile Include="Business\DtnsTinhTrangDuAnBusiness.cs" />
+    <Compile Include="Business\HscbHopDongLamViecBusiness.cs" />
+    <Compile Include="Business\HscbHopDongLD68Business.cs" />
+    <Compile Include="Business\HtqtDoanRaCanBoBusiness.cs" />
+    <Compile Include="Business\HtqtQuocGiaBusiness.cs" />
+    <Compile Include="Business\ImapSmtpMailServerBusiness.cs" />
+    <Compile Include="Business\LanhDaoNhanBusiness.cs" />
+    <Compile Include="Business\PhThietBiBusiness.cs" />
+    <Compile Include="Business\PhThongTinPhongHopBusiness.cs" />
+    <Compile Include="Business\QLBaoHiemPhuLucBusiness.cs" />
+    <Compile Include="Business\QLEmailBusinesss.cs" />
+    <Compile Include="Business\QlMailTemplateBusiness.cs" />
+    <Compile Include="Business\QLSTGuiThamDinhBusiness.cs" />
+    <Compile Include="Business\QLSTSoanThaoBusiness.cs" />
+    <Compile Include="Business\QLSTXinYKienBusiness.cs" />
+    <Compile Include="Business\QLSTYKienDanhGiaBusiness.cs" />
+    <Compile Include="Business\QlxDieuxeBusiness.cs" />
+    <Compile Include="Business\SkDangKySangKienBusiness.cs" />
+    <Compile Include="Business\SkDongSangKienBusiness.cs" />
+    <Compile Include="Business\SkLinhVucBusiness.cs" />
+    <Compile Include="Business\SkTrinhLanhDaoBusiness.cs" />
+    <Compile Include="Business\SysCongviecHasChucnangBusiness.cs" />
+    <Compile Include="Business\SysCongviecMapChucnangBusiness.cs" />
+    <Compile Include="Business\TaiLieuDungLuongLuuTruBusiness.cs" />
+    <Compile Include="Business\TDKTCaNhanDangKyBusiness.cs" />
+    <Compile Include="Business\TDKTPhongTraoThiDuaBusiness.cs" />
+    <Compile Include="Business\DmChuyenNganhDaoTaoBusiness.cs" />
+    <Compile Include="Business\HscvVanBanLienQuanBusiness.cs" />
+    <Compile Include="Business\HscvCongviecDonvithamgiaxulyBusiness.cs" />
+    <Compile Include="Business\HscvCongviecDonvitheodoiBusiness.cs" />
+    <Compile Include="Business\HscvCongviecDonvixulychinhBusiness.cs" />
+    <Compile Include="Business\HscvVanbandiCosonhanTronghethongBusiness.cs" />
+    <Compile Include="Business\HscvVanbandiDonvinhanTheodoiBusiness.cs" />
+    <Compile Include="Business\LuuTruHangBusiness.cs" />
+    <Compile Include="Business\LuuTruKeBusiness.cs" />
+    <Compile Include="Business\LuuTruPhongBusiness.cs" />
+    <Compile Include="Business\LuuTruTangBusiness.cs" />
+    <Compile Include="Business\LuuTruToaNhaBusiness.cs" />
+    <Compile Include="Business\NguoiDungVaiTroBusiness.cs" />
+    <Compile Include="Business\QLDangPhiBusiness.cs" />
+    <Compile Include="Business\QLDoanPhiBusiness.cs" />
+    <Compile Include="Business\QlxXeBusiness.cs" />
+    <Compile Include="Business\QuanLyBieuMauBusiness.cs" />
+    <Compile Include="Business\QuanLyBieuMauLinhVucBusiness.cs" />
+    <Compile Include="Business\QuanLyBieuMauLoaiBusiness.cs" />
+    <Compile Include="Business\TaiLieuChuaSoHoaBusiness.cs" />
+    <Compile Include="Business\TaiLieuLichSuChoMuonBusiness.cs" />
+    <Compile Include="Business\TaiLieuTrangThaiSuDungBusiness.cs" />
+    <Compile Include="Business\TdktDanhHieuCaNhanConditionBusiness.cs" />
+    <Compile Include="Business\DmCapCoSoBusiness.cs" />
+    <Compile Include="Business\DtnsQuyetToanBusiness.cs" />
+    <Compile Include="Business\DTPLDeCuongBusiness.cs" />
+    <Compile Include="Business\DTPLDeCuongLichSuBusiness.cs" />
+    <Compile Include="Business\DTPLDonViSoanThaoBusiness.cs" />
+    <Compile Include="Business\DTPLDonViSoanThaoChiTietBusiness.cs" />
+    <Compile Include="Business\DTPLFileHistoryBusiness.cs" />
+    <Compile Include="Business\DTPLGuiThamDinhBusiness.cs" />
+    <Compile Include="Business\DTPLSoanThaoBusiness.cs" />
+    <Compile Include="Business\DTPLXinYKienBusiness.cs" />
+    <Compile Include="Business\DTPLYKienDanhGiaBusiness.cs" />
+    <Compile Include="Business\HscbDieuChuyenCongChucBusiness.cs" />
+    <Compile Include="Business\HscbLanhDaoDanhGiaBusiness.cs" />
+    <Compile Include="Business\NLTXLichSuToTrinhBusiness.cs" />
+    <Compile Include="Business\PhChuyenDoiTrangThaiBusiness.cs" />
+    <Compile Include="Business\PhDangKyPhongHopBusiness.cs" />
+    <Compile Include="Business\PhThietBiDangKyBusiness.cs" />
+    <Compile Include="Business\QLCamTinhDang.cs" />
+    <Compile Include="Business\QLChiBoBusiness.cs" />
+    <Compile Include="Business\QLChiDoanBusiness.cs" />
+    <Compile Include="Business\QLCongDoanBusiness.cs" />
+    <Compile Include="Business\QLDangVienBusiness.cs" />
+    <Compile Include="Business\QLDoanVienBusiness.cs" />
+    <Compile Include="Business\QLHoatDongDangVienBusiness.cs" />
+    <Compile Include="Business\QLHoatDongDoanVienBusiness.cs" />
+    <Compile Include="Business\SysChucnangMacdinhBusiness.cs" />
+    <Compile Include="Business\TaiLieuLichSuPheDuyetBusiness.cs" />
+    <Compile Include="Business\ThietLapTienKhoanBusiness.cs" />
+    <Compile Include="Business\ThongTinLuongBusiness.cs" />
+    <Compile Include="Business\TmDanhMucThongTinBusiness.cs" />
+    <Compile Include="Business\TmDanhMucTrinhCucBusiness.cs" />
+    <Compile Include="Business\TmDanhMucTrinhCucChiTietBusiness.cs" />
+    <Compile Include="Business\TmThongKeDanhMucBusiness.cs" />
+    <Compile Include="Business\TmThongKeDanhMucLogBusiness.cs" />
+    <Compile Include="Business\TmThuMucChuaSoHoaBusiness.cs" />
+    <Compile Include="Business\TransactionSmsBusiness.cs" />
+    <Compile Include="Business\ActionAuditBusiness.cs" />
+    <Compile Include="Business\CauhinhHethongBusiness.cs" />
+    <Compile Include="Business\ChatGroupBusiness.cs" />
+    <Compile Include="Business\ChatGroupUserBusiness.cs" />
+    <Compile Include="Business\ChatNoidungBusiness.cs" />
+    <Compile Include="Business\ChBuocThaoTacBusiness.cs" />
+    <Compile Include="Business\CongViecBusiness.cs" />
+    <Compile Include="Business\CongViecNguoithamgiaxylyBusiness.cs" />
+    <Compile Include="Business\CongViecNguoitheodoiBusiness.cs" />
+    <Compile Include="Business\CongViecNguoixylychinhBusiness.cs" />
+    <Compile Include="Business\CongViecNoidungtraodoiBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\CosoBusiness.cs" />
+    <Compile Include="Business\CTLichCongTacBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\CTLichCongTac_NguoiDungBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\DmBacLuongBusiness.cs" />
+    <Compile Include="Business\DmChucnangBusiness.cs" />
+    <Compile Include="Business\DmChucVuBusiness.cs" />
+    <Compile Include="Business\DMCoSoDaoTaoBusiness.cs" />
+    <Compile Include="Business\DmDanTocBusiness.cs" />
+    <Compile Include="Business\DmDonviBusiness.cs" />
+    <Compile Include="Business\DMHinhThucDaoTaoBusiness.cs" />
+    <Compile Include="Business\DMLoaiDaoTaoBusiness.cs" />
+    <Compile Include="Business\DmLoaiHopDongBusiness.cs" />
+    <Compile Include="Business\DmLyLuanChinhTriBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\DmMoiQuanHeBusiness.cs" />
+    <Compile Include="Business\DmNgachCongChucBusiness.cs" />
+    <Compile Include="Business\DmNgachVienChucBusiness.cs" />
+    <Compile Include="Business\DmNgheNghiepBusiness.cs" />
+    <Compile Include="Business\DmNgoaiNguBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\DmNguoidungBusiness.cs" />
+    <Compile Include="Business\DMNguonKinhPhiBusiness.cs" />
+    <Compile Include="Business\DmPhongbanBusiness.cs" />
+    <Compile Include="Business\DmQuanLyNhaNuocBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\DmThaotacBusiness.cs" />
+    <Compile Include="Business\DmTinHocBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\DmTonGiaoBusiness.cs" />
+    <Compile Include="Business\DmTrinhdoChuyenmonBusiness.cs" />
+    <Compile Include="Business\DmVaitroBusiness.cs" />
+    <Compile Include="Business\DmVanBangChungChiBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\DoanRaBusiness.cs" />
+    <Compile Include="Business\DoanRaMucDichBusiness.cs" />
+    <Compile Include="Business\DoanRa_ThanhVienBusiness.cs" />
+    <Compile Include="Business\DoanVaoBusiness.cs" />
+    <Compile Include="Business\DoanVao_KhachThamDuBusiness.cs" />
+    <Compile Include="Business\DoanVao_ThanhPhanTiepBusiness.cs" />
+    <Compile Include="Business\DTChungChiBusiness.cs" />
+    <Compile Include="Business\DTDMDaoTaoNguoiDungBusiness.cs" />
+    <Compile Include="Business\DTKeHoachDaoTaoBusiness.cs" />
+    <Compile Include="Business\DTLichSuPheDuyetBusiness.cs" />
+    <Compile Include="Business\DTNhanXetBusiness.cs" />
+    <Compile Include="Business\DtnsDuToanBusiness.cs" />
+    <Compile Include="Business\DtnsGiaiNganBusiness.cs" />
+    <Compile Include="Business\EntitiesBusiness.cs" />
+    <Compile Include="Business\GenericBusiness.cs" />
+    <Compile Include="Business\HosocanboBusiness.cs" />
+    <Compile Include="Business\HscbBietPhaiCanBoBusiness.cs" />
+    <Compile Include="Business\HscbBoNhiemCanBoBusiness.cs" />
+    <Compile Include="Business\HscbBoNhiemLaiCongChucBusiness.cs" />
+    <Compile Include="Business\HscbCanBoNghiHuuBusiness.cs" />
+    <Compile Include="Business\HscbCccvTapsuBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\HscbCCVCTapSuBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\HscbChuyenNgachBusiness.cs" />
+    <Compile Include="Business\HscbCongChucVienChucBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\HscbDanhGiaCanBoBusiness.cs" />
+    <Compile Include="Business\HscbDanhGiaTapSuBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\HscbDanhSachNghiHuuBusiness.cs" />
+    <Compile Include="Business\HscbFilesBusiness.cs" />
+    <Compile Include="Business\HscbNangNgachBusiness.cs" />
+    <Compile Include="Business\HscbNguoiDungCanBoBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\HscbNhanSuLogBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\HscbNoiDungDanhGiaBusiness.cs" />
+    <Compile Include="Business\HscbQuanHeGiaDinhBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\HscbQuaTrinhCongTacBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\HscbQuaTrinhLuongBusiness.cs" />
+    <Compile Include="Business\HscbThoiViecBusiness.cs" />
+    <Compile Include="Business\HscbTruongDaoTaoBusiness.cs" />
+    <Compile Include="Business\HscbTuChucMienNhiemBusiness.cs" />
+    <Compile Include="Business\HscvBaocaoCvBusiness.cs" />
+    <Compile Include="Business\HscvCapnhattiendoCvBusiness.cs" />
+    <Compile Include="Business\HscvCongviecBusiness.cs" />
+    <Compile Include="Business\HscvCongviecXinluihanBusiness.cs" />
+    <Compile Include="Business\HscvDokhanBusiness.cs" />
+    <Compile Include="Business\HscvDomatBusiness.cs" />
+    <Compile Include="Business\HscvDonvibanhanhBusiness.cs" />
+    <Compile Include="Business\HscvDonviphoihopBusiness.cs" />
+    <Compile Include="Business\HscvDouutienCvBusiness.cs" />
+    <Compile Include="Business\HscvFileuploadBusiness.cs" />
+    <Compile Include="Business\HscvHosoBusiness.cs" />
+    <Compile Include="Business\HscvLinhvucvanbanBusiness.cs" />
+    <Compile Include="Business\HscvLoaihosoBusiness.cs" />
+    <Compile Include="Business\HscvMucdoquantrongBusiness.cs" />
+    <Compile Include="Business\HscvNguoiphoihopBusiness.cs" />
+    <Compile Include="Business\HscvNhomsovanbanBusiness.cs" />
+    <Compile Include="Business\HscvNoidungtraodoiCvBusiness.cs" />
+    <Compile Include="Business\HscvPhieuguitravbBusiness.cs" />
+    <Compile Include="Business\HscvPhongbanphoihopBusiness.cs" />
+    <Compile Include="Business\HscvSovanbanBusiness.cs" />
+    <Compile Include="Business\HscvTiepnhanvanbandenBusiness.cs" />
+    <Compile Include="Business\HscvTrangthaiCvBusiness.cs" />
+    <Compile Include="Business\HscvVanbandenBusiness.cs" />
+    <Compile Include="Business\HscvVanbandenDonviphoihopBusiness.cs" />
+    <Compile Include="Business\HscvVanbandenNguoixulyBusiness.cs" />
+    <Compile Include="Business\HscvVanbandenPhongbanxulyBusiness.cs" />
+    <Compile Include="Business\HscvVanbandiBusiness.cs" />
+    <Compile Include="Business\HscvVanbandiCanhanNhanvbBusiness.cs" />
+    <Compile Include="Business\HscvVanbandiDonvinhanNgoaicoquanBusiness.cs" />
+    <Compile Include="Business\HscvVanbandiDonvinhanTrongcoquanBusiness.cs" />
+    <Compile Include="Business\HscvVanbandiNguoikyBusiness.cs" />
+    <Compile Include="Business\HscvVanbandiYkienchidaoBusiness.cs" />
+    <Compile Include="Business\HscvVanbannoiboBusiness.cs" />
+    <Compile Include="Business\HscvVLoaiVanBanBusiness.cs" />
+    <Compile Include="Business\Htqt_ChuongTrinhDuAnBusiness.cs" />
+    <Compile Include="Business\Htqt_ChuongTrinhQuocGiaBusiness.cs" />
+    <Compile Include="Business\Htqt_DonViTaiTroBusiness.cs" />
+    <Compile Include="Business\Htqt_DonViToChucBusiness.cs" />
+    <Compile Include="Business\Htqt_HoChieuBusiness.cs" />
+    <Compile Include="Business\Htqt_HoiNghiHoiThaoBusiness.cs" />
+    <Compile Include="Business\Htqt_QuocGiaToChucBusiness.cs" />
+    <Compile Include="Business\NguoidungChucnangBusiness.cs" />
+    <Compile Include="Business\NguoidungThaotacBusiness.cs" />
+    <Compile Include="Business\NltthChuyenvienTrinhCuctruongBusiness.cs" />
+    <Compile Include="Business\NltthDonxinNangluongBusiness.cs" />
+    <Compile Include="Business\NltthLichsuNangluongBusiness.cs" />
+    <Compile Include="Business\NLTXChuyenVienThamDinhBusiness.cs" />
+    <Compile Include="Business\NLTXChuyenVienThamDinhChiTietBusiness.cs" />
+    <Compile Include="Business\NLTXCVPTrinhCucTruongBusiness.cs" />
+    <Compile Include="Business\NLTXDonXinNangLuongBusiness.cs" />
+    <Compile Include="Business\NLTXGuiChanhVanPhongBusiness.cs" />
+    <Compile Include="Business\NLTXGuiChuyenVienBusiness.cs" />
+    <Compile Include="Business\NLTXKeHoachNangLuongBusiness.cs" />
+    <Compile Include="Business\NLTXKeHoachNangLuongChiTietBusiness.cs" />
+    <Compile Include="Business\NLTXLichSuNangLuongBusiness.cs" />
+    <Compile Include="Business\NLTXNhanXetNangLuongBusiness.cs" />
+    <Compile Include="Business\NLTXThongBaoKHNLCanBoBusiness.cs" />
+    <Compile Include="Business\NLTXTrinhCucTruongBusiness.cs" />
+    <Compile Include="Business\NLTXTrinhCucTruongChiTietBusiness.cs" />
+    <Compile Include="Business\NpChiTietBusiness.cs" />
+    <Compile Include="Business\NpDonXinNghiBusiness.cs" />
+    <Compile Include="Business\NpLichSuCapCoQuanBusiness.cs" />
+    <Compile Include="Business\NpLichSuTrinhDonViBusiness.cs" />
+    <Compile Include="Business\NpNgayNghiPhepNamBusiness.cs" />
+    <Compile Include="Business\QlxHangxeBusiness.cs" />
+    <Compile Include="Business\QlxPhieudangkyBusiness.cs" />
+    <Compile Include="Business\SysCauhinhHanghienthiBusiness.cs" />
+    <Compile Include="Business\SysCauhinhhienthiBusiness.cs" />
+    <Compile Include="Business\SysCauhinhtrangchuBusiness.cs" />
+    <Compile Include="Business\SysChucnangtrangchuBusiness.cs" />
+    <Compile Include="Business\SysChucnangtrangchuVaitroBusiness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\SysEntityMarkBusiness.cs" />
+    <Compile Include="Business\SysTinnhanBusiness.cs" />
+    <Compile Include="Business\TailieudinhkemBusiness.cs" />
+    <Compile Include="Business\TdktDanhhieucanhanBusiness.cs" />
+    <Compile Include="Business\TdktDanhhieutaptheBusiness.cs" />
+    <Compile Include="Business\TdktDieukiendanhhieucanhanBusiness.cs" />
+    <Compile Include="Business\ThuMucLichSuPheDuyetBusiness.cs" />
+    <Compile Include="Business\ThuMucLuuTruBusiness.cs" />
+    <Compile Include="Business\TMChinhSachQLTLBusiness.cs" />
+    <Compile Include="Business\TmChuyenTiepYeuCauBusiness.cs" />
+    <Compile Include="Business\TmGiaHanLichSuBusiness.cs" />
+    <Compile Include="Business\TmGiaHanTaiLieuBusiness.cs" />
+    <Compile Include="Business\TmLichSuKiemXuatBusiness.cs" />
+    <Compile Include="Business\TmLoaiTaiLieuThuocTinhBusiness.cs" />
+    <Compile Include="Business\TmLoaiVanBanBusiness.cs" />
+    <Compile Include="Business\TmManagerVersionBusiness.cs" />
+    <Compile Include="Business\TmSharingFileBusiness.cs" />
+    <Compile Include="Business\TmTaiLieuThuocTinhBusiness.cs" />
+    <Compile Include="Business\TmYeuCauChiaSeBusiness.cs" />
+    <Compile Include="Business\TmYeuCauChiaSeChiTietBusiness.cs" />
+    <Compile Include="Business\TmYeuCauChiaSeLichSuBusiness.cs" />
+    <Compile Include="Business\TsLichSuSuDungBusiness.cs" />
+    <Compile Include="Business\TsNguonPhatSinhBusiness.cs" />
+    <Compile Include="Business\TsNhomTaiSanBusiness.cs" />
+    <Compile Include="Business\TsTaiSanBusiness.cs" />
+    <Compile Include="Business\TsThanhLyTaiSanBusiness.cs" />
+    <Compile Include="Business\TsTrangThaiTaiSanBusiness.cs" />
+    <Compile Include="Business\VaitroChucnangBusiness.cs" />
+    <Compile Include="Business\TinhBusiness.cs" />
+    <Compile Include="Business\HuyenBusiness.cs" />
+    <Compile Include="Business\VmDonXinVangMatBusiness.cs" />
+    <Compile Include="Business\VmDonXinVangMatChiTietBusiness.cs" />
+    <Compile Include="Business\VmTrinhLanhDaoCoQuanBusiness.cs" />
+    <Compile Include="Business\VmTrinhLanhDaoDonViBusiness.cs" />
+    <Compile Include="Business\VPLoiViPhamBusiness.cs" />
+    <Compile Include="Business\VPViPhamBusiness.cs" />
+    <Compile Include="Business\WfBuocchuyentrangthaiBusiness.cs" />
+    <Compile Include="Business\WfEntityRelationBusiness.cs" />
+    <Compile Include="Business\WfLichsuchuyendoitrangthaiBusiness.cs" />
+    <Compile Include="Business\WfNhomquytrinhBusiness.cs" />
+    <Compile Include="Business\WfQuytrinhBusiness.cs" />
+    <Compile Include="Business\WfStepvaitroBusiness.cs" />
+    <Compile Include="Business\WfTrangthaiBusiness.cs" />
+    <Compile Include="Business\XaBusiness.cs" />
+    <Compile Include="Business\VaitroThaotacBusiness.cs" />
+    <Compile Include="CommonBusiness\BhBaoHiemYTeBO.cs" />
+    <Compile Include="CommonBusiness\BhSoBaoHiemBO.cs" />
+    <Compile Include="CommonBusiness\BusinessException.cs" />
+    <Compile Include="CommonBusiness\DMBacLuongBO.cs" />
+    <Compile Include="CommonBusiness\HscbHopDongLamViecBO.cs" />
+    <Compile Include="CommonBusiness\HscbHopDongLaoDongBO.cs" />
+    <Compile Include="CommonBusiness\HtqtDoanVaoKhachThamDuBO.cs" />
+    <Compile Include="CommonBusiness\HtqtDoanVaoThanhPhanTiepBO.cs" />
+    <Compile Include="CommonBusiness\ImapSmtpMailServer.cs" />
+    <Compile Include="CommonBusiness\NguoiDungVaiTroBO.cs" />
+    <Compile Include="CommonBusiness\QLSTDonViSoanThaoBO.cs" />
+    <Compile Include="CommonBusiness\QLSTDonViSoanThaoChiTietBO.cs" />
+    <Compile Include="CommonBusiness\QlThongTinPhuCapBO.cs" />
+    <Compile Include="CommonBusiness\SkDangKySangKienBO.cs" />
+    <Compile Include="CommonBusiness\SkDongSangKienBO.cs" />
+    <Compile Include="CommonBusiness\SkTrinhLanhDaoBO.cs" />
+    <Compile Include="CommonBusiness\TaiLieuDungLuongLuuTruBO.cs" />
+    <Compile Include="CommonBusiness\TDKTDanhHieuCaNhanBO.cs" />
+    <Compile Include="CommonBusiness\DmChucVuBO.cs" />
+    <Compile Include="CommonBusiness\HscvVanBanLienQuanBO.cs" />
+    <Compile Include="CommonBusiness\CauHinhThoiGianBO.cs" />
+    <Compile Include="CommonBusiness\ChatBO.cs" />
+    <Compile Include="CommonBusiness\ChucNangTrangChuVaiTroBO.cs" />
+    <Compile Include="CommonBusiness\CongViecBO.cs" />
+    <Compile Include="CommonBusiness\CongViecLuiHanBO.cs" />
+    <Compile Include="CommonBusiness\CongViecNoiDungTraoDoiBO.cs" />
+    <Compile Include="CommonBusiness\CoSoBO.cs" />
+    <Compile Include="CommonBusiness\CTLichCongTacBO.cs" />
+    <Compile Include="CommonBusiness\CTLichCongTac_NguoiDungBO.cs" />
+    <Compile Include="CommonBusiness\DmCapDonViBO.cs" />
+    <Compile Include="CommonBusiness\dmChucNangBO.cs" />
+    <Compile Include="CommonBusiness\DmDonViBO.cs" />
+    <Compile Include="CommonBusiness\DMNguoiDungBO.cs" />
+    <Compile Include="CommonBusiness\DmPhongBanBO.cs" />
+    <Compile Include="CommonBusiness\DmThaoTacBO.cs" />
+    <Compile Include="CommonBusiness\DmVaiTroBO.cs" />
+    <Compile Include="CommonBusiness\DoanRaBO.cs" />
+    <Compile Include="CommonBusiness\DoanRaMucDichBO.cs" />
+    <Compile Include="CommonBusiness\DoanRa_ThanhVienBO.cs" />
+    <Compile Include="CommonBusiness\DoanVaoBO.cs" />
+    <Compile Include="CommonBusiness\DoanVao_KhachThamDuBO.cs" />
+    <Compile Include="CommonBusiness\DoanVao_ThanhPhanTiepBO.cs" />
+    <Compile Include="CommonBusiness\DonViBanHanhBO.cs" />
+    <Compile Include="CommonBusiness\DTChungChiDaoTaoBO.cs" />
+    <Compile Include="CommonBusiness\DTDanhGiaKQDTBO.cs" />
+    <Compile Include="CommonBusiness\DTDMKeHoachDaoTaoUserBO.cs" />
+    <Compile Include="CommonBusiness\DTKeHoachDaoTaoBO.cs" />
+    <Compile Include="CommonBusiness\DTLichSuPheDuyetBO.cs" />
+    <Compile Include="CommonBusiness\DTPLDeCuongBO.cs" />
+    <Compile Include="CommonBusiness\DTPLDeCuongLichSuBO.cs" />
+    <Compile Include="CommonBusiness\DTPLGuiThamDinhBO.cs" />
+    <Compile Include="CommonBusiness\DTPLSoanThaoVanBanBO.cs" />
+    <Compile Include="CommonBusiness\DTPLXinYKienBO.cs" />
+    <Compile Include="CommonBusiness\DTPLYKienDanhGiaBO.cs" />
+    <Compile Include="CommonBusiness\DuToanBO.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\IVTExcel.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\IVTExport.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\IVTRange.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\IVTValidation.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\IVTWorkbook.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\IVTWorksheet.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\SheetData.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\VTEnums.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\VTExport.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\VTRange.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\VTValidation.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\VTVector.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\VTWorkbook.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\VTWorksheet.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTExcel\WorkBookData.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTStyle\VTBorderStyle.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTStyle\VTComment.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTStyle\VTFont.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTStyle\VTFontUnderlineType.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTStyle\VTHorizontalAlignment.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTStyle\VTLineStyle.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTStyle\VTSheetVisibility.cs" />
+    <Compile Include="CommonBusiness\ExcelCommon\VTStyle\VTVerticalAlignment.cs" />
+    <Compile Include="CommonBusiness\GiaiNganBO.cs" />
+    <Compile Include="CommonBusiness\GoiThauBO.cs" />
+    <Compile Include="CommonBusiness\HscbBietPhaiBO.cs" />
+    <Compile Include="CommonBusiness\HscbBoNhiemCongChucBO.cs" />
+    <Compile Include="CommonBusiness\HscbBoNhiemLaiCongChuBO.cs" />
+    <Compile Include="CommonBusiness\HscbCanBoNghiHuuBO.cs" />
+    <Compile Include="CommonBusiness\HscbCCVCTapSuBO.cs" />
+    <Compile Include="CommonBusiness\HscbChuyenNgachBO.cs" />
+    <Compile Include="CommonBusiness\HscbCongChucVienChucBO.cs" />
+    <Compile Include="CommonBusiness\HscbDanhGiaCanBoBO.cs" />
+    <Compile Include="CommonBusiness\HscbDanhGiaTapSuBO.cs" />
+    <Compile Include="CommonBusiness\HscbDanhSachLanhDaoDanhGiaBO.cs" />
+    <Compile Include="CommonBusiness\HscbDanhSachNghiHuuBO.cs" />
+    <Compile Include="CommonBusiness\HscbDetailBO.cs" />
+    <Compile Include="CommonBusiness\HscbDieuChuyenBO.cs" />
+    <Compile Include="CommonBusiness\HscbLanhDaoDanhGiaBO.cs" />
+    <Compile Include="CommonBusiness\HscbNangNgachBO.cs" />
+    <Compile Include="CommonBusiness\HscbNguoiDungCBBO.cs" />
+    <Compile Include="CommonBusiness\HscbNhanSuLogBO.cs" />
+    <Compile Include="CommonBusiness\HscbQuanHeGiaDinhBO.cs" />
+    <Compile Include="CommonBusiness\HscbQuaTrinhCongTacBO.cs" />
+    <Compile Include="CommonBusiness\HscbQuaTrinhLuongBO.cs" />
+    <Compile Include="CommonBusiness\HscbThoiViecBO.cs" />
+    <Compile Include="CommonBusiness\HscbTruongDaoTaoBO.cs" />
+    <Compile Include="CommonBusiness\HscbTuChucMienNhiemBO.cs" />
+    <Compile Include="CommonBusiness\HSCB_LOGIN_BO.cs" />
+    <Compile Include="CommonBusiness\HscvDonViBanHanhBO.cs" />
+    <Compile Include="CommonBusiness\HscvNhomSoVanBanBO.cs" />
+    <Compile Include="CommonBusiness\HscvSoVanBanBO.cs" />
+    <Compile Include="CommonBusiness\Htqt_ChuongTrinhDuAnBO.cs" />
+    <Compile Include="CommonBusiness\Htqt_HoChieuBO.cs" />
+    <Compile Include="CommonBusiness\Htqt_HoiNghiHoiThaoBO.cs" />
+    <Compile Include="CommonBusiness\Htqt_QuocGiaToChucBO.cs" />
+    <Compile Include="CommonBusiness\Htqt_VanBanBO.cs" />
+    <Compile Include="CommonBusiness\LichSuPheDuyetBO.cs" />
+    <Compile Include="CommonBusiness\LinhVucQuanLyBieuMauBO.cs" />
+    <Compile Include="CommonBusiness\LoaiXeBO.cs" />
+    <Compile Include="CommonBusiness\LuuTruHangBO.cs" />
+    <Compile Include="CommonBusiness\LuuTruKeBO.cs" />
+    <Compile Include="CommonBusiness\LuuTruPhongBO.cs" />
+    <Compile Include="CommonBusiness\LuuTruTangBO.cs" />
+    <Compile Include="CommonBusiness\LuuTruToaNhaBO.cs" />
+    <Compile Include="CommonBusiness\NguoiDungBO.cs" />
+    <Compile Include="CommonBusiness\NguoiDungUserBO.cs" />
+    <Compile Include="CommonBusiness\NltthDonxinNangluongBO.cs" />
+    <Compile Include="CommonBusiness\NltthLichsuNangluongBO.cs" />
+    <Compile Include="CommonBusiness\NLTXChuyenVienThamDinhBO.cs" />
+    <Compile Include="CommonBusiness\NLTXChuyenVienThamDinhChiTietBO.cs" />
+    <Compile Include="CommonBusiness\NLTXCVPTrinhCucTruongBO.cs" />
+    <Compile Include="CommonBusiness\NLTXDonNangLuongBO.cs" />
+    <Compile Include="CommonBusiness\NLTXDonXinNangLuongBO.cs" />
+    <Compile Include="CommonBusiness\NLTXKeHoachNangLuongBO.cs" />
+    <Compile Include="CommonBusiness\NLTXKeHoachNangLuongChiTietBO.cs" />
+    <Compile Include="CommonBusiness\NLTXLichSuToTrinhBO.cs" />
+    <Compile Include="CommonBusiness\NLTXNhanXetNangLuongBO.cs" />
+    <Compile Include="CommonBusiness\NLTXTrinhCucTruongBO.cs" />
+    <Compile Include="CommonBusiness\NLTXTrinhCucTruongChiTietBO.cs" />
+    <Compile Include="CommonBusiness\NPDonXinNghiBO.cs" />
+    <Compile Include="CommonBusiness\NpLichSuDonXinNghiBO.cs" />
+    <Compile Include="CommonBusiness\NpThongKeNghiPhepBO.cs" />
+    <Compile Include="CommonBusiness\PhDangKyBO.cs" />
+    <Compile Include="CommonBusiness\PhongHopBO.cs" />
+    <Compile Include="CommonBusiness\PhPhongHopBO.cs" />
+    <Compile Include="CommonBusiness\PhThietBiBO.cs" />
+    <Compile Include="CommonBusiness\QLBaoHiemPhuLucBO.cs" />
+    <Compile Include="CommonBusiness\QLBHDanhSachCanBoBO.cs" />
+    <Compile Include="CommonBusiness\QLDangPhiBO.cs" />
+    <Compile Include="CommonBusiness\QLDangVienBO.cs" />
+    <Compile Include="CommonBusiness\QLDoanPhiBO.cs" />
+    <Compile Include="CommonBusiness\QLDoanVienBO.cs" />
+    <Compile Include="CommonBusiness\QlxDieuxeBO.cs" />
+    <Compile Include="CommonBusiness\QlxPhieudangkyBO.cs" />
+    <Compile Include="CommonBusiness\QlxXeBO.cs" />
+    <Compile Include="CommonBusiness\QuanLyBieuMauBO.cs" />
+    <Compile Include="CommonBusiness\QuanLyBieuMauLoaiBO.cs" />
+    <Compile Include="CommonBusiness\QuanLyNhanSuConstant.cs" />
+    <Compile Include="CommonBusiness\QuanLyNhanSuLog.cs" />
+    <Compile Include="CommonBusiness\QuyetToanBO.cs" />
+    <Compile Include="CommonBusiness\ResultMessage.cs" />
+    <Compile Include="CommonBusiness\SearchDataModel.cs" />
+    <Compile Include="CommonBusiness\StringVariable.cs" />
+    <Compile Include="CommonBusiness\TaiLieuChuaSoHoaBO.cs" />
+    <Compile Include="CommonBusiness\TaiLieuDinhKemBO.cs" />
+    <Compile Include="CommonBusiness\TaiLieuLichSuChoMuonBO.cs" />
+    <Compile Include="CommonBusiness\ThietBiBO.cs" />
+    <Compile Include="CommonBusiness\ThietLapTienKhoanBO.cs" />
+    <Compile Include="CommonBusiness\ThongBaoKHNLCanBoBO.cs" />
+    <Compile Include="CommonBusiness\ThongTinLuongBO.cs" />
+    <Compile Include="CommonBusiness\ThuMucLichSuPheDuyetBO.cs" />
+    <Compile Include="CommonBusiness\ThuMucLuuTruBO.cs" />
+    <Compile Include="CommonBusiness\TLManagerVersionBO.cs" />
+    <Compile Include="CommonBusiness\TmChuyenTiepYeuCauBO.cs" />
+    <Compile Include="CommonBusiness\TmGiaHanThuMucBO.cs" />
+    <Compile Include="CommonBusiness\TmLoaiTaiLieuThuocTinhBO.cs" />
+    <Compile Include="CommonBusiness\TmTaiLieuThuocTinhBO.cs" />
+    <Compile Include="CommonBusiness\TmThongKeDanhMucBO.cs" />
+    <Compile Include="CommonBusiness\TmThongKeDanhMucLogBO.cs" />
+    <Compile Include="CommonBusiness\TmThuMucChuaSoHoaBO.cs" />
+    <Compile Include="CommonBusiness\TmYeuCauChiaSeBO.cs" />
+    <Compile Include="CommonBusiness\TmYeuCauChiaSeChiTietBO.cs" />
+    <Compile Include="CommonBusiness\TmYeuCauChiaSeLichSuBO.cs" />
+    <Compile Include="CommonBusiness\TsLichSuSuDungBO.cs" />
+    <Compile Include="CommonBusiness\TsNhomTaiSanBO.cs" />
+    <Compile Include="CommonBusiness\TsTaiSanBO.cs" />
+    <Compile Include="CommonBusiness\TSThanhLyTaiSanBO.cs" />
+    <Compile Include="CommonBusiness\updateResult.cs" />
+    <Compile Include="CommonBusiness\UserBO.cs" />
+    <Compile Include="CommonBusiness\UserInfoBO.cs" />
+    <Compile Include="CommonBusiness\VaiTroBO.cs" />
+    <Compile Include="CommonBusiness\VanBanDenBO.cs" />
+    <Compile Include="CommonBusiness\VanBanDiBO.cs" />
+    <Compile Include="CommonBusiness\VmDonXinVangMatBO.cs" />
+    <Compile Include="CommonBusiness\VmTrinhLanhDaoDonViBO.cs" />
+    <Compile Include="CommonBusiness\VM_CHITIETLICSUTRINHDUYETBO.cs" />
+    <Compile Include="CommonBusiness\VPViPhamBO.cs" />
+    <Compile Include="CommonBusiness\WF_LOAINOIDUNG_BO.cs" />
+    <Compile Include="CommonBusiness\WF_QUYTRINH_BO.cs" />
+    <Compile Include="CommonBusiness\WF_QUYTRINH_STEP_BO.cs" />
+    <Compile Include="CommonHelper\BarcordHelper.cs" />
+    <Compile Include="CommonHelper\Encrypt.cs" />
+    <Compile Include="CommonHelper\LdapHelper.cs" />
+    <Compile Include="CommonHelper\LoaiDVQLEnum.cs" />
+    <Compile Include="CommonHelper\MaHoaMatKhau.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DLL\log4net.dll" />
+    <Content Include="DLL\NativeExcel.dll" />
+    <Content Include="DLL\NPOI.dll" />
+    <Content Include="DLL\NPOI.OOXML.dll" />
+    <Content Include="DLL\NPOI.OpenXml4Net.dll" />
+    <Content Include="DLL\NPOI.OpenXmlFormats.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

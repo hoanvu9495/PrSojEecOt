@@ -1,0 +1,194 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Business.CommonBusiness;
+@{
+    List<TmLoaiTaiLieuThuocTinhBO> lstThuocTinh = new List<TmLoaiTaiLieuThuocTinhBO>();
+    if (ViewData["Search"] == "0")
+    {
+        lstThuocTinh = (List<TmLoaiTaiLieuThuocTinhBO>)SessionManager.GetValue("ListThuocTinh");
+    }
+    if (ViewData["Search"] == "1")
+    {
+        lstThuocTinh = (List<TmLoaiTaiLieuThuocTinhBO>)SessionManager.GetValue("ListThuocTinhSearch");
+    }
+    var grid = new WebGrid(lstThuocTinh,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+
+}
+@Html.AntiForgeryToken()
+
+@if (lstThuocTinh.Count > 0)
+{
+
+    <div id="grid">
+        
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                               grid.Column("LOAITAILIEU", "Loại tài liệu"),
+                  grid.Column("TEN_THUOCTINH", "Tên thuộc tính"),
+                    grid.Column("MOTA_THUOCTINH", "Mô tả"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                   "<a href='javascript:void(0)' onclick='EditLoaiVanBan(" + item.ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                    "<a href='javascript:void(0)' onclick='RemoveLoaiVanBan(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+
+                 )
+    )
+
+        @if (lstThuocTinh.Count == 0)
+        {
+
+            <div id="Empty" style="color: red;">
+                Không tìm thấy dữ liệu phù hợp
+            </div>
+        }
+    </div>
+}
+else
+{
+
+    <div id="Empty" style="color: red;">
+        Dữ liệu đang được cập nhật.
+    </div>
+}
+
+<div class="modal fade" id="PrepareLoaiVanBan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="CreateLoaiVanBan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<style>
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .webGrid .head th{
+        text-align:center !important;
+    }
+    .webGrid tbody td:nth-child(2), .webGrid tbody td:nth-child(3), .webGrid tbody td:nth-child(4) {
+        text-align: left !important;
+    }
+</style>
+<script type="text/javascript">
+    $('.grid tbody').on('hover', function () {
+        $(this).toggleClass('clickable');
+    });
+    
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("AddFormThuocTinh", "TmLoaiTaiLieuThuocTinh")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#CreateLoaiVanBan").html(data);
+                $("#CreateLoaiVanBan").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+    function EditLoaiVanBan(ID) {
+        $.ajax({
+            url: '@Url.Action("EditFormthuocTinh", "TmLoaiTaiLieuThuocTinh")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#PrepareLoaiVanBan").html(data);
+                $("#PrepareLoaiVanBan").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function RemoveLoaiVanBan(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa thuộc tính này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveThuocTinh", "TmLoaiTaiLieuThuocTinh")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Xóa thuộc tính thành công!',
+                                });
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+
+</script>

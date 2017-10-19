@@ -1,0 +1,128 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Business.CommonBusiness;
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@{
+    List<ThuMucLuuTruBO> lstThuMuc = new List<ThuMucLuuTruBO>();
+    lstThuMuc = (List<ThuMucLuuTruBO>)SessionManager.GetValue("ListPheDuyetTable");
+
+}
+
+@{
+
+    if (lstThuMuc != null && lstThuMuc.Count > 0)
+    {
+        foreach (var i in lstThuMuc)
+        {
+            <tr>
+                @*@if (i.IS_NEEDREVIEW == ThuMucConstant.DATRINH)
+                    {
+                        <td><input type="checkbox" class="checkbox1" value="@i.ID" data-pid="@i.ID" /></td>
+                    }
+                    else
+                    {
+                        <td>&nbsp;</td>
+                    }*@
+                <td data-pid="@("F_"+i.ID)">
+                    <div style="width:100%;float:left" class="TENTHUMUC">
+                        @if (i.EXPIRE_DATEFROM.HasValue || i.EXPIRE_DATE.HasValue)
+                        {
+                            if (i.EXPIRE_DATE.HasValue && i.EXPIRE_DATE.Value < DateTime.Now)
+                            {
+                                <span class="folder item" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE) (Hết hạn lưu trữ)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                            else if (i.EXPIRE_DATEFROM.HasValue && DateTime.Now < i.EXPIRE_DATEFROM.Value)
+                            {
+                                <span class="folder item" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE) (Chưa được sử dụng)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                            else if (DateTime.Now >= i.EXPIRE_DATEFROM && DateTime.Now <= i.EXPIRE_DATE)
+                            {
+                                <span class="folder item" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+
+                            else
+                            {
+                                <span class="folder item" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                        }
+                        @*else if (i.IS_PRIVATE.Value)
+                            {
+                                <span class="folder private" title="@i.TENTHUMUC (Thư mục cá nhân)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }*@
+                        else
+                        {
+
+                            <span class="folder item" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+
+                        }
+                    </div>
+                </td>
+                <td>@i.TENDONVI</td>
+                @*<td>@i.NGUOITRINH</td>*@
+                <td>
+                    <span>Có @i.SLTHUMUC thư mục</span>
+                </td>
+                <td>@String.Format("{0:dd/M/yyyy}", @i.NGAYTRINH)</td>
+                <td>
+                    @if (i.IS_SHARING.HasValue && i.IS_SHARING.Value)
+                    {
+                        <span class="share-fileplus" data-file="true" title="Chia sẻ tài liệu với những người khác" data-fid="@i.ID"></span>
+                    }
+                    else
+                    {
+                        <span class="share-file" data-file="true" title="Chia sẻ tài liệu với những người khác" data-fid="@i.ID"></span>
+                    }
+                </td>
+                @*<td>
+                        @switch (i.IS_NEEDREVIEW)
+                        {
+                            case ThuMucConstant.DUTHAO:
+                                <span class="trangthai" onclick="LichSuPheDuyet(@i.ID)" data-id="@i.ID" title="Chi tiết lịch sử tiếp nhận" style='color:#CCC'>
+                                    Dự thảo
+                                </span>;
+                                break;
+                            case ThuMucConstant.DATRINH:
+                            <span class="trangthai" data-id="@i.ID" onclick="LichSuPheDuyet(@i.ID)" title="Chi tiết lịch sử tiếp nhận" style='color: #4cff00'>
+                                Chờ duyệt
+                            </span>;
+                            break;
+
+                            case ThuMucConstant.CUC_TRAVE:
+                            <span class="trangthai" data-id="@i.ID" onclick="LichSuPheDuyet(@i.ID)" title="Chi tiết lịch sử tiếp nhận" style='color:red'>
+                                Cục trả về
+                            </span>;
+                            break;
+                            case ThuMucConstant.DADUYET:
+                            <span class="trangthai" data-id="@i.ID" onclick="LichSuPheDuyet(@i.ID)" title="Chi tiết lịch sử tiếp nhận" style='color:green'>
+                                Đã duyệt
+                            </span>;
+                            break;
+                        }
+
+                    </td>*@
+            </tr>
+        }
+
+    }
+}
+<script>
+    function LichSuPheDuyet(ID) {
+        $.ajax({
+            url: '@Url.Action("GetLichSuPheDuyet", "CucTruongPheDuyet")',
+            type: 'post',
+            cache: false,
+            data: {
+                phong: ID
+            },
+            success: function (data) {
+                $("#lichsutiepnhan").html(data);
+                $("#lichsutiepnhan").modal("show");
+                $("#lichsutiepnhan").find(".modal-dialog").css("width", "1100px");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>

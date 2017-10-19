@@ -1,0 +1,459 @@
+﻿@using Web.FwCore
+@using Business.Business
+@using Business.CommonBusiness
+@using Web.Models
+@using Model.eAita
+@model Web.Areas.VanBanDenArea.Models.VanBanDenEditViewModel
+@{
+    HSCV_VANBANDEN vanBanDen = Model.vanBanDen;
+}
+<fieldset>
+    <div class="row">
+        <section class="col col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="SOKYHIEU">
+                    Số/Ký hiệu <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9" style="padding-right :0">
+                    <input type="text" id="SOKYHIEU" name="SOKYHIEU" maxlength="255" class="form-control required" value="@vanBanDen.SOKYHIEU">
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="TRICHYEU">
+                    Trích yếu <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9">
+                    <textarea name="TRICHYEU" id="TRICHYEU" class="form-control required" style="resize:none;" maxlength="1000">@vanBanDen.TRICHYEU</textarea>
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">
+                    Cơ quan ban hành <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9" id="DONVIBANHANHROOT">
+                    <div id="CONQUANBANHANHSELECTLIST">
+                        @Html.DropDownList("COQUANBANHANH_ID", Model.listDonViBanHanhs, new { @style = "width: 100%;", @class = "required " })
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                        <p class="alert alert-success">
+                            <b>Ghi chú: </b>
+                            Trong trường hợp đơn vị ban hành không có trong danh sách, bấm
+                            <a href="javascript:void(0)" onclick="openModalInsertDonViBanHanh()">
+                                vào đây để thêm đơn vị ban hành
+                            </a>
+                        </p>
+                    </div>
+                    <input type="hidden" id="COQUANBANHANHTEXT" style="width:220px" maxlength="255" class="e-input" name="COQUANBANHANHTEXT" value="@vanBanDen.COQUANBANHANHTEXT">
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="LOAIVANBAN_ID">
+                    Hình thức văn bản <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9" style="padding-left:0">
+                    @Html.DropDownList("LOAIVANBAN_ID", Model.listLoaiVanBans, new { @class = " required", @style = "width: 100%" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="NGAYVANBAN">
+                    Ngày ban hành <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9" style="padding-right :0">
+                    <div class="input-group">
+                        <input name="NGAYVANBAN" id="NGAYVANBAN" type="text" class="form-control datepicker1 validateDate" data-mask="99/99/9999" data-mask-placeholder="-" value="@string.Format("{0:dd/MM/yyyy}", vanBanDen.NGAYVANBAN.HasValue ? vanBanDen.NGAYVANBAN.Value : DateTime.Now)">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="THOIHAN_XULY">
+                    Ngày đến <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9" style="padding-left :0">
+                    <div class="input-group">
+                        <input name="NGAYDEN" id="NGAYDEN" type="text" class="form-control datepicker1 validateDate" data-mask="99/99/9999" data-mask-placeholder="-" value="@string.Format("{0:dd/MM/yyyy}", vanBanDen.NGAYDEN.HasValue ? vanBanDen.NGAYDEN.Value : DateTime.Now)">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                <label class="col-sm-3 control-label" for="NHOMSOVANBAN_ID">
+                    Nhóm sổ văn bản đến <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9" style="padding-right :0">
+                    @Html.DropDownList("NHOMSOVANBAN_ID", Model.listNhomSoVanBans, "[--- Chọn nhóm sổ văn bản đến ---]", new { @class = " required", @style = "width: 100%" })
+                    <i></i>
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>*@
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="SOVANBANDEN_ID">
+                    Sổ văn bản đến <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9" style="padding-left:0">
+                    @Html.Raw(Model.htmlSoVanBanDensDropDownList)
+                    @*@Html.DropDownList("SOVANBANDEN_ID", Model.listSoVanBans, "[--- Chọn sổ văn bản đến ---]", new { @class = "select2 required", @style = "width: 100%" })*@
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="SODEN">
+                    Số đến <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9" style="padding-right :0">
+                    <input type="text" id="SODEN" name="SODEN" maxlength="10" class="form-control required" value="@vanBanDen.SODEN">
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="SOTRANG">
+                    Số trang <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9" style="padding-left :0">
+                    <input type="text" id="SOTRANG" name="SOTRANG" maxlength="10" class="form-control required" value="@vanBanDen.SOTRANG">
+                    <div class="note" style="height: 15px;">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="DOKHAN_ID">
+                    Độ khẩn <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-3">
+                    @Html.DropDownList("DOKHAN_ID", Model.listDoKhans, new { @class = " required", @style = "width:100%" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+
+                <div class="col-sm-3 ">
+                    <label for="DOMAT_ID" class="control-label" style="padding-left:10px">
+                        Độ mật <span style="color: red;">*</span>
+                    </label>
+                </div>
+                <div class="col-sm-3" style="padding-right:0">
+                    @Html.DropDownList("DOMAT_ID", Model.listDoMats, new { @class = " required", @style = "width:100%" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="NOIDUNGVANBAN">
+                    Nội dung văn bản
+                </label>
+                <div class="col-sm-9" style="padding-right:0">
+                    <textarea name="NOIDUNGVANBAN" id="NOIDUNGVANBAN" maxlength="1000" class="form-control" style="resize:none">@vanBanDen.NOIDUNGVANBAN</textarea>
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="NGUOIKY">
+                    Người ký <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9" style="padding-right:0">
+                    <textarea name="NGUOIKY" id="NGUOIKY" maxlength="1000" class="form-control required" style="resize:none">@vanBanDen.NGUOIKY</textarea>
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="CHUCVU_NGUOIKY">
+                    Chức vụ người ký <span style="color: red;">*</span>
+                </label>
+                <div class="col-sm-9" style="padding-left:0">
+                    <textarea name="CHUCVU_NGUOIKY" id="CHUCVU_NGUOIKY" maxlength="1000" class="form-control required" style="resize:none">@vanBanDen.CHUCVU_NGUOIKY</textarea>
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="col col-lg-6">
+            <div class="form-group">
+                @{Html.RenderPartial("../Common/UploadFile", Model.listTaiLieuDinhKems);}
+            </div>
+        </section>
+    </div>
+</fieldset>
+@*<div id="collapseThongTinChinh">
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                Trích yếu <span style="color: red;">*</span>
+            </div>
+            <div class="col-sm-10">
+                <textarea name="TRICHYEU" id="TRICHYEU" class="form-control required" style="resize:none;" maxlength="1000">@Model.vanBanDen.TRICHYEU</textarea>
+                <div class="note-error">
+                    <span class="error mes-note-error"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row show-grid">
+            <div class="form-group">
+                <div class="col-sm-2 control-label">
+                    Cơ quan ban hành:<span style="color: red;">*</span>
+                </div>
+                <div class="col-sm-10" id="DONVIBANHANHROOT">
+                    @if (string.IsNullOrEmpty(Model.vanBanDen.COQUANBANHANHTEXT))
+                    {
+                        <div id="CONQUANBANHANHSELECTLIST">
+                            @Html.DropDownList("COQUANBANHANH_ID", Model.listDonViBanHanhs, new { @style = "width: 100%;", @class = "required select2 select2-hidden-accessible" })
+                            <div class="note-error">
+                                <span class="error mes-note-error"></span>
+                            </div>
+                            <p class="alert alert-success">
+                                <b>Ghi chú: </b>
+                                Trong trường hợp đơn vị ban hành không có trong danh sách, bấm
+                                <a href="javascript:void(0)" id="AddDonViBanHanhId" onclick="AddMoreDonViBanHanh()">
+                                    vào đây để thêm đơn vị ban hành
+                                </a>
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="SPAN_COQUANBANHANHTEXT">@Model.vanBanDen.COQUANBANHANHTEXT <a style="margin-left: 20px" href="javascript:void(0)" onclick="removeDVBH()">Xóa</a></div>
+                    }
+                </div>
+                <input type="hidden" id="COQUANBANHANHTEXT" style="width:220px" maxlength="255" class="e-input" name="COQUANBANHANHTEXT" value="@Model.vanBanDen.COQUANBANHANHTEXT">
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4 control-label">
+                        Số/Ký hiệu <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-right :0">
+                        <input type="text" id="SOKYHIEU" name="SOKYHIEU" maxlength="255" class="form-control required" value="@Model.vanBanDen.SOKYHIEU">
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4 control-label">
+                        Hình thức văn bản <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-left:0">
+                        @Html.DropDownList("LOAIVANBAN_ID", Model.listLoaiVanBans, new { @class = "select2 select2-hidden-accessible required", @style = "width: 100%" })
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-sm-6">
+                <div class="form-group clearfix">
+                    <div class="col-sm-4 control-label">
+                        Ngày ban hành <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-right :0">
+                        <div class="input-group">
+                            <input name="NGAYVANBAN" id="NGAYVANBAN" type="text" class="form-control datepicker validateDate" data-mask="99/99/9999" data-mask-placeholder="-" value="@(string.Format("{0:dd/MM/yyyy}",Model.vanBanDen.NGAYVANBAN))">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group clearfix">
+                    <div class="col-sm-4 control-label">
+                        Thời hạn xử lý <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-left :0">
+                        <div class="input-group">
+                            <input name="THOIHAN_XULY" id="THOIHAN_XULY" type="text" class="form-control datepicker validateDate" data-mask="99/99/9999" data-mask-placeholder="-" value="@(string.Format("{0:dd/MM/yyyy}",Model.vanBanDen.THOIHAN_XULY))">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4 control-label">
+                        Nhóm sổ văn bản đến <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-right :0">
+                        @Html.DropDownList("NHOMSOVANBAN_ID", Model.listNhomSoVanBans, "[--- Chọn nhóm sổ văn bản đến ---]", new { @class = "select2 required", @style = "width: 100%" })
+                        <i></i>
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4 control-label">
+                        Sổ văn bản đến <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-left:0">
+                        @Html.Raw(Model.htmlSoVanBanDensDropDownList)
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4 control-label">
+                        Số văn bản đến <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-right :0">
+                        <input type="text" id="SODEN" name="SODEN" maxlength="10" class="form-control required" value="@Model.vanBanDen.SODEN">
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4 control-label">
+                        Số trang <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-left :0">
+                        <input type="text" id="SOTRANG" name="SOTRANG" maxlength="10" class="form-control required" value="@Model.vanBanDen.SOTRANG">
+                        <div class="note" style="height: 15px;">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4 control-label">
+                        Độ khẩn <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-right:0">
+                        @Html.DropDownList("DOKHAN_ID", Model.listDoKhans, new { @class = "select2 select2-hidden-accessible required", @style = "width:100%" })
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group ">
+                    <div class="col-sm-4 control-label">
+                        Độ mật <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-left:0">
+                        @Html.DropDownList("DOMAT_ID", Model.listDoMats, new { @class = "select2 select2-hidden-accessible required", @style = "width:100%" })
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4 control-label">
+                        Người ký <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-right:0">
+                        <textarea name="NGUOIKY" id="NGUOIKY" maxlength="1000" class="form-control required" style="resize:none">@Model.vanBanDen.NGUOIKY</textarea>
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4 control-label">
+                        Chức vụ người ký <span style="color: red;">*</span>
+                    </div>
+                    <div class="col-sm-8" style="padding-left:0">
+                        <textarea name="CHUCVU_NGUOIKY" id="CHUCVU_NGUOIKY" maxlength="1000" class="form-control required" style="resize:none">@Model.vanBanDen.CHUCVU_NGUOIKY</textarea>
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">
+                        Tài liệu
+                    </div>
+                    <div class="col-sm-10" style="padding-left:0">
+                        @{Html.RenderPartial("../Common/UploadFile", Model.listTaiLieuDinhKems);}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@

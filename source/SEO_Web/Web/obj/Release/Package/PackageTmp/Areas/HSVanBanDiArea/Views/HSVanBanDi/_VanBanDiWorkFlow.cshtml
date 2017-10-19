@@ -1,0 +1,386 @@
+﻿@using System.Text;
+@using Web.FwCore;
+@using Web.Models;
+@using Web.Common;
+@using Business.CommonBusiness;
+@using Web.Areas.HSVanBanDiArea.Models;
+@model VanBanDiDetailViewModel
+@{
+    var listWorkFlowHistory = Model.ListWorkFlowHistory;
+    var van_ban = Model.VanBanDi;
+    var listSteps = Model.ListSteps;
+    UserInfoBO user = (UserInfoBO)SessionManager.GetUserInfo();
+    var reload = ViewData["reload"];
+}
+<style type="text/css">
+    #block-workflow-history-table {
+        max-height: 330px;
+        border-bottom: 1px solid #ccc;
+        overflow: auto;
+    }
+
+    #block--workflow-history-title > h4 {
+        margin: 0;
+    }
+
+    #block--workflow-step-transition {
+        margin: 10px 0 0 0;
+        text-align: center;
+        overflow: hidden;
+        padding: 10px 0;
+    }
+
+    .button--workflow-step-transfer {
+        background-color: #016897;
+        color: #fff;
+        border-radius: 0;
+        padding: 10px 10px;
+        margin: 0 5px;
+        border: none;
+    }
+
+        .button--workflow-step-transfer:hover {
+            color: #fff;
+        }
+
+    .modal-title {
+        text-transform: uppercase;
+    }
+
+    #myModalLabel {
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    #table--workflow-history td:not(:first-child) {
+        text-align: left;
+        padding-left: 5px;
+        min-width: 130px;
+    }
+
+    #SaveNoteModal .modal-title {
+        font-weight: bold;
+    }
+
+    #SaveNoteModal > .modal-dialog {
+        width: 1080px;
+    }
+
+    #SaveNoteModal #block--save-note-body {
+        height: 460px;
+        overflow-y: scroll;
+    }
+
+    #block--select-truongdonvi {
+        height: 250px;
+        overflow-y: scroll;
+    }
+
+    #block--workflow-history-title {
+        color: #016897;
+        padding: 0;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    #table--workflow-history thead td {
+        font-weight: bold;
+    }
+
+    #LogHistoryModal .modal-dialog {
+        width: 800px;
+    }
+</style>
+<div id="block-workflow-history-table">
+    <table class="webGrid" id="table--workflow-history">
+        <thead>
+            <tr>
+                <td>
+                    STT
+                </td>
+                <td>
+                    Trạng thái bắt đầu
+                </td>
+                <td>
+                    Trạng thái kết thúc
+                </td>
+                <td>
+                    Thời gian xử lý
+                </td>
+                <td>
+                    Người xử lý
+                </td>
+                <td>
+                    Ghi chú
+                </td>
+                @if (Model.isEditContent)
+                {
+                    <td>Lịch sử thay đổi</td>
+                }
+                <td>
+                    Danh sách nhận xử lý
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < listWorkFlowHistory.Count; i++)
+            {
+                if (i == 0)
+                {
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@listWorkFlowHistory[i].TEN_TRANGTHAI_1</td>
+                        <td>@listWorkFlowHistory[i].TEN_TRANGTHAI_2</td>
+                        <td>@string.Format("{0:dd/MM/yyyy hh:mm:ss}", listWorkFlowHistory[i].NGAYTAO)</td>
+                        <td>@listWorkFlowHistory[i].TEN_NGUOIXULY</td>
+                        <td>@listWorkFlowHistory[i].GHICHU</td>
+                        @if (Model.isEditContent)
+                        {
+                            <td rowspan="@listWorkFlowHistory.Count">
+                                <a href="javascript:void(0)" title="Xem chi tiết thay đổi" onclick="showLogHistory(@van_ban.ID)" style="display:block;text-align:center;font-weight:bold">
+                                    Xem
+                                </a>
+                            </td>
+                        }
+                        <td>
+                            @if (listWorkFlowHistory[i].ListNguoiXuLy != null && listWorkFlowHistory[i].ListNguoiXuLy.Count > 0)
+                            {
+                                StringBuilder strNguoiNhanXuLy = new StringBuilder();
+                                listWorkFlowHistory[i].ListNguoiXuLy.ForEach(x => strNguoiNhanXuLy.Append("- " + x.HOTEN + "<br/>"));
+                                @Html.Raw(strNguoiNhanXuLy.ToString())
+                            }
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@listWorkFlowHistory[i].TEN_TRANGTHAI_1</td>
+                        <td>@listWorkFlowHistory[i].TEN_TRANGTHAI_2</td>
+                        <td>@string.Format("{0:dd/MM/yyyy hh:mm:ss}", listWorkFlowHistory[i].NGAYTAO)</td>
+                        <td>@listWorkFlowHistory[i].TEN_NGUOIXULY</td>
+                        <td>@listWorkFlowHistory[i].GHICHU</td>
+                        <td>
+                            @if (listWorkFlowHistory[i].ListNguoiXuLy != null && listWorkFlowHistory[i].ListNguoiXuLy.Count > 0)
+                            {
+                                StringBuilder strNguoiNhanXuLy = new StringBuilder();
+                                listWorkFlowHistory[i].ListNguoiXuLy.ForEach(x => strNguoiNhanXuLy.Append("- " + x.HOTEN + "<br/>"));
+                                @Html.Raw(strNguoiNhanXuLy.ToString())
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+
+    </table>
+</div>
+<div class="clearfix"></div>
+@*<div class="modal fade" id="ProcessWorkFlowModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="myModalLabel"></h3>
+            </div>
+            <div class="modal-body" id="modal_body">
+
+            </div>
+            <input type="hidden" id="hidden-workflow-entity-id" />
+            <input type="hidden" id="hidden-workflow-trangthai-1" />
+            <input type="hidden" id="hidden-workflow-trangthai-2" />
+            <input type="hidden" id="hidden--workflow-stepname" />
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="submitWorkFlowStepChange()">
+                    Gửi
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="SaveNoteModal" tabindex="-1" role="dialog" aria-labelledby="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeSaveNoteModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">
+                    Lưu sổ và phát hành
+                </h3>
+            </div>
+            <div class="modal-body" id="block--save-note-body">
+
+            </div>
+            <input type="hidden" id="hidden-workflow-entity-id" />
+            <input type="hidden" id="hidden-workflow-trangthai-1" />
+            <input type="hidden" id="hidden-workflow-trangthai-2" />
+            <input type="hidden" id="hidden--workflow-stepname" />
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveNote(@Model.VanBanDi.ID)">
+                    Lưu sổ
+                </button>
+                <button type="button" class="btn btn-default" onclick="closeSaveNoteModal()">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="LogHistoryModal" tabindex="-1" role="dialog" aria-labelledby="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">
+                    Lịch sử thay đổi văn bản
+                </h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#SaveNoteModal').draggable({
+            handle: ".modal-header"
+        });
+        $('#ProcessWorkFlowModal').draggable({
+            handle: '.modal-header'
+        });
+    });
+    function showWorkFlowStepChange(step_name, entity_id, trang_thai_1, trang_thai_2) {
+        $.ajax({
+            url: '@Url.Action("VanBanDiWfStepChangeView")',
+            dataType: 'html',
+            type: 'POST',
+            data: {
+                TenBuocChuyenTrangThai: step_name,
+                EntityID: entity_id,
+                TrangThaiBatDau: trang_thai_1,
+                TrangThaiKetThuc: trang_thai_2,
+            },
+            success: function (view) {
+                $('#ProcessWorkFlowModal .modal-body').html(view);
+                $('#myModalLabel').html('<span>' + step_name + '</span>');
+                $('#ProcessWorkFlowModal #hidden--workflow-stepname').val(step_name);
+                $("#ProcessWorkFlowModal #hidden-workflow-entity-id").val(entity_id);
+                $('#ProcessWorkFlowModal #hidden-workflow-trangthai-1').val(trang_thai_1);
+                $('#ProcessWorkFlowModal #hidden-workflow-trangthai-2').val(trang_thai_2);
+                $('#ProcessWorkFlowModal').modal('show');
+            }, error: function (err) {
+                alert(err.responseText);
+            }
+        });
+    }
+    function submitWorkFlowStepChange() {
+        var comment = $('#comment_text_step_id').val().trim().length;
+        var step_name = $('#ProcessWorkFlowModal #hidden--workflow-stepname').val();
+        var entity_id = $('#ProcessWorkFlowModal #hidden-workflow-entity-id').val();
+        var trang_thai_1 = $('#ProcessWorkFlowModal #hidden-workflow-trangthai-1').val();
+        var trang_thai_2 = $('#ProcessWorkFlowModal #hidden-workflow-trangthai-2').val();
+        var nguoi_nhan = [];
+        if ($('#ProcessWorkFlowModal input[name=NGUOIDUNGROLE]').length > 0) {
+            if ($('#ProcessWorkFlowModal input[name=NGUOIDUNGROLE]:checked').length <= 0) {
+                $('#ERR_comment_text_step_id').text('Bạn cần chọn người nhận văn bản');
+                setTimeout(function () {
+                    $('#ERR_comment_text_step_id').text('');
+                }, 2000);
+                return false;
+            } else {
+                $('#ProcessWorkFlowModal input[name=NGUOIDUNGROLE]:checked').each(function () {
+                    nguoi_nhan.push($(this).val());
+                });
+            }
+        }
+        $.ajax({
+            url: '@Url.Action("CompleteWorkFlowStepTransition")',
+            type: 'POST',
+            dataType: 'html',
+            data: {
+                'entity_id': entity_id,
+                'trang_thai_1': trang_thai_1,
+                'trang_thai_2': trang_thai_2,
+                'message': $('#comment_text_step_id').val().trim(),
+                'recipients': nguoi_nhan.toString()
+            }, success: function (result) {
+                $('#ProcessWorkFlowModal').modal('hide');
+                //$('#block--info-workflow').html(result);
+                notif({
+                    type: 'success',
+                    position: 'bottom',
+                    msg: step_name + " " + ' thành công!',
+                });
+                var currentPageIndex = parseInt($('#grid tfoot td').clone().children('a').remove().end().text().trim(), 10) - 1;
+                setTimeout(function () {
+                    location.href = '/hsvanbandiarea/hsvanbandi/index?type=@Model.Type&pageIndex=' + currentPageIndex;
+                }, 1000);
+            }
+        });
+    }
+
+    function openSaveNoteModal(entity_id) {
+        $.ajax({
+            url: "@Url.Action("SaveNoteView")",
+            dataType: 'html',
+            data: { 'id': entity_id },
+            success: function (view) {
+                $('#SaveNoteModal .modal-body').html(view);
+                $('#SaveNoteModal').modal('show');
+            }, error: function (err) {
+                notif({
+                    type: 'error',
+                    position: 'bottom',
+                    msg: err.responseText
+                });
+            }
+        });
+    }
+
+    function closeSaveNoteModal() {
+        $('#SaveNoteModal').modal('hide');
+        $('#SaveNoteModal #block--save-note-body').children().remove();
+    }
+
+    function showLogHistory(id, status) {
+        $.ajax({
+            url: "@Url.Action("GetVanBanDiLogHistory")",
+            type: 'POST',
+            data: { 'id': id },
+            success: function (view) {
+                $('#LogHistoryModal .modal-body').html(view);
+                $('#LogHistoryModal').modal('show');
+            }, error: function (error) {
+                $.confirm({
+                    'title': 'Không thể hiển thị lịch sử',
+                    'message': 'Không thể hiển thị lịch sử.',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-info',
+                            'action': function () { }
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>*@

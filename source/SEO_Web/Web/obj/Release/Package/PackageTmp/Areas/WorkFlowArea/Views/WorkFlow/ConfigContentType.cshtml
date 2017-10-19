@@ -1,0 +1,138 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@model Web.Areas.WorkFlowArea.Models.WorkFlowContentTypeViewModel
+@{
+    ViewBag.Title = "Danh sách Loại nội dung";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+@section HeaderPopup
+{
+    <h1>@ViewBag.Title<a href="/WorkFlowArea/WorkFlow" title="Đóng lại"></a></h1>
+}
+@{
+    var grid = new WebGrid(Model.ListContentType,
+                          rowsPerPage: 10,
+                          canPage: true,
+                          canSort: false,
+                          ajaxUpdateContainerId: "grid",
+                           selectionFieldName: "selectedRow"
+                          );
+}
+<style>
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .center {
+        text-align: center;
+    }
+</style>
+<div class="popup-content">
+    <table style="width: 100%">
+        <tr>
+            <td>
+                <div class="SearchResult">
+                    @Html.AntiForgeryToken()
+                    <div id="grid">
+                        <div id="HeaderGrid">
+                            <div style="margin: 20px 0px 10px 10px;">
+                                <label id="lblChucNang" style="margin-top: 90px; margin-left: 5px; font-weight: bold">@(Model.ListContentType == null ? "0" : Model.ListContentType.Count.ToString())&nbsp;luồng xử lý</label>
+                            </div>
+                        </div>
+                        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column("TENLOAINOIDUNG", "Loại nội dung"),
+                grid.Column("TENQUYTRINH", "Quy trình"),
+                         grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                          "<a href='javascript:void(0)' onclick='EditConfigContentType(" + item.LOAINOIDUNG_ID + ")' class='btnEdit' title = 'Chỉnh sửa thiết lập'></a>")), header: "Thiết lập")
+                )
+    )
+                        @if (Model.ListContentType.Count == 0)
+                        {
+                            <div id="Empty" style="color: red;">
+                                Không tìm thấy dữ liệu phù hợp
+                            </div>
+                        }
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="Config_Dialog" title="Thiết lập cấu hình Luồng xử lý"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.grid tbody').on('hover', function () {
+            $(this).toggleClass('clickable');
+        })
+        $("#Config_Dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 500,
+            height: 250,
+            resizable: false,
+            show: {
+                effect: "blind",
+                duration: 200
+            },
+            hide: {
+                effect: "blind",
+                duration: 200
+            }
+        });
+    });
+
+    function EditConfigContentType(id) {
+        $.ajax({
+            url: '@Url.Action("EditConfigContentType", "WorkFlow")',
+            type: 'post',
+            cache: false,
+            data: { id: id },
+            success: function (data) {
+                $("#Config_Dialog").html(data);
+                $("#Config_Dialog").dialog("open");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,158 @@
+﻿@using Web.FwCore
+@using Web.Common
+@using Business.Business
+@using Business.CommonBusiness
+@{
+    var listTrangThai = new List<SelectListItem>();
+    listTrangThai.Add(new SelectListItem()
+    {
+        Value = "0",
+        Text = "Chưa đọc"
+    });
+    listTrangThai.Add(new SelectListItem() { 
+        Value = "1",
+        Text = "Đã đọc"
+    });
+    
+}
+<style type="text/css">
+    .txt {
+        width: 250px;
+    }
+
+    .ms-choice {
+        background-size: 100% auto;
+        width: 233px;
+        text-align: left;
+    }
+
+    ms-choice > span {
+            top: 5px;
+            left: 0;
+            width: 100%;
+            font-weight: bold;
+            padding: 0;
+        }
+
+    .ms-drop {
+        left: 0;
+        border-radius: 0;
+    }
+
+        .ms-drop ul li label span {
+            vertical-align: middle;
+            margin: 0 0 0 5px;
+            padding: 0 0 5px 0;
+        }
+</style>
+<h3 class="h3-title-all">
+    Tìm kiếm thông báo
+</h3>
+<div style="margin-top:20px;">
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindSysTinNhan", "SysTinNhan", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSysTinNhanSearch" }))
+    {
+        <table style="margin:auto;">
+            <tr style="height:20px"></tr>
+            <tr>
+                <td>
+                    <label class="lbl" style="width:100px;">
+                        Từ ngày:
+                    </label>
+                </td>
+                <td>
+                    @Html.TextBox("TU_NGAY", "", new { @style = "width: 233px;", @class = "vm_datepicker e-input"})
+                </td>
+                <td style="width:5%"></td>
+                <td>
+                    <label class="lbl" style="width:100px;">
+                        Đến ngày:
+                    </label>
+                </td>
+                <td>
+                    @Html.TextBox("DEN_NGAY", "", new { @style = "width: 233px;", @class = "e-input vm_datepicker"})
+                </td>
+            </tr>
+            <tr style="height:20px">
+                <td></td>
+                <td>
+                    <span id="TUNGAY_FORMAT" style="color:red;display:none">Vui lòng nhập đúng định dạng ngày</span>
+                </td>
+                <td></td>
+                <td>
+                    <span id="DENNGAY_FORMAT" style="color:red;display:none">Vui lòng nhập đúng định dạng ngày</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl" style="width:100px;">
+                        Người gửi:
+                    </label>
+                </td>
+                <td>
+                    @Html.TextBox("NGUOI_GUI", "", new { @style = "width: 233px;", @class = "e-input" })
+                </td>
+                <td style="width:5%"></td>
+                <td>
+                    <label class="lbl" style="width:100px;">
+                        Trạng thái:
+                    </label>
+                </td>
+                <td>
+                    <div class="input-field4  clearfix" style="width: 233px;">
+                        @Html.DropDownList("TRANGTHAI", listTrangThai,"Chọn trạng thái", new { @style = "width:233px; background-size:100%"})
+                        @*<input type="hidden" value="" name="TRANGTHAI" id="TRANGTHAI" />*@
+                    </div>
+                </td>
+            </tr>
+            <tr style="height:20px"></tr>
+        </table>
+        <div style="text-align:center">
+            <input name="BtnSubmit" onclick="initialVulue();" value="Tìm kiếm" type="button" style="background-color: #336699; font-weight: bold; height: 35px; border: none; width: 100px; color: white; margin-right:20px">
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".vm_datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+20"
+        });
+        $("#TRANGTHAI").multipleSelect({
+            single:true,
+            filter: false,
+        });
+    });
+
+    function initialVulue() {
+        if ($("#TU_NGAY").val().trim().length != 0) {
+            if (checkDateTime($("#TU_NGAY").val()) == false) {
+                $("#TUNGAY_FORMAT").show();
+                $("#TU_NGAY").focus();
+                return false;
+            }
+            else {
+                $("#TUNGAY_FORMAT").hide();
+            }
+        }
+        if ($("#DEN_NGAY").val().trim().length != 0) {
+            if (checkDateTime($("#DEN_NGAY").val()) == false) {
+                $("#DENNGAY_FORMAT").show();
+                $("#DEN_NGAY").focus();
+                return false;
+            }
+            else {
+                $("#DENNGAY_FORMAT").hide();
+            }
+        }
+        $("#frmSysTinNhanSearch").submit();
+    }
+</script>

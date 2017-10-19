@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Quản lý danh mục nhóm sổ văn bản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .menu-left-content {
+        height: 494px;
+        overflow-y: auto;
+    }
+
+    #smart-dms .block {
+        width: 430px;
+    }
+
+    #menu-toolbar .right-all-page {
+        border: 0;
+        background: none;
+    }
+
+    #menu-toolbar #menu-child button.vbdi_search {
+        margin: 0 50px 10px 0;
+    }
+
+    #menu-middle-left ~ .right-all-page {
+        border-left: 1px solid #cccccc;
+        background: #fff;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Quản lý nhóm sổ văn bản</h1>
+        </div>
+    </div>
+    <div class="right-all-page">
+        <div id="menu-child">
+            <div class="menu-right">
+                <button type="button" onclick="OnCreate()" class="b_btn b_btn-default vbdi_search">
+                    Thêm mới nhóm sổ văn bản
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div id="block-search-form">
+        @using (Ajax.BeginForm("SearchNhomSoVanBan", "HscvNhomSoVanBan", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "search-form" }))
+        {
+            <input type="text" placeholder="Tên nhóm sổ văn bản" name="NHOMSOVANBAN" />
+            <input type="submit" value="search" />
+        }
+    </div>
+    <div class="menu-left-content block">
+        @{Html.RenderAction("NhanSuMenuChild", "Common", new { area = "" });}
+    </div>
+</div>
+<div class="right-all-page">
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div class="SearchResult">
+                    @Html.Partial("_NhomSoVanBanSearchResult")
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<script type="text/javascript">
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadGrid", "HscvNhomSoVanBan")',
+            data: {},
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+</script>

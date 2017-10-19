@@ -1,0 +1,230 @@
+﻿@using Web.FwCore
+@using Business.Business
+@using Business.CommonBusiness
+@using Web.Models
+@model Web.Areas.QuanLyNangLuongTruocThoiHanArea.Models.NangLuongViewModel
+@{
+    ViewBag.Title = "Phong trào thi đua khen thưởng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #collapseThongTinChinh {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+</style>
+<script src="~/Scripts/tiny_mce/tinymce.min.js"></script>
+@Html.Partial("_TopNavbar")
+@Html.Partial("_MenuLeft", Model, new ViewDataDictionary { { "active", 2 } })
+
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <form id="frmVanBanDenCreate" method="post" action="/QuanLyNangLuongTruocThoiHanArea/QuanLyNangLuongTruocThoiHan/CreateDonXinNL" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <h3 class="group-tittle mt10" style="height: 41px">Tạo mới đơn xin nâng lương trước thời hạn</h3>
+        <div style="margin:auto; margin-top:20px" id="collapseThongTinChinh" class="panel-collapse collapse in" aria-expanded="true">
+            <table id="tbl_create_nangluong_truocthoihan">
+                @*Ke hoach nang luong truoc thoi han*@
+                <tr>
+                    <td style="width:20%">
+                        <label class="lbl-title">Kế hoạch nâng lương trước thời hạn:<span style="color: red;">*</span></label>
+                    </td>
+                    <td colspan="3">
+                        <div class="input-field4 clearfix fix-width">
+                            @Html.DropDownList("KEHOACH_ID", Model.LstKeHoach, new { @class = "width_100", @style = "padding-right:30px" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="height_20"></td>
+                    <td>
+                        <span id="ERR_KEHOACH_ID" style="color: red"></span>
+                    </td>
+                </tr>
+                @*End*@
+                @*Thời gian đề nghị nâng bậc lương trước thời hạn*@
+                <tr>
+                    <td style="width:20%">
+                        <label class="lbl-title">Thời gian đề nghị nâng bậc lương trước thời hạn:<span style="color: red;">*</span></label>
+                    </td>
+                    <td colspan="3">
+                        @Html.TextBox("TIME_NLTTH", "", new { @style = "width: 233px;", maxlength = "255", @class = "e-input", @id = "TIME_NLTTH" })
+                        <span>(tháng)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="height_20"></td>
+                    <td>
+                        <span id="ERR_TIME_NLTTH" style="color: red"></span>
+                    </td>
+                </tr>
+                @*End*@
+                @*Bậc và hệ số*@
+                <tr>
+                    <td>
+                        <label class="lbl-title">Đề nghị nâng lên bậc:<span style="color: red;">*</span></label>
+                    </td>
+                    <td>
+                        <div class="input-field4 clearfix fix-width">
+                            @Html.TextBox("LEN_BAC", "", new { @style = "width: 233px;", maxlength = "255", @class = "e-input", @id = "LEN_BAC" })
+                            <span style="color: gray">(Ví dụ: 2/9, 3/9,...)</span>
+                        </div>
+                    </td>
+                    <td>
+                        <label class="lbl-title">Hệ số:<span style="color: red;">*</span></label>
+                    </td>
+                    <td>
+                        <div class="input-field4 clearfix fix-width">
+                            @Html.TextBox("LEN_HE_SO", "", new { @style = "width: 220px;", maxlength = "255", @class = "e-input", @id = "LEN_HE_SO" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="height_20"></td>
+                    <td>
+                        <span id="ERR_LEN_BAC" style="color: red"></span>
+                    </td>
+                    <td></td>
+                    <td>
+                        <span id="ERR_LEN_HE_SO" style="color: red"></span>
+                    </td>
+                </tr>
+                @*end*@
+                @*Tự đánh giá các mặt công tác*@
+                <tr>
+                    <td>
+                        <label class="lbl-title">Tự đánh giá các mặt công tác:<span style="color: red;">*</span></label>
+                    </td>
+                    <td colspan="3">
+                        @Html.TextArea("TUDANHGIA", "", new { @style = "width:700px;height:300px;", @placeholder = "Tự đánh giá các mặt công tác ( tư tưởng, nhiệm vụ đảm nhận )", @class = "e-input", @maxlength = "500" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="height_20"></td>
+                    <td>
+                        <span id="ERR_TUDANHGIA" style="color: red"></span>
+                    </td>
+                </tr>
+                @*end*@
+            </table>
+        </div>
+        <div style="margin-top: 15px; text-align: center;">
+            <input type="submit" value="Lưu toàn bộ thông tin" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" />
+            <a style="border: medium none; color: white; padding: 7px 20px; background-color: seagreen;" href="/QuanLyNangLuongTruocThoiHanArea/QuanLyNangLuongTruocThoiHan/Personal">Quay lại </a>
+
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        tinymce.init({
+            selector: '#TUDANHGIA',
+            language: 'vi_VN',
+            width: '100%',
+            height: 200,
+            plugins: [
+                    "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+            toolbar2: "cut copy paste pastetext | bullist numlist | outdent indent | undo redo | link unlink code | forecolor backcolor",
+            toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | insertdatetime preview | print fullscreen | ltr rtl | pagebreak restoredraft",
+            menubar: false,
+            convert_urls: false,
+            paste_data_images: true,
+            toolbar_items_size: 'small'
+        });
+    });
+    $("#btnSave").click(function () {
+        clearMessageErr();
+        var check_err_submit = false;
+        if ($("#TIME_NLTTH").val().trim() == "") {
+            $("#ERR_TIME_NLTTH").html("Bạn phải nhập Thời gian đề nghị nâng bậc lương trước thời hạn");
+            $("#TIME_NLTTH").focus();
+            check_err_submit = true;
+        } else {
+            if (!/^[0-9]+$/.test($("#TIME_NLTTH").val().trim())) {
+                $("#ERR_TIME_NLTTH").html("Thời gian đề nghị nâng bậc lương trước thời hạn phải là số nguyên dương");
+                $("#TIME_NLTTH").focus();
+                check_err_submit = true;
+            }
+        }
+        if ($("#LEN_BAC").val().trim() == "") {
+            $("#ERR_LEN_BAC").html("Bạn phải nhập bậc lương đề xuất");
+            if (check_err_submit == false) {
+                $("#LEN_BAC").focus();
+                check_err_submit = true;
+            }
+        } else {
+            var bac_regex = /[0-9]\/[0-9]+$/;
+            var len_bac = $("#LEN_BAC").val().trim();
+            if (!bac_regex.test(len_bac)) {
+                $("#ERR_LEN_BAC").html("Bậc lương bạn nhập sai định dạng");
+                if (check_err_submit == false) {
+                    $("#LEN_BAC").focus();
+                    check_err_submit = true;
+                }
+            }
+        }
+        if ($("#LEN_HE_SO").val().trim() == "") {
+            $("#ERR_LEN_HE_SO").html("Bạn phải nhập hệ số đề xuất");
+            if (check_err_submit == false) {
+                $("#LEN_HE_SO").focus();
+                check_err_submit = true;
+            }
+        } else {
+            var heso = $("#LEN_HE_SO").val().trim();
+            if (!$.isNumeric(heso) || heso < 0) {
+                $("#ERR_LEN_HE_SO").html("Hệ số lương phải là số dương");
+                if (check_err_submit == false) {
+                    $("#LEN_HE_SO").focus();
+                    check_err_submit = true;
+                }
+            }
+        }
+        var noidungdanhgia = strip_tags(tinyMCE.get('TUDANHGIA').getContent({ format: 'raw' }));
+        noidungdanhgia = noidungdanhgia.replace(/&nbsp;/g, '');
+        if (noidungdanhgia.trim() == "") {
+            $("#ERR_TUDANHGIA").html("Bạn phải nhập nội dung đánh giá");
+            if (check_err_submit == false) {
+                $("#TUDANHGIA").focus();
+                check_err_submit = true;
+            }
+        }
+        if (check_err_submit) {
+            notif({
+                type: 'error',
+                position: 'bottom',
+                msg: 'Thông tin bạn điền chưa chính xác!',
+            });
+            return false;
+        } else {
+            //$("#frmVanBanDenCreate").submit();
+            return true;
+        }
+    });
+    function clearMessageErr() {
+        $("#ERR_TIME_NLTTH").html("");
+        //$("#ERR_TUDANHGIA").html("");
+        $("#ERR_LEN_BAC").html("");
+        $("#ERR_LEN_HE_SO").html("");
+    }
+
+    function isIntegerNotNative(x) {
+        x = parseInt(x);
+        return (typeof x === 'number') && (x > 0) && (x % 1 === 0);
+    }
+
+    function strip_tags(input, allowed) {
+        allowed = (((allowed || '') + '')
+          .toLowerCase()
+          .match(/<[a-z][a-z0-9]*>/g) || [])
+          .join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+          commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+        return input.replace(commentsAndPhpTags, '')
+          .replace(tags, function ($0, $1) {
+              return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+          });
+    }
+</script>

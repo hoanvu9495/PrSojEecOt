@@ -1,0 +1,193 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.eAita
+@model  Web.Areas.DMThaoTacArea.Models.DMThaoTacEditViewModel
+@using (Ajax.BeginForm("SaveThaoTac", "DMThaoTac", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "EditSuccess"
+}, new { id = "frmThaoTacEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table>
+            <tr class="height_20"></tr>
+            <tr>
+                <td>
+                    <label class="lbl3 width_140">Thao Tác:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("THAOTAC", Model.ThaoTac.THAOTAC, new { maxlength = "300", @class = "e-input width_222", @id = "EDIT_THAOTAC" })
+                </td>
+                <td>
+                    <label class="lbl2 margin-left-40">Tên thao tác:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("TEN_THAOTAC", Model.ThaoTac.TEN_THAOTAC, new { maxlength = "200", @class = "e-input width_222", @id = "EDIT_TENTHAOTAO" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span class="lb-Check2" id="EDIT_THAOTACNull">Bạn nhập thao tác </span>
+                </td>
+                <td></td>
+                <td>
+                    <span class="lb-Check2" id="EDIT_TEN_THAOTACNull">Bạn nhập tên thao tác </span>
+                </td>
+            </tr>
+            <tr>
+                <td width="140">
+                    <label>Chức năng cấp 1:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix width_233">
+                        @Html.DropDownList("CHUCNANGCAP1", @Model.ListChucNangCap1, "[--- Tất cả ---]", new { @class = "width_100", id = "EDIT_CHUCNANGCAP1" })
+                    </div>
+                </td>
+                <td>
+                    <label class="lbl2 margin-left-40">Chức năng cấp 2:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix width_233">
+
+                        @Html.DropDownList("CHUCNANGCAP2", @Model.ListChucNangCap2, "[--- Tất cả ---]", new { @class = "width_100", id = "EDIT_CHUCNANGCAP2" })
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span class="lb-Check2" id="EDIT_CHUCNANGCAP1_NULL">Bạn chọn chức năng </span>
+                </td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl3 width_140">Trạng thái:</label>
+                </td>
+                <td>
+                    <div class="float-width-40">
+                        @Html.RadioButton("TRANGTHAI", "1", (Model.ThaoTac.TRANGTHAI == 1), new { @id = "EDIT_ISACTIVE_HL", @class = "css-checkbox" })
+                        <label class="css-label" for="EDIT_ISACTIVE_HL">Hiệu lực</label>
+                    </div>
+                    <div class="float-width">
+                        @Html.RadioButton("TRANGTHAI", "0", (Model.ThaoTac.TRANGTHAI == 0), new { @id = "EDIT_ISACTIVE_KHL", @class = "css-checkbox" })
+                        <label class="css-label" for="EDIT_ISACTIVE_KHL">Không hiệu lực</label>
+                    </div>
+                </td>
+                <td>
+                    <label class="lbl2 margin-left-40">Menu Link:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextArea("MENU_LINK", Model.ThaoTac.MENU_LINK, new { maxlength = "550", @class = "e-input width_222", @id = "EDIT_MENULINK" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20" colspan="3"></td>
+                <td>
+                    <span class="lb-Check2" id="EDIT_MENUNull">Bạn nhập Menu Link </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <input type="hidden" name="DM_THAOTAC_ID" value="@Model.ThaoTac.DM_THAOTAC_ID" /><div class="margin-top-15 center">
+        <input type="button" value="Lưu" id="btnSave_Edit" class="btnSearch" />
+        <input type="button" value="Đóng" onclick="OnClose()" class="btnSearch" />
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#EDIT_THAOTAC").focusout(function () {
+            if ($(this).val().trim() == "" || $(this).val().trim() == null) {
+                $("#EDIT_THAOTACNull").show();
+            } else {
+                $("#EDIT_THAOTACNull").hide();
+            }
+            $("#EDIT_THAOTAC").val($("#EDIT_THAOTAC").val().trim());
+        });
+        $("#EDIT_TENTHAOTAO").focusout(function () {
+            if ($(this).val().trim() == "" || $(this).val().trim() == null) {
+                $("#EDIT_TEN_THAOTACNull").show();
+            } else {
+                $("#EDIT_TEN_THAOTACNull").hide();
+            }
+            $("#EDIT_TENTHAOTAO").val($("#EDIT_TENTHAOTAO").val().trim());
+        });
+        $("#EDIT_MENULINK").focusout(function () {
+
+            if ($(this).val().trim() == "" || $(this).val().trim() == null) {
+                $("#EDIT_MENUNull").show();
+            } else {
+                $("#EDIT_MENUNull").hide();
+            }
+            $("#EDIT_MENULINK").val($("#EDIT_MENULINK").val().trim());
+        });
+        $("#btnSave_Edit").click(function () {
+            if ($("#EDIT_THAOTAC").val().trim() == "" || $("#EDIT_THAOTAC").val().trim() == null) {
+                $("#EDIT_THAOTACNull").show();
+                $("#EDIT_THAOTAC").focus();
+                return false;
+            }
+            if ($("#EDIT_TENTHAOTAO").val().trim() == "" || $("#EDIT_TENTHAOTAO").val().trim() == null) {
+                $("#EDIT_TEN_THAOTACNull").show();
+                $("#EDIT_TENTHAOTAO").focus();
+                return false;
+            }
+            if ($("#EDIT_CHUCNANGCAP1").val().length == 0) {
+                $("#EDIT_CHUCNANGCAP1_NULL").show();
+                return false;
+            }
+            if ($("#EDIT_MENULINK").val().trim() == "" || $("#EDIT_MENULINK").val().trim() == null) {
+                $("#EDIT_MENUNull").show();
+                $("#EDIT_MENULINK").focus();
+                return false;
+            }
+            $("#frmThaoTacEdit").submit();
+            return true;
+
+        });
+        $("#EDIT_CHUCNANGCAP1").change(function () {
+            if ($("#EDIT_CHUCNANGCAP1").val() > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("FindData","DMThaoTac")',
+                    cache: false,
+                    data: { CHUCNANGCHA: $("#EDIT_CHUCNANGCAP1").val() },
+                    success: function (data) {
+                        var items = "";
+                        items += "<option value='-1'>[--- Tất cả ---]</option>";
+                        $.each(data, function (i, type) {
+                            items += "<option value='" + type.DM_CHUCNANG_ID + "'>" + type.TEN_CHUCNANG + "</option>";
+                        });
+                        $("#EDIT_CHUCNANGCAP2").html(items);
+
+                    },
+                    error: function (data) {
+                        alert("Không có chức năng cấp 2 nào.");
+                    }
+                });
+                $("#EDIT_CHUCNANGCAP1_NULL").hide();
+            } else {
+                $("#EDIT_CHUCNANGCAP2").html("<option value='-1'>[--- Tất cả ---]</option>");
+            }
+        });
+    });
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function EditSuccess() {
+        CommonJS.alert("Sửa thao tác thành công");
+        $("#PrepareThaoTac").dialog("close");
+        reloadGrid();
+    }
+    function OnClose() {
+        $("#PrepareThaoTac").dialog("close");
+    }
+
+</script>

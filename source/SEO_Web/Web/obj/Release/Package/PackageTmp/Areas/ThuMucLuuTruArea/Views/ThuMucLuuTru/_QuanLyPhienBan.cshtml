@@ -1,0 +1,588 @@
+﻿@using Model.eAita
+@model Web.Areas.ThuMucLuuTruArea.Models.VersionFile
+@{
+    var grid = new WebGrid(Model.version,
+                 rowsPerPage: 10,
+                 canPage: true,
+                 canSort: false,
+                 ajaxUpdateContainerId: "grid",
+                 selectionFieldName: "selectedRow"
+                );
+}
+@using (Html.BeginForm("AddNewVersion", "ThuMucLuuTru", FormMethod.Post, new { id = "UploadFileFrm", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Danh sách các phiên bản của tài liệu</h4>
+            </div>
+            <div class="modal-body" style="height:450px;overflow-y:auto">
+                <table style="width:100%">
+                    <tr>
+                        <td colspan="2">
+                            <h3 class="group-tittle mt10" style="margin-bottom:10px">Thông tin phiên bản hiện tại</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="margin-top:20px">
+                                <span style="font-weight:bold">@Model.TAILIEU.TENTAILIEU </span><br />
+                                Phiên bản hiện tại được cập nhật lúc @String.Format("{0:dd/M/yyyy HH:mm}", @Model.TAILIEU.NGAYTAO):
+                                @*@Html.ActionLink("Tải xuống", "DownloadFile", new { ID = Model.TAILIEU.TAILIEU_ID })*@
+                                <a href="javascript:void(0)" onclick="DownloadFileIndex(@Model.TAILIEU.TAILIEU_ID)">Tải xuống</a>
+                            </div>
+                        </td>
+                        <td style="text-align:right">
+                            @if (!Model.TAILIEU.IS_QLPHIENBAN.Value)
+                            {
+                                <div style="float:right;">
+                                    <label class="switch switch-left-right">
+                                        <input class="switch-input" type="checkbox" data-id="@Model.TAILIEU.TAILIEU_ID" />
+                                        <span class="switch-label" data-on="Bật" data-off="Tắt"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                                <div style="float: right; margin-top: 8px; margin-left: 6px;">Quản lý phiên bản:</div>
+                            }
+                            else
+                            {
+                                <div style="float: right; ">
+                                    <label class="switch switch-left-right">
+                                        <input class="switch-input" type="checkbox" checked data-id="@Model.TAILIEU.TAILIEU_ID" />
+                                        <span class="switch-label" data-on="Bật" data-off="Tắt"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                                <div style="float: right; margin-top: 8px; margin-left: 6px; width: 120px">Quản lý phiên bản:</div>
+                            }
+                        </td>
+                    </tr>
+                    @if (Model.TAILIEU.IS_QLPHIENBAN.Value)
+                    {
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr class="filebase">
+                            <td style=" margin-left: 6px" colspan="2">
+                                <div style="width:40%;float:left">
+                                    Phiên bản: <span style="color:red">*</span>
+                                    <input type="text" name="VERSION" id="VERSION_FILE" placeholder="Nhập phiên bản cho tài liệu" class="filebase e-input" style="width:233px" />
+                                </div>
+                                <div style="width:60%;float:left">
+                                    Tài liệu mới:<span style="color:red">*</span> @if (Model.TAILIEU.IS_QLPHIENBAN.Value)
+                                    {
+                                        <input id="filebase" style="border: none; display: inline" class="filebase" type="file" value="Chọn tài liệu" name="filebase" />
+                                    }
+                                    else
+                                    {
+                                        <input id="filebase" class="filebase" style="display:none;border:none;display:inline" type="file" value="Chọn tài liệu" name="filebase" />
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span style="color:red;display:none" id="VERSION_FILE_NULL">Vui lòng nhập phiên bản cho tài liệu</span>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr class="filebase" style="display:none">
+                            <td style=" margin-left: 6px" colspan="2">
+                                <div style="width:40%;float:left">
+                                    Phiên bản: <span style="color:red">*</span>
+                                    <input type="text" name="VERSION" id="VERSION_FILE" placeholder="Nhập phiên bản cho tài liệu" class="filebase e-input" style="width:233px" />
+                                </div>
+                                <div style="width:60%;float:left">
+                                    Tài liệu mới:<span style="color:red">*</span> @if (Model.TAILIEU.IS_QLPHIENBAN.Value)
+                                    {
+                                        <input id="filebase" style="border: none; display: inline" class="filebase" type="file" value="Chọn tài liệu" name="filebase" />
+                                    }
+                                    else
+                                    {
+                                        <input id="filebase" class="filebase" style="display:none;border:none;display:inline" type="file" value="Chọn tài liệu" name="filebase" />
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span style="color:red;display:none" id="VERSION_FILE_NULL">Vui lòng nhập phiên bản cho tài liệu</span>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    }
+                    @*<tr>
+                            <td colspan="2">
+                                @if (Model.TAILIEU.IS_QLPHIENBAN.Value)
+                                {
+                                    <input id="filebase" style="border:none" class="filebase" type="file" value="Chọn tài liệu" name="filebase" />
+                                }
+                                else
+                                {
+                                    <input id="filebase" class="filebase" style="display:none;border:none" type="file" value="Chọn tài liệu" name="filebase" />
+                                }
+                            </td>
+                        </tr>*@
+                </table>
+                <input type="hidden" value="@Model.TAILIEU.TAILIEU_ID" name="TAILIEU_ID" />
+                <div>
+                    @if (Model.version.Count > 0)
+                    {
+                        <h3 class="group-tittle mt10" style="margin-bottom:10px">Danh sách các phiên bản cũ hơn</h3>
+                        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                          grid.Column("TENTAILIEU", "Tên tài liệu", style: "f-name"),
+                          grid.Column("TACGIA", "Tác giả"),
+                          grid.Column("NGAYPHATHANH", "Ngày phát hành", format: (item) => item.NGAYPHATHANH != null ? string.Format("{0:dd-MM-yyyy}", item.NGAYPHATHANH) : ""),
+                          grid.Column("VERSION", "Phiên bản"),
+                          grid.Column("TENNGUOITAI", "Người tải lên"),
+                          grid.Column("NGAYTAI", "Ngày tải", format: (item) => string.Format("{0:dd/MM/yyyy HH:mm}", item.NGAYTAI)),
+                          grid.Column(format: (item) => new MvcHtmlString("<a class='btnDownload' href='javascript:void(0)' onclick='DownloadFile(" + item.ID + ")'></a>"), header: "Tải xuống"),
+                          grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                          "<a href='javascript:void(0)' onclick='RestoreFile(" + item.ID + "," + item.TAILIEU_ID + ")'  title = 'Sử dụng phiên bản này' class='btnRestore'></a>")), header: "Khôi phục"),
+                          grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                     "<a href='javascript:void(0)' onclick='RemoveFile(" + item.ID + "," + item.TAILIEU_ID + ")' class='btnDelete' title = 'Xóa tài liệu'></a>")), header: "Xóa")
+                 )
+    )
+                    }
+                    @*else
+                        {
+                        <div style="margin-top:20px">
+                            <span style="font-weight:bold">@Model.TAILIEU.TENTAILIEU </span><br />
+                            Phiên bản hiện tại được cập nhật lúc @String.Format("{0:dd/M/yyyy HH:mm}", @Model.TAILIEU.NGAYTAO):
+                            @Html.ActionLink("Tải xuống", "DownloadFile", new { ID = Model.TAILIEU.TAILIEU_ID })
+                        </div>
+                        }*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                @if (Model.TAILIEU.IS_QLPHIENBAN.Value)
+                {
+                    <input type="submit" value="Cập nhật" class="btn btn-success filebase" id="btnUploadFile" style="margin-left:6px" />
+                }
+                else
+                {
+                    <input type="submit" value="Cập nhật" class="btn btn-success filebase" style="display:none" id="btnUploadFile" />
+                }
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .webGrid th:first-child {
+        width: 20px !important;
+    }
+
+    .webGrid th:nth-child(2) {
+        width: 100px !important;
+    }
+
+    a {
+        color: blue !important;
+    }
+
+    .webGrid td:nth-child(4) {
+        text-align: left;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDownload {
+        background: url('/Content/themes/base/images/BieuMau_Download.png') no-repeat;
+        display: block;
+        width: 32px;
+        height: 32px;
+        margin: 0 auto;
+    }
+
+    .btnRestore {
+        background: url('/Content/themes/base/images/TM_Restore.png') no-repeat;
+        display: block;
+        width: 32px;
+        height: 32px;
+        margin: 0 auto;
+    }
+
+    .switch {
+        position: relative;
+        display: block;
+        vertical-align: top;
+        width: 100px;
+        height: 30px;
+        padding: 3px;
+        margin: 0 10px 10px 0;
+        border-radius: 18px;
+        cursor: pointer;
+    }
+
+    .switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    .switch-label {
+        position: relative;
+        display: block;
+        height: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #ffb84d;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+    }
+
+        .switch-label:before, .switch-label:after {
+            position: absolute;
+            top: 50%;
+            margin-top: -.5em;
+            line-height: 1;
+            -webkit-transition: inherit;
+            -moz-transition: inherit;
+            -o-transition: inherit;
+            transition: inherit;
+        }
+
+        .switch-label:before {
+            content: attr(data-off);
+            right: 11px;
+            color: #fff;
+            text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .switch-label:after {
+            content: attr(data-on);
+            left: 11px;
+            color: #FFFFFF;
+            text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+        }
+
+    .switch-input:checked ~ .switch-label {
+        background: #34A7C1;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-input:checked ~ .switch-label:before {
+            opacity: 0;
+        }
+
+        .switch-input:checked ~ .switch-label:after {
+            opacity: 1;
+        }
+
+    .switch-handle {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+        background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+        border-radius: 100%;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-handle:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -6px 0 0 -6px;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+            background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+            border-radius: 6px;
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+        }
+
+    .switch-input:checked ~ .switch-handle {
+        left: 74px;
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+    /* Transition
+        ========================== */
+    .switch-label, .switch-handle {
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+    }
+
+    .onoffswitch {
+        position: relative;
+        width: 65px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .onoffswitch-checkbox {
+        display: none;
+    }
+
+    .chooseplace {
+        display: none;
+    }
+
+    .onoffswitch-label {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        height: 28px;
+        padding: 0;
+        line-height: 28px;
+        border: 2px solid #CCCCCC;
+        border-radius: 28px;
+        background-color: #FFFFFF;
+        transition: background-color 0.3s ease-in;
+    }
+
+        .onoffswitch-label:before {
+            content: "";
+            display: block;
+            width: 28px;
+            margin: 0px;
+            background: #FFFFFF;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 35px;
+            border: 2px solid #CCCCCC;
+            border-radius: 28px;
+            transition: all 0.3s ease-in 0s;
+        }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label {
+        background-color: #49E845;
+    }
+
+        .onoffswitch-checkbox:checked + .onoffswitch-label, .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+            border-color: #49E845;
+        }
+
+            .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+                right: 0px;
+            }
+</style>
+<script>
+    $(function () {
+        $(".close").click(function () {
+            $("#VersionFile").modal('hide');
+        });
+        $("#btnUploadFile").click(function () {
+            if ($(".switch-input:checked").length == 1) {
+                if ($("#VERSION_FILE").val().trim().length == 0) {
+                    $("#VERSION_FILE").focus();
+                    $("#VERSION_FILE_NULL").show();
+                    return false;
+                } else {
+                    $("#VERSION_FILE_NULL").focus();
+                }
+            }
+            return true;
+        });
+        $('#VersionFile').on('hidden.bs.modal', function () {
+            $("#VersionFile").html("");
+        });
+        $(".switch-input").change(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("MangerVersion", "ThuMucLuuTru")',
+                data: {
+                    TAILIEU_ID: $(this).attr("data-id"),
+                    TRANGTHAI: $(".switch-input:checked").length
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if ($(".switch-input:checked").length == 1) {
+                        $(".filebase").show();
+                        $(".versiondisplay").show();
+                    } else {
+                        $(".filebase").hide();
+                        $(".versiondisplay").hide();
+                    }
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: data,
+                    });
+
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+    });
+    function RestoreFile(ID, TAILIEU) {
+        $.confirm({
+            'title': 'Xác nhận khôi phục',
+            'message': 'Bạn có chắc chắn mình muốn sử dụng phiên bản này?',
+            'buttons': {
+                'Khôi phục': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("PreviousVersionFIle", "ThuMucLuuTru")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID, TAILIEU_ID: TAILIEU },
+                            success: function (data) {
+                                ReloadGrid(TAILIEU);
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: data,
+                                });
+                            },
+                            error: function (err) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Có lỗi xảy ra trong quá trình xóa tài liệu',
+                                });
+                            }
+                        });
+                    }
+                },
+                'Đóng': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function RemoveFile(ID, TAILIEU) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa tài liệu này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("XoaFileVersion", "ThuMucLuuTru")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                ReloadGrid(TAILIEU);
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: data,
+                                });
+                            },
+                            error: function (err) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Có lỗi xảy ra trong quá trình xóa tài liệu',
+                                });
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function ReloadGrid(ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("VersionFile", "ThuMucLuuTru")',
+            data: {
+                TAILIEU: ID
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#VersionFile").html(data);
+                $("#VersionFile").modal('show');
+                $("#VersionFile").find(".modal-dialog").css("width", "950px");
+            }
+        });
+    }
+    function DownloadFile(ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckkingVersion", "ThuMucLuuTru")',
+            data: {
+                ID: ID
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                if (data == "Co") {
+                    location.href = "./DownloadFilePath?ID=" + ID;
+                } else {
+                    $.confirm({
+                        'title': 'Không tìm thấy tài liệu',
+                        'message': 'Xin lỗi không thể tìm thấy tài liệu mà bạn đang yêu cầu.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+    $("form").ajaxForm({
+        beforeSend: function () {
+
+        },
+        uploadProgress: function () {
+
+        },
+        success: function (data) {
+            $("#VersionFile").modal('hide');
+            ManagerVersion('@Model.TAILIEU.TAILIEU_ID');
+            notif({
+                type: 'success',
+                position: 'bottom',
+                msg: data,
+            });
+        },
+        complete: function () {
+            $("#VersionFile").modal('hide');
+            $("#VersionFile").html("");
+        }, error: function (data) {
+            notif({
+                type: 'error',
+                position: 'bottom',
+                msg: "Có lỗi xảy ra trong quá trình cập nhật",
+            });
+        }
+    });
+</script>

@@ -1,0 +1,106 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.DBTool;
+@model UserInfoBO
+@{
+    var ListChucNangCon = Model.ListCN;
+    var ListChucNang = Model.ListCNFull;
+}
+@using (Ajax.BeginForm("SaveConfigFunctionDefault", "Home", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "ConfigFunctionDefaultFailure",
+    OnSuccess = "ConfigFunctionDefaultSuccess"
+}, new { id = "frmConfigFunctionDefault" }))
+{
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Thiết lập chức năng mặc định sau khi đăng nhập</h4>
+        </div>
+        <div class="modal-body" style="float:left; border-bottom: 1px solid #e5e5e5;margin-bottom:10px;">
+            <div style="clear:both;">
+                @Html.AntiForgeryToken()
+                <div class="box-border">
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <div style="margin:auto;width:200px;">
+                                    <input class="css-checkbox homefunction" value="-100" id="TT_ITEM_NONE" name="rdoDefaultFunction" type="radio" @(ViewBag.CurrentDefaultFunction == -100 ? "checked='checked'" : "")>
+                                    <label style="font-weight:normal" for="TT_ITEM_NONE" class="css-label"><b style="color: #00569d;font-size:20px;"> Trang chủ</b></label>
+                                </div>
+                                <hr />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="50%">
+                                <div class="pq-label-fix" style="max-height:400px;min-height:400px; width:100%; overflow-y:auto;">
+                                    @if (ListChucNang != null && ListChucNang.Count > 0)
+                                    {
+                                        foreach (var tt in ListChucNang.Skip(0).Take(ListChucNang.Count / 2))
+                                        {
+                                            var child = ListChucNangCon.Where(o => o.CHUCNANG_CHA == tt.DM_CHUCNANG_ID).ToList();
+                                            <fieldset style="border:1px solid #C0C0C0; padding:10px; margin-right:5px;">
+                                                <legend style="margin:0px; border:0px;">
+                                                    <b style="color: #00569d;">@tt.TEN_CHUCNANG</b>
+                                                </legend>
+                                                <div>
+                                                    @foreach (var item in child)
+                                                    {
+                                                        <input class="css-checkbox homefunction" value="@item.DM_CHUCNANG_ID" id="TT_ITEM_@item.DM_CHUCNANG_ID" name="rdoDefaultFunction" type="radio" @(ViewBag.CurrentDefaultFunction == item.DM_CHUCNANG_ID ? "checked='checked'" : "")>
+                                                        <label style="font-weight:normal" for="TT_ITEM_@item.DM_CHUCNANG_ID" class="css-label">@item.TEN_CHUCNANG</label>
+
+                                                    }
+                                                </div>
+                                            </fieldset>
+                                        }
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <div class="pq-label-fix" style="max-height:400px;min-height:400px; width:100%; overflow-y:auto;">
+                                    @if (ListChucNang != null && ListChucNang.Count > 0)
+                                    {
+                                        foreach (var tt in ListChucNang.Skip(ListChucNang.Count / 2))
+                                        {
+                                            var child = ListChucNangCon.Where(o => o.CHUCNANG_CHA == tt.DM_CHUCNANG_ID).ToList();
+                                            <fieldset style="border:1px solid #C0C0C0; padding:10px; margin-right:5px;">
+                                                <legend style="margin:0px; border:0px;">
+                                                    <b style="color: #00569d;">@tt.TEN_CHUCNANG</b>
+                                                </legend>
+                                                <div>
+                                                    @foreach (var item in child)
+                                                    {
+                                                        <input class="css-checkbox homefunction" value="@item.DM_CHUCNANG_ID" id="TT_ITEM_@item.DM_CHUCNANG_ID" name="rdoDefaultFunction" type="radio" @(ViewBag.CurrentDefaultFunction == item.DM_CHUCNANG_ID ? "checked='checked'" : "")>
+                                                        <label style="font-weight:normal" for="TT_ITEM_@item.DM_CHUCNANG_ID" class="css-label">@item.TEN_CHUCNANG</label>
+
+                                                    }
+                                                </div>
+                                            </fieldset>
+                                        }
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" id="btnSaveConfigRow">Lưu</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+        </div>
+    </div>
+}
+
+<script>
+    function ConfigFunctionDefaultFailure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function ConfigFunctionDefaultSuccess() {
+        location.href = "/home/index";
+    }
+</script>

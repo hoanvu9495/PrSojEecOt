@@ -1,0 +1,707 @@
+﻿@{
+    ViewBag.Title = "Chi tiết yêu cầu chia sẻ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int count = 0;
+}
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeModel
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@using Business.CommonBusiness;
+<div id="menu-toolbar">
+    <div class="left-all-page" style="width:350px">
+        <div id="smart-dms" class="block">
+            <h1>Chi tiết yêu cầu chia sẻ</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border: 0px; background: none; width: calc(100% - 350px)">
+        <div id="menu-child">
+            <div class="menu-left">
+            </div>
+            <div class="menu-right" style="">
+                <button style="margin-bottom: 10px" type="button" onclick="location.href = '@Url.Action("Index", "ThuMucLuuTru" )'" class="b_btn b_btn-default vbdi_search">Quản lý tài liệu</button>
+                <div class="btn-group" role="group" style="margin-bottom: 10px;">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Yêu cầu chia sẻ
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("Danhsachyeucauduocchiase", "ThuMucLuuTru")">Xử lý yêu cầu chia sẻ</a></li>
+                        <li><a href="@Url.Action("Danhsachyeucauchiase", "ThuMucLuuTru")">Danh sách yêu cầu chia sẻ</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group" role="group" style="margin-bottom: 10px;margin-right:20px">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chia sẻ tài liệu
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("DanhSachTaiLieuDaChiaSe", "ThuMucLuuTru")">Đang chia sẻ</a></li>
+                        <li><a href="@Url.Action("DanhSachTaiLieuDuocChiaSe", "ThuMucLuuTru")">Được chia sẻ</a></li>
+                        <li><a href="@Url.Action("YeuCauCanChiaSe", "YeuCauChiaSe")">Xử lý yêu cầu chia sẻ</a></li>
+                        <li><a href="@Url.Action("Index", "YeuCauChiaSe")">Yêu cầu chia sẻ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+    <div class="right-content clearfix" style="margin-top:20px">
+        <div class="SearchResult">
+            <div class="folder-content" style="margin-top:-30px">
+                <div id="treeview" style="width:70%;margin:0 auto">
+                    <h3 class="group-tittle mt10" style="margin-top:30px ;margin-bottom:22px">Chi tiết yêu cầu chia sẻ</h3>
+                    <table class="YeuCau">
+                        <tr>
+                            <td style="width: 200px; font-weight: bold">Ngày yêu cầu:</td>
+                            <td>
+                                <span style="font-weight:bold">@string.Format("{0:dd-MM-yyyy}", Model.YEUCAU.NGAYYEUCAU)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">Lý do yêu cầu:</td>
+                            <td>
+                                <span>@Model.YEUCAU.LYDO</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 200px; font-weight: bold">Trạng thái:</td>
+                            <td>
+                                @{
+                                    string UnitUnAccept = "";
+                                    var ListLog = Model.ListLichSu.Where(x => x.TRANGTHAI2 == YeuCauChiaSeConstant.DONVITUCHOI).ToList();
+                                    ListLog = ListLog.GroupBy(x => x.TENDONVI).Select(y => y.First()).ToList();
+                                }
+                                @switch (Model.YEUCAU.TRANGTHAI)
+                                {
+                                    case YeuCauChiaSeConstant.DATRINH:
+                                        <span style="color:red;">Chờ duyệt</span>
+                                        break;
+                                    case YeuCauChiaSeConstant.DADUYET:
+                                    <span style="color:green">Đồng ý</span>
+                                        break;
+                                    case YeuCauChiaSeConstant.CHUYENYEUCAU:
+                                    <span style="color:blue">Đã chuyển yêu cầu</span>
+                                        break;
+                                    case YeuCauChiaSeConstant.TRAVE:
+                                    <span style="color:red">Từ chối</span>
+                                        break;
+                                    case YeuCauChiaSeConstant.DONVIOK:
+                                    <span style="color:green">Đã chia sẻ</span>
+                                        break;
+                                    case YeuCauChiaSeConstant.DONVITUCHOI:
+                                        foreach (var item in ListLog)
+                                        {
+                                            UnitUnAccept += item.TENDONVI + ",";
+                                        }
+                                        <span style="color:red">@UnitUnAccept từ chối chia sẻ</span>
+                                        break;
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="panel-default">
+                        <div id="headingOne" class="panel-heading" role="tab">
+                            <h4 class="panel-title">
+                                <a class="" role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Yêu cầu chia sẻ</a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse" style="" role="tabpanel" aria-expanded="false">
+                            <div class="SearchCriterial ">
+                                <table class="webGrid">
+                                    <tr class="head">
+                                        <th>STT</th>
+                                        <th>Đơn vị</th>
+                                        <th>Tên danh mục</th>
+                                        <th>Tên tài liệu</th>
+                                        <th>Phê duyệt</th>
+                                        <th>Từ chối</th>
+                                    </tr>
+                                    <tbody>
+                                        @{
+                                            var ListDonVi = Model.ListThongTin.GroupBy(x => x.DONVI_ID).Select(y => y.First()).ToList();
+                                        }
+                                        @foreach (var dv in ListDonVi)
+                                        {
+                                            var ListParent = Model.ListThongTin.Where(x => x.PARENT_ID == null && x.DONVI_ID == dv.DONVI_ID).ToList();
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td>
+                                                    @dv.TENDONVI
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            foreach (var item in ListParent)
+                                            {
+                                                var ListChild = Model.ListThongTin.Where(x => x.PARENT_ID == item.ID).ToList();
+                                                count++;
+                                                var size = 0;
+                                                <tr>
+                                                    <td>@count</td>
+                                                    <td>
+                                                        &nbsp;
+                                                    </td>
+                                                    <td>
+                                                        <span title="@item.TENTHONGTIN">@item.TENTHONGTIN</span>
+                                                    </td>
+                                                    <td></td>
+                                                    @if (Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DATRINH)
+                                                    {
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (item.TRANGTHAI == YeuCauChiaSeConstant.DADUYET)
+                                                        {
+                                                            <td><a class="checkbox-item"></a></td>
+                                                            <td>&nbsp;</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                            <td><a class="checkbox-item"></a></td>
+                                                        }
+                                                    }
+                                                </tr>
+                                                foreach (var ele in ListChild)
+                                                {
+                                                    size++;
+                                                    <tr>
+                                                        <td>@(count + "." + size)</td>
+                                                        <td>
+                                                            &nbsp;
+                                                        </td>
+                                                        <td>
+                                                            &nbsp;
+                                                        </td>
+                                                        <td style="text-align:left !important">
+                                                            <span title="@ele.TENTHONGTIN">@ele.TENTHONGTIN</span>
+                                                        </td>
+                                                        @if (Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DATRINH)
+                                                        {
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (ele.TRANGTHAI == YeuCauChiaSeConstant.DADUYET)
+                                                            {
+                                                                <td><a class="checkbox-item"></a></td>
+                                                                <td>&nbsp;</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td></td>
+                                                                <td><a class="checkbox-item"></a></td>
+                                                            }
+                                                        }
+                                                    </tr>
+                                                }
+                                            }
+                                            var ListUnknow = Model.ListThongTin.Where(x => x.DONVI_ID == dv.DONVI_ID && x.PARENT_ID.HasValue && !ListParent.Select(y => y.ID).Contains(x.PARENT_ID.Value)).ToList();
+                                            foreach (var ele in ListUnknow)
+                                            {
+                                                count++;
+                                                <tr>
+                                                    <td>@(count)</td>
+                                                    <td>
+                                                        &nbsp;
+                                                    </td>
+                                                    <td>
+                                                        &nbsp;
+                                                    </td>
+                                                    <td style="text-align:left !important">
+                                                        <span title="@ele.TENTHONGTIN">@ele.TENTHONGTIN</span>
+                                                    </td>
+                                                    @if (Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DATRINH)
+                                                    {
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (ele.TRANGTHAI == YeuCauChiaSeConstant.DADUYET)
+                                                        {
+                                                            <td><a class="checkbox-item"></a></td>
+                                                            <td>&nbsp;</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                            <td><a class="checkbox-item"></a></td>
+                                                        }
+                                                    }
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                                <div style="margin: 0 auto;width:100%;">
+                                    <h3 class="group-tittle mt10" style="margin-top:28px ;margin-bottom:20px">Lịch sử yêu cầu chia sẻ tài liệu</h3>
+                                    @Html.Partial("_LichSuChiaSe")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:60%;margin-left:20%;text-align:center;margin-top:20px" class="YeuCau">
+                        <button class="btn btn-default" type="button" onclick="location.href='@Url.Action("Index", "YeuCauChiaSe")'">Quay lại</button>
+                    </div>
+                    @if (Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DADUYET || Model.YEUCAU.TRANGTHAI == YeuCauChiaSeConstant.DONVIOK)
+                    {
+                        <div id="URLPath">
+                            <ul id="Path">
+                                <li data-fid='F_0'>
+                                    <span class='folder_root folder' data-loaded='false' data-pid='0'><i class="fa fa-folder-open-o"></i>Gốc<i class="fa fa-chevron-right"></i></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="folder-content">
+                            <div id="display">
+                                <form>
+                                    <table class="webGrid">
+                                        <thead>
+                                            <tr class="head">
+                                                <th>
+                                                    Thư mục
+                                                </th>
+                                                <th>
+                                                    Chia sẻ bởi
+                                                </th>
+                                                <th>
+                                                    Số thư mục con
+                                                </th>
+                                                @*<th>Ngừng theo dõi</th>*@
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bodyItem">
+                                            @Html.Partial("_DanhSachTaiLieu")
+                                        </tbody>
+                                        <tfoot id="footItem">
+                                        </tfoot>
+                                    </table>
+                                </form>
+                                <span class="emptydata">Thư mục lưu trữ rỗng</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+</div>
+<script src="~/Scripts/js/jquery.nu-context-menu-version2.js"></script>
+<link href="~/Content/Custom/Font/contextMenu.css" rel="stylesheet" />
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+    .tblDanhMuc .webGrid th:nth-child(4), .tblDanhMuc .webGrid th:nth-child(5) {
+        text-align: left !important;
+    }
+
+    .webGrid th {
+        text-align: center !important;
+    }
+
+    .approve1 {
+        background: url('/Content/themes/base/images/TmFolder_approvel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .tblFixed {
+        table-layout: fixed;
+    }
+
+    .unexpired {
+        background: rgba(0, 0, 0, 0) url("/Content/themes/base/images/folder_unexpired.png") no-repeat scroll 4px 2px / 22px 22px;
+        float: left;
+        line-height: 1.3em;
+        margin-left: 5px;
+        padding: 10px 15px 10px 38px;
+        text-align: center;
+    }
+
+    .clearfix::before, .clearfix::after, .row::before, .row::after {
+        content: ".";
+        display: block;
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        width: 0;
+    }
+
+    .row::after, .clearfix::after {
+        clear: both;
+    }
+
+    .SearchCriterial.clearfix.hot-news-list-2 {
+        margin-left: 10px;
+        margin-top: 10px;
+        width: 95%;
+    }
+
+    .unapprove1 {
+        background: url('/Content/themes/base/images/Tmfolder-cancel.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: #ff6a00;
+    }
+
+    .expired1 {
+        background: url('/Content/themes/base/images/folder-expired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: red;
+    }
+
+    .unexpired1 {
+        background: url('/Content/themes/base/images/folder_unexpired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+    }
+
+    .private1 {
+        background: url('/Content/themes/base/images/my_folder.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+        color: #ff6a00;
+    }
+
+    .popup-content {
+        width: 97% !important;
+    }
+
+    #browser li {
+        margin-top: 3px;
+    }
+
+    #display {
+        width: 100%;
+        margin-right: 10px;
+        float: left;
+        min-height: 80%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        /*margin-top: -30px;*/
+    }
+
+    #Path li {
+        float: left;
+    }
+
+    .SearchResult.hot-news-list-2.mgt20 > #URLPath {
+        margin-bottom: 3%;
+    }
+
+    #right ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        padding: 10px 25px;
+        border-radius: 5px;
+    }
+
+    #right li {
+        float: left;
+        margin-right: 10px;
+    }
+
+    #right i {
+        -moz-user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        padding: 6px 12px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    #right li a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    #right li:hover {
+        color: #357ae8;
+        cursor: pointer;
+    }
+
+    .close-modal:hover {
+        cursor: pointer;
+    }
+
+    #SelectedItem td:nth-child(2) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #SelectedItem td:hover {
+        cursor: pointer;
+    }
+
+    .webGrid tr td:first-child {
+        text-align: left !important;
+    }
+
+    .checkbox-item {
+        background: url('/Content/themes/base/images/TM_DANHMUC_Checkbox.png') no-repeat;
+        display: block;
+        width: 26px;
+        height: 26px;
+        margin-left: 23px;
+    }
+
+    #treeview li {
+        background: none !important;
+    }
+</style>
+<script>
+    function GetPath(pid) {
+        $.ajax({
+            url: '@Url.Action("GetURLBar", "ThuMucLuuTru")',
+            type: 'GET',
+            data: {
+                pID: pid
+            },
+            dataType: "json",
+            success: function (d) {
+                $("#URLPath").html("");
+                var $ul = $("<ul id='Path' ></ul>");
+                $ul.append($("<li data-fid='F_0'></li>").append(
+                                   "<span class='folder_root folder' data-loaded='false' data-pid='0'><i class=\"fa fa-folder-open-o\"></i>Gốc<i class=\"fa fa-chevron-right\"></i></span>"
+                                   )
+                                        )
+                if (d.length > 1) {
+                    for (var i = d.length - 1; i >= 0; i--) {
+                        if (i == 0) {
+                            $ul.append(
+                                   $("<li data-fid='F_" + d[i].ID + "'></li>").append(
+                                   "<span class='folder' data-loaded='false' data-pid='" + d[i].ID + "'><i class=\"fa fa-folder-open-o\"></i>" + d[i].TENTHUMUC + "</span>"
+                                   )
+                                        )
+                        } else {
+                            $ul.append(
+                                   $("<li data-fid='F_" + d[i].ID + "'></li>").append(
+                                   "<span class='folder' data-loaded='false' data-pid='" + d[i].ID + "'><i class=\"fa fa-folder-open-o\"></i>" + d[i].TENTHUMUC + "<i class=\"fa fa-chevron-right\"></i></span>"
+                                   )
+                                        )
+                        }
+                    }
+                } else if (d[0] != null) {
+                    $ul.append(
+                               $("<li data-fid='F_" + d[0].ID + "'></li>").append(
+                              "<i class=\"fa fa-folder-open-o\"></i><span class='folder' data-loaded='false' data-pid='" + d[0].ID + "'>" + d[0].TENTHUMUC + "</span>"
+                               )
+                                    )
+                } else {
+                    $ul.append("");
+                }
+                $("#URLPath").append($ul);
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    $(document).on('click', '.folder', function () {
+        var this1 = $(this);
+        this1.closest("li").find("ul").remove("ul");
+        var isLoaded = $(this).attr('data-loaded');
+        var id = $(this1).attr('data-pid');
+        if (id > 0) {
+            if (isLoaded == "false") {
+                this1.attr("data-loaded", true);
+                $("#bodyItem").html("");
+                $("#footItem").html("");
+                $.ajax({
+                    url: '@Url.Action("GetChild", "YeuCauChiaSe")',
+                    type: "GET",
+                    data: { pid: $(this1).attr('data-pid'), YEUCAU_ID: '@Model.YEUCAU.ID' },
+                    dataType: "json",
+                    success: function (d) {
+                        GetPath($(this1).attr('data-pid'), $(this1).text());
+                        if (d.length > 0) {
+                            $(".emptydata").hide();
+                            $(".webGrid").show();
+                            var $ul = $("<ul></ul>");
+                            $.each(d, function (i, ele) {
+                                var thumuc = "";
+                                var tailieu = "";
+                                if (ele.IS_THUMUC == true) {
+                                    var thumuc_trangthai = "";
+                                    if (ele.IS_NEEDREVIEW == '@ThuMucConstant.DADUYET') {
+                                        if (new Date(ele.EXPIRE_DATEFROM) <= new Date() && new Date() <= new Date(ele.EXPIRE_DATE)) {
+                                            thumuc_trangthai = "<span class='folder unexpired' data-donvi = '" + ele.DONVI_ID + "' title='Thời hạn lưu trữ: " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATEFROM)) + " - " + $.datepicker.formatDate('dd/mm/yy', new Date(ele.EXPIRE_DATE)) + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        }
+                                        else {
+                                            thumuc_trangthai = "<span class='folder item' data-donvi = '" + ele.DONVI_ID + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                        }
+                                    } else {
+                                        thumuc_trangthai = "<span class='folder item' data-donvi = '" + ele.DONVI_ID + "' data-loaded='false' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span>";
+                                    }
+                                    if (ele.IS_CENSOR) {
+                                        thumuc = "<tr id='folder-item' style='display:none'><td data-pid='F_" + ele.ID + "'>" + thumuc_trangthai + "</td><td>" + ele.TENDONVI + "</td><td>Có " + ele.SLTHUMUC + " thư mục</td></tr>";
+                                    } else {
+                                        thumuc = "<tr id='folder-item'><td data-pid='F_" + ele.ID + "'>" + thumuc_trangthai + "</td><td>" + ele.TENDONVI + "</td><td>Có " + ele.SLTHUMUC + " thư mục</td></tr>";
+                                    }
+
+                                } else {
+                                    var extension = ele.THUMUCCHA;
+                                    var docx = "";
+                                    //if (extension == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || extension == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                                    //    docx = "docx";
+                                    //} else if (extension == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+                                    //    docx = "ms-excel";
+                                    //}
+                                    if (extension.split('/')[1] == "vnd.openxmlformats-officedocument.wordprocessingml.document" || extension == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || extension == "vnd.openxmlformats-officedocument.wordprocessingml.document" || extension == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                                        docx = "msword";
+                                    } else if (extension == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+                                        docx = "ms-excel";
+                                    }
+                                    if (ele.IS_CENSOR) {
+                                        if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DADUYET') {
+                                            tailieu = "<tr style='display:none' id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td></tr>";
+                                        } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.TRAVE') {
+                                            tailieu = "<tr style='display:none' id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Trả về)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td></tr>";
+                                        } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DUTHAO') {
+                                            tailieu = "<tr style='display:none' id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Dự thảo)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td></tr>";
+                                        }
+                                        else {
+                                            tailieu = "<tr style='display:none' id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' data-donvi = '0' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Chưa duyệt)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td><td>" + ngaytao + "</td></tr>";
+                                        }
+                                    } else {
+                                        if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DADUYET') {
+                                            tailieu = "<tr id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td></tr>";
+                                        } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.TRAVE') {
+                                            tailieu = "<tr id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Trả về)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td></tr>";
+                                        } else if (ele.DONVI_ID == '@TaiLieuDinhKemConstant.DUTHAO') {
+                                            tailieu = "<tr id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Dự thảo)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td></tr>";
+                                        }
+                                        else {
+                                            tailieu = "<tr id='file-item' ><td data-pid='F_" + ele.ID + "'><span class='" + extension.split('/')[1] + " " + docx + " " + extension.split('.')[1] + " filearchive' data-donvi = '0' style='color:red' data-file='true' data-pid='" + ele.ID + "'>" + ele.TENTHUMUC + "(Chưa duyệt)</span></td><td>" + ele.TENDONVI + "</td><td>&nbsp;</td><td>" + ngaytao + "</td></tr>";
+                                        }
+                                    }
+                                }
+                                $("#bodyItem").append(thumuc);
+                                $("#footItem").append(tailieu);
+                            });
+                            if ($("#bodyItem").is(":empty")) {
+                                $("#bodyItem").html("<tr></tr>");
+                            }
+                            $(this1).parent().append($ul);
+                            $(this1).toggleClass('expand');
+                            $(this1).closest('li').children('ul').slideDown();
+                        } else {
+                            $(".emptydata").show();
+                        }
+                    },
+                    error: function (xhr, response) {
+                        alert(xhr.responseText);
+                    }
+                });
+            } else {
+                $(this1).attr("data-loaded", false);
+                $(this1).removeClass('expand');
+            }
+        } else {
+            Reload();
+            GetPath($(this1).attr('data-pid'), $(this1).text());
+        }
+    });
+    $(function () {
+        $(document).on('click', '.filearchive', function () {
+            var ID = $(this).attr("data-pid");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("CheckkingFile", "ThuMucLuuTru")',
+                data: {
+                    ID: ID
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data == "Co") {
+                        location.href = "/ThuMucLuuTru/DownloadFile?ID=" + ID;
+                    } else {
+                        $.confirm({
+                            'title': 'Không tìm thấy tài liệu',
+                            'message': 'Xin lỗi không thể tìm thấy tài liệu mà bạn đang yêu cầu.',
+                            'buttons': {
+                                'Đóng': {
+                                    'class': 'btn-info',
+                                    'action': function () { }
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    });
+    function Reload() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadTaiLieu")',
+            data: {
+                ID: '@Model.YEUCAU.ID'
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#footItem").html("");
+                $("#bodyItem").html(data);
+                $(".emptydata").hide();
+            }
+        });
+    }
+</script>

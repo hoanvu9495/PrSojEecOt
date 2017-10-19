@@ -1,0 +1,397 @@
+﻿@using Web.FwCore
+@using Business.Business
+@using Business.CommonBusiness
+@using Web.Models
+@model Web.Areas.TDKTDanhHieuThiDuaArea.Models.DanhHieuCaNhanViewModel
+@{
+    ViewBag.Title = "Danh hiệu thi đua cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/tiny_mce/tinymce.min.js"></script>
+
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div class="block" id="smart-dms">
+            <h1 style="font-size: 24px">Thi đua khen thưởng</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none; border:none;">
+        <div id="menu-child">
+            <div class="menu-left" style="display:inline-block">
+            </div>
+            <div class="menu-right">
+                <div class="right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_MenuLeft", null, new ViewDataDictionary { { "active", 2 } })
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+        <form id="frmVanBanDenCreate" method="post" action="/TDKTDanhHieuThiDuaArea/QuanLyDanhHieuCaNhan/CreateDanhHieuCaNhan" style="padding:12px">
+            <input type="hidden" name="COUNTMAXCONDITION" value="0" id="COUNTMAXCONDITION" />
+            @Html.AntiForgeryToken()
+            <h3 class="group-tittle mt10">Tạo mới danh hiệu thi đua cá nhân</h3>
+            <div style="margin:auto; margin-top:20px" id="collapseThongTinChinh" class="panel-collapse collapse in" aria-expanded="true">
+                <table id="tbl_create_danh_hieu_ca_nhan" style="width:100%">
+                    <tr>
+                        <td style="width:20%">
+                            <label class="lbl-title">Tên danh hiệu thi đua <span style="color: red;">*</span></label>
+                        </td>
+                        <td style="width:30%">
+                            <div class="input-field4 clearfix fix-width">
+                                @Html.TextBox("DANHHIEUTHIDUA", "", new { @style = "width: 220px;", maxlength = "255", @class = "e-input", @id = "DANHHIEUTHIDUA" })
+                            </div>
+                        </td>
+                        <td style="width:20%">
+                            <label class="lbl-title">Áp dụng cho năm <span style="color: red;">*</span></label>
+                        </td>
+                        <td style="width:30%">
+                            <select class="year " style="width: auto;" name="YEAR">
+                                <option value=""></option>
+                                <option value="2029">2029</option>
+                                <option value="2028">2028</option>
+                                <option value="2027">2027</option>
+                                <option value="2026">2026</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                                <option value="2018">2018</option>
+                                <option value="2017">2017</option>
+                                <option value="2016">2016</option>
+                                <option value="2015">2015</option>
+                                <option value="2014">2014</option>
+                                <option value="2013">2013</option>
+                                <option value="2012">2012</option>
+                                <option value="2011">2011</option>
+                                <option value="2010">2010</option>
+                                <option value="2009">2009</option>
+                                <option value="2008">2008</option>
+                                <option value="2007">2007</option>
+                                <option value="2006">2006</option>
+                                <option value="2005">2005</option>
+                                <option value="2004">2004</option>
+                                <option value="2003">2003</option>
+                                <option value="2002">2002</option>
+                                <option value="2001">2001</option>
+                                <option value="2000">2000</option>
+                                <option value="1999">1999</option>
+                                <option value="1998">1998</option>
+                                <option value="1997">1997</option>
+                                <option value="1996">1996</option>
+                                <option value="1995">1995</option>
+                                <option value="1994">1994</option>
+                                <option value="1993">1993</option>
+                                <option value="1992">1992</option>
+                                <option value="1991">1991</option>
+                                <option value="1990">1990</option>
+                                <option value="1989">1989</option>
+                                <option value="1988">1988</option>
+                                <option value="1987">1987</option>
+                                <option value="1986">1986</option>
+                                <option value="1985">1985</option>
+                                <option value="1984">1984</option>
+                                <option value="1983">1983</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="height_20"></td>
+                        <td>
+                            <span id="ERR_DANHHIEUTHIDUA" style="color: red"></span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="lbl-title">Mô tả:<span style="color: red;">*</span></label>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextArea("MOTA", "", new { @style = "width:700px;height:200px;", @placeholder = "Thông tin về danh hiệu thi đua", @class = "e-input", @maxlength = "500" })
+                        </td>
+                    </tr>
+                    <tr style="height: 20px;"></tr>
+                    <tr>
+                        <td>
+                            <label class="lb-title">
+                                Điều kiện đạt danh hiệu:
+                            </label>
+                        </td>
+                        <td colspan="3">
+                            <table class="webGrid">
+                                <thead>
+                                    <tr class="head">
+                                        <th scope="col" style="text-align: center"></th>
+                                        <th scope="col" style="text-align:center">
+                                            <img src="~/Content/Images/Add.png" width="16" title="Thêm Điều Kiện" id="btnGlobalAdd" style="cursor:pointer;" />
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="RootUpLoadFile">
+                                    <tr>
+                                        <td>
+                                            <table class="webGrid">
+                                                <thead>
+                                                    <tr class="head">
+                                                        <th scope="col" style="text-align: center">Điều kiện</th>
+                                                        <th scope="col" style="text-align: center">Số lượng</th>
+
+                                                        <th scope="col" style="text-align:center">
+                                                            <img src="~/Content/Images/Add.png" width="16" title="Thêm tài liệu" class="btnAdd" style="cursor:pointer;" alt="0" />
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <label>Số năm công tác lớn hơn</label>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="e-input so_nam_cong_tac" maxlength="255" name="SONAMCONGTAC_0" style="width: 220px;" value="">
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label>Số ngày nghỉ trong năm không vượt quá</label>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="e-input so_ngay_nghi" maxlength="255" name="SONGAYNGHI_0" style="width: 220px;" value="">
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label>Sáng kiến ý tưởng<span style="color: red;"></span></label>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="e-input so_sang_kien" maxlength="255" name="SOSANGKIEN_0" style="width: 220px;" value="">
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:center">
+                                                            <div class="input-field4">
+                                                                @Html.DropDownList("DANHHIEU_IDS_0", Model.ListDanhHieu, "[---Không chọn---]", new { @class = "width_100 dropdown_danh_hieu", @id = "" })
+                                                            </div>
+                                                        </td>
+                                                        <td style="text-align:center">
+                                                            <input type="text" class="e-input so_luong_danh_hieu" maxlength="255" name="SOLUONGDANHHIEU_0" style="width: 220px;" value="">
+                                                        </td>
+                                                        <td style="text-align:center">
+                                                            <img src="~/Content/Images/Delete.png" class="deleteSubRow" width="16" style="cursor:pointer;" />
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                        </td>
+                                        <td scope="col" style="text-align:center">
+                                            <img src="~/Content/Images/Delete.png" width="16" class="btnDeleteDieuKien" style="cursor:pointer;" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+
+
+                </table>
+            </div>
+            <div style="margin-top: 15px; text-align: center;">
+                <input type="submit" onclick="beforeSubmit(event)" value="Lưu toàn bộ thông tin" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" />
+                <a style="border: medium none; color: white; padding: 7px 20px; background-color: seagreen;" href="/TDKTDanhHieuThiDuaArea/QuanLyDanhHieuCaNhan">Quay lại </a>
+
+            </div>
+        </form>
+    </div>
+<div style="display:none">
+    <table>
+        <tbody id="SubTbodyId">
+            <tr>
+                <td style="text-align:center">
+                    <div class="input-field4">
+                        @Html.DropDownList("DANHHIEU_IDS", Model.ListDanhHieu, "[---Không chọn---]", new { @class = "width_100", @id = "" })
+                    </div>
+                </td>
+                <td style="text-align:center">
+                    <input type="text" class="e-input" maxlength="255" name="SOLUONGDANHHIEU" style="width: 220px;" value="">
+                </td>
+                <td style="text-align:center">
+                    <img src="~/Content/Images/Delete.png" class="deleteSubRow" width="16" style="cursor:pointer;" />
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+<div style="display:none">
+    <table>
+        <tbody id="HiddenTbodyId">
+            <tr>
+                <td>
+                    <table class="webGrid">
+                        <thead>
+                            <tr class="head">
+                                <th scope="col" style="text-align: center">Điều kiện</th>
+                                <th scope="col" style="text-align: center">Số lượng</th>
+
+                                <th scope="col" style="text-align:center">
+                                    <img src="~/Content/Images/Add.png" width="16" title="Thêm tài liệu" class="btnAdd" style="cursor:pointer;" alt="addMoreDanhHieuALT" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label>Số năm công tác lớn hơn</label>
+                                </td>
+                                <td>
+                                    <input type="text" class="e-input so_nam_cong_tac" maxlength="255" name="SONAMCONGTAC" style="width: 220px;" value="">
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Số ngày nghỉ trong năm không vượt quá</label>
+                                </td>
+                                <td>
+                                    <input type="text" class="e-input so_ngay_nghi" maxlength="255" name="SONGAYNGHI" style="width: 220px;" value="">
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Sáng kiến ý tưởng<span style="color: red;"></span></label>
+                                </td>
+                                <td>
+                                    <input type="text" class="e-input so_sang_kien" maxlength="255" name="SOSANGKIEN" style="width: 220px;" value="">
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center">
+                                    <div class="input-field4">
+                                        @Html.DropDownList("DANHHIEU_IDS", Model.ListDanhHieu, "[---Không chọn---]", new { @class = "width_100 dropdown_danh_hieu", @id = "" })
+                                    </div>
+                                </td>
+                                <td style="text-align:center">
+                                    <input type="text" class="e-input so_luong_danh_hieu" maxlength="255" name="SOLUONGDANHHIEU" style="width: 220px;" value="">
+                                </td>
+                                <td style="text-align:center">
+                                    <img src="~/Content/Images/Delete.png" class="deleteSubRow" width="16" style="cursor:pointer;" />
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </td>
+                <td scope="col" style="text-align:center">
+                    <img src="~/Content/Images/Delete.png" width="16" class="btnDeleteDieuKien" style="cursor:pointer;" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        tinymce.init({
+            selector: '#MOTA',
+            language: 'vi_VN',
+            width: '100%',
+            height: 200,
+            plugins: [
+                    "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+            toolbar2: "cut copy paste pastetext | bullist numlist | outdent indent | undo redo | link unlink code | forecolor backcolor",
+            toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | insertdatetime preview | print fullscreen | ltr rtl | pagebreak restoredraft",
+            menubar: false,
+            convert_urls: false,
+            paste_data_images: true,
+            toolbar_items_size: 'small'
+        });
+    });
+    var count = 0;
+    $(function () {       
+        $("#btnGlobalAdd").click(function () {
+            count = count + 1;
+            var tmp_html = $("#HiddenTbodyId").html();
+            tmp_html = tmp_html.replace('name="SONAMCONGTAC"', 'name="SONAMCONGTAC_' + count + '"');
+            tmp_html = tmp_html.replace('name="SONGAYNGHI"', 'name="SONGAYNGHI_' + count + '"');
+            tmp_html = tmp_html.replace('name="DANHHIEU_IDS"', 'name="DANHHIEU_IDS_' + count + '"');
+            tmp_html = tmp_html.replace('name="SOSANGKIEN"', 'name="SOSANGKIEN_' + count + '"');
+            tmp_html = tmp_html.replace('name="SOLUONGDANHHIEU"', 'name="SOLUONGDANHHIEU_' + count + '"');
+            tmp_html = tmp_html.replace("addMoreDanhHieuALT", count);
+            $("#RootUpLoadFile").append(tmp_html);
+        });
+    });
+    $(document).on('click', ".btnDeleteDieuKien", function () {
+        $(this).parent().parent().remove();
+    });
+    $(document).on('click', ".btnAdd", function () {
+        var index = $(this).attr("alt");
+        var sub_html = $("#SubTbodyId").html();
+        sub_html = sub_html.replace('name="DANHHIEU_IDS"', 'name="DANHHIEU_IDS_' + index + '"');
+        sub_html = sub_html.replace('name="SOLUONGDANHHIEU"', 'name="SOLUONGDANHHIEU_' + index + '"');
+        $(this).parent().parent().parent().parent().find('tbody').append(sub_html);
+    });
+    $(document).on('click', ".deleteSubRow", function () {
+        $(this).parent().parent().remove();
+    });
+    function beforeSubmit(event) {        
+        var check_submit = false;
+        if ($("#DANHHIEUTHIDUA").val().trim() == "") {
+            $("#ERR_DANHHIEUTHIDUA").html("Bạn phải nhập tên danh hiệu");
+            $("#DANHHIEUTHIDUA").focus();
+            check_submit = true;
+        } else {
+            $("#ERR_DANHHIEUTHIDUA").html("");
+        }
+        
+        //$("#tbl_create_danh_hieu_ca_nhan .so_nam_cong_tac").each(function () {
+        //    $(this).parent().find(".error_noti").remove();
+        //    if ($(this).val() == '') {
+        //        $(this).parent().append("<div class='error_noti' style='color:red'>Bạn phải điền số năm công tác</div>")
+        //        check_submit = true;
+        //    }
+        //});
+        //$("#tbl_create_danh_hieu_ca_nhan .so_ngay_nghi").each(function () {
+        //    $(this).parent().find(".error_noti").remove();
+        //    if ($(this).val() == '') {
+        //        $(this).parent().append("<div class='error_noti' style='color:red'>Bạn phải điền số ngày nghỉ tối đa</div>")
+        //        check_submit = true;
+        //    }
+        //});
+        $("#MOTA").parent().find(".error_noti").remove();
+        if ($("#MOTA").val().trim() == "") {
+            $("#MOTA").parent().append("<div class='error_noti' style='color:red'>Bạn phải điền mô tả cho danh hiệu này</div>")
+        }
+
+        $("#tbl_create_danh_hieu_ca_nhan .dropdown_danh_hieu").each(function () {
+            $(this).parent().parent().next().find(".error_noti").remove();
+            if ($(this).val() != '') {
+                if ($(this).parent().parent().next().find(".so_luong_danh_hieu").val().trim() == "") {
+                    $(this).parent().parent().next().append("<div class='error_noti' style='color:red'>Bạn phải điền số lần đạt danh hiệu</div>");
+                }
+            }
+        });
+        if (check_submit) {
+            notif({
+                type: 'error',
+                position: 'bottom',
+                msg: 'Vui lòng kiểm tra lại thông tin!',
+            });
+            event.preventDefault();
+        }
+        $("#COUNTMAXCONDITION").val(count);
+    }
+</script>

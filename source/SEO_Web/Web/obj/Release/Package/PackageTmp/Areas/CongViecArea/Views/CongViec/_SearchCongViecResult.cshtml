@@ -1,0 +1,317 @@
+﻿@using Web.FwCore;
+@using System.Text;
+@using Business.CommonBusiness;
+@using Web.Areas.MarkItemArea.Models;
+@using Web.Common;
+@using Web.Areas.CongViecArea.Models;
+@model CongViecIndexViewModel
+@{
+    List<CongViecBO> lstCongViec = new List<CongViecBO>();
+
+    var listCongViec = Model.ListCongViec;
+    var grid = new WebGrid(listCongViec,
+                          rowsPerPage: 10,
+                          canPage: true,
+                          canSort: true,
+                          ajaxUpdateContainerId: "grid",
+                           selectionFieldName: "selectedRow",
+                           ajaxUpdateCallback: "searchSuccess"
+                          );
+    if (Model.pageIndex >= 0 && SessionManager.GetValue("CongViecPageIndex") != null)
+    {
+        if (grid.PageCount > 0)
+        {
+            if (Model.pageIndex > grid.PageCount - 1)
+            {
+                grid.PageIndex = grid.PageCount - 1;
+            }
+            else
+            {
+                grid.PageIndex = Model.pageIndex;
+            }
+        }
+        SessionManager.Remove("CongViecPageIndex");
+    }
+    //customize các cột trên bảng theo kiểu
+    List<WebGridColumn> columns = new List<WebGridColumn>();
+    columns.Add(grid.Column(format: (item) =>
+                    {
+                        return new MvcHtmlString("<input class='global_checkbox " + ((item.IS_READ == true) ? "is_read" : "is_unread") + "' type='checkbox' name='ids' value='" + item.ID + "'>");
+                    }));
+    columns.Add(grid.Column(format: (item) =>
+                {
+                    return new MvcHtmlString("<span style='cursor:pointer' onclick=\"javascript:singleMarkItem(" + item.ID + ",'" + item.IS_FAVORITE + "'," + LOAITAILIEU.CONGVIEC + ",'" + LOAITAILIEU.FAVORITE + "')\" class='" + ((item.IS_FAVORITE == true) ? "favorite" : "notset_favorite") + "' ></span>");
+                }));
+    columns.Add(grid.Column(format: (item) =>
+                {
+                    return new MvcHtmlString("<span style='cursor:pointer' onclick=\"javascript:singleMarkItem(" + item.ID + ",'" + item.IS_IMPORTANT + "'," + LOAITAILIEU.CONGVIEC + ",'" + LOAITAILIEU.IMPORTANT + "')\" class='" + ((item.IS_IMPORTANT == true) ? "important" : "notset_important") + "' ></span>");
+                }));
+    columns.Add(grid.Column(format: (item) =>
+                {
+                    return new MvcHtmlString((item.HAS_FILE == true) ? "<span title='Có tệp đính kèm' class='btnAttFile'></span>" : string.Empty);
+                }));
+    if (Model.TYPE != CongViecConstant.CANHAN && Model.TYPE != CongViecConstant.DAGIAO)
+    {
+        columns.Add(grid.Column("NGUOIGIAOVIEC", format: (item) =>
+        {
+            return new MvcHtmlString(item.NGUOIGIAOVIEC != null ? item.IS_READ != true ? ("<b>" + item.NGUOIGIAOVIEC + "</b>") : item.NGUOIGIAOVIEC : string.Empty);
+        }, header: "Người giao việc"));
+    }
+    columns.Add(grid.Column("TENCONGVIEC", format: (item) =>
+                {
+                    StringBuilder taskNameBuilder = new StringBuilder();
+                    string countRelated = item.SoLuongCongViecChuyenTiep > 0 ? "(" + item.SoLuongCongViecChuyenTiep.ToString() + ")" : string.Empty;
+                    taskNameBuilder.Append("<a class='job-name' href='" + Url.Action("Detail", new { id = item.ID, type = Model.TYPE }) + "' title = 'Xem chi tiết'>" + (!item.IS_READ ? ("<b>" + item.TENCONGVIEC + " " + countRelated + "</b>") : item.TENCONGVIEC + " " + countRelated) + "</a>");
+                    if (!string.IsNullOrEmpty(item.SOVANBANDEN))
+                    {
+                        taskNameBuilder.Append("<p style='float:left;width:100%;margin:0px;'><a title='Văn bản đến' href='" + Url.Action("ViewDetail", "HSVanBanDen", new { id = item.VANBANDEN_ID, area = "HSVanBanDenArea" }) + "'><img src = '/Content/Images/vb_den.png'/>" + item.SOVANBANDEN + "</a></p>");
+                    }
+                    if (!string.IsNullOrEmpty(item.SOVANBANDI))
+                    {
+                        taskNameBuilder.Append("<p style='float:left;width:100%;margin:0px;'><a title='Văn bản đi' href='" + Url.Action("Detail", "HSVanBanDi", new { id = item.VANBANDI_ID, area = "HSVanBanDiArea" }) + "'><img src = '/Content/Images/vb_di.png'/>" + item.SOVANBANDI + "</a></p>");
+                    }
+                    return new MvcHtmlString(taskNameBuilder.ToString());
+                }, header: "Công việc", style: "lbl-trichyeu"));
+    if (Model.TYPE != CongViecConstant.CANHAN)
+    {
+        columns.Add(grid.Column(format: (item) =>
+        {
+            //string nguoixuly = "";
+            StringBuilder taskExecutorStr = new StringBuilder();
+            if (item.ListNguoiXuLyChinh != null && item.ListNguoiXuLyChinh.Count > 0)
+            {
+                taskExecutorStr.Append("<img onclick='javascript:ShowNguoiXuLyChinh(" + item.ID + ");' class='job-img job-xlc' data-id='" + item.ID + "' title='Người xử lý chính' src = '/Content/Images/job_worker.png'/><p id='xlc_content_" + item.ID + "' class='job-xcl job-content job_worker' data-id='" + item.ID + "'><b style='font-weight:bold'>Người xử lý chính</b><br/><span>");
+                var count = 1;
+                foreach (var nxl in item.ListNguoiXuLyChinh)
+                {
+                    if (count == item.ListNguoiXuLyChinh.Count)
+                    {
+                        if (Model.UserInfo.Username.Equals(nxl.UserName))
+                        {
+                            taskExecutorStr.Append("<b>" + nxl.FullName + "</b></span></p>");
+                        }
+                        else
+                        {
+                            taskExecutorStr.Append("<a href=\"javascript:chatToUserFromJob('" + nxl.UserName + "','" + nxl.FullName + "')\">" + nxl.FullName + "</a></span></p>");
+                        }
+                    }
+                    else
+                    {
+                        if (Model.UserInfo.Username.Equals(nxl.UserName))
+                        {
+                            taskExecutorStr.Append("<b>" + nxl.FullName + ",</b>");
+                        }
+                        else
+                        {
+                            taskExecutorStr.Append("<a href=\"javascript:chatToUserFromJob('" + nxl.UserName + "','" + nxl.FullName + "')\">" + nxl.FullName + ",</a>");
+                        }
+                    }
+                    count++;
+                }
+            }
+            if (item.ListNguoiThamGiaXuLy != null && item.ListNguoiThamGiaXuLy.Count > 0)
+            {
+                taskExecutorStr.Append("<img onclick='javascript:ShowNguoiThamGiaXuLy(" + item.ID + ");' class='job-img job-thamgia' data-id='" + item.ID + "' title='Người tham gia xử lý' src = '/Content/Images/job_worker_join.png'/><p id='thamgia_content_" + item.ID + "' class='job-xcl job-content job_worker_join' data-id='" + item.ID + "'><b style='font-weight:bold'>Người tham gia xử lý</b><br/><span>");
+                var count = 1;
+                foreach (var nxl in item.ListNguoiThamGiaXuLy)
+                {
+                    if (count == item.ListNguoiThamGiaXuLy.Count)
+                    {
+                        if (Model.UserInfo.Username.Equals(nxl.UserName))
+                        {
+                            taskExecutorStr.Append("<b>" + nxl.FullName + "</b></span></p>");
+                        }
+                        else
+                        {
+                            taskExecutorStr.Append("<a href=\"javascript:chatToUserFromJob('" + nxl.UserName + "','" + nxl.FullName + "')\">" + nxl.FullName + "</a></span></p>");
+                        }
+                    }
+                    else
+                    {
+                        if (Model.UserInfo.Username.Equals(nxl.UserName))
+                        {
+                            taskExecutorStr.Append("<b>" + nxl.FullName + ",</b>");
+                        }
+                        else
+                        {
+                            taskExecutorStr.Append("<a href=\"javascript:chatToUserFromJob('" + nxl.UserName + "','" + nxl.FullName + "')\">" + nxl.FullName + ",</a>");
+                        }
+                    }
+                    count++;
+                }
+            }
+            if (item.ListNguoiTheoDoi != null && item.ListNguoiTheoDoi.Count > 0)
+            {
+                taskExecutorStr.Append("<img onclick='javascript:ShowNguoiTheoDoi(" + item.ID + ");' class='job-img job-theodoi' data-id='" + item.ID + "' title='Người theo dõi công việc' src = '/Content/Images/job_worker_folow.png'/><p id='theodoi_content_" + item.ID + "'  class='job-xcl job-content job_worker_folow' data-id='" + item.ID + "'><b style='font-weight:bold'>Người theo dõi công việc</b><br/><span>");
+                var count = 1;
+                foreach (var nxl in item.ListNguoiTheoDoi)
+                {
+                    if (count == item.ListNguoiTheoDoi.Count)
+                    {
+                        if (Model.UserInfo.Username.Equals(nxl.UserName))
+                        {
+                            taskExecutorStr.Append("<b>" + nxl.FullName + "</b></span></p>");
+                        }
+                        else
+                        {
+                            taskExecutorStr.Append("<a href=\"javascript:chatToUserFromJob('" + nxl.UserName + "','" + nxl.FullName + "')\">" + nxl.FullName + "</a></span></p>");
+                        }
+                    }
+                    else
+                    {
+                        if (Model.UserInfo.Username.Equals(nxl.UserName))
+                        {
+                            taskExecutorStr.Append("<b>" + nxl.FullName + ",</b>");
+                        }
+                        else
+                        {
+                            taskExecutorStr.Append("<a href=\"javascript:chatToUserFromJob('" + nxl.UserName + "','" + nxl.FullName + "')\">" + nxl.FullName + ",</a>");
+                        }
+                    }
+                    count++;
+                }
+            }
+            return new MvcHtmlString(taskExecutorStr.ToString());
+        }, header: "Người xử lý", style: "c-xuly"));
+    }
+    columns.Add(grid.Column("PHANTRAMHOANTHANH", format: (item) =>
+                {
+                    return new MvcHtmlString(item.PHANTRAMHOANTHANH != null ? !item.IS_READ ? ("<b>" + item.PHANTRAMHOANTHANH + "%</b>") : item.PHANTRAMHOANTHANH + "%" : "0%");
+                }, header: "%", style: "lbl-tiendo"));
+
+    columns.Add(grid.Column("NGAYBATDAU", format: (item) =>
+    {
+        return new MvcHtmlString(item.NGAYBATDAU != null ? !item.IS_READ ? ("<b>" + string.Format("{0:dd/MM/yyyy}", item.NGAYBATDAU) + "</b>") : string.Format("{0:dd/MM/yyyy}", item.NGAYBATDAU) : string.Empty);
+    }, header: "Bắt đầu"));
+    columns.Add(grid.Column("HANKETTHUC", format: (item) =>
+                {
+                    var hanketthuc = item.HANKETTHUC != null ? !item.IS_READ ? ("<b>" + string.Format("{0:dd/MM/yyyy}", item.HANKETTHUC) + "</b>") : string.Format("{0:dd/MM/yyyy}", item.HANKETTHUC) : string.Empty;
+                    return new MvcHtmlString(hanketthuc);
+                }, header: "Kết thúc"));
+    columns.Add(grid.Column(format: (item) =>
+                {
+                    if (item.NGAYHOANTHANH == null)
+                    {
+                        var hanketthuc = "";
+                        var totalday = (DateTime.Parse(item.HANKETTHUC.ToString()) - DateTime.Now).TotalDays;
+                        if (totalday > 0)
+                        {
+                            hanketthuc += "<p style='float:left;width:100%;margin:0px;'>Còn " + Math.Round(totalday) + " ngày</p>";
+                        }
+                        else
+                        {
+                            hanketthuc += "<p style='float:left;width:100%;margin:0px;color:red;'>Quá " + Math.Round(totalday * (-1)) + " ngày</p>";
+                        }
+                        if (!item.IS_READ)
+                        {
+                            hanketthuc = "<b>" + hanketthuc + "</b>";
+                        }
+
+                        return new MvcHtmlString(hanketthuc);
+                    }
+                    return new MvcHtmlString(string.Empty);
+                }, header: "Thời gian", style: "lbl-time"));
+    columns.Add(grid.Column("DOUUTIEN", format: (item) =>
+                {
+                    return new MvcHtmlString(item.DOUUTIEN != null ? !item.IS_READ ? ("<b style='color:" + item.DOUUTIEN_CSSCOLOR + "'>" + item.DOUUTIEN + "</b>") : ("<label style='color:" + item.DOUUTIEN_CSSCOLOR + "'>" + item.DOUUTIEN + "</label>") : string.Empty);
+                }, header: "Mức độ"));
+
+    columns.Add(grid.Column("TRANGTHAI", format: (item) =>
+    {
+        return new MvcHtmlString(item.TRANGTHAI != null ? (!item.IS_READ ? ("<b style='color:" + item.TRANGTHAI_CSSCOLOR + "'>" + item.TRANGTHAI + "</b>") : ("<label style='color:" + item.TRANGTHAI_CSSCOLOR + "'>" + item.TRANGTHAI + "</label>")) : string.Empty);
+    }, header: "Trạng thái"));
+    columns.Add(grid.Column(format: (item) =>
+         new MvcHtmlString("<a href='/congviecarea/congviec/edit/" + item.ID + "' class='btnEdit' title = 'Chỉnh sửa'></a>")
+             , header: "Sửa"));
+    columns.Add(grid.Column(format: (item) =>
+        new MvcHtmlString("<a href='javascript:void(0)' onclick='checkCanDelete(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>"),
+    header: "Xóa"));
+}
+<style type="text/css">
+    #grid h3.group-tittle{
+        margin-bottom:10px;
+    }
+    .dropdown-toggle {
+        padding-left: 24px;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .webGrid {
+        margin: 0;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 35px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .lbl-trichyeu a {
+        float: left;
+        text-align: left;
+    }
+
+    .lbl-time {
+        width: 100px;
+    }
+
+    .lbl-tiendo {
+        width: 30px;
+    }
+
+    .c-xuly {
+        width: 100px;
+        position: relative;
+    }
+
+    .red {
+        color: red;
+    }
+</style>
+
+@Html.AntiForgeryToken()
+<div id="grid">
+    <h3 class="group-tittle">
+        @Model.TieuDe (@(listCongViec == null ? "0" : listCongViec.Count.ToString()))
+    </h3>
+    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: columns.ToArray())
+    @if (listCongViec.Count == 0)
+    {
+        <div id="Empty" class="red">
+            Không có công việc nào
+        </div>
+    }
+</div>

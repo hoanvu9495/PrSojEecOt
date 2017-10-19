@@ -1,0 +1,43 @@
+﻿@using Business.CommonBusiness;
+@using Web.FwCore;
+@model Web.Models.MenuListChild
+           <style>
+               .menu-tab {
+                   width: calc(100% - 20px);
+                   float: left;
+                   margin: 0px 10px;
+                   background: #fff;
+                   margin-top: 20px;
+                   border-radius: 8px;
+               }
+                   .menu-tab h2 {
+                       background: #4cae4c;
+                       color: #fff;
+                       font-size: 15px;
+                       font-weight: bold;
+                       padding: 11px 10px;
+                       border-radius: 8px 8px 0px 0px;
+                       margin-top: 0px;
+                   }
+                   .menu-tab ul {
+                   float: left;
+                   }
+           </style>
+<div class="menu-tab">
+    @*<h2>
+        @Model[i].
+    </h2>*@
+    <h2>@Model.TenChucNangCha</h2>
+    <ul class="admin-menu">
+        @if (Model.ListChucNang.Count > 0)
+        {
+            foreach (ChucNangBO menu in Model.ListChucNang)
+            {
+                <li class="menu @(Request.Url.PathAndQuery.ToString().ToLower() == menu.URL.ToLower()?"active_trail":"")" style="z-index:10">
+                    <a href="@menu.URL" id="ico-@menu.TT_HIENTHI" data-parent="@menu.DM_CHUCNANG_ID">@menu.TEN_CHUCNANG</a>
+                </li>
+            }
+        }
+    </ul>
+
+</div>     

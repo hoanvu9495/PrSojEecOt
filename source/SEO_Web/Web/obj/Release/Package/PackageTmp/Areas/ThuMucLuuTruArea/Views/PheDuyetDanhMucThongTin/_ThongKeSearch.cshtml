@@ -1,0 +1,111 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.DanhMucThongTinModel
+@using Web.Models
+@Html.AntiForgeryToken()
+@using (Ajax.BeginForm("FindToTrinhDanhMuc", "PheDuyetDanhMucThongTin", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearch" }))
+{
+    <table style="width:50%;margin:0 auto">
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Tiêu đề:</td>
+            <td>
+                <input type="text" name="TIEUDE" id="TIEUDE" class="e-input" style="width:233px">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        @*<tr>
+                <td>Đơn vị:</td>
+                <td>
+                    <div class="input-field4  clearfix" style="width: 233px;">
+                        @Html.DropDownList("DONVI_ID", Model.ListDonVi, new { @style = "", @id = "DONVI_ID", @multiple = "multiple" })
+                    </div>
+                    <input type="hidden" value="" name="DONVI" id="DONVI" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>*@
+        <tr>
+            <td>Quý:</td>
+            <td>
+                <div class="input-field4  clearfix" style="width: 233px;">
+                    <select name="QUY" id="">
+                        <option value="1">Quý 1</option>
+                        <option value="2">Quý 2</option>
+                        <option value="3">Quý 3</option>
+                        <option value="4">Quý 4</option>
+                    </select>
+                    @*<input type="hidden" value="" name="QUY" id="QUY" />*@
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Năm:</td>
+            <td>
+                <div class="input-field4  clearfix" style="width: 233px;">
+                    <select name="NAM" id="NAM">
+                        <option value="">Lựa chọn năm</option>
+                        @for (int i = DateTime.Now.Year - 5; i <= DateTime.Now.Year + 5; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                @*<input type="text" class="e-input" style="width:233px" name="NAM" id="NAM" />*@
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <input type="submit" value="Tìm kiếm" id="btnTimKiem" class="btn btn-success" />
+            </td>
+        </tr>
+    </table>
+}
+
+<script type="text/javascript">
+    function initialVulue() {
+       // $("#QUY").val($("#QUY_LIST").multipleSelect("getSelects"));
+        //$("#DONVI").val($("#DONVI_ID").multipleSelect("getSelects"));
+    }
+    //$("#QUY_LIST,#DONVI_ID").multipleSelect({
+    //    multiple: true,
+    //    filter: true,
+    //});
+    $(document).ready(function () {
+        $("#btnTimKiem").click(function () {
+            //initialVulue();
+            return true;
+        });
+    });
+    function failure(xhr, response) {
+        CommonJS.alert(xhr.responseText);
+        $("#MOIQUANHE").val("");
+    }
+
+</script>
+<style>
+    a:hover {
+        cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+        margin: 0 6px 0 !important;
+    }
+</style>

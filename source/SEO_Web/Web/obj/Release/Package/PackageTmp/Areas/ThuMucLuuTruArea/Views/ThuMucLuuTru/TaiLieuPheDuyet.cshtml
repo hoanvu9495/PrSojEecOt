@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "TaiLieuPheDuyet";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+@section HeaderPopup{
+    <h1>@ViewBag.Title<a href="/" title="Đóng lại"></a></h1>
+}
+<div class="popup-content">
+    <div class="SearchResult hot-news-list-2 mgt20">
+        <table>
+            <tr>
+                <th>STT</th>
+                <th>Phòng</th>
+                <th>Đơn vị</th>
+                <th>Ngày trình</th>
+                <th>Người trình</th>
+                <th>Trạng thái</th>
+            </tr>
+            @Html.Partial("_DanhSachTrinhDuyet")
+        </table>
+    </div>
+</div>

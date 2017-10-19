@@ -1,0 +1,467 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.eAita.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CCTC_THANHPHAN">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NAME" Type="nvarchar" MaxLength="250" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGUOITAO" Type="int" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="NGUOISUA" Type="int" />
+    <Property Name="IS_DELETE" Type="bit" />
+    <Property Name="PARENT_ID" Type="int" />
+    <Property Name="TYPE" Type="int" Nullable="false" />
+    <Property Name="ITEM_LEVEL" Type="int" />
+    <Property Name="CODE" Type="nvarchar" MaxLength="250" />
+    <Property Name="EMAIL" Type="nvarchar" MaxLength="250" />
+    <Property Name="DIENTHOAI" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="DM_CHUCNANG">
+    <Key>
+      <PropertyRef Name="DM_CHUCNANG_ID" />
+    </Key>
+    <Property Name="DM_CHUCNANG_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MA_CHUCNANG" Type="nvarchar" MaxLength="50" />
+    <Property Name="TEN_CHUCNANG" Type="nvarchar" MaxLength="100" />
+    <Property Name="TRANGTHAI" Type="int" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="CHUCNANG_CHA" Type="int" />
+    <Property Name="URL" Type="nvarchar" MaxLength="300" />
+    <Property Name="TT_HIENTHI" Type="int" />
+    <Property Name="NGUOITAO" Type="nvarchar" MaxLength="50" />
+    <Property Name="NGUOISUA" Type="nvarchar" MaxLength="50" />
+    <Property Name="IS_HIDDEN" Type="int" />
+    <Property Name="ICONPATH" Type="nvarchar" MaxLength="250" />
+    <Property Name="CSSCLASS" Type="nvarchar" MaxLength="250" />
+  </EntityType>
+  <EntityType Name="DM_LOAI_DONVI">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LOAI" Type="nvarchar" MaxLength="250" />
+    <Property Name="PARENT_ID" Type="int" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGUOITAO" Type="int" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="NGUOISUA" Type="int" />
+  </EntityType>
+  <EntityType Name="DM_NGUOIDUNG">
+    <Key>
+      <PropertyRef Name="DM_NGUOIDUNG_ID" />
+    </Key>
+    <Property Name="DM_NGUOIDUNG_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TENDANGNHAP" Type="nvarchar" MaxLength="50" />
+    <Property Name="MATKHAU" Type="nvarchar" MaxLength="100" />
+    <Property Name="MAHOA_MK" Type="nvarchar" MaxLength="100" />
+    <Property Name="TRANGTHAI" Type="int" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="NGUOITAO" Type="nvarchar" MaxLength="50" />
+    <Property Name="DIENTHOAI" Type="nvarchar" MaxLength="20" />
+    <Property Name="DM_PHONGBAN_ID" Type="int" />
+    <Property Name="DM_VAITRO_ID" Type="int" />
+    <Property Name="DM_DONVI_ID" Type="int" />
+    <Property Name="COSO_ID" Type="int" />
+    <Property Name="NGUOISUA" Type="nvarchar" MaxLength="50" />
+    <Property Name="HOTEN" Type="nvarchar" MaxLength="250" />
+    <Property Name="EMAIL" Type="nvarchar" MaxLength="250" />
+    <Property Name="EMAILPASS" Type="nvarchar" MaxLength="100" />
+    <Property Name="DIACHI" Type="nvarchar" MaxLength="500" />
+    <Property Name="NGAYSINH" Type="datetime" />
+    <Property Name="CODERESETPASS" Type="nvarchar" MaxLength="250" />
+    <Property Name="CAPCOSO_ID" Type="int" />
+    <Property Name="CHUCVU_ID" Type="int" />
+    <Property Name="OptionRole" Type="int" />
+    <Property Name="FTS" Type="ntext" />
+    <Property Name="ANH_DAIDIEN" Type="ntext" />
+  </EntityType>
+  <EntityType Name="DM_THAOTAC">
+    <Key>
+      <PropertyRef Name="DM_THAOTAC_ID" />
+    </Key>
+    <Property Name="DM_THAOTAC_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="THAOTAC" Type="nvarchar" MaxLength="300" />
+    <Property Name="TEN_THAOTAC" Type="nvarchar" MaxLength="200" />
+    <Property Name="TRANGTHAI" Type="int" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="DM_CHUCNANG_ID" Type="int" />
+    <Property Name="NGUOITAO" Type="nvarchar" MaxLength="50" />
+    <Property Name="NGUOISUA" Type="nvarchar" MaxLength="50" />
+    <Property Name="MENU_LINK" Type="nvarchar" MaxLength="500" />
+    <Property Name="IS_SHOW" Type="bit" />
+    <Property Name="TT_HIENTHI" Type="int" />
+    <Property Name="IS_HIENTHI" Type="bit" />
+  </EntityType>
+  <EntityType Name="DM_VAITRO">
+    <Key>
+      <PropertyRef Name="DM_VAITRO_ID" />
+    </Key>
+    <Property Name="DM_VAITRO_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MA_VAITRO" Type="nvarchar" MaxLength="50" />
+    <Property Name="TEN_VAITRO" Type="nvarchar" MaxLength="100" />
+    <Property Name="COSO_ID" Type="int" />
+    <Property Name="TRANGTHAI" Type="int" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="NGUOITAO" Type="nvarchar" MaxLength="50" />
+    <Property Name="NGUOISUA" Type="nvarchar" MaxLength="50" />
+    <Property Name="CAPCOSO_ID" Type="int" />
+    <Property Name="IS_DELETE" Type="bit" />
+  </EntityType>
+  <EntityType Name="HUYEN">
+    <Key>
+      <PropertyRef Name="HUYEN_ID" />
+    </Key>
+    <Property Name="HUYEN_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MAHUYEN" Type="nvarchar" MaxLength="5" />
+    <Property Name="TINH_ID" Type="int" />
+    <Property Name="TENHUYEN" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="NGUOIDUNG_VAITRO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VAITRO_ID" Type="int" />
+    <Property Name="NGUOIDUNG_ID" Type="bigint" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="ROLE_DEFAULT" Type="bit" />
+  </EntityType>
+  <EntityType Name="TAILIEUDINHKEM">
+    <Key>
+      <PropertyRef Name="TAILIEU_ID" />
+    </Key>
+    <Property Name="TAILIEU_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="KICHCO" Type="bigint" />
+    <Property Name="NGAYPHATHANH" Type="datetime" />
+    <Property Name="VERSION" Type="nvarchar" MaxLength="255" />
+    <Property Name="TENTACGIA" Type="nvarchar" MaxLength="255" />
+    <Property Name="MATAILIEU" Type="varchar" MaxLength="50" />
+    <Property Name="TENTAILIEU" Type="nvarchar" MaxLength="500" />
+    <Property Name="LOAI_TAILIEU" Type="int" />
+    <Property Name="ITEM_ID" Type="bigint" />
+    <Property Name="MOTA" Type="ntext" />
+    <Property Name="DUONGDAN_FILE" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="DINHDANG_FILE" Type="nvarchar" MaxLength="255" />
+    <Property Name="SOLUONG_DOWNLOAD" Type="int" />
+    <Property Name="USER_ID" Type="bigint" />
+    <Property Name="FOLDER_ID" Type="bigint" />
+    <Property Name="IS_ACTIVE" Type="int" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="DM_LOAITAILIEU_ID" Type="int" />
+    <Property Name="IS_LOCK" Type="bit" />
+    <Property Name="NGUOI_LOCK" Type="bigint" />
+    <Property Name="IS_QLPHIENBAN" Type="bit" />
+    <Property Name="IS_PHEDUYET" Type="int" />
+    <Property Name="IS_SHARING" Type="bit" />
+    <Property Name="IS_PRIVATE" Type="bit" />
+    <Property Name="TRANGTHAI" Type="int" />
+    <Property Name="CONTENT_CHANGE" Type="ntext" />
+  </EntityType>
+  <EntityType Name="TBL_CONFIG_TAILIEU">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ID_TAILIEU" Type="int" />
+    <Property Name="FIELD_KEY" Type="nvarchar" MaxLength="50" />
+    <Property Name="FIELD_VALUE" Type="nvarchar(max)" />
+    <Property Name="COLUM_MIX" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TBL_DATA_KETXUAT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDDOTNOP" Type="int" Nullable="false" />
+    <Property Name="TENTO" Type="nvarchar" MaxLength="250" />
+    <Property Name="NGAY_NOP" Type="datetime" />
+    <Property Name="SONGAYCHAM" Type="int" />
+    <Property Name="IS_GIAMNHE" Type="bit" />
+    <Property Name="IS_TANGNANG" Type="bit" />
+    <Property Name="SOTIEN_TANGNANG" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="SOTIEN_GIAMNHE" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="LYDO_TANGNANG" Type="nvarchar(max)" />
+    <Property Name="LYDO_GIAMNHE" Type="nvarchar(max)" />
+    <Property Name="CANHCAO" Type="bit" />
+    <Property Name="TIENPHAT_NGAY" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="TONGTIENPHAT" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="SOSTT" Type="nvarchar" MaxLength="50" />
+    <Property Name="ID_DOANHNGHIEP" Type="int" />
+    <Property Name="txt_NGAYNOP" Type="nvarchar" MaxLength="50" />
+    <Property Name="KYNOP" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TBL_DIEUKIEN_KETXUAT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ID_TAILIEU" Type="int" />
+    <Property Name="ID_TRANGTHAI" Type="int" />
+  </EntityType>
+  <EntityType Name="TBL_DN_NOPCHAM">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MASOTHUE" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="TEN_NGUOINOPTHUE" Type="nvarchar(max)" />
+    <Property Name="TENTO" Type="nvarchar" MaxLength="250" />
+    <Property Name="KY_TMS" Type="nvarchar" MaxLength="50" />
+    <Property Name="GIO_NOP" Type="nvarchar" MaxLength="50" />
+    <Property Name="NGAY_NOP" Type="datetime" />
+    <Property Name="HAN_NOP" Type="datetime" />
+    <Property Name="SONGAY_CHAM" Type="int" />
+    <Property Name="SOTIENPHAT" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="CO_GIAMNHE" Type="bit" />
+    <Property Name="CO_TANGNANG" Type="bit" />
+    <Property Name="CANHCAO" Type="bit" />
+    <Property Name="TRANGTHAI" Type="int" />
+    <Property Name="PHUONG" Type="nvarchar" MaxLength="50" />
+    <Property Name="TEN_CANBO" Type="nvarchar" MaxLength="250" />
+    <Property Name="DIENTHOAI" Type="nvarchar" MaxLength="50" />
+    <Property Name="SOQD" Type="nvarchar" MaxLength="50" />
+    <Property Name="DOT_NOP" Type="int" />
+    <Property Name="TIEN_TANGNANG" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="TIEN_GIAMNHE" Type="decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityType Name="TBL_DOANHNGHIEP">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MASOTHUE" Type="varchar" MaxLength="250" />
+    <Property Name="NGUOI_NOPTHUE" Type="nvarchar(max)" />
+    <Property Name="DIACHI" Type="nvarchar(max)" />
+    <Property Name="TINH" Type="int" />
+    <Property Name="HUYEN" Type="int" />
+    <Property Name="XA" Type="int" />
+    <Property Name="TRANGTHAI" Type="int" />
+    <Property Name="EMAIL" Type="nvarchar" MaxLength="250" />
+    <Property Name="ID_CANBO" Type="int" />
+    <Property Name="DIENTHOAI" Type="nvarchar" MaxLength="100" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="NGUOITAO" Type="int" />
+    <Property Name="NGUOISUA" Type="int" />
+    <Property Name="NGUOIDAIDIEN" Type="nvarchar" MaxLength="200" />
+    <Property Name="IS_DELETE" Type="bit" />
+  </EntityType>
+  <EntityType Name="TBL_KY_NOPTHUE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TEN_KY_NOPTHUE" Type="nvarchar" MaxLength="200" />
+    <Property Name="NGAY_BATDAU" Type="datetime" />
+    <Property Name="NGAY_KET_THUC" Type="datetime" />
+    <Property Name="NGUOITAO" Type="int" />
+    <Property Name="NGUOISUA" Type="int" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="IS_DELETE" Type="bit" />
+  </EntityType>
+  <EntityType Name="TBL_MUCPHAT_NOPCHAM">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VALUE_START" Type="int" />
+    <Property Name="VALUE_END" Type="int" />
+    <Property Name="MUCPHAT" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="CANCU" Type="nvarchar(max)" />
+    <Property Name="ISPHATSINHTHUE" Type="bit" />
+    <Property Name="IS_GIAMNHE" Type="bit" />
+  </EntityType>
+  <EntityType Name="TBL_NGAYNGHI">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TITLE" Type="nvarchar" MaxLength="250" />
+    <Property Name="DATE_START1" Type="datetime" />
+    <Property Name="NUMBERDATE" Type="int" />
+    <Property Name="DATE_END" Type="datetime" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="NGUOITAO" Type="int" />
+    <Property Name="NGUOISUA" Type="int" />
+  </EntityType>
+  <EntityType Name="TBL_SOKETXUAT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ID_DOTNOP" Type="int" />
+    <Property Name="ID_TAILIEU" Type="int" />
+    <Property Name="MATAILIEU" Type="nvarchar" MaxLength="50" />
+    <Property Name="URL" Type="nvarchar(max)" />
+    <Property Name="SOTTT" Type="int" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGUOITAO" Type="int" />
+    <Property Name="ID_DOANHNGHIEP" Type="int" />
+  </EntityType>
+  <EntityType Name="TBL_TAILIEU_KETXUAT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TENTAILIEU" Type="nvarchar" MaxLength="250" />
+    <Property Name="URL" Type="nvarchar(max)" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGUOITAO" Type="int" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="NGUOISUA" Type="int" />
+    <Property Name="IS_DELETE" Type="bit" />
+    <Property Name="MA_TAILIEU" Type="nvarchar" MaxLength="50" />
+    <Property Name="SOTAILIEU" Type="int" />
+  </EntityType>
+  <EntityType Name="TBL_TRANGTHAI_KETXUAT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NAME" Type="nvarchar" MaxLength="250" />
+  </EntityType>
+  <EntityType Name="TINH">
+    <Key>
+      <PropertyRef Name="TINH_ID" />
+    </Key>
+    <Property Name="TINH_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MATINH" Type="nvarchar" MaxLength="3" />
+    <Property Name="TENTINH" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="VAITRO_CHUCNANG">
+    <Key>
+      <PropertyRef Name="VAITRO_CHUCNANG_ID" />
+    </Key>
+    <Property Name="VAITRO_CHUCNANG_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DM_CHUCNANG_ID" Type="int" />
+    <Property Name="DM_VAITRO_ID" Type="int" />
+    <Property Name="TRANGTHAI" Type="int" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="NGUOITAO" Type="nvarchar" MaxLength="50" />
+    <Property Name="NGUOISUA" Type="nvarchar" MaxLength="50" />
+    <Property Name="MAC_DINH" Type="int" />
+    <Property Name="COSO_ID" Type="int" />
+  </EntityType>
+  <EntityType Name="VAITRO_THAOTAC">
+    <Key>
+      <PropertyRef Name="VAITRO_THAOTAC_ID" />
+    </Key>
+    <Property Name="VAITRO_THAOTAC_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DM_THAOTAC_ID" Type="bigint" />
+    <Property Name="VAITRO_CHUCNANG_ID" Type="int" />
+    <Property Name="TRANGTHAI" Type="int" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="NGUOITAO" Type="nvarchar" MaxLength="50" />
+    <Property Name="NGUOISUA" Type="nvarchar" MaxLength="50" />
+    <Property Name="COSO_ID" Type="int" />
+  </EntityType>
+  <EntityType Name="XA">
+    <Key>
+      <PropertyRef Name="XA_ID" />
+    </Key>
+    <Property Name="XA_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MAXA" Type="nvarchar" MaxLength="7" />
+    <Property Name="HUYEN_ID" Type="bigint" />
+    <Property Name="TENXA" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <Association Name="FK_VAITRO_CHUCNANG_DM_CHUCNANG">
+    <End Role="DM_CHUCNANG" Type="Self.DM_CHUCNANG" Multiplicity="0..1" />
+    <End Role="VAITRO_CHUCNANG" Type="Self.VAITRO_CHUCNANG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DM_CHUCNANG">
+        <PropertyRef Name="DM_CHUCNANG_ID" />
+      </Principal>
+      <Dependent Role="VAITRO_CHUCNANG">
+        <PropertyRef Name="DM_CHUCNANG_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VAITRO_CHUCNANG_DM_VAITRO">
+    <End Role="DM_VAITRO" Type="Self.DM_VAITRO" Multiplicity="0..1" />
+    <End Role="VAITRO_CHUCNANG" Type="Self.VAITRO_CHUCNANG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DM_VAITRO">
+        <PropertyRef Name="DM_VAITRO_ID" />
+      </Principal>
+      <Dependent Role="VAITRO_CHUCNANG">
+        <PropertyRef Name="DM_VAITRO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VAITRO_THAOTAC_DM_THAOTAC">
+    <End Role="DM_THAOTAC" Type="Self.DM_THAOTAC" Multiplicity="0..1" />
+    <End Role="VAITRO_THAOTAC" Type="Self.VAITRO_THAOTAC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DM_THAOTAC">
+        <PropertyRef Name="DM_THAOTAC_ID" />
+      </Principal>
+      <Dependent Role="VAITRO_THAOTAC">
+        <PropertyRef Name="DM_THAOTAC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VAITRO_THAOTAC_VAITRO_CHUCNANG">
+    <End Role="VAITRO_CHUCNANG" Type="Self.VAITRO_CHUCNANG" Multiplicity="0..1" />
+    <End Role="VAITRO_THAOTAC" Type="Self.VAITRO_THAOTAC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VAITRO_CHUCNANG">
+        <PropertyRef Name="VAITRO_CHUCNANG_ID" />
+      </Principal>
+      <Dependent Role="VAITRO_THAOTAC">
+        <PropertyRef Name="VAITRO_CHUCNANG_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ModeleAitaStoreContainer">
+    <EntitySet Name="CCTC_THANHPHAN" EntityType="Self.CCTC_THANHPHAN" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DM_CHUCNANG" EntityType="Self.DM_CHUCNANG" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DM_LOAI_DONVI" EntityType="Self.DM_LOAI_DONVI" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DM_NGUOIDUNG" EntityType="Self.DM_NGUOIDUNG" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DM_THAOTAC" EntityType="Self.DM_THAOTAC" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DM_VAITRO" EntityType="Self.DM_VAITRO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HUYEN" EntityType="Self.HUYEN" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NGUOIDUNG_VAITRO" EntityType="Self.NGUOIDUNG_VAITRO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TAILIEUDINHKEM" EntityType="Self.TAILIEUDINHKEM" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_CONFIG_TAILIEU" EntityType="Self.TBL_CONFIG_TAILIEU" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_DATA_KETXUAT" EntityType="Self.TBL_DATA_KETXUAT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_DIEUKIEN_KETXUAT" EntityType="Self.TBL_DIEUKIEN_KETXUAT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_DN_NOPCHAM" EntityType="Self.TBL_DN_NOPCHAM" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_DOANHNGHIEP" EntityType="Self.TBL_DOANHNGHIEP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_KY_NOPTHUE" EntityType="Self.TBL_KY_NOPTHUE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_MUCPHAT_NOPCHAM" EntityType="Self.TBL_MUCPHAT_NOPCHAM" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_NGAYNGHI" EntityType="Self.TBL_NGAYNGHI" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_SOKETXUAT" EntityType="Self.TBL_SOKETXUAT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_TAILIEU_KETXUAT" EntityType="Self.TBL_TAILIEU_KETXUAT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBL_TRANGTHAI_KETXUAT" EntityType="Self.TBL_TRANGTHAI_KETXUAT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TINH" EntityType="Self.TINH" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VAITRO_CHUCNANG" EntityType="Self.VAITRO_CHUCNANG" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VAITRO_THAOTAC" EntityType="Self.VAITRO_THAOTAC" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="XA" EntityType="Self.XA" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_VAITRO_CHUCNANG_DM_CHUCNANG" Association="Self.FK_VAITRO_CHUCNANG_DM_CHUCNANG">
+      <End Role="DM_CHUCNANG" EntitySet="DM_CHUCNANG" />
+      <End Role="VAITRO_CHUCNANG" EntitySet="VAITRO_CHUCNANG" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VAITRO_CHUCNANG_DM_VAITRO" Association="Self.FK_VAITRO_CHUCNANG_DM_VAITRO">
+      <End Role="DM_VAITRO" EntitySet="DM_VAITRO" />
+      <End Role="VAITRO_CHUCNANG" EntitySet="VAITRO_CHUCNANG" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VAITRO_THAOTAC_DM_THAOTAC" Association="Self.FK_VAITRO_THAOTAC_DM_THAOTAC">
+      <End Role="DM_THAOTAC" EntitySet="DM_THAOTAC" />
+      <End Role="VAITRO_THAOTAC" EntitySet="VAITRO_THAOTAC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VAITRO_THAOTAC_VAITRO_CHUCNANG" Association="Self.FK_VAITRO_THAOTAC_VAITRO_CHUCNANG">
+      <End Role="VAITRO_CHUCNANG" EntitySet="VAITRO_CHUCNANG" />
+      <End Role="VAITRO_THAOTAC" EntitySet="VAITRO_THAOTAC" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

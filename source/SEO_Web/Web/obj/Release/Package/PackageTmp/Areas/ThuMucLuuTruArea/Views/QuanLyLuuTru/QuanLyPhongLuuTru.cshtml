@@ -1,0 +1,211 @@
+﻿@{
+    ViewBag.Title = "Quản lý phòng lưu trữ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Web.Areas.ThuMucLuuTruArea.Models.QuanLyPhongModel
+<style>
+    .menu-left-content {
+        height: 494px;
+        overflow-y: auto;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" style="width:280px">
+            <h1>Quản lý phòng lưu trữ</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;margin-right:50px" type="button" onclick="OnCreate()" class="b_btn b_btn-default vbdi_search">Thêm mới phòng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="left-all-page" id="menu-middle-left" style="height:100%">
+    <div id="block-search-form">
+
+        @using (Ajax.BeginForm("FindPhong", "QuanLyLuuTru", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "search-form" }))
+        {
+            <input type="text" placeholder="Nhập tên phòng" value="" name="TENPHONG" id="" />
+            <input type="hidden" value="0" name="TANG_ID" id="" />
+            <input type="hidden" value="0" name="TOANHA_ID" id="" />
+            <input type="submit" value="search" name="" id="" />
+        }
+    </div>
+    <div class="menu-left-content block">
+        <ul class="admin-menu">
+            <li class="menu"><a href="@Url.Action("Index", "QuanLyLuuTru")">Danh sách tòa nhà</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyTangLuuTru", "QuanLyLuuTru")">Danh sách tầng lưu trữ</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyPhongLuuTru", "QuanLyLuuTru")">Danh sách phòng lưu trữ</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyKeLuuTru", "QuanLyLuuTru")">Danh sách kệ lưu trữ</a></li>
+            <li class="menu"><a href="@Url.Action("QuanLyHangLuuTru", "QuanLyLuuTru")">Danh sách hàng lưu trữ</a></li>
+        </ul>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <table style="width:100%">
+        @Html.AntiForgeryToken()
+        @using (Ajax.BeginForm("FindPhong", "QuanLyLuuTru", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmTimKiem" }))
+        {
+            @*<tr>
+                    <td>
+                        <div class="SearchCriterial" style="margin-bottom:0px">
+                            <div class=" panel-default">
+                                <div id="headingOne" class="panel-heading" role="tab">
+                                    <h4 class="panel-title">
+                                        <a class="" role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Tìm kiếm nâng cao</a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse " style="" role="tabpanel" aria-expanded="false">
+
+                                    <table>
+                                        <tr>
+                                            <td style="width:100px">
+                                                Tòa nhà
+                                            </td>
+                                            <td>
+                                                <div class="input-field4  clearfix">
+                                                    @Html.DropDownList("TOANHA", Model.lstToaNha, "[---Lựa chọn tòa nhà---]", new { @style = "", @id = "TOANHA_ID" })
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:100px">
+                                                Tầng
+                                            </td>
+                                            <td>
+                                                <div class="input-field4  clearfix" id="TANGLUUTRU">
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tên phòng:</td>
+                                            <td>
+                                                <input type="text" placeholder="Nhập tên phòng" value="" name="TENPHONG" id="TENPHONG" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <button class="btn btn-success" type="submit">Tìm kiếm</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>*@
+        }
+        <tr>
+            <td>
+                <div class="SearchResult">
+                    @Html.Partial("_DanhSachPhongResult")
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<script type="text/javascript">
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadPhong", "QuanLyLuuTru")',
+            data: {
+                TANG:0
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                //alert(Ten_DanToc);
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+    function failure(xrt) {
+        alert(xrt.responseText);
+    }
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("CreatePhong", "QuanLyLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+                TANG:0
+            },
+            success: function (data) {
+                $("#CreatePhong").html(data);
+                $("#CreatePhong").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+    function EditTang(ID) {
+        $.ajax({
+            url: '@Url.Action("EditPhong", "QuanLyLuuTru")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#EditPhong").html(data);
+                $("#EditPhong").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    $(function () {
+        $("#TOANHA_ID").change(function () {
+            if ($("#TOANHA_ID").val() != "") {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("LoadTangByToaNha", "QuanLyLuuTru")',
+                    data: {
+                        TOANHA: $("#TOANHA_ID").val()
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        $("#TANGLUUTRU").html(data);
+                    }
+                });
+            } else {
+                $("#TANGLUUTRU").html("");
+            }
+        });
+    });
+</script>

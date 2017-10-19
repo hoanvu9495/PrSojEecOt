@@ -1,0 +1,188 @@
+﻿@using Web.FwCore
+@using Business.Business
+@using Business.CommonBusiness
+@using Web.Models
+@{
+    ViewBag.Title = "Phong trào thi đua khen thưởng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #collapseThongTinChinh {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+</style>
+<script src="~/Scripts/tiny_mce/tinymce.min.js"></script>
+@Html.Partial("_TopNavbar")
+@Html.Partial("_MenuLeft")
+
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <form id="frmVanBanDenCreate" method="post" action="/TDKTPhongTraoThiDuaArea/PhongTraoThiDua/Save" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <h3 class="group-tittle mt10" style="height: 41px">Tạo mới phong trào thi đua</h3>
+        <div style="margin:auto; margin-top:20px" id="collapseThongTinChinh" class="panel-collapse collapse in" aria-expanded="true">
+            <table id="tbl_create_nangluong_truocthoihan">
+                <tr>
+                    <td style="width:20%">
+                        <label class="lbl-title">Kế hoạch thi đua:<span style="color: red;">*</span></label>
+                    </td>
+                    <td colspan="3">
+                        <div class="input-field4 clearfix fix-width" style="width:100%">
+                            @Html.TextBox("KE_HOACH_THI_DUA", "", new { @style = "width: 100%;", maxlength = "255", @class = "e-input", @id = "KE_HOACH_THI_DUA" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="height_20"></td>
+                    <td>
+                        <span id="ERR_KE_HOACH_THI_DUA" style="color: red"></span>
+                    </td>
+                </tr>
+                @*End*@
+                @*Tự đánh giá các mặt công tác*@
+                <tr>
+                    <td>
+                        <label class="lbl-title">Nội dung phong trào thi đua:<span style="color: red;">*</span></label>
+                    </td>
+                    <td colspan="3">
+                        @Html.TextArea("NOI_DUNG", "", new { @style = "width:700px;height:300px;", @placeholder = "", @class = "e-input", @maxlength = "500" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="height_20"></td>
+                    <td>
+                        <span id="ERR_NOI_DUNG" style="color: red"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="lbl-title">Tài liệu liên quan: </label>
+                    </td>
+                    <td colspan="3">
+                        @{Html.RenderPartial("../Common/UploadFile", new List<Model.eAita.TAILIEUDINHKEM>());}
+                    </td>
+                </tr>
+                @*end*@
+            </table>
+        </div>
+        <div style="margin-top: 15px; text-align: center;">
+            <input type="submit" value="Lưu toàn bộ thông tin" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" />
+            <a style="border: medium none; color: white; padding: 7px 20px; background-color: seagreen;" href="/TDKTPhongTraoThiDuaArea/PhongTraoThiDua">Quay lại </a>
+
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        tinymce.init({
+            selector: '#NOI_DUNG',
+            language: 'vi_VN',
+            width: '100%',
+            height: 200,
+            plugins: [
+                    "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+            toolbar2: "cut copy paste pastetext | bullist numlist | outdent indent | undo redo | link unlink code | forecolor backcolor",
+            toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | insertdatetime preview | print fullscreen | ltr rtl | pagebreak restoredraft",
+            menubar: false,
+            convert_urls: false,
+            paste_data_images: true,
+            toolbar_items_size: 'small'
+        });
+    });
+    //$("#btnSave").click(function () {
+    //    clearMessageErr();
+    //    var check_err_submit = false;
+    //    if ($("#TIME_NLTTH").val().trim() == "") {
+    //        $("#ERR_TIME_NLTTH").html("Bạn phải nhập Thời gian đề nghị nâng bậc lương trước thời hạn");
+    //        $("#TIME_NLTTH").focus();
+    //        check_err_submit = true;
+    //    } else {
+    //        if (!/^[0-9]+$/.test($("#TIME_NLTTH").val().trim())) {
+    //            $("#ERR_TIME_NLTTH").html("Thời gian đề nghị nâng bậc lương trước thời hạn phải là số nguyên dương");
+    //            $("#TIME_NLTTH").focus();
+    //            check_err_submit = true;
+    //        }
+    //    }
+    //    if ($("#LEN_BAC").val().trim() == "") {
+    //        $("#ERR_LEN_BAC").html("Bạn phải nhập bậc lương đề xuất");
+    //        if (check_err_submit == false) {
+    //            $("#LEN_BAC").focus();
+    //            check_err_submit = true;
+    //        }
+    //    } else {
+    //        var bac_regex = /[0-9]\/[0-9]+$/;
+    //        var len_bac = $("#LEN_BAC").val().trim();
+    //        if (!bac_regex.test(len_bac)) {
+    //            $("#ERR_LEN_BAC").html("Bậc lương bạn nhập sai định dạng");
+    //            if (check_err_submit == false) {
+    //                $("#LEN_BAC").focus();
+    //                check_err_submit = true;
+    //            }
+    //        }
+    //    }
+    //    if ($("#LEN_HE_SO").val().trim() == "") {
+    //        $("#ERR_LEN_HE_SO").html("Bạn phải nhập hệ số đề xuất");
+    //        if (check_err_submit == false) {
+    //            $("#LEN_HE_SO").focus();
+    //            check_err_submit = true;
+    //        }
+    //    } else {
+    //        var heso = $("#LEN_HE_SO").val().trim();
+    //        if (!$.isNumeric(heso) || heso < 0) {
+    //            $("#ERR_LEN_HE_SO").html("Hệ số lương phải là số dương");
+    //            if (check_err_submit == false) {
+    //                $("#LEN_HE_SO").focus();
+    //                check_err_submit = true;
+    //            }
+    //        }
+    //    }
+    //    var noidungdanhgia = strip_tags(tinyMCE.get('TUDANHGIA').getContent({ format: 'raw' }));
+    //    noidungdanhgia = noidungdanhgia.replace(/&nbsp;/g, '');
+    //    if (noidungdanhgia.trim() == "") {
+    //        $("#ERR_TUDANHGIA").html("Bạn phải nhập nội dung đánh giá");
+    //        if (check_err_submit == false) {
+    //            $("#TUDANHGIA").focus();
+    //            check_err_submit = true;
+    //        }
+    //    }
+    //    if (check_err_submit) {
+    //        notif({
+    //            type: 'error',
+    //            position: 'bottom',
+    //            msg: 'Thông tin bạn điền chưa chính xác!',
+    //        });
+    //        return false;
+    //    } else {
+    //        //$("#frmVanBanDenCreate").submit();
+    //        return true;
+    //    }
+    //});
+    //function clearMessageErr() {
+    //    $("#ERR_TIME_NLTTH").html("");
+    //    //$("#ERR_TUDANHGIA").html("");
+    //    $("#ERR_LEN_BAC").html("");
+    //    $("#ERR_LEN_HE_SO").html("");
+    //}
+
+    //function isIntegerNotNative(x) {
+    //    x = parseInt(x);
+    //    return (typeof x === 'number') && (x > 0) && (x % 1 === 0);
+    //}
+
+    //function strip_tags(input, allowed) {
+    //    allowed = (((allowed || '') + '')
+    //      .toLowerCase()
+    //      .match(/<[a-z][a-z0-9]*>/g) || [])
+    //      .join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+    //    var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+    //      commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+    //    return input.replace(commentsAndPhpTags, '')
+    //      .replace(tags, function ($0, $1) {
+    //          return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+    //      });
+    //}
+</script>

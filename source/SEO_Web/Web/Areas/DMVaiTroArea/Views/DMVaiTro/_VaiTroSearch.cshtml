@@ -1,0 +1,112 @@
+﻿@using Web.Common
+@using Web.FwCore;
+@using Business.CommonBusiness;
+@model Web.Areas.DMVaiTroArea.Models.VaiTroViewModel
+@{
+    UserInfoBO user = (UserInfoBO)SessionManager.GetUserInfo();
+}
+<style type="text/css">
+    .SearchCriterial {
+        margin: 0px;
+    }
+
+    .SearchResult {
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+@Html.AntiForgeryToken()
+@using (Ajax.BeginForm("FindVaiTro", "DMVaiTro", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearh" }))
+{
+    <h3 class="group-tittle mt10"><a href="javascript:void(0)" id="showSearch" style="color: #35498e">Tìm kiếm vai trò</a></h3>
+    <table style="margin:0 auto; width:75%;" id="contentSearch">
+            <tr class="height_20"></tr>
+            <tr>
+                <td class="width_100px">
+                    <label>Cấp cơ sở:</label>
+                </td>
+                <td class="width_222">
+                    <div class="input-field4 clearfix width_233">
+                        @Html.DropDownList("CAPCOSO", Model.ListCapCoSo, "[--- Tất cả ---]", new { @class = "width_100" })
+                    </div>
+                </td>
+                <td class="width_100px">
+                    <label style="margin-left:20px">Cơ sở:</label>
+                </td>
+                <td>
+                    <div class="input-field4 clearfix width_233">
+                        @Html.DropDownList("COSO", Model.ListCoSo, "[--- Tất cả ---]", new { @class = "width_100" })
+                    </div>
+                </td>
+            </tr>
+        <tr style="height:20px"></tr>
+        <tr>
+            <td class="width_100px">
+                <label>Tên vai trò:</label>
+            </td>
+            <td colspan="3">
+                @Html.TextBox("TEN_VAITRO", "", new { @style = "width:600px", @class = "e-input" })
+            </td>
+        </tr>
+        <tr style="height:20px"></tr>
+        <tr>
+            <td colspan="4">
+                <div class="margin-top-10" style="margin-left:35%;">
+
+                    <button type="button" onclick="Search()" class="btn btn-primary">Tìm kiếm</button>
+                    @*<button type="button" onclick="CloseSearch()" class="btn btn-default">Đóng</button>*@
+                </div>
+            </td>
+        </tr>
+    </table>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#TEN_VAITRO").val(@ViewData["TENVAITRO"]);
+        $("#CAPCOSO").change(function () {
+            if ($(this).val() != "") {
+                $.ajax({
+                    type: "GET",
+                    cache: false,
+                    data: { CapCoSoID: $(this).val() },
+                    url: '@Url.Action("GetCoSo", "DMVaiTro")',
+                    success: function (data) {
+                        $("#COSO").html(data);
+                    }
+                });
+            }
+            $("#TEN_VAITRO").change(function () {
+                $("#Keyword").val($(this).val());
+            });
+            document.onkeydown = function () {
+                if (window.event.keyCode == '13') {
+                    Search();
+                }
+            }
+        });
+        //$("#showSearch").click(function () {
+        //    if ($("#contentSearch").is(':hidden')) {
+        //        $("#contentSearch").fadeIn();
+        //    } else {
+        //        $("#contentSearch").fadeOut();
+        //    }
+
+        //});
+    });
+    function Search() {
+        $("#frmSearh").submit();
+    }
+    function CloseSearch() {
+        $("#contentSearch").fadeOut();
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+        $("#TEN_VAITRO").val("");
+    }
+</script>

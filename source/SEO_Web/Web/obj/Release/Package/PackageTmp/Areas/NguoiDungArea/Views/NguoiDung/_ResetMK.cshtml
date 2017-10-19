@@ -1,0 +1,147 @@
+﻿@using Web.Common
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@{
+    UserInfoBO userInfo = (UserInfoBO)SessionManager.GetUserInfo();
+    List<SelectListItem> lstType = ViewData["Type"] as List<SelectListItem>;
+    List<SelectListItem> lstTrangThai = ViewData["TrangThai"] as List<SelectListItem>;
+    List<SelectListItem> lstTypeName = ViewData["TypeName"] as List<SelectListItem>;
+    List<SelectListItem> lstVaiTro = ViewData["VaiTro"] as List<SelectListItem>;
+    NguoiDungBO nguoidung = ViewData["lstEditNguoiDung"] as NguoiDungBO; 
+}
+<style type="text/css">
+    .lbl {
+        display: inline-block;
+        width: 140px;
+    }
+</style>
+@using (Ajax.BeginForm("EditNguoiDung", "NguoiDung", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "success"
+}, new { id = "frmNguoiDungReset" }))
+{
+    @Html.AntiForgeryToken()      
+    <div style="margin-top: 20px;">
+        <label class="create-lbl">Tên đăng nhập:<span style="color: red;">*</span></label>
+        @Html.TextBox("TENDANGNHAP", @nguoidung.TENDANGNHAP, new { @style = "width: 222px;background-color:#c3bcbc;", maxlength = 50, @class = "e-input", @readonly = "readonly", })
+    </div>
+    <div style="height: 20px;">      
+    </div>   
+    <div>
+        <label class="create-lbl">Mật khẩu mới:</label>
+        @Html.TextBox("MATKHAUMOI", "", new { @style = "width: 222px;", maxlength = 100, @class = "e-input" })
+    </div>
+    <div style="height: 20px;">
+        <span class="lb-Check" id="MATKHAUMOIEr">Mật khẩu phải lớn hơn 8 ký tự và nhỏ hơn 100 ký tự </span>        
+    </div>
+    
+    <div>
+        <label class="create-lbl">Điện thoại:</label>
+        @Html.TextBox("DIENTHOAI", @nguoidung.DIENTHOAI, new { @style = "width: 222px;", maxlength = 20, @class = "e-input" })
+        <div style="height: 20px;">
+            <span class="lb-Check" id="DIENTHOAIEr">Bạn nhập sai định dạng</span>
+            <span class="lb-Check" id="DIENTHOAI10">Bạn nhập ít nhất 10 kí tự</span>
+            <span class="lb-Check" id="DIENTHOAIQUA">Không nhập quá 20 kí tự </span>
+        </div>
+    </div>
+    <div>
+        <label class="create-lbl">Trạng thái:<span style="color: red;">*</span></label>
+        <div class="styled-select clearfix" style="width: 233px;">
+            @Html.DropDownList("TRANGTHAI", new SelectList(lstTrangThai, "Value", "Text", @nguoidung.TRANGTHAI), new { @style = "width: 251px" })
+        </div>
+    </div>  
+    <input type="hidden" name="NGUOITAO" value="@userInfo.Username"/>
+    <input type="hidden" name="DM_NGUOIDUNG_ID" value="@nguoidung.DM_NGUOIDUNG_ID"/>
+    <input type="hidden" name="TYPE" value="@nguoidung.TYPE"/>
+    <input type="hidden" name="TYPEID" value="@nguoidung.TYPEID"/>
+    <input type="hidden" name="DM_VAITRO_ID" value="@nguoidung.DM_VAITRO_ID"/>
+    <input type="hidden" name="MATKHAU" value="@nguoidung.MATKHAU"/>
+    <div style="margin-top: 15px; text-align: center;">
+        <input type="submit" value="Lưu" id="btnSaveReset" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+        <input type="button" value="Đóng" onclick="Close()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#TYPE").val("@ViewData["donvi"]");
+        $("#TYPEID").val("@ViewData["tendonvi"]");
+        $("#TRANGTHAI").val("@ViewData["HieuLuc"]");
+        $("#MATKHAUMOI").focus();
+    });
+    function Close() {
+        $("#ResetMatKhau").dialog("close");
+    }
+    function failure(xhr) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $("#btnSaveReset").click(function () {
+
+        if (!$('#MATKHAUMOIEr').is(':hidden')) { return false; }
+        if (!$('#DIENTHOAIEr').is(':hidden')) { return false; }
+        if (!$('#DIENTHOAIQUA').is(':hidden')) { return false; }
+        if (!$('#DIENTHOAI10').is(':hidden')) { return false; }
+        $("#frmNguoiDungReset").submit();
+        return true;
+    });
+
+    $("#MATKHAUMOI").focusout(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#MATKHAUMOIEr").hide();
+        }
+        else {
+            $(this).val($(this).val().trim());
+
+            if (($(this).val().length < 8 || $(this).val().length > 100)) {
+                $("#MATKHAUMOIEr").show();
+                $(this).focus();
+            } else {
+                $("#MATKHAUMOIEr").hide();
+            }
+        }
+    });
+    $("#DIENTHOAI").focusout(function () {
+        if (($("#DIENTHOAI").val().trim() == null || $("#DIENTHOAI").val().trim() == "")) {
+            $("#DIENTHOAIEr").hide(); $("#DIENTHOAI10").hide(); $("#DIENTHOAIQUA").hide();
+        } else {
+            var Regex = /^([0-9\.\+])+$/;
+            var sdt = $("#DIENTHOAI").val().trim();
+            if (sdt.match(Regex) == null) {
+                $("#DIENTHOAIEr").show(); $("#DIENTHOAIQUA").hide(); $("#DIENTHOAI10").hide(); $("#DIENTHOAI").focus();
+            } if (sdt.match(Regex) != null) {
+                $("#DIENTHOAIEr").hide();
+                if ($("#DIENTHOAI").val().trim().length < 10) {
+                    $("#DIENTHOAI10").show();
+                } else {
+                    $("#DIENTHOAI10").hide();
+                }
+            } if ($("#DIENTHOAI").val().length > 20) {
+                $("#DIENTHOAIQUA").show(); $("#DIENTHOAIEr").hide(); $("#DIENTHOAI10").hide(); $("#DIENTHOAI").focus();
+            }
+        }
+    });
+    $("#TYPE").change(function () {
+        var TYPE = $(this).val();
+        if (TYPE != "") {
+            $.ajax({
+                url: '@Url.Action("TenDonViList")',
+                type: 'POST',
+                data: { TYPE: TYPE },
+                success: function (data) {
+                    var items = "";
+                    $.each(data, function (i, type) {
+                        items += "<option value='" + type.TypeID + "'>" + type.TypeName + "</option>";
+                    });
+                    $('#TYPEID').html(items);
+                }
+            });
+        }
+    });
+    function success() {
+        CommonJS.alert("Reset mật khẩu người dùng thành công");
+        $("#ResetMatKhau").dialog("close");
+        reloadGrid();
+
+    }
+</script>

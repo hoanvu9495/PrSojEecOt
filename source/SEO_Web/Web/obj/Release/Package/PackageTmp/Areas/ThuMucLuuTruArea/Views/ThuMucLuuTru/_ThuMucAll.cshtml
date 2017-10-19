@@ -1,0 +1,181 @@
+﻿@using Web.FwCore;
+@using System.Text;
+@using Business.CommonBusiness;
+@{
+    List<ThuMucLuuTruBO> lstThuMuc = (List<ThuMucLuuTruBO>)SessionManager.GetValue("ListThuMuc");
+
+    if (lstThuMuc != null && lstThuMuc.Count > 0)
+    {
+        <ul id="browser" class="filetree treeview-famfamfam">
+            @foreach (var i in lstThuMuc)
+            {
+                <li data-fid="@("F_"+i.ID)">
+                    @*<div class="hitarea collapsable-hitarea"></div>*@
+                    @if (i.EXPIRE_DATEFROM.HasValue || i.EXPIRE_DATE.HasValue)
+                    {
+                        if (i.IS_PRIVATE.Value)
+                        {
+                            <span class="folder private1" title="@i.TENTHUMUC (Thư mục cá nhân)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                        else if (i.EXPIRE_DATE.HasValue && i.EXPIRE_DATE.Value < DateTime.Now)
+                        {
+                            <span class="folder expired1" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE) (Hết hạn lưu trữ)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                        else if (DateTime.Now >= i.EXPIRE_DATEFROM && DateTime.Now <= i.EXPIRE_DATE)
+                        {
+                            <span class="folder unexpired1" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                        else if (i.EXPIRE_DATEFROM.HasValue && DateTime.Now < i.EXPIRE_DATEFROM.Value)
+                        {
+                            <span class="folder unexpired1" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE) (Chưa được sử dụng)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                        else
+                        {
+                            <span class="folder" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                    }
+                    else if (i.IS_PRIVATE.Value)
+                    {
+                        <span class="folder private1" title="@i.TENTHUMUC (Thư mục cá nhân)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                    }
+                    else
+                    {
+                        <span class="folder" title="@i.TENTHUMUC" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                    }
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <span style="color:red">Không có thư mục nào</span>
+    }
+}
+<style>
+    .expired1 {
+        background: url('/Content/themes/base/images/folder-expired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 24px 24px !important;
+        color: red;
+    }
+
+    .unexpired1 {
+        background: url('/Content/themes/base/images/folder_unexpired.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+    }
+
+    .private1 {
+        /*background: url('/Content/themes/base/images/1458292626_-01.png') !important;
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat !important;
+        background-position: 4px 2px;
+        margin-left: 5px;
+        line-height: 1.3em;
+        text-align: center;
+        background-size: 22px 22px !important;
+        color: #ff6a00;
+        background: url('/Content/themes/base/images/1458292626_-01.png');
+        padding: 1px 0 1px 16px;
+        background-repeat: no-repeat;
+        background-position: 4px 2px;
+        margin: 0 15px 0 0;
+        float: left;
+        line-height: 1.3em;
+        text-align: center;*/
+    }
+</style>
+<script>
+    $(function () {
+        $("#treeview").resizable({
+        });
+        $("#treeview").on("resize", function () {
+            var wRight = 100 - $("#treeview").width() / 10;
+            if ($("#treeview").width() / 10 > 50) {
+                wRight = $("#treeview").width() / 10 - 50 + wRight;
+            }
+            $("#treeview").css("width", $("#treeview").width() / 10 + "%");
+            document.getElementById("treeview").style.maxWidth = "50%";
+            document.getElementById("treeview").style.minWidth = "5%";
+            document.getElementById("treeview").style.minHeight = "100px";
+            document.getElementById("treeview").style.maxHeight = "440px";
+            $("#display").css("width", wRight + "%");
+        });
+    });
+    //var context = $("#browser,#bodyItem ")
+    //          .nuContextMenu({
+    //              hideAfterClick: true,
+    //              items: '.folder',
+    //              callback: function (key, element) {
+    //                  if (key == "Edit") {
+    //                      RenameThuMuc($(element).attr('data-pid'));
+    //                  }
+    //                  if (key == "Trash") {
+    //                      CheckFolderRemove($(element).attr('data-pid'));
+    //                  }
+    //                  if (key == "plus") {
+    //                      CreateThuMuc($(element).attr('data-pid'));
+    //                  }
+    //                  if (key == "upload") {
+    //                      UploadFile($(element).attr('data-pid'));
+    //                      //alert("Ban da chon upload file " + $(element).attr('data-pid'));
+    //                  }
+    //                  if (key == "single") {
+    //                      UploadSingle($(element).attr('data-pid'));
+    //                  }
+    //                  if (key == "share") {
+    //                      ShareFile($(element).attr('data-pid'), true);
+    //                  }
+    //              },
+    //              menu: [
+    //                {
+    //                    name: 'upload',
+    //                    title: 'Tải nhiều file',
+    //                    icon: 'upload',
+    //                },
+    //                {
+    //                    name: 'single',
+    //                    title: 'Tải lên 1 file',
+    //                    icon: 'cloud-upload',
+    //                },
+    //                {
+    //                    name: 'plus',
+    //                    title: 'Thêm folder con',
+    //                    icon: 'folder-open-o',
+    //                },
+    //                {
+    //                    name: 'share',
+    //                    title: 'Chia sẻ',
+    //                    icon: 'share-alt',
+    //                },
+    //                {
+    //                    name: 'Edit',
+    //                    title: 'Cập nhật',
+    //                    icon: 'edit',
+    //                },
+    //                 {
+    //                     name: 'Trash',
+    //                     title: 'Xóa',
+    //                     icon: 'trash'
+
+    //                 }
+    //                //,
+    //                //{
+    //                //    name: 'Link',
+    //                //    title: 'Nhận liên kết',
+    //                //    icon: 'link',
+    //                //}
+    //              ]
+
+    //          });
+</script>

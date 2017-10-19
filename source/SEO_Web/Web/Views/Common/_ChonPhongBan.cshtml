@@ -1,0 +1,108 @@
+﻿@using Web.FwCore
+@using Business.Business
+@using Business.CommonBusiness
+@using Web.Models
+@model Web.Models.ChonNguoiDungModel
+
+<div id="phong_ban_dialog_@Model.INDEX" title="@(string.IsNullOrEmpty(Model.TITLE) ? "Lựa chọn phòng ban" : Model.TITLE)">
+    <div class="bc-box">
+        <div style="width:100%; margin:auto;">
+            <table width="100%">
+                <tbody>
+                    <tr>
+                        <td width="30%">
+                            <label class="lbl-title">Tên phòng ban:</label>
+                        </td>
+                        <td>
+                            <input class="e-input" id="KEYWORD_PHONGBAN_@Model.INDEX" maxlength="255" name="KEYWORD_PHONGBAN" style="width: 90%;" type="text" value="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div style="text-align: center; margin-top:5px;">
+                                <input type="button" value="Tra cứu" id="btnSearchPhongBan_@Model.INDEX" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="bc-box">
+        <div style="width:100%; margin:auto;">
+            <div id="phong_ban_result_dialog_@Model.INDEX" style="overflow-x: hidden;">
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#phong_ban_dialog_" + '@Model.INDEX').dialog({
+            autoOpen: false,
+            modal: true,
+            width: 750,
+            height: 500,
+            resizable: false,
+            show: {
+                effect: "blind",
+                duration: 200
+            },
+            hide: {
+                effect: "blind",
+                duration: 200
+            }
+        });
+        $("#" + '@Model.ID_CLICK').click(function () {
+            //getDataByAjax();
+            var keyword = $("#KEYWORD_PHONGBAN_" + '@Model.INDEX').val();
+            var ids = $("#" + '@Model.VALUE_ID').val();
+            $.ajax({
+                type: "POST",
+                url: '/Common/ListPhongBan',
+                cache: false,
+                data: {
+                    COSO_ID: '@Model.COSO_ID',
+                    DONVI_ID: '@Model.DONVI_ID',
+                    TEXT_ID: '@Model.TEXT_ID',
+                    VALUE_ID: '@Model.VALUE_ID',
+                    IS_MULTICHOICE: '@Model.IS_MULTICHOICE',
+                    IDS: ids,
+                    KEYWORD: keyword,
+                    CALLBACK_FUNCTION: '@Model.CALLBACK_FUNCTION',
+                    INDEX: '@Model.INDEX',
+                },
+                success: function (data) {
+                    $("#nhan_su_result_dialog_" + '@Model.INDEX').html(data);
+                }
+            });
+            $("#phong_ban_dialog_" + '@Model.INDEX').dialog("open");
+        });
+    });
+
+    $("#btnSearchPhongBan_" + '@Model.INDEX').click(function () {
+        var keyword = $("#KEYWORD_PHONGBAN_" + '@Model.INDEX').val();
+        var ids = $("#" + '@Model.VALUE_ID').val();
+        $.ajax({
+            type: "POST",
+            url: '/Common/ListPhongBan',
+            cache: false,
+            data: {
+                COSO_ID: '@Model.COSO_ID',
+                    DONVI_ID: '@Model.DONVI_ID',
+                    TEXT_ID: '@Model.TEXT_ID',
+                    VALUE_ID: '@Model.VALUE_ID',
+                    IS_MULTICHOICE: '@Model.IS_MULTICHOICE',
+                    IDS: ids,
+                    KEYWORD: keyword,
+                    CALLBACK_FUNCTION: '@Model.CALLBACK_FUNCTION',
+                    INDEX: '@Model.INDEX',
+            },
+            success: function (data) {
+                $("#phong_ban_dialog_" + '@Model.INDEX').html(data);
+            }
+        });
+    });
+
+</script>

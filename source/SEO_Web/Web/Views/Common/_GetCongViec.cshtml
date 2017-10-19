@@ -1,0 +1,105 @@
+﻿@using Web.Models
+@using Web.Areas.MarkItemArea.Models;
+@using Web.Common;
+@model CongViecDBViewModel
+@{
+    MarkItemViewModel mark_model = new MarkItemViewModel();
+    mark_model.ITEM_TYPE = LOAITAILIEU.CONGVIEC;
+    mark_model.RELOAD_FUNCTION = "reloadGrid";
+    var grid = new WebGrid(Model.ListCongViecXuLyChinh,
+                          rowsPerPage: 10,
+                          canPage: true,
+                          canSort: true,
+                          ajaxUpdateContainerId: "grid",
+                           selectionFieldName: "selectedRow"
+                          );
+}
+<style>
+    .dropdown-toggle {
+        padding-left: 24px;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 35px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .lbl-trichyeu a {
+        float: left;
+    }
+</style>
+
+@Html.AntiForgeryToken()
+<div id="grid">
+    <h3 class="group-tittle" style="margin-bottom:10px;">
+        Công việc xử lý chính (@(Model.ListCongViecXuLyChinh == null ? "0" : Model.ListCongViecXuLyChinh.Count.ToString()))
+    </h3>
+    @Html.Partial("~/Areas/MarkItemArea/Views/_ActionMarkItem.cshtml", mark_model)
+    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column(format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format("<input class='global_checkbox " + ((item.IS_READ == true) ? "is_read" : "is_unread") + "' type='checkbox' name='ids' value='" + item.ID + "'>"))),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format("<span style='cursor:pointer' onclick=\"javascript:singleMarkItem(" + item.ID + ",'" + item.IS_FAVORITE + "'," + LOAITAILIEU.CONGVIEC + ",'" + LOAITAILIEU.FAVORITE + "')\" class='" + ((item.IS_FAVORITE == true) ? "favorite" : "notset_favorite") + "' ></span>"))),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format("<span style='cursor:pointer' onclick=\"javascript:singleMarkItem(" + item.ID + ",'" + item.IS_IMPORTANT + "'," + LOAITAILIEU.CONGVIEC + ",'" + LOAITAILIEU.IMPORTANT + "')\" class='" + ((item.IS_IMPORTANT == true) ? "important" : "notset_important") + "' ></span>"))),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format((item.HAS_FILE == true) ? "<span title='Có tệp đính kèm' class='btnAttFile'></span>" : ""))),
+                grid.Column("NGUOIGIAOVIEC", format: (item) => new MvcHtmlString(item.NGUOIGIAOVIEC != null ? bool.Parse(item.IS_READ.ToString()) == false ? ("<b>" + item.NGUOIGIAOVIEC + "</b>") : item.NGUOIGIAOVIEC : ""), header: "Người giao việc"),
+                grid.Column("TENCONGVIEC", format: (item) => new MvcHtmlString(string.Format(
+                                                        "<a href='/congviecarea/congviec/detail/" + item.ID + "' title = 'Xem chi tiết'>" + (bool.Parse(item.IS_READ.ToString()) == false ? ("<b>" + item.TENCONGVIEC + "</b>") : item.TENCONGVIEC) + "</a>")), header: "Công việc", style: "lbl-trichyeu"),
+                grid.Column("NGAYBATDAU", format: (item) => new MvcHtmlString(item.NGAYBATDAU != null ? bool.Parse(item.IS_READ.ToString()) == false ? ("<b>" + string.Format("{0:dd/MM/yyyy}", item.NGAYBATDAU) + "</b>") : string.Format("{0:dd/MM/yyyy}", item.NGAYBATDAU) : ""), header: "Bắt đầu"),
+                grid.Column("HANKETTHUC", format: (item) => new MvcHtmlString(item.HANKETTHUC != null ? bool.Parse(item.IS_READ.ToString()) == false ? ("<b>" + string.Format("{0:dd/MM/yyyy}", item.HANKETTHUC) + "</b>") : string.Format("{0:dd/MM/yyyy}", item.HANKETTHUC) : ""), header: "Kết thúc"),
+                grid.Column("DOUUTIEN", format: (item) => new MvcHtmlString(item.DOUUTIEN != null ? string.Format((bool.Parse(item.IS_READ.ToString()) == false ? ("<b>" + item.DOUUTIEN + "</b>") : item.DOUUTIEN)) : ""), header: "Mức độ"),
+                grid.Column("TRANGTHAI", format: (item) => new MvcHtmlString(item.TRANGTHAI != null ? string.Format((bool.Parse(item.IS_READ.ToString()) == false ? ("<b>" + item.TRANGTHAI + "</b>") : item.TRANGTHAI)) : ""), header: "Trạng thái công việc"),
+                //grid.Column("TRANGTHAI_XULY", format: (item) => (item.IS_READ == false) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.TRANGTHAI_XULY + "</span>")) : item.TRANGTHAI_XULY, header: "Trạng thái xử lý"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                        "<a href='/congviecarea/congviec/detail/" + item.ID + "' class='btnView' title = 'Xem chi tiết'></a>")), header: "Xem"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                        "<a href='/congviecarea/congviec/edit/" + item.ID + "' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                "<a href='javascript:void(0)' onclick='DeleteCongViec(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+                )
+    )
+    @if (Model.ListCongViecXuLyChinh.Count == 0)
+    {
+        <div id="Empty" style="color: red;">
+            Không có công việc nào
+        </div>
+    }
+</div>

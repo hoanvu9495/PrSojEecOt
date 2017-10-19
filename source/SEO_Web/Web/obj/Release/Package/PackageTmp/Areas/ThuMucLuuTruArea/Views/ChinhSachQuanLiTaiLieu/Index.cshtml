@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Chính sách quản lý tài liệu lưu trữ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" style="width:430px">
+            <h1>Chính sách quản lý tài liệu lưu trữ</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;margin-right:50px" type="button" onclick="OnCreate()" class="b_btn b_btn-default vbdi_search">Thêm mới chính sách</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left" style="height:100%">
+    <div class="menu-left-content block">
+        <ul class="admin-menu">
+            <li class="menu"><a href="@Url.Action("Index", "ThuMucLuuTru")">Quản lý tài liệu</a></li>
+            <li class="menu"><a href="@Url.Action("Index", "TmLoaiTaiLieu")">Quản lý loại tài liệu</a></li>
+            <li class="menu"><a href="@Url.Action("Index", "QuanLyLuuTru")">Quản lý nơi lưu trữ</a></li>
+            <li class="menu"><a href="@Url.Action("Index", "TaiLieuChuaSoHoa")">Quản lý tài liệu chưa số hóa</a></li>
+            <li class="menu"><a href="@Url.Action("Index", "TmLoaiTaiLieuThuocTinh")">Quản lý loại tài liệu thuộc tính</a></li>
+            <li class="menu"><a href="@Url.Action("Index", "TrangThaiSuDungTaiLieu")">Quản lý trạng thái sử dụng tài liệu</a></li>
+        </ul>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <table style="width:100%">
+
+        <tr>
+            <td>
+                <div class="SearchResult">
+                    @Html.Partial("_ChinhSachQuanLiResult")
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<script type="text/javascript">
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadGrid", "ChinhSachQuanLiTaiLieu")',
+            data: {},
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $(".SearchResult").html(data);
+            }
+        });
+    }
+</script>

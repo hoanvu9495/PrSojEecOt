@@ -1,0 +1,201 @@
+﻿@using Business.CommonBusiness
+@using Newtonsoft.Json;
+@using System.Data;
+@using Newtonsoft.Json.Linq;
+@using Web.Areas.ReportVanBanArea.Models;
+
+@model CountVBModel
+<script src="~/js/plugin/chartjs/chart.min.js"></script>
+
+@{
+    var JsonDataDen = Html.Raw(JsonConvert.SerializeObject(Model.ListCountVBDen));
+    var JsonDataDi = Html.Raw(JsonConvert.SerializeObject(Model.ListCountVBDi));
+    var vbdChuaDenHanPhanTram=0;
+    if (Model.SoVanBanDenChuaXuLy>0 && Model.SoVanBanDenSapDenHan>0)
+	{
+		 vbdChuaDenHanPhanTram=Model.SoVanBanDenSapDenHan*100/Model.SoVanBanDenChuaXuLy;
+	}
+    var vbdQuahanPhanTram=0;
+    if (Model.SoVanBanDenChuaXuLy>0 && Model.SoVanBanDenQuaHan>0)
+	{
+		 vbdQuahanPhanTram=Model.SoVanBanDenQuaHan*100/Model.SoVanBanDenChuaXuLy;
+	}
+    var vbdiChuaDenHanPhanTram = 0;
+    if (Model.SoVBDiChuaXuLy > 0 && Model.SOVBDiChuaDenHanXuLy > 0)
+    {
+        vbdiChuaDenHanPhanTram = Model.SOVBDiChuaDenHanXuLy * 100 / Model.SoVBDiChuaXuLy;
+    }
+    var vbdiQuaHanPhanTram = 0;
+    if (Model.SoVBDiChuaXuLy > 0 && Model.SOVBDiQuaHanXuLy > 0)
+    {
+        vbdiQuaHanPhanTram = Model.SOVBDiQuaHanXuLy * 100 / Model.SoVBDiChuaXuLy;
+    }
+}
+<style>
+    .div-content {
+        padding-top: 15px;
+        padding-left: 20px;
+    }
+</style>
+<div class="row">
+    @*<article class="col-sm-12">
+        
+        <div class="jarviswidget" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+
+            <header>
+                <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                <h2>Thống kê văn bản đi đến </h2>
+
+
+
+            </header>
+
+            <div class="no-padding">
+                <div class="jarviswidget-editbox">
+
+                </div>
+
+                <div class="widget-body">
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active in padding-10 no-padding-bottom" id="s1">
+                            <div class="row no-space">
+                                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                                    <canvas id="pieChart" height="100"></canvas>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats">
+
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                                            <span class="text">Văn bản đến chưa đến hạn xử lý<span class="pull-right">@Model.SoVanBanDenSapDenHan / @Model.SoVanBanDenChuaXuLy</span> </span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-color-blue" style="width: @vbdChuaDenHanPhanTram%;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                                            <span class="text"> Văn bản đến quá hạn xử lý <span class="pull-right">@Model.SoVanBanDenQuaHan / @Model.SoVanBanDenChuaXuLy</span> </span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-color-blue" style="width: @vbdQuahanPhanTram%;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                                            <span class="text"> Văn bản đi sắp đến hạn xử lý<span class="pull-right">@Model.SOVBDiChuaDenHanXuLy/@Model.SoVBDiChuaXuLy</span> </span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-color-blue" style="width: @vbdiChuaDenHanPhanTram%;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                                            <span class="text">Văn bản đi quá hạn xử lý<span class="pull-right">@Model.SOVBDiQuaHanXuLy/@Model.SoVBDiChuaXuLy</span> </span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-color-blue" style="width: @vbdiQuaHanPhanTram%;"></div>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+
+                                </div>
+                            </div>
+
+                          
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </article>*@
+
+    <article class="col-sm-12 col-md-12 col-lg-8 sortable-grid ui-sortable">
+        @{Html.RenderAction("GetVanBanChuaXuLy", "vanbanden", new { @area = "vanbandenarea" });}
+        @{Html.RenderAction("getPartialVanBanDiChuaXuLy", "VanBanDiChuaXuLy", new { @area = "HSVanBanDiArea" });}
+
+    </article>
+    @{Html.RenderAction("DSThongBao", "SysTinNhan", new { @area = "SysTinNhanArea" });}
+</div>
+<script>
+
+    @*var JsonDataDen = eval(@JsonDataDen);
+    var JsonDataDi = eval(@JsonDataDi);
+    if (myPie != null) {
+        myPie.destroy();
+    }
+
+    var myPie;
+    var colors = [];
+    var dataden = [];
+    var datadi = [];
+    var labels = [];
+    for (var i = 0; i < JsonDataDen.length; i++) {
+        dataden.push(JsonDataDen[i].Value);
+        labels.push(JsonDataDen[i].Label);
+        datadi.push(JsonDataDi[i].Value);
+    }
+    var data = {
+        labels: labels,
+        datasets: [
+            {
+                label: "Văn bản đến",
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "rgba(75,192,192,0.4)",
+                borderColor: "rgba(75,192,192,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(75,192,192,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: dataden,
+
+                spanGaps: false,
+            },
+             {
+                 label: "Văn bản đi",
+                 fill: false,
+                 lineTension: 0.1,
+                 backgroundColor: "rgba(231, 76, 60,0.4)",
+                 borderColor: "rgba(231, 76, 60,1.0)",
+                 borderCapStyle: 'butt',
+                 borderDash: [],
+                 borderDashOffset: 0.0,
+                 borderJoinStyle: 'miter',
+                 pointBorderColor: "rgba(231, 76, 60,1.0)",
+                 pointBackgroundColor: "#fff",
+                 pointBorderWidth: 1,
+                 pointHoverRadius: 5,
+                 pointHoverBackgroundColor: "rgba(231, 76, 60,1.0)",
+                 pointHoverBorderColor: "rgba(220,220,220,1)",
+                 pointHoverBorderWidth: 2,
+                 pointRadius: 1,
+                 pointHitRadius: 10,
+                 data: datadi,
+
+                 spanGaps: false,
+             }
+        ]
+    };
+
+    myPie = new Chart(document.getElementById("pieChart"), {
+        type: 'line',
+        data: data,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        stepSize: 0.5,
+                        min: 0
+                    }
+                }]
+            }
+        }
+    });*@
+</script>

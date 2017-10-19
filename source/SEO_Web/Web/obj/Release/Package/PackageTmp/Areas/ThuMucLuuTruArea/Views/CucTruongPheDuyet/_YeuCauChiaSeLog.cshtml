@@ -1,0 +1,72 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeTaiLieuModel
+@using Web.Areas.ThuMucLuuTruArea.Models
+
+@{
+    List<TmYeuCauChiaSeLichSuBO> lstLichSu = Model.lstLichSu;
+
+    var grid = new WebGrid(lstLichSu,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+
+}
+@{
+    <div class="modal-dialog" style="width:1150px">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Lịch sử yêu cầu chia sẻ</h4>
+            </div>
+            <div class="modal-body">
+                @if (lstLichSu.Count > 0)
+                {
+                    @grid.GetHtml(
+                tableStyle: "webGrid tbl-Log",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+               grid.Column("TENNGUOITHUCHIEN", "Người thực hiện"),
+               grid.Column("NGAYTHUCHIEN", "Ngày gửi", format: (item) => new MvcHtmlString(string.Format("{0:dd/MM/yyyy}", item.NGAYTHUCHIEN))),
+               grid.Column("MOTA", "Lý do thực hiện", format: (item) => new MvcHtmlString(string.Format("<span title='" + item.MOTA + "'>" + item.MOTA + "</span>"))),
+               grid.Column("TRANGTHAI1", "Trạng thái 1", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI1 == YeuCauChiaSeConstant.DONVITUCHOI ? "<span style='color:red'>Đơn vị từ chối chia sẻ</span>" : item.TRANGTHAI1 == YeuCauChiaSeConstant.DUTHAO ? "<span style='color:red'>Dự thảo</span>" : item.TRANGTHAI1 == YeuCauChiaSeConstant.TRAVE ? "<span style='color:red'>Không duyệt</span>" : item.TRANGTHAI1 == YeuCauChiaSeConstant.DATRINH ? "<span style='color:blue'>Đã trình</span>" : item.TRANGTHAI1 == YeuCauChiaSeConstant.DADUYET ? "<span style='color:green'>Đã duyệt</span>" : item.TRANGTHAI1 == YeuCauChiaSeConstant.CHUYENYEUCAU ? "<span style='color:red'>Chờ chia sẻ</span>" : item.TRANGTHAI1 == YeuCauChiaSeConstant.HUYCHIASE ? "Đã hủy theo dõi" : item.TRANGTHAI1 == YeuCauChiaSeConstant.DONVIOK ? "<span style='color:green'>Được chia sẻ</span>" : ""))),
+               grid.Column("TRANGTHAI2", "Trạng thái 2", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI2 == YeuCauChiaSeConstant.DONVITUCHOI ? "<span style='color:red'>Đơn vị từ chối chia sẻ</span>" : item.TRANGTHAI2 == YeuCauChiaSeConstant.DUTHAO ? "<span style='color:red'>Dự thảo</span>" : item.TRANGTHAI2 == YeuCauChiaSeConstant.TRAVE ? "<span style='color:red'>Không duyệt</span>" : item.TRANGTHAI2 == YeuCauChiaSeConstant.DATRINH ? "<span style='color:blue'>Đã trình</span>" : item.TRANGTHAI2 == YeuCauChiaSeConstant.DADUYET ? "<span style='color:green'>Đã duyệt</span>" : item.TRANGTHAI2 == YeuCauChiaSeConstant.CHUYENYEUCAU ? "<span style='color:red'>Chờ chia sẻ</span>" : item.TRANGTHAI2 == YeuCauChiaSeConstant.HUYCHIASE ? "Đã hủy theo dõi" : item.TRANGTHAI2 == YeuCauChiaSeConstant.DONVIOK ? "<span style='color:green'>Được chia sẻ</span>" : "")))
+                 )
+    )
+                }
+                else
+                {
+                    <span>
+                        Không tìm thấy lịch sử xin chia sẻ của yêu cầu này
+                    </span>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+
+}
+<style>
+    .tbl-Log td:nth-child(4) span {
+        text-align: left !important;
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 600px !important;
+        text-overflow: ellipsis;
+    }
+</style>

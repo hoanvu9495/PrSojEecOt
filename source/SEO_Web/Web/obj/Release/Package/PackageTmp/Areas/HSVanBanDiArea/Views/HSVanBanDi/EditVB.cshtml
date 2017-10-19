@@ -1,0 +1,876 @@
+﻿@using Business.CommonBusiness;
+@using Web.Models;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.HSVanBanDiArea.Models;
+@using Web.Common;
+@model VBDiCreateViewModel
+@{
+    ViewBag.Title = "Cập nhật Văn bản đi";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    HSCV_VANBANDI vanBanDi = Model.VanBanDi;
+}
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+<style>
+    .ms-drop {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+        width: 100%;
+    }
+
+    .ms-parent {
+        width: 100%;
+    }
+
+    .ms-choice > span {
+        width: 100%;
+    }
+
+    .red {
+        color: red;
+    }
+</style>
+
+@*<link href="~/Content/vanbandi-edit.css" rel="stylesheet" />
+    <link href="/Content/Custom/css/multiple-select.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .admin-menu {
+            /*height: 500px !important;
+            overflow: scroll !important;*/
+        }
+
+        .div-form {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .wid-100 {
+            width: 100%;
+        }
+
+        .required-mark {
+            color: red;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .lbl {
+            margin-top: 7px;
+        }
+
+        #block--table-container-1 {
+            height: 150px;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+        .form-group{
+            margin-bottom:0 !important;
+        }
+    </style>*@
+@*<div id="menu-toolbar" class="date-time">
+        <div class="left-all-page">
+            <div id="smart-dms" class="block">
+                <h1>Smart DMS</h1>
+            </div>
+        </div>
+        <div class="right-all-page" id="block--left-element-1">
+            <div class="menu-left">
+                @if (Model.IS_VANTHU)
+                {
+                    <div id="button--add-new-vanbandi" class="btnAddNew">
+                        <a href="/hsvanbandiarea/hsvanbandi/createvb">
+                            <span>Văn bản đi Mới</span>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>*@
+@*<div class="left-all-page" id="menu-middle-left">
+        <div class="menu-left-content block" id="menu-left-content-scroll">
+            @Html.Partial("_MenuVanBanDi", Model.CountModel, new ViewDataDictionary {
+       { "IsVanThu", Model.IS_VANTHU },
+       {"IsLanhDaoCuc",Model.IS_LANHDAOCUC}})
+        </div>
+    </div>*@
+@*<div class="SearchCriterial clearfix hot-news-list-2">
+        <div class="jarviswidget" id="wid-id-0">
+            <header role="heading">
+                <span class="widget-icon"> <i class="fa fa-file-image-o txt-color-darken"></i> </span>
+                <h2 class="hidden-xs hidden-sm">Cập nhật văn bản đi </h2>
+
+            </header>
+            <div role="content">
+                <div class="widget-body">
+                    @using (Html.BeginForm("UpdateVanBanDi", "HSVanBanDi", FormMethod.Post, new { enctype = "multipart/form-data", Id = "frmVanBanDiCreate", onsubmit = "return onSubmit()" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(x => Model.VanBanDi.ID)
+                        <div class="tab-content custom-scroll" style=" height: calc(100vh - 246px); overflow-y: scroll; overflow-x: hidden;">
+                            <div class="div-form">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label class="lbl" for="TRICHYEU">
+                                            Trích yếu<span class="required-mark">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(x => Model.VanBanDi.TRICHYEU, new { Id = "TRICHYEU", @class = "form-control required", maxlength = "500", @rows = "2", @style = "resize:none", @autofocus = "autofocus" })
+                                            <div class="note-error">
+                                                <span class="error mes-note-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label class="lbl">
+                                            hình thức văn bản
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            @Html.DropDownListFor(x => Model.VanBanDi.LOAIVANBAN_ID, Model.ListLoaiVanBan, new { Id = "LOAIVANBAN_ID", @class = "wid-100 select2 select2-hidden-accessible" })
+                                            <div class="note-error">
+                                                <span class="error mes-note-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="lbl">
+                                            Độ khẩn
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="fomr-group">
+                                            @Html.DropDownListFor(x => Model.VanBanDi.DOKHAN_ID, Model.ListDoKhanVanBan, new { @class = "create-phanloai wid-100 select2 select2-hidden-accessible", @Id = "DOKHAN_ID" })
+                                            <div class="note-error">
+                                                <span class="error mes-note-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label class="lbl">
+                                            Đơn vị soạn thảo
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            @Html.DropDownListFor(x => Model.VanBanDi.DONVISOANTHAO_ID, Model.ListDonViTrongCoQuan, "[---Chọn đơn vị soạn thảo---]", new { @class = "wid-100 select2 select2-hidden-accessible", @Id = "DONVISOANTHAO_ID" })
+                                            <div class="note-error">
+                                                <span class="error mes-note-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="lbl">
+                                            Lĩnh vực
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            @Html.DropDownListFor(x => Model.VanBanDi.LINHVUCVANBAN_ID, Model.ListLinhVucVanBan, "[--- Chọn lĩnh vực ---]", new { @class = "wid-100 select2 select2-hidden-accessible", @Id = "LINHVUC_ID" })
+                                            <div class="note-error">
+                                                <span class="error mes-note-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label class="lbl" for="NGAY_XULY_CHECK">
+                                            @if (van_ban.THOIHAN_XULY != null)
+                                            {
+                                                <input id="NGAY_XULY_CHECK" type="checkbox" checked />
+                                            }
+                                            else
+                                            {
+                                                <input id="NGAY_XULY_CHECK" type="checkbox" />
+                                            }
+                                            Thời hạn xử lý
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+
+                                            @if (van_ban.THOIHAN_XULY != null)
+                                            {
+                                                @Html.TextBox("NGAY_XULY", string.Format("{0:dd/MM/yyyy}", van_ban.THOIHAN_XULY), new { @placeholder = "", @class = "form-control datepicker1", @maxlength = "10" })
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBox("NGAY_XULY", "", new { @placeholder = "", @class = "form-control datepicker1", @disabled = "disabled", @maxlength = "10" })
+                                            }
+                                            <div class="note-error">
+                                                <span class="error mes-note-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <span class="float-left">
+                                            @if (van_ban.THOIHAN_HOIBAO != null)
+                                            {
+                                                <input type="checkbox" id="THOIHAN_HOIBAO_CHECKBOX" checked />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" id="THOIHAN_HOIBAO_CHECKBOX" />
+                                            }
+                                            <label class="lbl" for="THOIHAN_HOIBAO_CHECKBOX">
+                                                Thời hạn hồi báo
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+
+                                            @if (van_ban.THOIHAN_HOIBAO != null)
+                                            {
+                                                @Html.TextBox("THOIHAN_HOIBAO", string.Format("{0:dd/MM/yyyy}", van_ban.THOIHAN_HOIBAO), new { @placeholder = "", @class = "form-control datepicker1", @maxlength = "10" })
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBox("THOIHAN_HOIBAO", "", new { @placeholder = "", @class = "form-control datepicker1", @disabled = "disabled", @maxlength = "10" })
+                                            }
+                                            <div class="note-error">
+                                                <span class="error mes-note-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label class="lbl">
+                                            Nội dung
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(x => x.VanBanDi.NOIDUNGVANBAN, new { @class = "form-control", @maxlength = "500",@style="resize:none", @Id = "NOIDUNGVANBAN" })
+
+                                            <div class="note-error">
+                                                <span class="error mes-note-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label class="lbl">
+                                            Tài liệu đính kèm
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        @{Html.RenderPartial("../Common/UploadFile", Model.ListTaiLieuDinhKem);}
+
+                                        <div class="note-error">
+                                            <span class="error mes-note-error"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        Văn bản liên quan
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <a class="btn btn-primary btn-sm" style="margin:5px;" id="button--add-vanbanlienquan">
+                                            Thêm văn bản liên quan
+                                        </a>
+                                        <div id="block--table-container-1">
+                                            <table class="webGrid">
+                                                <thead>
+                                                    <tr class="head">
+                                                        <th scope="col">
+                                                            Trích yếu
+                                                        </th>
+                                                        <th scope="col">
+                                                            Số hiệu
+                                                        </th>
+                                                        <th scope="col">
+                                                            Loại
+                                                        </th>
+                                                        <th scope="col">
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (Model.ListVanBanLienQuan.Count > 0)
+                                                    {
+                                                        foreach (var item in Model.ListVanBanLienQuan)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @if (item.LOAI_VAN_BAN == LOAITAILIEU.VANBANDI)
+                                                                    {
+                                                                        <a href="@Url.Action("Detail", new { id = item.VAN_BAN_LIEN_QUAN_ID })" class="float-left" target="_blank">
+                                                                            @item.TRICHYEU
+                                                                        </a>
+                                                                    }
+                                                                    @if (item.LOAI_VAN_BAN == LOAITAILIEU.VANBANDEN)
+                                                                    {
+                                                                        <a href="@Url.Action("ViewDetail", "HSVanBanDen", new { id = item.VAN_BAN_LIEN_QUAN_ID, area = "HSVanBanDenArea" })" class="float-left" target="_blank">
+                                                                            @item.TRICHYEU
+                                                                        </a>
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @item.SOHIEU_VAN_BAN
+                                                                </td>
+                                                                <td>
+                                                                    @if (item.LOAI_VAN_BAN == LOAITAILIEU.VANBANDI)
+                                                                    {
+                                                                        <text>Văn bản đi</text><input type='hidden' name='VanBanDiLienQuan' value='@item.VAN_BAN_LIEN_QUAN_ID' />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <text>Văn bản đến</text><input type='hidden' name='VanBanDenLienQuan' value='@item.VAN_BAN_LIEN_QUAN_ID' />
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    <a class='delete-van-ban-lien-quan' data-id='file_1' href='javascript:void(0)' onclick='deleteVanBanLienQuan(event)' title='Xóa văn bản liên quan'>
+                                                                        <img src='/Content/Images/Delete.png'>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="note-error">
+                                            <span class="error mes-note-error"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    @Html.Partial("_VanBanDiWorkFlowInfo", new ViewDataDictionary { { "FormSubmitID", "#frmVanBanDiCreate" } })
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+
+                    <div class="form-actions center">
+                        @foreach (var item in Model.ListSteps)
+                        {
+                            <input type="button" value="Lưu và @item.TENBUOC" class="btn btn-success btn-sm" onclick="formShowWorkFlowStepChange(@Model.VanBanDi.ID,'@item.TENBUOC',@item.TRANGTHAI_1,@item.TRANGTHAI_2)" />
+                        }
+                        <input type="submit" value="Lưu văn bản" class="btn btn-primary btn-sm" id="btnSave" />
+                        <a href="#HSVanBanDiArea/HSVanBanDi/Index"  class="btn btn-default btn-sm"  id="button--huybo-vanbandi" >Hủy bỏ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+@*<script src="/Scripts/multiple-select.js"></script>
+    <script type="text/javascript">
+        pageSetUp();
+        var $emptyStr = "";
+        $(document).ready(function () {
+            //$("#vb_di_tabs").steps({
+            //    headerTag: "h3",
+            //    bodyTag: "section",
+            //    transitionEffect: "slideLeft",
+            //    enableFinishButton: false,
+            //    enablePagination: true,
+            //    enableAllSteps: true,
+            //    titleTemplate: "#title#",
+            //    cssClass: "tabcontrol"
+            //});
+            $('#btn--luu-trinh-truongdonvi').click(function (event) {
+                if (onSubmit()) {
+                    $('#ProcessWorkFlowModal').modal('show');
+                }
+            });
+
+
+            $('#THOIHAN_HOIBAO_CHECKBOX').on('change', function (event) {
+                if ($(this).is(':checked')) {
+                    $('#THOIHAN_HOIBAO').removeAttr('disabled');
+                    $('#THOIHAN_HOIBAO').addClass('validateDate');
+
+                } else {
+                    $('#THOIHAN_HOIBAO').val($emptyStr);
+                    $('#THOIHAN_HOIBAO').attr('disabled', 'disabled');
+                    $('#THOIHAN_HOIBAO').removeClass('validateDate');
+                    $('#THOIHAN_HOIBAO').next().find(".error").css("display", "none")
+
+                }
+            });
+
+            $('#NGAY_XULY_CHECK').on('change', function (event) {
+                if ($(this).is(':checked')) {
+                    $('#NGAY_XULY').removeAttr('disabled');
+                    $('#NGAY_XULY').addClass('validateDate');
+
+                } else {
+                    $('#NGAY_XULY').val($emptyStr);
+                    $('#NGAY_XULY').attr('disabled', 'disabled');
+                    $('#NGAY_XULY').removeClass('validateDate');
+                    $('#NGAY_XULY').next().find(".error").css("display", "none")
+                }
+            });
+
+            //Setting DatePicker
+            $(function () {
+                $(".datepicker1").datepicker({
+                    dateFormat: 'dd/mm/yy',
+                    prevText: '<i class="fa fa-chevron-left"></i>',
+                    nextText: '<i class="fa fa-chevron-right"></i>',
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: "-20:+20"
+                });
+            });
+
+            $("#btnSave").click(function () {
+
+                var is_submit = onSubmit();
+                if (is_submit) {
+                    $("#frmVanBanDiCreate").submit();
+                }
+            });
+
+            $('#cssmenu li.active').addClass('open').children('ul').show();
+
+            $('#cssmenu li.has-sub>a').on('click', function () {
+                $(this).removeAttr('href');
+                var element = $(this).parent('li');
+                if (element.hasClass('open')) {
+                    element.removeClass('open');
+                    element.find('li').removeClass('open');
+                    element.find('ul').slideUp(200);
+                }
+                else {
+                    element.addClass('open');
+                    element.children('ul').slideDown(200);
+                    element.siblings('li').children('ul').slideUp(200);
+                    element.siblings('li').removeClass('open');
+                    element.siblings('li').find('li').removeClass('open');
+                    element.siblings('li').find('ul').slideUp(200);
+                }
+            });
+
+
+
+        });
+
+        function onSubmit() {
+
+            var err = 0;
+            var require = requiredFieldForFormId("frmVanBanDiCreate");
+            if (!require) {
+                err++;
+            }
+            var IsDate = ValidateFieldDate("frmVanBanDiCreate");
+            if (!IsDate) {
+                err++;
+            }
+
+            var IsDateExist = ValidateFieldDateExist("frmVanBanDiCreate");
+            if (!IsDateExist) {
+                err++;
+            }
+            if (err == 0) {
+                return true;
+            } else {
+                NotiError("Có lỗi. Vui lòng kiểm tra lại");
+                return false;
+            }
+        }
+
+        function SelectTab(tab_id) {
+            var tab_current = $("li[aria-selected='true'] a").attr("id");
+            var current_id = tab_current.split('-')[2];
+            if (tab_id != current_id) {
+                $("#vb_di_tabs-t-" + tab_id).click();
+            }
+        }
+        @*function showWorkFlowStepChange(step_name, entity_id, trang_thai_1, trang_thai_2) {
+            $.ajax({
+                url: '@Url.Action("VanBanDiWfStepChangeView")',
+                dataType: 'html',
+                type: 'POST',
+                data: {
+                    TenBuocChuyenTrangThai: step_name,
+                    EntityID: entity_id,
+                    TrangThaiBatDau: trang_thai_1,
+                    TrangThaiKetThuc: trang_thai_2,
+                },
+                success: function (view) {
+                    $('#ProcessWorkFlowModal .modal-body').html(view);
+                    $('#ProcessWorkFlowModal .modal-title').html('<span style="text-transform:uppercase">' + step_name + '</span>');
+                    $('#ProcessWorkFlowModal #hidden--workflow-stepname').val(step_name);
+                    $("#ProcessWorkFlowModal #hidden-workflow-entity-id").val(entity_id);
+                    $('#ProcessWorkFlowModal #hidden-workflow-trangthai-1').val(trang_thai_1);
+                    $('#ProcessWorkFlowModal #hidden-workflow-trangthai-2').val(trang_thai_2);
+                    $('#ProcessWorkFlowModal').modal('show');
+                }, error: function (err) {
+                    alert(err.responseText);
+                }
+            });
+        }
+        //function closeSubmitSendTrDV() {
+        //    $('#ProcessWorkFlowModal').modal('hide');
+        //    $('#ProcessWorkFlowModal #hidden-workflow-trangthai-2').val('');
+        //}
+
+        function formShowWorkFlowStepChange(entity_id, step_name, trang_thai_1, trang_thai_2) {
+            if (onSubmit()) {
+                showWorkFlowStepChange(entity_id, step_name, trang_thai_1, trang_thai_2);
+            }
+        }
+    </script>*@
+
+
+<div class="SearchCriterial clearfix hot-news-list-2">
+    <div class="jarviswidget" id="wid-id-0">
+        <header role="heading">
+            <span class="widget-icon"> <i class="fa fa-file-image-o txt-color-darken"></i> </span>
+            <h2 class="hidden-xs hidden-sm">Cập nhật văn bản đi văn bản đi </h2>
+        </header>
+        <div role="content">
+            <div class="widget-body">
+                <form action="hsvanbandiarea/hsvanbandi/updatevanbandi" method="post" enctype="multipart/form-data" id="frmUpdateVanBanDi">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@vanBanDi.ID">
+                    <div class="tab-content custom-scroll">
+                        <fieldset>
+                            <div class="row">
+                                <section class="col col-lg-6">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="TRICHYEU" class="lbl control-label">
+                                                    Trích yếu <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea name="TRICHYEU" id="TRICHYEU" class="required form-control" style="resize:none" autofocus="" autocomplete="false">@vanBanDi.TRICHYEU</textarea>
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="LOAIVANBAN_ID" class="lbl control-label">
+                                                    Hình thức văn bản <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownList("LOAIVANBAN_ID", Model.ListLoaiVanBan,"--- Chọn loại văn bản ---", new { @class = " width-100 requiredDropDownList", })
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="DONVISOANTHAO_ID" class="lbl control-label">
+                                                    Đơn vị soạn thảo <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownList("DONVISOANTHAO_ID", Model.listDonViSoanThaos, "--- Chọn đơn vị soạn thảo ---", new { @class = " width-100 requiredDropDownList", })
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="LINHVUCVANBAN_ID" class="lbl control-label">
+                                                    Lĩnh vực
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownList("LINHVUCVANBAN_ID", Model.ListLinhVucVanBan, "--- Chọn lĩnh vực ---", new { @class = "width-100 requiredDropDownList", })
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="DOKHAN_ID" class="lbl control-label">
+                                                    Độ khẩn
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownList("DOKHAN_ID", Model.ListDoKhanVanBan, "--- Chọn độ khẩn ---", new { @class = "width-100 requiredDropDownList", })
+                                                <div class="note-error">
+                                                    <span class="error mes-note-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+
+                                        @if (vanBanDi.THOIHAN_XULY.HasValue)
+                                        {
+                                            <div class="form-group">
+                                                <div class="col-sm-3">
+                                                    <label class="lbl" for="THOIHAN_XULY_CHECK">
+                                                        <input type="checkbox" id="THOIHAN_XULY_CHECK" checked />
+                                                        Thời hạn xử lý
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <input name="THOIHAN_XULY" id="THOIHAN_XULY" type="text" class="form-control datepicker " data-mask="99/99/9999" data-mask-placeholder="-" value="@string.Format("{0:dd/MM/yyyy}",vanBanDi.THOIHAN_XULY.Value)">
+                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    </div>
+                                                    <div class="note-error">
+                                                        <span class="error mes-note-error"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="form-group">
+                                                <div class="col-sm-3">
+                                                    <label class="lbl" for="THOIHAN_XULY_CHECK">
+                                                        <input type="checkbox" id="THOIHAN_XULY_CHECK" />
+                                                        Thời hạn xử lý
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <input name="THOIHAN_XULY" id="THOIHAN_XULY" type="text" class="form-control datepicker1 " data-mask="99/99/9999" data-mask-placeholder="-">
+                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    </div>
+                                                    <div class="note-error">
+                                                        <span class="error mes-note-error"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @if (vanBanDi.THOIHAN_HOIBAO.HasValue)
+                                        {
+                                            <div class="form-group">
+                                                <div class="col-sm-3">
+                                                    <label for="THOIHAN_HOIBAO_CHECK">
+                                                        <input type="checkbox" id="THOIHAN_HOIBAO_CHECK" checked />
+                                                        Thời hạn hồi báo
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <input name="THOIHAN_HOIBAO" id="THOIHAN_HOIBAO" type="text" class="form-control datepicker1 " data-mask="99/99/9999" data-mask-placeholder="-" value="@string.Format("{0:dd/MM/yyyy}",vanBanDi.THOIHAN_HOIBAO.Value)">
+                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    </div>
+                                                    <div class="note-error">
+                                                        <span class="error mes-note-error"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="form-group">
+                                                <div class="col-sm-3">
+                                                    <label for="THOIHAN_HOIBAO_CHECK">
+                                                        <input type="checkbox" id="THOIHAN_HOIBAO_CHECK" />
+                                                        Thời hạn hồi báo
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <input name="THOIHAN_HOIBAO" id="THOIHAN_HOIBAO" type="text" class="form-control datepicker1 " data-mask="99/99/9999" data-mask-placeholder="-" disabled>
+                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    </div>
+                                                    <div class="note-error">
+                                                        <span class="error mes-note-error"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="NOIDUNGVANBAN" class="lbl control-label">
+                                                    Nội dung
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea name="NOIDUNGVANBAN" id="NOIDUNGVANBAN" class="form-control" style="resize:none;">@vanBanDi.NOIDUNGVANBAN</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="col col-lg-6">
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                @{Html.RenderPartial("../Common/UploadFile", Model.ListTaiLieuDinhKem);}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="form-actions center">
+                        <center>
+                            <input type="submit" value="Lưu văn bản" id="btnSave" class="btn btn-primary btn-sm" />
+                            <input type="button" value="Hủy bỏ" id="button--huybo-vanbandi" class="btn btn-default btn-sm" />
+                        </center>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+    pageSetUp();
+
+
+    var pageFunction = function () {
+        $('#DOKHAN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn độ khẩn"
+
+        });
+
+        $('#LINHVUCVANBAN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn lĩnh vực"
+
+        });
+        $('#DONVISOANTHAO_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn đơn vị soạn thảo"
+
+        });
+
+        $('#LOAIVANBAN_ID').multipleSelect({
+            single: true,
+            filter: true,
+            placeholder: "Chọn độ loại văn bản"
+
+        });
+
+
+        var $emptyStr = "";
+        //$('select').chosen({
+        //    width: '100%'
+        //});
+
+        $(".datepicker1").datepicker({
+            dateFormat: 'dd/mm/yy',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-20:+20"
+        });
+
+        $('#THOIHAN_HOIBAO_CHECK').on('change', function (event) {
+            if ($(this).is(':checked')) {
+                $('#THOIHAN_HOIBAO').removeAttr('disabled');
+                $('#THOIHAN_HOIBAO').addClass('validateDate');
+            } else {
+                $('#THOIHAN_HOIBAO').val($emptyStr);
+                $('#THOIHAN_HOIBAO').attr('disabled', 'disabled');
+                $('#THOIHAN_HOIBAO').removeClass('validateDate');
+            }
+        });
+
+        $('#THOIHAN_XULY_CHECK').on('change', function (event) {
+            if ($(this).is(':checked')) {
+                $('#THOIHAN_XULY').removeAttr('disabled');
+                $('#THOIHAN_XULY').addClass('validateDate');
+            } else {
+                $('#THOIHAN_XULY').val($emptyStr);
+                $('#THOIHAN_XULY').attr('disabled', 'disabled');
+                $('#THOIHAN_XULY').removeClass('validateDate');
+
+            }
+        });
+
+        $('#button--huybo-vanbandi').on('click', function () {
+            location.href = "/#HSVanBanDiArea/HSVanBanDi/Index";
+        });
+
+        $("#btnSave").click(function () {
+            var is_submit = onSubmit();
+            if (is_submit) {
+                $("#frmUpdateVanBanDi").submit();
+            } else {
+                return false;
+            }
+        });
+    }
+    function onSubmit() {
+
+        var err = 0;
+        var require = requiredFieldForFormId("frmUpdateVanBanDi");
+        if (!require) {
+            err++;
+        }
+        var IsDate = ValidateFieldDate("frmUpdateVanBanDi");
+        if (!IsDate) {
+            err++;
+        }
+        var requireDropdownlist = RequireDropDownlist("frmUpdateVanBanDi");
+        if (!requireDropdownlist) {
+            err++;
+        }
+        var IsDateExist = ValidateFieldDateExist("frmCreateVanBanDi");
+        if (!IsDateExist) {
+            err++;
+        }
+        if (err == 0) {
+            return true;
+        } else {
+            NotiError("Có lỗi. Vui lòng kiểm tra lại");
+            return false;
+        }
+
+    }
+    loadScript("Scripts/multiple-select.js", pageFunction);
+
+</script>
+
+

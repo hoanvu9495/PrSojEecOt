@@ -1,0 +1,169 @@
+﻿@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Web.FwCore;
+@using Business.CommonBusiness;
+@{
+    List<ThuMucLuuTruBO> lstThuMuc = new List<ThuMucLuuTruBO>();
+    lstThuMuc = (List<ThuMucLuuTruBO>)SessionManager.GetValue("ListFollowing");
+    if (lstThuMuc != null && lstThuMuc.Count > 0)
+    {
+        foreach (var i in lstThuMuc)
+        {
+            <tr>
+                <td data-pid="@("F_"+i.ID)">
+                    @if (i.IS_THUMUC)
+                    {
+                        if (i.EXPIRE_DATEFROM.HasValue && i.EXPIRE_DATE.HasValue)
+                        {
+                            if (DateTime.Now >= i.EXPIRE_DATEFROM && DateTime.Now <= i.EXPIRE_DATE)
+                            {
+                                <span data-yeucau="@i.USER_ID" class="folder unexpired" data-file="false" data-donvi="@i.DONVI_ID" title="Thời hạn lưu trữ: @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATEFROM) - @String.Format("{0:dd/M/yyyy}", @i.EXPIRE_DATE)" data-pid="@i.ID" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                            else
+                            {
+                                <span data-yeucau="@i.USER_ID" data-donvi="@i.DONVI_ID" class="folder item" title="@i.TENTHUMUC" data-pid="@i.ID" data-file="false" data-loaded="false">@i.TENTHUMUC</span>
+                            }
+                        }
+                        else
+                        {
+                            <span data-yeucau="@i.USER_ID" class="folder item" title="@i.TENTHUMUC" data-donvi="@i.DONVI_ID" data-pid="@i.ID" data-file="false" data-loaded="false">@i.TENTHUMUC</span>
+                        }
+                    }
+                    else
+                    {
+                        string docx = "";
+                        switch (i.THUMUCCHA)
+                        {
+                            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                                docx = "msword";
+                                break;
+                            case "application/vnd.ms-word.document.12":
+                                docx = "msword";
+                                break;
+                            case "application/msword":
+                                docx = "msword";
+                                break;
+                            case ".doc":
+                                docx = "msword";
+                                break;
+                            case ".docx":
+                                docx = "msword";
+                                break;
+                            case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                                docx = "ms-excel";
+                                break;
+                            case "application/vnd.ms-excel":
+                                docx = "ms-excel";
+                                break;
+                            case ".xls":
+                                docx = "ms-excel";
+                                break;
+                            case ".xlsx":
+                                docx = "ms-excel";
+                                break;
+                            case "application/x-rar":
+                                docx = "zip";
+                                break;
+                            case "application/zip":
+                                docx = "zip";
+                                break;
+                            case "application/octet-stream":
+                                docx = "zip";
+                                break;
+                            case "application/x-zip-compressed":
+                                docx = "zip";
+                                break;
+                            case ".zip":
+                                docx = "zip";
+                                break;
+                            case ".rar":
+                                docx = "zip";
+                                break;
+                            case "application/pdf":
+                                docx = "pdf";
+                                break;
+                            case "application/download":
+                                docx = "pdf";
+                                break;
+                            case ".pdf":
+                                docx = "pdf";
+                                break;
+                            case "audio/mp3":
+                                docx = "mp3";
+                                break;
+                            case ".mp3":
+                                docx = "mp3";
+                                break;
+                            case "audio/mpeg":
+                                docx = "mp3";
+                                break;
+                            case "video/mp4":
+                                docx = "mp4";
+                                break;
+                            case ".mp4":
+                                docx = "mp4";
+                                break;
+                            case "image/gif":
+                                docx = "jpeg";
+                                break;
+                            case "image/jpeg":
+                                docx = "jpeg";
+                                break;
+                            case "image/png":
+                                docx = "jpeg";
+                                break;
+                            case ".jpg":
+                                docx = "jpeg";
+                                break;
+                            case ".jpeg":
+                                docx = "jpeg";
+                                break;
+                            case ".pptx":
+                                docx = "ppt";
+                                break;
+                            case ".ppt":
+                                docx = "ppt";
+                                break;
+                            case "text/html":
+                                docx = "html";
+                                break;
+                            case "text/plain":
+                                docx = "plain";
+                                break;
+                            case "txt":
+                                docx = "plain";
+                                break;
+                        }
+                        <span class="@docx filearchive" data-file='true' data-pid='@i.ID'>
+                                @i.TENTHUMUC
+                            </span>
+                    }
+                </td>
+                <td>@i.TENDONVI</td>
+                <td>
+                    @if (i.IS_THUMUC)
+                    {
+                        <span>Có @i.SLTHUMUC thư mục</span>
+                    }
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="4">
+                <span style="color:red">Không tìm thấy tài liệu nào đang được chia sẻ</span>
+            </td>
+        </tr>
+    }
+}
+<style>
+    .StopShared {
+        background: url('/Content/themes/base/images/TM_Cancel.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+        margin-top: 10px;
+    }
+</style>

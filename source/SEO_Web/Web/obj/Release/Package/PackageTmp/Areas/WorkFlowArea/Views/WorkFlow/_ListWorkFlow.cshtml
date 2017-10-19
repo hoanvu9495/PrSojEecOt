@@ -1,0 +1,35 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common;
+@{
+
+    var grid = new WebGrid(Model.LstQuyTrinh,
+                        rowsPerPage: 10,
+                        canPage: true,
+                        canSort: false,
+                        ajaxUpdateContainerId: "grid",
+                        selectionFieldName: "selectedRow"
+                          );
+}
+@Html.AntiForgeryToken()
+
+<div id="grid" style="height:auto;">
+    <input type="hidden" id="ENTITY_ID" value="@Model.EntityId"/>
+    @grid.GetHtml(
+                        tableStyle: "table table-bordered",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                        grid.Column("", format: item => new MvcHtmlString(string.Format("  <input type='radio' name='WorkFlowId' value='" + item.ID + "' " + ((item.ID == Model.SelectedId) ? "checked" : "") + " >"))),
+                        grid.Column("TENWF", "Tên quy trình"),
+                                        grid.Column("MOTAWF", "Mô tả")
+                )
+                )
+</div>
+
+
+

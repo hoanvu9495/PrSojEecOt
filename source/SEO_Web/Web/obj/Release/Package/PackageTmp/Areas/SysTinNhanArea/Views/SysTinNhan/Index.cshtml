@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Danh sách thông báo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="menu-toolbar">
+    <div class="left-all-page" style="width:500px">
+        <div id="smart-dms" class="block">
+            <h1 style="margin-left:20px;text-align:left;">
+               Danh sách thông báo
+            </h1>
+        </div>
+    </div>
+</div>
+
+<div style="border-left:1px solid #cccccc; background:#fff">
+    <div class="SearchCriterial">
+        @Html.Partial("_SysTinNhanSearchForm")
+    </div>
+    <table style="width: 100%">
+        <tr>
+            <td>
+                <div class="SearchResult">
+                    @Html.Partial("_SysTinNhanSearchList")
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="modal fade" id="content-modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+                <h3 class="blue">
+                    Nội dung tin nhắn&nbsp;<i class='ace-icon fa fa-search'></i>
+                </h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <i class='ace-icon fa fa-times bigger-110'></i>&nbsp;Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

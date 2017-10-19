@@ -1,0 +1,45 @@
+﻿@using Model.eAita;
+@using Web.FwCore;
+@{
+    List<TM_LOAITAILIEU_THUOCTINH> lstThuocTinh = (List<TM_LOAITAILIEU_THUOCTINH>)SessionManager.GetValue("ListThuocTinh");
+}
+@if (lstThuocTinh.Count > 0)
+{
+    int count = 0;
+    string SL_THUOCTINH = "";
+    foreach (var item in lstThuocTinh)
+    {
+        count++;
+        SL_THUOCTINH += count + ",";
+        <tr class="fixed-position">
+            <td style="width:115px" valign="middle">
+                @item.TEN_THUOCTINH
+            </td>
+            <td>
+                <input type="hidden" name="THUOCTINHID_@count" value="@item.ID" />
+                <input type="hidden" name="ID_@count" value="0" />
+                <input class="form-control" name="THUOCTINH_@count" id="THUOCTINH_@count" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                &nbsp;
+            </td>
+        </tr>
+    }
+    <input type="hidden" name="SL_THUOCTINH" value="@SL_THUOCTINH" />
+}
+<style>
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+        color: #555;
+        display: block;
+        font-size: 14px;
+        width: 300px;
+        line-height: 1.42857;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    }
+</style>

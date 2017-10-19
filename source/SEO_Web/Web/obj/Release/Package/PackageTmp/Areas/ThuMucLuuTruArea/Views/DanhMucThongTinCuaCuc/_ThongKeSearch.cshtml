@@ -1,0 +1,137 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.DanhMucThongTinModel
+@using Web.Models
+@using Web.Areas.ThuMucLuuTruArea.Models
+@Html.AntiForgeryToken()
+@using (Ajax.BeginForm("FindDanhMuc", "DanhMucThongTinCuaCuc", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearch" }))
+{
+    <table style="width:55%;margin:0 auto">
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="width:70px">Tiêu đề:</td>
+            <td>
+                <input type="text" name="TIEUDE" id="TIEUDE" class="e-input" style="width:233px">
+            </td>
+            <td style="width:70px;margin-left:10px">Đơn vị:</td>
+            <td>
+                <div class="input-field4  clearfix" style="width: 233px;">
+                    @Html.DropDownList("DONVI_ID", Model.ListDonVi, new { @style = "", @id = "DONVI_ID", @multiple = "multiple" })
+                </div>
+                <input type="hidden" value="" name="DONVI" id="DONVI" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Quý:</td>
+            <td>
+                <div class="input-field4  clearfix" style="width: 233px;">
+                    <select name="QUY" id="QUY" >
+                        <option value="">Lựa chọn quý</option>
+                        <option value="1">Quý 1</option>
+                        <option value="2">Quý 2</option>
+                        <option value="3">Quý 3</option>
+                        <option value="4">Quý 4</option>
+                    </select>
+                    <input type="hidden" value="" name="QUY" id="QUY" />
+                </div>
+            </td>
+            <td style="margin-left:10px">Năm:</td>
+            <td>
+                <div class="input-field4 clearfix fix-width">
+                    <select name="NAM" id="NAM">
+                        <option value="">Lựa chọn năm</option>
+                        @for (int i = DateTime.Now.Year - 5; i <= DateTime.Now.Year + 5; i++)
+                        {
+                            if (i == DateTime.Now.Year)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                            else
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Quý:</td>
+            <td>
+                <div class="input-field4  clearfix" style="width: 233px;">
+                    <select name="TRANGTHAI" id="TRANGTHAI">
+                        <option value="">Lựa chọn trạng thái</option>
+                        <option value="@DanhMucThongTinTrangThai.VANPHONG">Chờ tổng hợp</option>
+                        <option value="@DanhMucThongTinTrangThai.CUCTRUONG">Đã trình Cục Trưởng</option>
+                        <option value="@DanhMucThongTinTrangThai.PHEDUYET">Đã duyệt</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="3">
+                <input type="submit" value="Tìm kiếm" id="btnTimKiem" class="btn btn-success" />
+                <button class="btn btn-default" id="btnClose">Đóng</button>
+                @*<button class="btn btn-primary" type="button" id="btnApproval" style="display:none">Tổng hợp danh mục thông tin</button>*@
+            </td>
+        </tr>
+    </table>
+}
+
+<script type="text/javascript">
+    function initialVulue() {
+        //$("#QUY").val($("#QUY_LIST").multipleSelect("getSelects"));
+        $("#DONVI").val($("#DONVI_ID").multipleSelect("getSelects"));
+    }
+    $("#QUY_LIST,#DONVI_ID").multipleSelect({
+        multiple: true,
+        filter: true,
+    });
+    $(document).ready(function () {
+        $("#btnClose").click(function () {
+            //$("#btnSearching").click();
+            $('#collapseOne').collapse('hide');
+        });
+        $("#btnTimKiem").click(function () {
+            initialVulue();
+            $("#SOBAOHIEM").val($("#TIEUDE").val());
+            if($("#QUY").val() != "" && $("#NAM").val() != ""){
+                $("#btnApproval").show();
+            } else {
+                $("#btnApproval").hide();
+            }
+            return true;
+        });
+    });
+    function failure(xhr, response) {
+        CommonJS.alert(xhr.responseText);
+        $("#MOIQUANHE").val("");
+    }
+
+</script>
+<style>
+    a:hover {
+        cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+        margin: 0 6px 0 !important;
+    }
+</style>

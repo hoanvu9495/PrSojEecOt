@@ -1,0 +1,138 @@
+﻿@model Web.Models.CommentViewModel
+<style type="text/css">
+    #log-content {
+        height: 90%;
+        overflow-y: auto;
+    }
+
+    .tree_ul {
+        list-style: none;
+    }
+
+    .tree_li {
+        padding-top: 10px;
+    }
+
+
+    .tree_ul, .tree_li, .tree_div {
+        float: left;
+        padding-left: 10px;
+    }
+
+    .left_tree_ul {
+        padding-left: 45px;
+    }
+
+    .tree_ul, .tree_li {
+        width: 100%;
+    }
+
+    .pop_expand {
+        width: 15px;
+        height: 15px;
+    }
+
+    .pop_collapse {
+        width: 15px;
+        height: 15px;
+        display: none;
+    }
+
+    .root_tree {
+        background: rgba(0, 0, 0, 0) url('/Content/Images/folder-horizontal.png') no-repeat scroll 15px 1px;
+    }
+
+        .root_tree label {
+            margin-left: 30px;
+        }
+</style>
+<div class="modal fade" id="comment_dialog_@Model.INDEX" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 650px; margin: 0 auto; margin-top: 5%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">@Model.TITLE</h4>
+            </div>
+            <div class="modal-body" id="modal_body" style="height:200px; overflow-x:hidden; overflow-y:hidden">
+                <div style="width:100%; margin:auto;">
+                    <div id="nhan_su_dialog" style="overflow-x: hidden;">
+                        <table id="tblComment">
+                            <tr>
+                                <td>
+                                    <label class="lbl" style="text-align:left">Ghi chú:</label>
+                                </td>
+                                <td>
+                                    @Html.TextArea("COMMENTS_" + Model.INDEX + "", "", new { @style = "width: 530px;height:180px",@maxlength="550", @placeholder = "Nội dung ghi chú", @class = "e-input mf10" })
+                                    @*<area id="COMMENTS_@Model.INDEX" style="width: 530px;height:180px" placeholder="Nội dung ghi chú" class="e-input mf10" />*@
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="background: #0099CC;border-radius: 3px;" class="btn" id="@Model.BUTTON_CLICK" data-index="@Model.INDEX">
+                    @* onclick="SaveObject(@Model.INDEX)"*@
+                    Xác nhận
+                </button>
+                <button type="button" class="btn btn-default" onclick="OnCloseLog(@Model.INDEX)" data-dismiss="modal">Hủy</button>
+                <input type="hidden" id="message_@Model.INDEX" value="@Model.MESSAGE" />
+                <input type="hidden" id="index_@Model.INDEX" value="@Model.INDEX" />
+                <input type="hidden" id="close_@Model.INDEX" value="@Model.CLOSE_FUNCTION" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#@Model.BUTTON_CLICK").click(function () {
+            var index = $(this).attr("data-index");
+            $("#@Model.VALUE").val($("#COMMENTS_" + index).val());
+
+            if ('@Model.USER_SUBMIT' == '1') {// SỬ DỤNG SUBMIT FORM
+                $("#@Model.FORM_ID").submit();
+                //notif({
+                //    type: 'success',
+                //    position: 'bottom',
+                //    msg: $("#message_" + index).val(),
+                //});
+                OnCloseLog(index);
+            } else {
+                var callback = '@Model.CALL_FUNCTION';
+                if (callback.length > 0) {//GỌI ĐẾN FUCTION
+                    var callfunction = window[callback];
+                    callfunction();
+                    
+                }
+                //notif({
+                //    type: 'success',
+                //    position: 'bottom',
+                //    msg: $("#message_" + index).val(),
+                //});
+                @*var call_close = '@Model.CLOSE_FUNCTION';
+                if (call_close  != "") {//GỌI ĐẾN FUCTION
+                    var callClose = window[call_close];
+                    callClose();
+                   call_close();
+                }*@
+                OnCloseLog(index);
+            }
+        });
+    });
+    function OnCloseLog(index) {
+        $("#comment_dialog_" + index).modal("hide");
+
+        @*if ($("#close_@Model.INDEX").val().length > 0) {
+            var call_close = window[$("#close_@Model.INDEX").val()];
+            call_close();
+        }*@
+    }
+    function show(index) {
+        $("#comment_dialog_" + index).modal("show");
+        $("#COMMENTS_" + index).focus();
+
+    }
+</script>

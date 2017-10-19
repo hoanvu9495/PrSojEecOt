@@ -1,0 +1,250 @@
+﻿@using Web.FwCore
+@using Business.CommonBusiness
+@using Model.eAita
+@using Web.Areas.HscvLinhVucVanBanArea.Models
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@{
+    ViewBag.Title = "Quản lý danh mục lĩnh vực văn bản";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    List<LinhVucVanBanModal> lstVanBan = new List<LinhVucVanBanModal>();
+    if (ViewData["Search"] == "0")
+    {
+        lstVanBan = (List<LinhVucVanBanModal>)SessionManager.GetValue("ListLVVanBan");
+    }
+
+    var jsonDatas = Html.Raw(JsonConvert.SerializeObject(lstVanBan));
+}
+<style>
+    .menu-left-content {
+        height: 494px;
+        overflow-y: auto;
+    }
+</style>
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <h2 class="group-tittle mt10">
+            Quản lý lĩnh vực văn bản
+
+        </h2>
+        <a class="btn btn-success btn-sm" href="javascript:OnCreate()" style="float: right">
+            <i class="fa fa-plus"></i><span>Thêm mới lĩnh vực văn bản</span>
+        </a>
+    </header>
+    <div class="widge-t-body no-padding">
+        <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+            <table class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Lĩnh vực văn bản</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CreateLVVanBan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="PrepareLVVanBan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<style>
+    .webGrid td:nth-child(2) {
+        text-align: left !important;
+    }
+
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 190px;
+        height: 29px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .head th:first-child {
+        width: 10px;
+    }
+
+    .webGrid tbody tr td:nth-child(2) {
+        width: 60%;
+    }
+</style>
+
+<script type="text/javascript">
+
+
+    pageSetUp();
+    var JsonDatas = eval(@jsonDatas);
+
+    var loadDataTable = function (item) {
+        var table = $('.wtfayo').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "iDisplayLength": 20,
+            paging: true,
+            "aoColumns": [
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            return '<span>' + data.TENLINHVUCVANBAN + '</span>';
+                        },
+
+                    },
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            return '<span>' + (data.TRANGTHAI == true ? "Đang được sử dụng" : "Không sử dụng") + '</span>';
+                        },
+
+                    },
+
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            var result = "<div class='btn-group'>";
+                            result += "<a href='javascript:void(0)' onclick='EditLVVanBan(" + data.ID + ")'   title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>";
+                            result += "<a href='javascript:void(0)' onclick='RemoveLVVanBan(" + data.ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
+                            result += "</div>";
+                            return result;
+                        },
+
+                    },
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                runAllCharts()
+            }
+        });
+    }
+    var pagefunction = function () {
+
+        loadDataTable(JsonDatas);
+    };
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("AddFormLinhVucVanBan", "HscvLinhVucVanBan")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#CreateLVVanBan").html(data);
+                $("#CreateLVVanBan").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+    function EditLVVanBan(ID) {
+        $.ajax({
+            url: '@Url.Action("EditFormLinhVucVanBan", "HscvLinhVucVanBan")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#PrepareLVVanBan").html(data);
+                $("#PrepareLVVanBan").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function RemoveLVVanBan(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa lĩnh vực văn bản này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveLinhVucVanBan", "HscvLinhVucVanBan")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                //notif({
+                                //    type: 'success',
+                                //    position: 'bottom',
+                                //    msg: 'Xóa lĩnh vực văn bản thành công!',
+                                //});
+                                NotiSuccess("Xóa lĩnh vực văn bản thành công!");
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function reloadGrid() {
+        setTimeout(function () {
+            location.reload();
+        }, 1500);
+    }
+
+
+    loadScript("js/plugin/datatables/jquery.dataTables.min.js", function () {
+        loadScript("js/plugin/datatables/dataTables.colVis.min.js", function () {
+            loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                loadScript("js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                    loadScript("js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
+                });
+            });
+        });
+    });
+
+</script>

@@ -1,0 +1,272 @@
+﻿@using Web.Models;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.VanBanDiArea.Models;
+@using Web.Common;
+@model VanBanDiDetailViewModel
+@{
+    List<WF_TRANGTHAI> lstSteps = new List<WF_TRANGTHAI>();
+    lstSteps = (List<WF_TRANGTHAI>)SessionManager.GetValue("ListBuocChuyenTrangThaiVanBanDi");
+    string nguoiky_vb = "";
+}
+<script src="~/Scripts/workflow.js"></script>
+<style>
+    .edit-table tr {
+        border-bottom: 1px dotted #ccc;
+    }
+
+        .edit-table tr:last-child {
+            border-bottom: 0px;
+        }
+
+
+    .lbl {
+        font-weight: 600;
+        text-align:left;
+    }
+</style>
+<div style="float:left;width:60%; max-height:440px; overflow-y:auto;">
+    <table class="edit-table" style="width:95.5%">
+        @*Hàng 1*@
+        <tr>
+            <td>
+                <label class="lbl">Nhóm sổ văn bản:</label>
+            </td>
+            <td>
+                @Model.VanBanDi.NHOMSOVANBAN
+            <td>
+                <label class="lbl">Sổ văn bản:</label>
+            </td>
+            <td>
+                @Model.VanBanDi.SOVANBAN
+            </td>
+            <td></td>
+        </tr>
+        @*Hàng 2*@
+        <tr>
+            <td>
+                <label class="lbl">Độ khẩn:</label>
+            </td>
+            <td>
+                @Model.VanBanDi.DOKHAN
+            </td>
+            <td>
+                <label class="lbl">Mức độ quan trọng:</label>
+            </td>
+            <td>
+                @Model.VanBanDi.MUCDOQUANTRONG
+            </td>
+            <td></td>
+        </tr>
+        @*Hàng 3*@
+        <tr>
+            <td>
+                <label class="lbl">Loại văn bản:</label>
+            </td>
+            <td colspan="4">
+                @Model.VanBanDi.LOAIVANBAN
+            </td>
+        </tr>
+        @*Hàng 4*@
+        <tr>
+            <td>
+                <label class="lbl">Số đi theo sổ:</label>
+            </td>
+            <td colspan="3">
+                @Model.VanBanDi.SODITHEOSO
+            </td>
+        </tr>
+        @*Hàng 5*@
+        <tr>
+            <td>
+                <label class="lbl">Số hiệu văn bản:</label>
+            </td>
+            <td colspan="4">
+                @Model.VanBanDi.SOHIEU
+            </td>
+        </tr>
+        @*Hàng 6*@
+        <tr>
+            <td>
+                <label class="lbl">Ngày ký:</label>
+            </td>
+            <td colspan="4">
+                @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYKY))
+            </td>
+        </tr>
+        @*Hàng 7*@
+        <tr>
+            <td>
+                <label class="lbl">Người ký:</label>
+            </td>
+            <td>
+                @Model.VanBanDi.TENNGUOIKY
+                @if (!string.IsNullOrEmpty(Model.VanBanDi.TENNGUOIKY))
+                {
+                    nguoiky_vb += Model.VanBanDi.TENNGUOIKY;
+                }
+            </td>
+            <td>
+                <label class="lbl">Chức vụ:</label>
+            </td>
+            <td>
+                @Model.VanBanDi.CHUCVUNGUOIKY
+            </td>
+            <td></td>
+        </tr>
+        @*Hàng 7 - 1*@
+        @{var stt = 2; }
+        @if (Model.VanBanDi.ListNguoiKy != null && Model.VanBanDi.ListNguoiKy.Count > 0)
+        {
+            foreach (var item in Model.VanBanDi.ListNguoiKy)
+            {
+        <tr>
+            <td>
+                <label class="lbl">Người ký @stt:</label>
+            </td>
+            <td>
+                @item.FullName
+                @if (!string.IsNullOrEmpty(item.FullName))
+                                            {
+                                                nguoiky_vb += ", " + item.FullName;
+                                            }
+            </td>
+            <td>
+                <label class="lbl">Chức vụ:</label>
+            </td>
+            <td>
+                @item.ChucVu
+            </td>
+            <td></td>
+        </tr>
+                stt++;
+            }
+        }
+        @*Hàng 8*@
+        <tr>
+            <td>
+                <label class="lbl">Ngày ban hành:</label>
+            </td>
+            <td>
+                @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYBANHANH))
+            </td>
+            <td>
+                <label class="lbl">Đơn vị ban hành:</label>
+            </td>
+            <td>
+                @Model.VanBanDi.DONVIBANHANH
+            </td>
+        </tr>
+        @*Hàng 9*@
+        <tr>
+            <td>
+                <label class="lbl">Trích yếu:</label>
+            </td>
+            <td colspan="4">
+                @Model.VanBanDi.TRICHYEU
+            </td>
+        </tr>
+        @if (Model.ListTaiLieuDinhKem != null && Model.ListTaiLieuDinhKem.Count > 0)
+        {
+        @*Hàng 10*@
+        <tr>
+            <td>
+                <label class="lbl">Tài liệu đính kèm:</label>
+            </td>
+            <td colspan="3">
+                <div style="margin-left:10px; width:500px;">
+                    @{Html.RenderPartial("../Common/UploadFile", Model.ListTaiLieuDinhKem, new ViewDataDictionary { { "detail", 1 } });}
+                </div>
+            </td>
+        </tr>
+                            }
+        @*Hàng 11*@
+        <tr>
+            <td>
+                <label class="lbl">Số bản sao: @Model.VanBanDi.SOBANSAO</label>
+            </td>
+            <td colspan="3">
+                Số tờ:
+                @Model.VanBanDi.SOTO
+            </td>
+        </tr>
+        @*Hàng 12*@
+        <tr>
+            <td>
+                <label class="lbl">Ngày có hiệu lực:</label>
+            </td>
+            <td>
+                @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYCOHIEULUC))
+            </td>
+            <td>
+                <label class="lbl">Ngày hết hiệu lực:</label>
+            </td>
+            <td colspan="2">
+                @(string.Format("{0:dd/MM/yyyy}", Model.VanBanDi.NGAYHETHIEULUC))
+            </td>
+        </tr>
+        @*Hàng 13*@
+        <tr>
+            <td>
+                <label class="lbl">Người soạn thảo:</label>
+            </td>
+            <td>
+                @Model.VanBanDi.NGUOISOAN
+            </td>
+            <td>
+                <label class="lbl">Đơn vị soạn thảo:</label>
+            </td>
+            <td colspan="2">
+                @Model.VanBanDi.DONVISOANTHAO
+            </td>
+        </tr>
+    </table>
+</div>
+<div style="float:left;width:40%;max-height:440px; overflow-y:auto;">
+    @if (Model.VanBanDi.WF_ID.HasValue)
+    {
+        WorkFlowModel wf_model = new WorkFlowModel();
+        wf_model.LstSteps = Model.LstSteps;
+        wf_model.TRANGTHAI_ID = Model.VanBanDi.TRANGTHAI.Value;
+        wf_model.WF_ID = Model.VanBanDi.WF_ID.Value;
+        wf_model.ENTITY_ID = Web.Common.LOAITAILIEU.VANBANDI;
+        wf_model.ENTITY_ITEM_ID = Model.VanBanDi.ID;
+        wf_model.CALLBACK_FUNCTION = "UpdateFinalState";
+        wf_model.ENTITY_NAME = "Văn bản đi";
+        wf_model.SortAble = false;
+        wf_model.TableClass = "abc";
+        Html.RenderPartial("~/Areas/WorkFlowArea/Views/WorkFlow/_WFActions.cshtml", wf_model);
+    }
+</div>
+<input type="hidden" id="VANBANDI_ID" value="@Model.VanBanDi.ID" />
+<input type="hidden" id="NGUOIKY" value="@nguoiky_vb" />
+<script type="text/javascript">
+                        function UpdateFinalState() {
+                            var id = $("#VANBANDI_ID").val();
+                            var nguoiky_vanban = $("#NGUOIKY").val();
+                            $.ajax({
+                                url: "/VanBanDiArea/VanBanDi/UpdateFinalState",
+                                type: 'POST',
+                                data: { vanbandi_id: id, nguoiky_vanban: nguoiky_vanban },
+                                success: function (data) {
+                                    location.reload();
+                                },
+                                error: function (data) {
+
+                                }
+                            });
+                        }
+
+                        $(document).ready(function () {
+                            $("#vb_di_tabs").steps({
+                                headerTag: "h3",
+                                bodyTag: "section",
+                                transitionEffect: "slideLeft",
+                                enableFinishButton: false,
+                                enablePagination: true,
+                                enableAllSteps: true,
+                                titleTemplate: "#title#",
+                                cssClass: "tabcontrol"
+                            });
+                        });
+</script>

@@ -1,0 +1,672 @@
+﻿@model Web.Areas.WorkFlowArea.Models.WorkFlowTransitionCreateViewModel
+@{
+    ViewBag.Title = "Quản lý các bước trong luồng xử lý";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    var LstConnection = "";
+    var LstState = "";
+}
+<style type="text/css">
+    .SearchCriterial {
+        margin: 0;
+    }
+
+    .SearchResult {
+        margin: 0;
+        padding: 0;
+    }
+
+    #modal--wf-label .modal-dialog {
+        width: 1000px;
+    }
+
+    #modal--wf-label {
+        overflow: visible !important;
+    }
+
+        #modal--wf-label .modal-body {
+            overflow-y: visible !important;
+            height: 450px !important;
+        }
+
+    #tbl_TrangThai tr.head th {
+        padding: 0 5px;
+    }
+
+    ul li {
+        list-style-type: none;
+    }
+
+    #setting_dialog .modal-dialog {
+        width: 1000px;
+    }
+
+    #frmTransistionCreate .form-group {
+        margin: 0;
+    }
+</style>
+<script src="~/Content/Custom/go.js"></script>
+<script id="code">
+    function init() {
+        //if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+        var $ = go.GraphObject.make;  // for conciseness in defining templates
+        myDiagram =
+          $(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
+            {
+                // start everything in the middle of the viewport
+                initialContentAlignment: go.Spot.Center,
+                // have mouse wheel events zoom in and out instead of scroll up and down
+                //"toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
+
+            });
+        // define the Node template
+        myDiagram.nodeTemplate =
+          $(go.Node, "Auto",
+            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            // define the node's outer shape, which will surround the TextBlock
+            $(go.Shape, "RoundedRectangle",
+              {
+                  parameter1: 20,  // the corner has a large radius
+                  fill: $(go.Brush, "Linear", { 0: "rgb(254, 201, 0)", 1: "rgb(254, 162, 0)" }),
+                  stroke: null,
+                  portId: "",  // this Shape is the Node's port, not the whole Node
+                  fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
+                  toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true,
+                  cursor: "pointer"
+              }),
+            $(go.TextBlock,
+              {
+                  font: "bold 11pt helvetica, bold arial, sans-serif",
+                  editable: false  // editing the text automatically updates the model data
+              },
+              new go.Binding("text").makeTwoWay())
+          );
+
+        // replace the default Link template in the linkTemplateMap
+        myDiagram.linkTemplate =
+          $(go.Link,  // the whole link panel
+            {
+                curve: go.Link.Bezier, adjusting: go.Link.Stretch,
+                reshapable: true, relinkableFrom: true, relinkableTo: true,
+                toShortLength: 3
+            },
+            new go.Binding("points").makeTwoWay(),
+            new go.Binding("curviness"),
+            $(go.Shape,  // the link shape
+              { strokeWidth: 1.5 }),
+            $(go.Shape,  // the arrowhead
+              { toArrow: "standard", stroke: null }),
+            $(go.Panel, "Auto",
+              $(go.Shape,  // the label background, which becomes transparent around the edges
+                {
+                    fill: $(go.Brush, "Radial",
+                            { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                    stroke: null
+                }),
+              $(go.TextBlock, "transition",  // the label text
+                {
+                    textAlign: "center",
+                    font: "9pt helvetica, arial, sans-serif",
+                    margin: 4,
+                    editable: false  // enable in-place editing
+                },
+                // editing the text automatically updates the model data
+                new go.Binding("text").makeTwoWay())
+            )
+          );
+
+        // read in the JSON data from the "mySavedModel" element
+        load();
+    }
+
+    // Show the diagram's model in JSON format
+    function save() {
+        document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+    }
+    function load() {
+        myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value.trim());
+    }
+</script>
+
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                    <h2>Chi tiết luồng xử lý</h2>
+                </header>
+                @{
+                    var sotrangthai = 0;
+                    var sothutu = 0;
+                }
+                @using (Ajax.BeginForm("SaveTransition", "WorkFlowState", new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "POST",
+                    OnFailure = "failure",
+                    OnSuccess = "updateSuccess"
+                }, new { id = "frmTransistionCreate", onsubmit = "return validateSaveWorkFlowTransition()" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h3 class="group-tittle mt10" style="margin-left:20px">
+                        Thông tin luồng xử lý
+                    </h3>
+                    <div style="">
+                        <table class="table table-bordered">
+                            <tr style="height: 20px;"></tr>
+                            <tr>
+                                <td>
+                                    <label class="lbl">
+                                        Tên luồng xử lý:
+                                    </label>
+                                </td>
+                                <td colspan="3">
+                                    <span style="margin-left:10px;font-weight:bold;">@Model.WF_QUYTRINH.TENWF</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="height: 20px;"></td>
+                                <td colspan="3"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="lbl">Nhóm luồng xử lý:</label>
+                                </td>
+                                <td>
+                                    <div class="input-field4  clearfix" style="width: 233px;">
+                                        @Html.DropDownListFor(m => m.WF_QUYTRINH.NHOMQUYTRINH_ID, Model.ListNhomQuyTrinh, "[--- Tất cả ---]", new { @id = "NHOMQUYTRINH_ID", @style = "width: 100%;margin-left:10px;cursor:default;", @disabled = "disabled" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <label style="margin-left: 40px; width: 90px;">Trạng thái:</label>
+                                </td>
+                                <td>
+                                    @if (Model.WF_QUYTRINH.IS_ACTIVE.HasValue && Model.WF_QUYTRINH.IS_ACTIVE.Value)
+                                    {
+                                        <span style="margin-left:10px;">Có hiệu lực</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: red; margin-left: 10px;">Không có hiệu lực</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="height: 20px;"></td>
+                                <td colspan="3"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="testDNT" style="background: url(../img/mybg.png) #fff; z-index: 3; height: 200px; width: 200px; margin-top: -10px; position: absolute;"></div>
+                    <div id="myDiagramDiv" style="width: 100%; height: 400px"></div>
+                    <h3 class="group-tittle mt10 mgt20" style="margin-bottom:20px; margin-left:20px">
+                        Các bước trong luồng xử lý
+                    </h3>
+                    <a class="btn btn-primary" title="Thêm bước chuyển trạng thái" href='javascript:void(0)' onclick="AddTrangThai()" style="margin:10px auto;">
+                        Thêm bước chuyển trạng thái
+                    </a>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td colspan="3" valign="top">
+                                <table class="table table-bordered" id="tbl_TrangThai">
+                                    <thead>
+                                        <tr class="head">
+                                            <th scope="col">
+                                                STT
+                                            </th>
+                                            <th>
+                                                Icon
+                                            </th>
+                                            <th scope="col" width="250px">
+                                                Tên bước <span class="text-danger">(*)</span>
+                                            </th>
+                                            <th scope="col" width="300px">
+                                                Trạng thái bắt đầu <span class="text-danger">(*)</span>
+                                            </th>
+                                            <th scope="col" width="30px">
+                                            </th>
+                                            <th scope="col" width="300px">
+                                                Trạng thái kết thúc <span class="text-danger">(*)</span>
+                                            </th>
+                                            <th scope="col">Thiết lập</th>
+
+                                            <th scope="col">
+                                                Xóa
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.ListTransition != null && Model.ListTransition.Count > 0)
+                                        {
+                                            var thutu = 1;
+                                            foreach (var item in Model.ListTransition)
+                                            {
+                                                LstConnection += "{ 'from': " + item.TRANGTHAI_1 + ", 'to': " + item.TRANGTHAI_2 + ", 'text': '" + item.TENBUOC + "', 'curviness': 20 },";
+                                                <tr id="trangthai_@thutu" class="tr_trangthai">
+                                                    <td class="center">@thutu</td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.ICON_PATH))
+                                                        {
+                                                            <img src="@item.ICON_PATH" width="32" height="32" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="@System.Configuration.ConfigurationManager.AppSettings["WorkFlowsStepDefaultIcon"]" width="32" height="32" />
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input class="e-input required" type="text" name="TENBUOC_@thutu" id="TENBUOC_@thutu" value="@item.TENBUOC" style="width: 250px;" />
+                                                            <input type="hidden" name="BUOCID_@thutu" id="BUOCID_@thutu" value="@item.ID" />
+                                                            <div class="note-error">
+                                                                <span class="error mes-note-error"></span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-field4  clearfix" style="width: 233px;">
+                                                            <div class="form-group">
+                                                                @Html.DropDownList("FROM_" + thutu, new SelectList(Model.ListTrangThai, "Value", "Text", item.TRANGTHAI_1), "[--- Chọn trạng thái ---]", new { @id = "FROM_" + thutu, @style = "width: 100%;margin-left:10px;", Class = "required" })
+                                                                <div class="note-error">
+                                                                    <span class="error mes-note-error"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <img src="~/Content/Images/next.png" />
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-field4  clearfix" style="width: 233px;">
+                                                            <div class="form-group">
+                                                                @Html.DropDownList("TO_" + thutu, new SelectList(Model.ListTrangThai, "Value", "Text", item.TRANGTHAI_2), "[--- Chọn trạng thái ---]", new { @id = "TO_" + thutu, @style = "width: 100%;margin-left:10px;", Class = "required" })
+                                                                <div class="note-error">
+                                                                    <span class="error mes-note-error"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:void(0)" onclick="ThietLap(@thutu, @item.ID)"><img src="~/Content/Images/header-settings.png" /></a>
+                                                    </td>
+
+                                                    <td>
+                                                        <a href="javascript:void(0)" onclick="DeleteTrangThai(@thutu,@item.ID,1)" class="btn btn-danger btn-sm" title="Xóa bước này">
+                                                            <i class="fa fa-times"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                        thutu++;
+                                                        sotrangthai++;
+                                                        sothutu++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            sotrangthai = 1;
+                                            sothutu = 1;
+                                            <tr id="trangthai_1" class="tr_trangthai">
+                                                <td class="center">1</td>
+                                                <td></td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input class="e-input required" type="text" name="TENBUOC_1" id="TENBUOC_1" style="width: 250px;" />
+                                                        <input type="hidden" name="BUOCID_1" id="BUOCID_1" value="-1" />
+                                                        <div class="note-error">
+                                                            <span class="error mes-note-error"></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="input-field4  clearfix" style="width: 233px;">
+                                                        <div class="form-group">
+                                                            @Html.DropDownList("FROM_1", Model.ListTrangThai, "[--- Chọn trạng thái ---]", new { @id = "FROM_1", @style = "width: 100%;margin-left:10px;", Class = "required" })
+                                                            <div class="note-error">
+                                                                <span class="error mes-note-error"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <img src="~/Content/Images/next.png" />
+                                                </td>
+                                                <td>
+                                                    <div class="input-field4  clearfix" style="width: 233px;">
+                                                        <div class="form-group">
+                                                            @Html.DropDownList("TO_1", Model.ListTrangThai, "[--- Chọn trạng thái ---]", new { @id = "TO_1", @style = "width: 100%;margin-left:10px;", Class = "required" })
+                                                            <div class="note-error">
+                                                                <span class="error mes-note-error"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:void(0)" onclick="DeleteTrangThai(1,0,0)" class="btnDelete" title="Xóa bước này"></a>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                    @Html.DropDownList("STATE_TEMP", Model.ListTrangThai, "[--- Chọn trạng thái ---]", new { @id = "STATE_TEMP", @style = "display:none;" })
+                    <input type="hidden" value="@sotrangthai" id="SoLuongTrangThai" name="SoLuongTrangThai" />
+                    <input type="hidden" value="@sothutu" id="SoThuTuTrangThai" name="SoThuTuTrangThai" />
+                    <input type="hidden" value="@Model.WF_QUYTRINH.ID" id="WF_ID" name="WF_ID" />
+
+                    <div style="margin-top: 15px; margin-bottom:25px; text-align: center;">
+                        <button type="submit" class="btn btn-primary" id="btnSave">Lưu</button>&nbsp;
+                        <button type="button" class="btn btn-default" onclick="OnCloSe()">Quay lại</button>&nbsp;
+                        <a href="/#workflowarea/workflowstate/create/@Model.WF_QUYTRINH.ID" class="btn btn-success">
+                            Quản lý trạng thái
+                        </a>
+                    </div>
+                }
+            </div>
+        </article>
+    </div>
+</section>
+
+
+<div class="modal fade" id="vaitro_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="vaitro_content">
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="setting_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="setting_content">
+        </div>
+    </div>
+</div>
+@{
+    var iDex = 1;
+    var tmpX = 0;
+    var tmpY = 0;
+}
+@foreach (var iState in Model.ListTrangThai)
+{
+    if (iDex % 2 == 0)
+    {
+        tmpX = tmpX + 100;
+        tmpY = tmpY + 100;
+    }
+    else
+    {
+        tmpX = tmpX;
+        tmpY = tmpY + 100;
+    }
+
+    var strXY = tmpX.ToString() + " " + tmpY.ToString();
+    LstState = LstState + "{ 'id': " + iState.Value.ToString() + ", 'loc': '" + strXY + "', 'text': '" + iState.Text + "' },";
+    iDex = iDex + 1;
+}
+@{
+    var globalStr = "";
+    if (LstState.Length > 0 && LstConnection.Length > 0)
+    {
+        globalStr = "{ 'nodeKeyProperty': 'id','nodeDataArray': [" + LstState.Remove(LstState.Length - 1) + "],'linkDataArray': [" + LstConnection.Remove(LstConnection.Length - 1) + "]}";
+    }
+}
+<div>
+    <textarea id="mySavedModel" style="display:none">
+        @globalStr.Replace("'", "\"")
+    </textarea>
+</div>
+<div class="modal fade" id="vaitro_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="vaitro_content">
+        </div>
+    </div>
+</div>
+
+<div id="modal--wf-label" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">CẤU HÌNH NHÃN</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveConfigWfLabel()">Lưu</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    if ('@TempData["SaveTransitionSuccess"]' != '') {
+        NotiSuccess('Cập nhật bước chuyển trạng thái thành công');
+    }
+    if ('@TempData["SaveSettingSuccess"]' != '') {
+        NotiSuccess('Cấu hình bước chuyển trạng thái thành công');
+    }
+    function OnCloSe() {
+        window.location = "/#WorkFlowArea/WorkFlow/Index";
+    }
+    $(document).ready(function () {
+        $("#PhanQuyen_Dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 650,
+            height: 400,
+            resizable: false,
+            show: {
+                effect: "blind",
+                duration: 200
+            },
+            hide: {
+                effect: "blind",
+                duration: 200
+            }
+        });
+        try {
+            init();
+        } catch (err) {
+            return false;
+        }
+    });
+    function ThietLap(thutu, id) {
+        var wf_id = $("#WF_ID").val();
+        $.ajax({
+            url: '@Url.Action("Setting", "WorkFlowState")',
+            type: 'post',
+            cache: false,
+            data: { id: id, wf_id: wf_id },
+            success: function (data) {
+                $("#setting_content").html(data);
+                $("#setting_dialog").modal("show");
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+    function openModalConfigWfLabel(wfStepTransitionId, wfProcedureId) {
+        $.ajax({
+            url: '/WorkFlowArea/WfLabel/EditWorkFlowLabel',
+            type: 'post',
+            cache: false,
+            dataType: 'html',
+            data: { wfStepTransitionId: wfStepTransitionId, wfProcedureId: wfProcedureId },
+            success: function (result) {
+                $('#modal--wf-label .modal-body').html(result);
+                $('#modal--wf-label').modal('show');
+            }
+        });
+    }
+
+    function saveConfigWfLabel() {
+        if ($('#modal--wf-label .modal-body form').length > 0) {
+            $('#modal--wf-label .modal-body form').submit();
+        }
+    }
+
+    @*function PhanQuyen(thutu, id) {
+        var wf_id = $("#WF_ID").val();
+        $.ajax({
+            url: '@Url.Action("RoleSetting", "WorkFlowState")',
+            type: 'post',
+            cache: false,
+            data: { id: id, wf_id: wf_id },
+            success: function (data) {
+                $("#vaitro_content").html(data);
+                $("#vaitro_dialog").modal("show");
+                //$("#PhanQuyen_Dialog").html(data);
+                //$("#PhanQuyen_Dialog").dialog("open");
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }*@
+    function DeleteTrangThai(thutu, id, xoa) {
+        var TENBUOC = $("#TENBUOC_" + thutu).val();
+        var FROM = $("#FROM_" + thutu).val();
+        var TO = $("#TO_" + thutu).val();
+        var SoLuongTrangThai = $("#SoLuongTrangThai").val();
+        if (TENBUOC.length > 0 || FROM.length > 0 || TO.length > 0) {
+            $.confirm({
+                'title': 'Xóa bước chuyển trạng thái',
+                'message': 'Bạn muốn xóa bước chuyển trạng thái này không?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            if (xoa == "1") {
+                                $.ajax({
+                                    url: '@Url.Action("DeleteTransition", "WorkFlowState")',
+                                    type: 'post',
+                                    cache: false,
+                                    data: { id: id },
+                                    success: function (data) {
+                                        $("#trangthai_" + thutu).remove();
+                                        $("#SoLuongTrangThai").val(parseInt(SoLuongTrangThai) - 1);
+                                        var i = 1;
+                                        $(".tr_trangthai").each(function () {
+                                            $(this).find("td").first().html(i);
+                                            i++;
+                                        });
+                                        NotiSuccess('Đã xóa bước chuyển trạng thái')
+                                    },
+                                    error: function (xhr) {
+                                        alert(xhr.responseText);
+                                    }
+                                });
+                            } else {
+                                $("#trangthai_" + thutu).remove();
+                                $("#SoLuongTrangThai").val(parseInt(SoLuongTrangThai) - 1);
+                                var i = 1;
+                                $(".tr_trangthai").each(function () {
+                                    $(this).find("td").first().html(i);
+                                    i++;
+                                });
+                            }
+                        }
+                    },
+                    'Hủy': {
+                        'class': 'btn-info',
+                        'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+        }
+        else {
+            $("#trangthai_" + thutu).remove();
+            $("#SoLuongTrangThai").val(parseInt(SoLuongTrangThai) - 1);
+            var i = 1;
+            $(".tr_trangthai").each(function () {
+                $(this).find("td").first().html(i);
+                i++;
+            });
+        }
+    }
+
+
+    function AddTrangThai() {
+        var state_temp = $("#STATE_TEMP").html();
+        var SoLuongTrangThai = $("#SoLuongTrangThai").val();
+        var SoThuTuTrangThai = $("#SoThuTuTrangThai").val();
+        var SoThuTuTrangThaiMoi = parseInt(SoThuTuTrangThai) + 1;
+        var SoLuongTrangThaiMoi = parseInt(SoLuongTrangThai) + 1;
+        $("#SoLuongTrangThai").val(SoLuongTrangThaiMoi);
+        $("#SoThuTuTrangThai").val(SoThuTuTrangThaiMoi);
+        var string_tr_trangthai = "";
+
+        string_tr_trangthai += "<tr id='trangthai_" + SoThuTuTrangThaiMoi + "'  class='tr_trangthai'>";
+        string_tr_trangthai += "<td class='center'>" + SoLuongTrangThaiMoi + "</td>";
+        string_tr_trangthai += '<td></td>';
+        string_tr_trangthai += "<td>";
+        string_tr_trangthai += "<div class='form-group'>"
+        string_tr_trangthai += "<input class='e-input required' type='text' name='TENBUOC_" + SoThuTuTrangThaiMoi + "' id='TENBUOC_" + SoThuTuTrangThaiMoi + "' style='width: 250px;' />";
+        string_tr_trangthai += "<input type='hidden' name='BUOCID_" + SoThuTuTrangThaiMoi + "' id='BUOCID_" + SoThuTuTrangThaiMoi + "' value='-1' />";
+        string_tr_trangthai += "<div class='note-error'><span class='error mes-note-error'></span></div>";
+        string_tr_trangthai += "</div>"
+        string_tr_trangthai += "</td>";
+        string_tr_trangthai += "<td>";
+        string_tr_trangthai += "<div class='input-field4  clearfix' style='width: 233px;'>";
+        string_tr_trangthai += "<div class='form-group'>";
+        string_tr_trangthai += "<select id='FROM_" + SoThuTuTrangThaiMoi + "' name='FROM_" + SoThuTuTrangThaiMoi + "' style='width: 100%;margin-left:10px;' class='required'>";
+        string_tr_trangthai += state_temp;
+        string_tr_trangthai += "</select>";
+        string_tr_trangthai += "<div class='note-error'><span class='error mes-note-error'></span></div>";
+        string_tr_trangthai += "</div>";
+        string_tr_trangthai += "</div>";
+        string_tr_trangthai += "</td>";
+        string_tr_trangthai += "<td><img src='../../../Content/Images/next.png' /></td>";
+        string_tr_trangthai += "<td>";
+        string_tr_trangthai += "<div class='input-field4  clearfix' style='width: 233px;'>";
+        string_tr_trangthai += "<div class='form-group'>";
+        string_tr_trangthai += "<select id='TO_" + SoThuTuTrangThaiMoi + "' name='TO_" + SoThuTuTrangThaiMoi + "' style='width: 100%;margin-left:10px;' class='required'>";
+        string_tr_trangthai += state_temp;
+        string_tr_trangthai += "</select>";
+        string_tr_trangthai += "<div class='note-error'><span class='error mes-note-error'></span></div>";
+        string_tr_trangthai += "</div>";
+        string_tr_trangthai += "</div>";
+        //string_tr_trangthai += "</td>";
+        //string_tr_trangthai += "<td>";
+        //string_tr_trangthai += "<a href='javascript:void(0)' onclick='PhanQuyen(" + SoThuTuTrangThaiMoi + ")' title='Phân quyền cho bước này'><img src='../../../Content/Images/role_icon.png' /></a>";
+        string_tr_trangthai += "</td>";
+        string_tr_trangthai += "<td>";
+        string_tr_trangthai += "<a href='javascript:void(0)' onclick='DeleteTrangThai(" + SoThuTuTrangThaiMoi + ")' class='btnDelete' title='Xóa trạng thái này'></a>";
+        string_tr_trangthai += "</td>";
+        string_tr_trangthai += "<td></td>";
+        string_tr_trangthai += "</tr>";
+
+        $("#tbl_TrangThai tbody").append(string_tr_trangthai);
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+
+    }
+    function updateSuccess(xhr) {
+        //NotiSuccess('Cập nhật bước chuyển thành công !');
+        location.reload();
+    }
+
+
+    function validateSaveWorkFlowTransition() {
+        var err = 0;
+        var valid_Required = requiredFieldForFormId('frmTransistionCreate');
+        if (!valid_Required) {
+            err += 1;
+        }
+        if (err == 0) {
+            return true;
+        } else {
+            NotiError("Có lỗi, Vui lòng kiểm tra lại");
+            return false;
+        }
+        return true;
+    }
+</script>

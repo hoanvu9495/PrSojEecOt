@@ -1,0 +1,155 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using Model.eAita;
+@{
+    List<TM_THONGKE_DANHMUC> lstMoiQuanHe = new List<TM_THONGKE_DANHMUC>();
+    if (ViewData["Search"] == "0")
+    {
+        lstMoiQuanHe = (List<TM_THONGKE_DANHMUC>)SessionManager.GetValue("ListThongTin");
+    }
+    else
+    {
+        lstMoiQuanHe = (List<TM_THONGKE_DANHMUC>)SessionManager.GetValue("ListThongTinSearch");
+    }
+    var grid = new WebGrid(lstMoiQuanHe,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: true,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+}
+@Html.AntiForgeryToken()
+@if (lstMoiQuanHe.Count > 0)
+{
+    <div id="grid">
+        <div id="HeaderGrid">
+            <div style="margin:20px 0px 10px 10px;">
+                <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">@(lstMoiQuanHe == null ? "0" : lstMoiQuanHe.Count.ToString()) &nbsp; kết quả</label>
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column("NAM", "Năm", format: (item) => new MvcHtmlString(string.Format("<span>" + item.NAM + "</span>"))),
+                  grid.Column("QUY", "Quý", format: (item) => new MvcHtmlString(string.Format("<span>" + item.QUY + "</span>"))),
+                grid.Column("TIEUDE", "Tiêu đề", format: (item) => new MvcHtmlString(string.Format("<a href='" + Url.Action("ChiTietDanhMucThongTin/" + item.ID, "DanhMucThongTin") + "' title='Chi tiết danh mục thông tin tài liệu'>" + item.TIEUDE + "</a>"))),
+                    grid.Column("NGAYTAO", "Ngày tạo", format: (item) => item.NGAYTAO == null ? "" : string.Format("{0:dd-MM-yyyy}", item.NGAYTAO)),
+                    grid.Column("NAM", "Gửi Văn Phòng", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == DanhMucThongTinTrangThai.DUTHAO ? "<a href='javascript:void(0)' class='btnModify' onclick='GuiVanPhong("+item.ID+")'></a>" : ""))),
+                     grid.Column("TRANGTHAI", "Trạng thái", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == DanhMucThongTinTrangThai.DUTHAO ? "<span style='color:red'>Dự thảo</span>" : item.TRANGTHAI == DanhMucThongTinTrangThai.PHEDUYET ? "<span style='color:green'>Đã duyệt</span>" : item.TRANGTHAI == DanhMucThongTinTrangThai.DAXULY ? "<span style='color:red'>Dự thảo</span>" : item.TRANGTHAI == DanhMucThongTinTrangThai.DUOCCHON ? "Được chọn" : item.TRANGTHAI == DanhMucThongTinTrangThai.TRAVE ? "<span style='color:red'>Không được duyệt</span>" : item.TRANGTHAI == DanhMucThongTinTrangThai.VANPHONG ? "<span style='color:blue'>Đã gửi Văn phòng</span>" : "<span style='color:blue'>Đã trình Cục Trưởng</span>"))),
+                    grid.Column(format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == DanhMucThongTinTrangThai.DUTHAO ? "<a href='" + Url.Action("EditDanhMucThongTin/" + item.ID, "DanhMucThongTin") + "' class='btnEdit' title = 'Chỉnh sửa'></a>" : "")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                 item.TRANGTHAI == DanhMucThongTinTrangThai.DUTHAO ? "<a href='javascript:void(0)' onclick='RemoveDanhMuc(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>" : "")), header: "Xóa")
+
+                 )
+    )
+    </div>
+}
+else
+{
+    <div id="grid">
+        <div id="Empty" style="color: red;">
+            Không tìm thấy dữ liệu phù hợp
+        </div>
+    </div>
+}
+<script>
+    function RemoveDanhMuc(id) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa danh mục thông tin,tài liệu này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveDanhMuc", "DanhMucThongTin")',
+                            type: 'POST',
+                            cache: false,
+                            data: { ID: id },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: data,
+                                });
+                                reloadGrid();
+                            },
+                            error: function (xhr) {
+                                CommonJS.alert(xhr.responseText);
+                            }
+
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function GuiVanPhong(id) {
+        $.confirm({
+            'title': 'Xác nhận gửi',
+            'message': 'Bạn có chắc chắn muốn gửi Văn Phòng danh mục thông tin, tài liệu này?',
+            'buttons': {
+                'Xác nhận': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("CapNhatDanhMuc", "DanhMucThongTin")',
+                            type: 'POST',
+                            cache: false,
+                            data: { ID: id },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: data,
+                                });
+                                reloadGrid();
+                            },
+                            error: function (xhr) {
+                                CommonJS.alert(xhr.responseText);
+                            }
+
+                        });
+                    }
+                },
+                'Đóng': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+</script>
+<style>
+    .webGrid td:nth-child(4) {
+        text-align: left !important;
+    }
+
+        .webGrid td:nth-child(4) a {
+            overflow: hidden;
+            display: inline-block;
+            white-space: nowrap;
+            width: 350px !important;
+            text-overflow: ellipsis;
+        }
+
+    .btnModify {
+        background: url('/Content/Images/ico_back.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+</style>

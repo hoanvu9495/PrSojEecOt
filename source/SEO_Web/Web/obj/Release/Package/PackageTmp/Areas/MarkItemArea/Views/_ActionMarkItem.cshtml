@@ -1,0 +1,299 @@
+﻿@using Web.Common;
+@model Web.Areas.MarkItemArea.Models.MarkItemViewModel
+
+        <div class="btn-group" role="group" aria-label="...">
+            <ul class="demo-btns">
+                <li>
+                    <div class="btn-group" role="group">
+                        @*<button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-bottom:3px">
+                                <span class="caret"></span>
+                            </button>*@
+                        <a href="javascript:void(0);" class="btn btn-default" data-toggle="dropdown">
+                            <input type="checkbox" class="mark_checkbox" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:void(0)" onclick="checkAllNormal()"><span class="check_all" style="float:left"></span>Tất cả</a></li>
+                            <li><a href="javascript:void(0)" onclick="uncheckAllNormal()"><span class="un_check_all" style="float:left"></span> Bỏ chọn tất cả</a></li>
+                            <li><a href="javascript:void(0)" onclick="checkAllRead()"><span class="read_all" style="float:left"></span>Đã đọc</a></li>
+                            <li><a href="javascript:void(0)" onclick="checkAllUnRead()"><span class="mark_new" style="float:left"></span>Chưa đọc</a></li>
+                            <li><a href="javascript:void(0)" onclick="checkAllStar()"><span class="favorite" style="float:left"></span>Có gắn dấu sao</a></li>
+                            <li><a href="javascript:void(0)" onclick="checkAllUnStar()"><span class="notset_favorite" style="float:left"></span>Chưa gắn dấu sao</a></li>
+                            <li><a href="javascript:void(0)" onclick="checkAllImportant()"><span class="important" style="float:left"></span>Quan trọng</a></li>
+                            <li><a href="javascript:void(0)" onclick="checkAllUnImportant()"><span class="notset_important" style="float:left"></span>Không quan trọng</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default">
+                            <i class="fa fa-gear"></i>
+                        </button>
+                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:markItem(@Model.ITEM_TYPE, @LOAITAILIEU.CONS_READ)">Đánh dấu đã đọc</a></li>
+                            <li><a href="javascript:markItem(@Model.ITEM_TYPE, @LOAITAILIEU.CONS_FAVORITE)">Gắn dấu sao</a></li>
+                            <li><a href="javascript:markItem(@Model.ITEM_TYPE, @LOAITAILIEU.CONS_UNFAVORITE)">Xóa dấu sao</a></li>
+                            <li><a href="javascript:markItem(@Model.ITEM_TYPE, @LOAITAILIEU.CONS_IMPORTANT)">Đánh dấu quan trọng</a></li>
+                            <li><a href="javascript:markItem(@Model.ITEM_TYPE, @LOAITAILIEU.CONS_UNIMPORTANT)">Đánh dấu không quan trọng</a></li>
+                        </ul>
+                    </div>
+                </li>
+                @*<li>
+                    <div class="btn-group">
+                        <a href="javascript:RefreshPage()" class="btn btn-labeled btn-info">
+                            <span class="btn-label"><i class="glyphicon glyphicon-refresh"></i></span>
+                            Làm mới
+                        </a>
+                    </div>
+                </li>*@
+                <li>
+                    
+                </li>
+            </ul>
+
+
+
+        </div>
+
+
+   
+    @*<button type="button" class="b_btn b_btn-default" onclick="RefreshPage()"></button>*@
+
+
+
+    @*<div class="btn-group" role="group">
+            <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Tác vụ khác
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:markItem(@Model.ITEM_TYPE, @LOAITAILIEU.CONS_READ)">Đánh dấu đã đọc</a></li>
+                @*<li><a href="javascript:markItem(@Model.ITEM_TYPE, @LOAITAILIEU.CONS_UNREAD)">Đánh dấu chưa đọc</a></li>
+                <li><a href="javascript:markItem(@Model.ITEM_TYPE, @LOAITAILIEU.CONS_FAVORITE)">Gắn dấu sao</a></li>
+                <li><a href="javascript:markItem(@Model.ITEM_TYPE, @LOAITAILIEU.CONS_UNFAVORITE)">Xóa dấu sao</a></li>
+                <li><a href="javascript:markItem(@Model.ITEM_TYPE, @LOAITAILIEU.CONS_IMPORTANT)">Đánh dấu quan trọng</a></li>
+                <li><a href="javascript:markItem(@Model.ITEM_TYPE, @LOAITAILIEU.CONS_UNIMPORTANT)">Đánh dấu không quan trọng</a></li>
+            </ul>
+        </div>*@
+    @*<div class="btn-group" role="group">
+            <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Thêm cột
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:ShowFavorite()"><span class="favorite" style="float:left"></span>Hiện Dấu sao</a></li>
+                <li><a href="javascript:HideFavorite()"><span class="notset_favorite" style="float:left"></span>Ẩn Dấu sao</a></li>
+                <li><a href="javascript:ShowImportant()"><span class="important" style="float:left"></span>Hiện Quan trọng</a></li>
+                <li><a href="javascript:HideImportant()"><span class="notset_important" style="float:left"></span>Ẩn Quan trọng</a></li>
+            </ul>
+        </div>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$(".webGrid thead tr th").eq(1).hide();
+        //$(".webGrid thead tr th").eq(2).hide();
+        //$(".webGrid tbody tr").each(function(){
+        //    $(this).find("td").eq(1).hide();
+        //    $(this).find("td").eq(2).hide();
+        //});
+        $("input[name='ids']").removeAttr("checked");
+        $("input[name='ids']").change(function () {
+            if ($(this).is(":checked")) {
+                $(this).parent().parent().css("background", "#ffc none repeat scroll 0 0");
+            }
+            else {
+                $(this).parent().parent().css("background", "#fff none repeat scroll 0 0");
+            }
+        });
+    });
+    //Hien thi cot Favorite
+    function ShowFavorite() {
+        _ShowFavorite = 1;
+        $(".webGrid thead tr th").eq(1).show();
+        $(".webGrid tbody tr").each(function () {
+            $(this).find("td").eq(1).show();
+        });
+    }
+    //An cot Favorite
+    function HideFavorite() {
+        _ShowFavorite = 0;
+        $(".webGrid thead tr th").eq(1).hide();
+        $(".webGrid tbody tr").each(function () {
+            $(this).find("td").eq(1).hide();
+        });
+    }
+    //Hien thi cot Important
+    function ShowImportant() {
+        _ShowImportant = 1;
+        $(".webGrid thead tr th").eq(2).show();
+        $(".webGrid tbody tr").each(function () {
+            $(this).find("td").eq(2).show();
+        });
+    }
+    //An cot Important
+    function HideImportant() {
+        _ShowImportant = 0;
+        $(".webGrid thead tr th").eq(2).hide();
+        $(".webGrid tbody tr").each(function () {
+            $(this).find("td").eq(2).hide();
+        });
+    }
+    //thanh trang thai
+    function checkAllNormal() {
+        $(".global_checkbox").prop("checked", true);
+        $(".mark_checkbox").prop("checked", true);
+        $(".webGrid tbody tr").css("background", "#ffc none repeat scroll 0 0");
+    }
+    //bo chọn tất cả
+    function uncheckAllNormal() {
+        $(".global_checkbox").prop("checked", false)
+        $(".mark_checkbox").prop("checked", false)
+        $(".webGrid tbody tr").css("background", "#fff none repeat scroll 0 0");
+    }
+    //đánh dấu tất cả những bản ghi đã đọc
+    function checkAllRead() {
+        uncheckAllNormal();
+        $(".is_read").prop("checked", true);
+        $(".mark_checkbox").prop("checked", true);
+        $(".webGrid .is_read").each(function () {
+            $(this).parent().parent().css("background", "#ffc none repeat scroll 0 0");
+        });
+    }
+    //đánh dấu tất cả những bản ghi chưa đọc
+    function checkAllUnRead() {
+        uncheckAllNormal();
+        $(".is_unread").prop("checked", true);
+        $(".mark_checkbox").prop("checked", true);
+        $(".webGrid .is_unread").each(function () {
+            $(this).parent().parent().css("background", "#ffc none repeat scroll 0 0");
+        });
+    }
+    //đánh dấu tất cả những bản ghi được tích dấu sao
+    function checkAllStar() {
+        uncheckAllNormal();
+        $(".favorite").parent().parent().parent().find(".global_checkbox").prop("checked", true);
+        $(".mark_checkbox").prop("checked", true);
+        $(".webGrid .favorite").each(function () {
+            $(this).parent().parent().css("background", "#ffc none repeat scroll 0 0");
+        });
+    }
+    //đánh dấu tất cả những bản ghi chưa được tích dấu sao
+    function checkAllUnStar() {
+        uncheckAllNormal();
+        $(".notset_favorite").parent().parent().parent().find(".global_checkbox").prop("checked", true);
+        $(".mark_checkbox").prop("checked", true);
+        $(".webGrid .notset_favorite").each(function () {
+            $(this).parent().parent().css("background", "#ffc none repeat scroll 0 0");
+        });
+    }
+    //end
+    function checkAllImportant() {
+        uncheckAllNormal();
+        $(".important").parent().parent().parent().find(".global_checkbox").prop("checked", true);
+        $(".mark_checkbox").prop("checked", true);
+        $(".webGrid .important").each(function () {
+            $(this).parent().parent().css("background", "#ffc none repeat scroll 0 0");
+        });
+    }
+    function checkAllUnImportant() {
+        uncheckAllNormal();
+        $(".notset_important").parent().parent().parent().find(".global_checkbox").prop("checked", true);
+        $(".mark_checkbox").prop("checked", true);
+        $(".webGrid .notset_important").each(function () {
+            $(this).parent().parent().css("background", "#ffc none repeat scroll 0 0");
+        });
+    }
+    function markItem(item_type, type_id) {
+        var idsValue = "";
+        if ($(".global_checkbox:checked").length == 0) {
+      
+            NotiError("Bạn phải chọn ít nhất một bản ghi!");
+        } else {
+            $(".global_checkbox:checked").each(function () {
+                idsValue += $(this).val() + ",";
+            });
+            idsValue = idsValue.substr(0, idsValue.length - 1);
+            $.ajax({
+                url: '/MarkItemArea/MarkItem/MarkItem',
+                type: 'post',
+                cache: false,
+                async: true,
+                data: { IDS: idsValue, TypeId: type_id, ITEM_TYPE: item_type },
+                success: function (data) {
+                    $(".mark_checkbox").prop("checked", false)
+               
+                    NotiSuccess('Chuyển trạng thái thành công!');
+                    //reloadGrid();
+                    var call_back_function = '@Model.RELOAD_FUNCTION';
+                    if (call_back_function.length > 0) {
+                        var cb_fn = window[call_back_function];
+                        cb_fn();
+                    }
+                },
+                error: function (err) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        }
+
+    }
+    function RefreshPage() {
+        var call_back_function = '@Model.RELOAD_FUNCTION';
+        if (call_back_function.length > 0) {
+            var cb_fn = window[call_back_function];
+            cb_fn();
+        }
+    }
+
+    function singleMarkItem(id, state, item_type, mark) {
+        var type_id = 0;
+        if (mark == '@LOAITAILIEU.FAVORITE') {
+            if (state == 'True') {
+                type_id = '@LOAITAILIEU.CONS_UNFAVORITE';
+            } else {
+                type_id = '@LOAITAILIEU.CONS_FAVORITE';
+            }
+        } else {
+            if (state == 'True') {
+                type_id = '@LOAITAILIEU.CONS_UNIMPORTANT';
+            } else {
+                type_id = '@LOAITAILIEU.CONS_IMPORTANT';
+            }
+        }
+        $.ajax({
+            url: '/MarkItemArea/MarkItem/MarkItem',
+            type: 'post',
+            cache: false,
+            async: true,
+            data: { IDS: id, TypeId: type_id, ITEM_TYPE: item_type },
+            success: function (data) {
+                $(".mark_checkbox").prop("checked", false)
+                NotiSuccess('Chuyển trạng thái thành công!');
+
+                //reloadGrid();
+                var call_back_function = '@Model.RELOAD_FUNCTION';
+                if (call_back_function.length > 0) {
+                    var cb_fn = window[call_back_function];
+                    cb_fn();
+                }
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function checkAllCurrentPageGrid(obj) {
+        if (obj.checked) {
+            checkAllNormal();
+            //$('#block--step-possible').show();
+        } else {
+            uncheckAllNormal();
+            //$('#block--step-possible').hide();
+        }
+    }
+</script>
+

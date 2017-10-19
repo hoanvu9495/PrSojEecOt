@@ -1,0 +1,103 @@
+﻿@*@Model Web.Areas.WorkFlowArea.Models.ProcessWorkFlowViewModel*@
+@{
+    ViewBag.Title = "Chọn luồng xử lý";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    
+}
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/van_ban_den/van_ban_den.css">
+
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                    <h2>Chọn luồng xử lý</h2>
+                    
+                </header>
+                <div style="padding: 0px">
+                    @Html.Partial("_GridViewListEntity")
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+
+
+<div class="modal fade" id="chooseWorkFlow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Chọn luồng xử lý</h4>
+            </div>
+            <div class="modal-body" id="modal_body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="SaveWorkFlow()">Chọn</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function ChooseWorkFlow(ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ListWorkFlow", "WorkFlow")',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#modal_body").html(data);
+                $("#chooseWorkFlow").modal("show");
+            },
+            error: function (err) {
+                CommonJS.alert(err.responseText);
+            }
+        });        
+        return false;
+    }
+    function SaveWorkFlow() {
+        var id = $("#ENTITY_ID").val().trim();
+        var wf_id = $("#modal_body input[name=WorkFlowId]:checked").val();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SaveEntityWorkFlow", "WorkFlow")',
+            cache: false,
+            data: {
+                ID: id,
+                WORDFLOW_ID: wf_id
+            },
+            success: function (data) {
+                $("#chooseWorkFlow").modal("hide");
+                notif({
+                    type: 'success',
+                    position: 'bottom',
+                    msg: 'Chọn luồng xử lý thành công!',
+                });
+                reload();
+            },
+            error: function (err) {
+                CommonJS.alert(err.responseText);
+            }
+        });
+    }
+    function reload() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("reload", "WorkFlow")',
+            cache: false,
+            data: { },
+            success: function (data) {
+                $("#SearchResultContent").html(data);
+            },
+            error: function (err) {
+                CommonJS.alert(err.responseText);
+            }
+        });
+    }
+</script>

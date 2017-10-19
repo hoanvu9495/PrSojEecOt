@@ -1,0 +1,249 @@
+﻿@{
+    ViewBag.Title = "Danh sách yêu cầu được chia sẻ tài liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using Model.eAita;
+@model Web.Areas.ThuMucLuuTruArea.Models.ThuMucLuuTruModel
+@{
+    List<TmChuyenTiepYeuCauBO> lstChiase = new List<TmChuyenTiepYeuCauBO>();
+    lstChiase = (List<TmChuyenTiepYeuCauBO>)SessionManager.GetValue("ListYeuCau");
+    var grid = new WebGrid(lstChiase,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+}
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" style="width:300px">
+            <h1>Yêu cầu được chia sẻ</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-left">
+            </div>
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" onclick="location.href = '@Url.Action("TimKiemTaiLieu", "ThuMucLuuTru")'">Tìm kiếm nâng cao</button>
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" onclick="location.href = '@Url.Action("DanhSachTaiLieuHetHieuLuc", "ThuMucLuuTru")'">Tài liệu đã hết hạn</button>
+                <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" onclick="Storage()">Dung lượng lưu trữ</button>
+                @if (SessionManager.GetValue("ISCUCTRUONG").Equals("true"))
+                {
+                    <div class="btn-group" role="group" style="margin-bottom: 10px;">
+                        <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Phê duyệt tài liệu
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("DanhSachYeuCauChiaSe", "CucTruongPheDuyet")">Phê duyệt tài liệu</a></li>
+                            <li><a href="@Url.Action("Index", "CucTruongPheDuyet")">Phê duyệt yêu cầu chia sẻ</a></li>
+                            <li><a href="@Url.Action("Index", "PheDuyetDanhMucThongTin" )">Phê duyệt danh mục thông tin,tài liệu</a></li>
+                        </ul>
+                    </div>
+                }
+                @if (SessionManager.GetValue("ISVANPHONG").Equals("true"))
+                {
+                    <button style="margin-bottom: 10px; " class="b_btn b_btn-default vbdi_search" id="XULYYEUCAU" onclick="location.href = '@Url.Action("Index", "DanhMucThongTin")'">Quản lý danh mục thông tin,tài liệu</button>
+                }
+                @if (SessionManager.GetValue("ISSYSTEM").Equals("true"))
+                {
+                    <button style="margin-bottom: 10px; " class="b_btn b_btn-default vbdi_search" onclick="location.href='@Url.Action("Index", "TmLoaiTaiLieu")'">Thuộc tính tài liệu</button>
+                }
+                @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                {
+                    <button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" id="XULYYEUCAU" onclick="location.href = '@Url.Action("Index", "DanhMucThongTin")'">Quản lý danh mục thông tin,tài liệu</button>
+                    @*<button style="margin-bottom: 10px;" class="b_btn b_btn-default vbdi_search" id="XULYYEUCAU" onclick="location.href = '@Url.Action("DanhSachYeuCauDuocChiaSe", "ThuMucLuuTru")'">Xử lý yêu cầu chia sẻ (@Model.XuLy)</button>
+                        <button onclick="location.href = '@Url.Action("DanhSachYeuCauChiaSe", "ThuMucLuuTru")'" id="DANHSACHYEUCAUSHARE" class="b_btn b_btn-default vbdi_search" style="margin-bottom: 10px;">Yêu cầu chia sẻ</button>*@
+                }
+                <div class="btn-group" role="group" style="margin-bottom: 10px;margin-right:50px">
+                    <button type="button" class="b_btn b_btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chia sẻ tài liệu
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("DanhSachTaiLieuDaChiaSe", "ThuMucLuuTru")">Đang chia sẻ</a></li>
+                        <li><a href="@Url.Action("DanhSachTaiLieuDuocChiaSe", "ThuMucLuuTru")">Được chia sẻ</a></li>
+                        @if (SessionManager.GetValue("ISTRUONGDONVI") == "true")
+                        {
+                            <li><a href="@Url.Action("Index", "YeuCauChiaSe")">Yêu cầu chia sẻ</a></li>
+                        <li><a href="@Url.Action("YeuCauCanChiaSe", "YeuCauChiaSe")">Xử lý yêu cầu chia sẻ (@Model.XuLy)</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="left-all-page" id="menu-middle-left">
+        <div class="menu-left-content block">
+            <ul class="admin-menu">
+                @if (SessionManager.GetValue("ISCUCTRUONG").Equals("true"))
+                {
+                    <li class="menu"><a href="@Url.Action("Index", "CucTruongPheDuyet")">Quản lý tài liệu</a></li>
+                }
+                <li class="menu"><a href="@Url.Action("Index", "ThuMucLuuTru")">Quản lý tài liệu</a></li>
+                <li class="menu"><a href="@Url.Action("DanhSachTaiLieuDaChiaSe", "ThuMucLuuTru")">Đang chia sẻ</a></li>
+                <li class="menu"><a href="@Url.Action("DanhSachTaiLieuDuocChiaSe", "ThuMucLuuTru")">Được chia sẻ</a></li>
+                <li class="menu"><a href="@Url.Action("TimKiemTaiLieu", "ThuMucLuuTru")">Tìm kiếm nâng cao</a></li>
+                @if (SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                {
+                    <li class="menu"><a href="@Url.Action("DanhSachYeuCauDuocChiaSe", "ThuMucLuuTru")">Xử lý yêu cầu chia sẻ</a></li>
+                    <li class="menu"><a href="@Url.Action("DanhSachYeuCauChiaSe", "ThuMucLuuTru")">Danh sách yêu cầu chia sẻ</a></li>
+                }
+                @if (SessionManager.GetValue("ISVANPHONG").Equals("true"))
+                {
+                    <li class="menu"><a href="@Url.Action("Index", "DanhMucThongTinCuaCuc")">Danh mục thông tin tài liệu</a></li>
+                }
+                @if (SessionManager.GetValue("ISTRUONGDONVI").Equals("true"))
+                {
+                    <li class="menu"><a href="@Url.Action("Index", "DanhMucThongTin")">Danh mục thông tin tài liệu</a></li>
+                }
+                @if (SessionManager.GetValue("ISCUCTRUONG").Equals("true"))
+                {
+                    <li class="menu"><a href="@Url.Action("Index", "PheDuyetDanhMucThongTin")">Phê duyệt danh mục thông tin,tài liệu</a></li>
+                }
+            </ul>
+        </div>
+    </div>*@
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+    <div class="right-content clearfix">
+        <div class="SearchResult ">
+            @Html.AntiForgeryToken()
+            @if (lstChiase.Count > 0)
+            {
+                <div id="grid">
+                    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                            grid.Column("NOIDUNG", "Lý do chia sẻ", format: (item) => new MvcHtmlString(string.Format("<a href='" + @Url.Action("ChiTietYeuCauDuocChiaSe/" + item.ID, "ThuMucLuuTru") + "' title='" + item.NOIDUNG + "'>" + item.NOIDUNG + "</a>"))),
+                                grid.Column("NGAYGUI", "Ngày gửi", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYGUI)),
+                                  grid.Column("THOIGIAN_TU", "Chia sẻ từ", format: (item) => item.THOIGIAN_TU == null ? "" : string.Format("{0:dd-MM-yyyy}", item.THOIGIAN_TU)),
+                                   grid.Column("THOIGIAN_DEN", "Chia sẻ đến", format: (item) => item.THOIGIAN_DEN == null ? "" : string.Format("{0:dd-MM-yyyy}", item.THOIGIAN_DEN)),
+                                       grid.Column("TRANGTHAI", "Trạng thái", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == ChuyenTiepYeuCauContant.DAGUI ? "<span style='color:red'>Chưa xử lý</span>" : item.TRANGTHAI == ChuyenTiepYeuCauContant.CHIASE ? "<span style='color:green'>Đã xử lý</span>" : item.TRANGTHAI == ChuyenTiepYeuCauContant.GUILAI ? "<span style='color:red'>Bắt buộc chia sẻ</span>" : item.TRANGTHAI == ChuyenTiepYeuCauContant.TUCHOI ? "<span style='color:green'>Từ chối chia sẻ</span>" : "<span style='color:red'>Chưa xử lý</span>"))),
+                              grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                      (item.TRANGTHAI == ChuyenTiepYeuCauContant.DAGUI || item.TRANGTHAI == ChuyenTiepYeuCauContant.GUILAI) ? "<a href='javascript:void(0)' onclick='TrinhDuyetYeuCau(" + item.YEUCAU_ID + "," + item.DONVI_ID + "," + item.ID + ")' class='btnEdit' title = 'Bắt đầu chia sẻ cho yêu cầu này'></a>" : "")), header: "Chia sẻ")
+                 )
+    )
+                    @if (lstChiase.Count == 0)
+                    {
+                        <div id="Empty" style="color: red;">
+                            Không tìm thấy dữ liệu phù hợp
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div id="Empty" style="color: red;">
+                    Chưa có yêu cầu nào muốn sử dụng tài liệu của đơn vị bạn
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<style>
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+    .btnAdd {
+        display: block;
+        width: 190px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/1460042887_arrow-return-180.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    button:hover {
+        cursor: pointer;
+    }
+
+    .webGrid td:nth-child(2), .webGrid td:nth-child(3) {
+        text-align: left !important;
+    }
+
+        .webGrid td:nth-child(2) a, .webGrid td:nth-child(3) span {
+            overflow: hidden;
+            display: inline-block;
+            white-space: nowrap;
+            width: 200px !important;
+            text-overflow: ellipsis;
+        }
+</style>
+<script>
+    function TrinhDuyetYeuCau(YEUCAU_ID, DONVI_ID, CHUYENTIEP) {
+        $.confirm({
+            'title': 'Xác nhận chia sẻ',
+            'message': 'Bạn có chắc mình muốn chia sẻ những tài liệu này',
+            'buttons': {
+                'Chia sẻ': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("BatDauChiaSe", "ThuMucLuuTru")',
+                            type: 'POST',
+                            cache: false,
+                            data: { YEUCAU_ID: YEUCAU_ID, DONVI_ID: DONVI_ID, CHUYENTIEP_ID: CHUYENTIEP },
+                            success: function (data) {
+                                if (data.trim().length > 0) {
+                                    notif({
+                                        type: 'success',
+                                        position: 'bottom',
+                                        msg: 'Đã chia sẻ thành công tài liệu!',
+                                    });
+                                    location.reload();
+                                } else {
+                                    notif({
+                                        type: 'error',
+                                        position: 'bottom',
+                                        msg: 'Có lỗi xảy ra trong quá trình chia sẻ.Mời thử lại sau!',
+                                    });
+                                }
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Đóng': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+
+
+</script>

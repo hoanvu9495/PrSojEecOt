@@ -1,0 +1,245 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@{
+    List<DM_NGHE_NGHIEP> lstNghe = new List<DM_NGHE_NGHIEP>();
+    if (ViewData["Search"] == "0")
+    {
+        lstNghe = (List<DM_NGHE_NGHIEP>)SessionManager.GetValue("ListNgheNghiep");
+    }
+    if (ViewData["Search"] == "1")
+    {
+        lstNghe = (List<DM_NGHE_NGHIEP>)SessionManager.GetValue("ListNgheNghiepSearch");
+    }
+    var grid = new WebGrid(lstNghe,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+
+}
+@Html.AntiForgeryToken()
+
+@if (lstNghe.Count > 0)
+{
+
+    <div id="grid">
+        <div id="HeaderGrid">
+            <div style="margin:20px 0px 10px 10px;">
+                <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">@(lstNghe == null ? "0" : lstNghe.Count.ToString()) &nbsp; kết quả</label>
+                <div style="margin-top:-10px;float:right;margin-right:2px;">
+                    <img src="~/Content/Images/Add.png" id="InputImage" width="16" height="16" />
+                    <a class="btnAdd" title="Thêm mới" href='javascript:void(0)' onclick="OnCreate()">Thêm mới nghề nghiệp</a>
+                </div>
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                           grid.Column("NGHE_NGHIEP", "Tên nghề nghiệp"),
+                                                         grid.Column("NGAYTAO", "Ngày Tạo", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYTAO)),
+                                        grid.Column("NGAYSUA", "Ngày Sửa", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYSUA)),
+                                grid.Column("NGUOITAO", "Người Tạo"),
+
+                                         grid.Column("NGUOISUA", "Người Sửa"),
+                                         grid.Column("TRANGTHAI", "Trạng Thái", format: (item) =>
+        (bool)item.TRANGTHAI == true
+            ? Html.Raw("Được sử dụng")
+            : Html.Raw("Không được sử dụng")),
+
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                  "<a href='javascript:void(0)' onclick='EditNgheNghiep(" + item.ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                 "<a href='javascript:void(0)' onclick='RemoveNgheNghiep(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+
+                 )
+    )
+
+        @if (lstNghe.Count == 0)
+        {
+            
+            <div id="Empty" style="color: red;">
+                Không tìm thấy dữ liệu phù hợp
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div id="HeaderGrid">
+        <div style="margin:20px 0px 10px 10px;">
+            <div style="margin-top:-10px;float:right;margin-right:2px;">
+                <img src="~/Content/Images/Add.png" id="InputImage" width="16" height="16" />
+                <a class="btnAdd" title="Thêm mới" href='javascript:void(0)' onclick="OnCreate()">Thêm mới nghề nghiệp</a>
+            </div>
+        </div>
+    </div>
+    <div id="Empty" style="color: red;">
+        Dữ liệu đang được cập nhật.
+    </div>
+}
+<div id="CreateNgheNghiep"></div>
+<div id="PrepareNgheNghiep"></div>
+<style>
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .head th:first-child {
+        width: 10px;
+    }
+
+    .webGrid tbody tr td:nth-child(2) {
+        width: 250px;
+    }
+</style>
+<script type="text/javascript">
+    $('.grid tbody').on('hover', function () {
+        $(this).toggleClass('clickable');
+    });
+    $("#CreateNgheNghiep").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 450,
+        height: 230,
+        resizable: false,
+        show: {
+            effect: "blind",
+            duration: 200
+        },
+        hide: {
+            effect: "blind",
+            duration: 200
+        }
+    });
+    $("#PrepareNgheNghiep").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 450,
+        height: 230,
+        resizable: false,
+        show: {
+            effect: "blind",
+            duration: 200
+        },
+        hide: {
+            effect: "blind",
+            duration: 200
+        }
+    });
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("AddFormNgheNghiep", "DMNgheNghiep")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#CreateNgheNghiep").html(data);
+                $("#CreateNgheNghiep").dialog("open");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+    
+    function EditNgheNghiep(ID) {
+        $.ajax({
+            url: '@Url.Action("EditNgheNghiep", "DMNgheNghiep")',
+            type: 'post',
+            cache: false,
+            data: {
+                id: ID
+            },
+            success: function (data) {
+                $("#PrepareNgheNghiep").html(data);
+                $("#PrepareNgheNghiep").dialog("open");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function RemoveNgheNghiep(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa nghề nghiệp này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveNgheNghiep", "DMNgheNghiep")',
+                            type: 'post',
+                            cache: false,
+                            data: { id: ID },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Xóa nghề nghiệp thành công!',
+                                });
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+</script>

@@ -1,0 +1,95 @@
+﻿@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.TDKTPhongTraoThiDuaArea.Models;
+@model Web.Areas.TDKTPhongTraoThiDuaArea.Models.PhongTraoThiDuaViewModel
+@{
+
+    List<TDKT_PHONGTRAO_THIDUA> LstPhongTrao = Model.LstPhongTrao;
+
+
+    var grid = new WebGrid(LstPhongTrao,
+             rowsPerPage: 10,
+             canPage: true,
+             canSort: true,
+             ajaxUpdateContainerId: "grid",
+             selectionFieldName: "selectedRow"
+               );
+
+}
+<div id="grid">
+    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(                
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column(format: (item) => item.HOTEN, header: "Họ tên"),
+                grid.Column(format: (item) => item.CHUCVU_CHUCDANH, header: "Chức vụ chức danh"),
+                          grid.Column(format: (item) => item.DONVI, header: "Đơn vị"),
+                     grid.Column(format: (item) => "Bậc " + item.BACHIENTAI + " Hệ số " + string.Format("{0:0.00##}", item.HESOHIENTAI), header: "Mức lương đang hưởng"),
+                grid.Column(format: (item) => "- Bằng khen thủ tướng", header: "Tổng hợp thành tích đã được khen thưởng trong thời hạn giữ bậc lương đang hưởng", style: "left"),
+                grid.Column("TIME_NLTTH", format: (item) => item.TIME_NLTTH + " tháng", header: "Thời gian đề nghị nâng bậc lương trước thời hạn", canSort: true),
+                     grid.Column(format: (item) => "Bậc " + item.LEN_BAC + " Hệ số " + string.Format("{0:0.00##}", item.LEN_HE_SO), header: "Mức lương đề nghị nâng bậc lương trước thời hạn"),
+                grid.Column(format: (item) =>
+                    {
+                        if (item.TRANGTHAI == NangLuongTTHConstant.CHUYENVIEN_TRINH_CUCTRUONG)
+                        {
+                            return "Chuyên viên đã xử lý";
+                        }
+                        else if (item.TRANGTHAI == NangLuongTTHConstant.CUCTRUONG_TUCHOI)
+                        {
+                            return "Cục trưởng từ chối duyệt";
+                        }
+                        else
+                        {
+                            if (item.TRANGTHAI == GlobalTrangThai)
+                            {
+                                return NangLuongTTHConstant.NEXT_TRANGTHAI[item.TRANGTHAI - 1];
+                            }
+                            else
+                            {
+                                return NangLuongTTHConstant.TRANGTHAI[item.TRANGTHAI - 1];
+                            }
+                        }
+                    }
+                    , header: "Trạng thái"),
+                         grid.Column(format: (item) => item.KEHOACH, header: "Kế hoạch nâng lương"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                           "<a href='/QuanLyNangLuongTruocThoiHanArea/QuanLyNangLuongTruocThoiHan/ViewDonXinNangLuong/" + item.ID + "' target='_blank' class='btnDocument' title = 'Đơn xin nâng lương'></a>")), header: "Đơn xin nâng lương"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                "<a href='javascript:viewHistory(" + item.USER_ID + ")' title = 'Đơn xin nâng lương'>Xem</a>")), header: "Lịch sử tăng lương cán bộ"),
+                           grid.Column(format: (item) =>
+                                    {
+                                        if (item.CHUYENVIENXULY_ID != null)
+                                        {
+
+                                            if (item.TRANGTHAI == NangLuongTTHConstant.CHUYENVIEN_TRINH_CUCTRUONG || item.CUCTRUONG_PHEDUYET == true)
+                                            {
+                                                return item.CHUYENVIENXULY;
+                                            }
+                                            else
+                                            {
+                                                return new MvcHtmlString(string.Format(
+                                                   "<a href='javascript:chonChuyenVien(" + item.ID + ")' title = 'Chọn chuyên viên xử lý' id='chonchuyenvien_" + item.ID + "'>" + item.CHUYENVIENXULY + "</a>"));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (item.CHUYENCHOCHUYENVIEN == true)
+                                            {
+                                                return item.CHUYENVIENXULY;
+                                            }
+                                            else
+                                            {
+                                                return new MvcHtmlString(string.Format(
+                                                    "<a href='javascript:chonChuyenVien(" + item.ID + ")' title = 'Chọn chuyên viên xử lý' id='chonchuyenvien_" + item.ID + "'>Chọn</a>"));
+                                            }
+                                        }
+                                    }
+                           , header: "Chọn chuyên viên xử lý")
+                )
+                )
+</div>

@@ -1,0 +1,399 @@
+﻿@using Web.FwCore;
+@using Business.Business;
+@using Business.CommonBusiness;
+@using System.Web.Script.Serialization;
+@using Web.FwCore;
+@using Model.DBTool;
+@using StackExchange.Profiling;
+@{
+    UserInfoBO user = ((UserInfoBO)SessionManager.GetUserInfo());
+    if (user == null)
+    {
+        user = new UserInfoBO();
+    }
+    List<ChucNangBO> lstCN = user == null ? new List<ChucNangBO>() : user.ListCNFull.ToList();
+    MvcHtmlString token = null;
+    try
+    {
+        token = Html.AntiForgeryToken();
+    }
+    catch { }
+    HSCV_CONGVIEC CongViecCreated;
+    var _CongViecCreated = SessionManager.GetValue("CongViecCreated");
+    if (_CongViecCreated != null)
+    {
+        CongViecCreated = (HSCV_CONGVIEC)_CongViecCreated;
+        SessionManager.SetValue("CongViecCreated", null);
+    }
+}
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="UTF-8" />
+    <meta name="description" content="overview &amp; stats" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link rel="icon" type="image/png" href="~/Content/Images/favicon.ico" />
+    <link rel="icon" type="image/png" href="~/Content/Images/openland.png" />
+    <link href="~/Content/Custom/css/jquery.confirm.css" rel="stylesheet" />
+    <link href="~/Content/ACE/css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/Custom/notifit/notifit.css" rel=" stylesheet" />
+    <link href="~/Content/ACE/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/ACE/css/chosen.min.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/cst.css" rel="stylesheet" />
+    <link href="~/Content/Custom/emoticons/support/skype/emoticons.css" rel="stylesheet" />
+    <link href="/Content/site.css" rel="stylesheet" />
+    <link href="/Content/jquery.treeview.css" rel="stylesheet" />
+    @*<script src="/Scripts/modernizr-2.5.3.js"></script>*@
+    @*<script src="/Scripts/jquery.unobtrusive-ajax.js"></script>*@
+    @*<script src="/Scripts/jquery.validate.js"></script>
+        <script src="/Scripts/jquery.validate.unobtrusive.js"></script>*@
+    @*<script src="/Content/Custom/js/dropdown.js"></script>*@
+    @*<script src="/Content/Custom/js/form.js"></script>
+        <script src="/Content/Custom/js/jquery.treetable.js"></script>
+        <script src="/Scripts/jquery-ui-1.11.4.js"></script>*@
+    <link href="/Content/themes/base/jquery.ui.all.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.core.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.resizable.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.selectable.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.accordion.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.autocomplete.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.button.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.dialog.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.slider.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.tabs.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.datepicker.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.progressbar.css" rel="stylesheet" />
+    <link href="/Content/themes/base/jquery.ui.theme.css" rel="stylesheet" />
+    <link href="/Content/Custom/css/dropdown.css" rel="stylesheet" />
+    <link href="/Content/Custom/css/jquery.treetable.css" rel="stylesheet" />
+    <link href="/Content/Custom/css/jquery.treetable.theme.default.css" rel="stylesheet" />
+    <link href="/Content/panel.css" rel="stylesheet" />
+    <link href="/Content/Control.css" rel="stylesheet" />
+    @*<script src="/Scripts/jquery.treeview.js"></script>*@
+    @*<script src="/Scripts/jquery.form.js"></script>*@
+    <script src="~/Scripts/Common.js"></script>
+    @*<script src="~/Scripts/datepicker-vi.js"></script>*@
+    @*<script src="~/Scripts/jquery.steps.min.js"></script>*@
+    <script src="~/Scripts/tiny_mce/tinymce.min.js"></script>
+    @*<script src="~/Scripts/multiple-select.js"></script>*@
+    @*<script src="~/Content/Custom/js/jquery.printElement.js"></script>*@
+    <link href="~/Content/Custom/css/style.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/frame.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/van_ban_den/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/Custom/lobibox-master/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/Custom/lobibox-master/dist/css/Lobibox.min.css" rel="stylesheet" />
+    <link href="~/Content/style-drags.css" rel="stylesheet" />
+    <link href="~/Content/Custom/emoticons/support/skype/emoticons.css" rel="stylesheet" />
+    <link href="~/Content/Custom/notifit/notifit.css" rel="stylesheet" />
+    @*<link href="~/Content/Custom/css/multiple-select.css" rel="stylesheet" />*@
+    <link href="~/Content/Custom/css/jquery.confirm.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="~/Scripts/jquery.webui-popover.min.css">*@
+    <style type="text/css">
+        /*.message-loading-overlay h1 {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }*/
+    </style>
+</head>
+<body class="no-skin">
+    <input type="hidden" id="globalUserName" value="@user.Username" />
+    <input type="hidden" id="globalFullName" value="@user.Fullname" />
+    <div id="page-wrapper" style="background: #f1f1f1 none repeat scroll 0 0; ">
+        <div id="header-top">
+            <div class="left-all-page" style="width:355px">
+                <div id="menu-top-left" class="btn-group" role="group">
+                    <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer; padding:0px;">
+                        <span class="menu-images" style="margin: 3px 0px; float: left; width: 100%;">Menu</span>
+                        <div class="menu-images">
+                            <img src="/Content/Images/Menu.png" />
+                        </div>
+                    </div>
+                    <div id="dropdown-menu-top" class="dropdown-menu">
+                        @if (lstCN != null)
+                        {
+                            var item_row = 6;
+                            var row = Math.Ceiling((double)lstCN.Count / item_row);
+                            var ListThaoTac = user.ListThaoTac;
+                            var ListCNFull = user.ListCN;
+                            for (int j = 0; j < row; j++)
+                            {
+                        <div class="row row-@j">
+                            @for (int i = j * item_row; i < (j + 1) * item_row; i++)
+                                    {
+                                        if (i < lstCN.Count)
+                                        {
+
+                            <div class="row-item row-item-@i">
+                                @{
+                                            if (lstCN[i].URL.ToLower() == "USE_THAOTAC".ToLower())// kiểm trả có phải chức năng quản lý công chức hoặc  quản lý thao tác nếu đúng thì sử dụng url link của thao tác
+                                            {
+                                                var lstChucNang = ListCNFull.Where(x => x.CHUCNANG_CHA == lstCN[i].DM_CHUCNANG_ID).OrderBy(x => x.TT_HIENTHI).Select(x => x.DM_CHUCNANG_ID).FirstOrDefault();
+                                                var ThaoTac = ListThaoTac.Where(x => lstChucNang == x.DM_CHUCNANG_ID).OrderBy(x => x.TT_HIENTHI).FirstOrDefault();
+                                                if (ThaoTac != null)
+                                                {
+                                        <a class="ico-@i" href="@ThaoTac.MENU_LINK" id="ico-@lstCN[i].TT_HIENTHI" data-parent="@lstCN[i].DM_CHUCNANG_ID">
+                                            <img src="@System.Configuration.ConfigurationManager.AppSettings["HSCBAvatar"].Replace("~", "")@lstCN[i].ICONPATH">
+                                        </a>
+
+                                        <a class="ico-@i" href="@ThaoTac.MENU_LINK" id="ico-@lstCN[i].TT_HIENTHI" data-parent="@lstCN[i].DM_CHUCNANG_ID">@lstCN[i].TEN_CHUCNANG</a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                        <a class="ico-@i" href="@lstCN[i].URL" id="ico-@lstCN[i].TT_HIENTHI" data-parent="@lstCN[i].DM_CHUCNANG_ID">
+                                            <img src="@System.Configuration.ConfigurationManager.AppSettings["HSCBAvatar"].Replace("~", "")@lstCN[i].ICONPATH">
+                                        </a>
+
+                                        <a class="ico-@i" href="@lstCN[i].URL" id="ico-@lstCN[i].TT_HIENTHI" data-parent="@lstCN[i].DM_CHUCNANG_ID">@lstCN[i].TEN_CHUCNANG</a>
+                                            }
+
+                                }
+
+                                }
+
+
+
+
+                                @*<a class="ico-@i" href="javascript:openMenu( @lstCN[i].DM_CHUCNANG_ID,@user.RoleID,@user.UserID)" id="ico-@lstCN[i].TT_HIENTHI" data-parent="@lstCN[i].DM_CHUCNANG_ID">@lstCN[i].TEN_CHUCNANG</a>*@
+
+                            </div>
+                                        }
+                                    }
+                        </div>
+
+                            }
+
+                        }
+                    </div>
+                </div>
+
+                <div id="top-logo">
+                    <h1><a href="/home/index">eGovOffice</a></h1>
+                </div>
+            </div>
+            <div class="right-all-page" style="border:0px !important;width:calc(100% - 365px);margin:0;padding-bottom:0px;">
+                <div id="top-info">
+                    <div class="site-name">
+                        <h1 style="font-size: 21px; color: rgb(1, 104, 151);">@user.TenCoSo</h1>
+                        <h1>Hệ thống Quản lý Điều hành tác nghiệp</h1>
+                    </div>
+                    <div class="middle">
+                        <b style="margin-bottom: 13px;display: block;">@user.Fullname</b>
+                        <p><span id="servertime"></span></p>
+
+                    </div>
+                    <div class="right">
+                        <div class="notification right-child">
+                            <a href="javascript:void(0)" id="lnkNotification" data-comment="Thông báo mới" class="show-pop-notification" data-contrains="vertical" data-placement="bottom-left" title="Thông báo">
+                                <span id="c-notifi" class="c-notifi">999</span>
+                            </a>
+                        </div>
+                        <div class="messages right-child">
+                            <a href="/chatarea/chat" id="lnkChat" data-comment="Tin nhắn mới" class="show-pop-chat" data-contrains="vertical" data-placement="bottom-left" title="Tin nhắn">
+                                <span id="c-chat" class="c-chat">999</span>
+                            </a>
+                        </div>
+                        <div class="settings right-child">
+                            <div class="btn-group" role="group">
+                                <div class="dropdown-toggle settings-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer; padding:0px;">
+
+                                </div>
+                                <div id="dropdown-menu-settings" class="dropdown-menu">
+                                    <ul>
+                                        <li><a href="javascript:ConfigFunctionDefault()">Cấu hình chức năng mặc định</a></li>
+                                        @{
+                                            if (user.ListRole != null && user.ListRole.Count > 0)
+                                            {
+                                        <li><a href="javascript:SettingRoleDefault()">Thiết lập phiên làm việc mặc định</a></li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-admin">
+                            <input type="hidden" id="globalCoSoID" value="@user.CoSoID" />
+                            <input type="hidden" id="globalUserName" value="@user.Username" />
+                            <input type="hidden" id="globalFullName" value="@user.Fullname" />
+                            @Html.Partial("_InfoBox")
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="main-page">
+            <div id="menu-toolbar">
+                <div class="left-all-page">
+                    <div id="smart-dms" class="block" style="width:350px">
+                        <h1>@ViewBag.Header</h1>
+                    </div>
+                </div>
+                <div class="right-all-page" style="border: 0px; background: none;">
+                    <div id="menu-child">
+                        <div class="menu-left">
+                            <div class="btnAddNew" style="margin-left: 150px;">
+                                <a href="@Url.Action("SendEmailView")">
+                                    <span>Soạn mail</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-container" id="main-container">
+                <script type="text/javascript">
+                    try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+                </script>
+                <div class="main-content">
+                    <div class="main-content-inner">
+                        <div id="sidebar-top" class="sidebar h-sidebar navbar-collapse collapse" data-sidebar="true" data-sidebar-scroll="true" data-sidebar-hover="true">
+                            <ul class="nav nav-list menu_ngang_openland" style="top: 0px;"></ul><!-- /.nav-list -->
+                        </div>
+                        <div class="page-content">
+                            <div class="width-100">
+                                @RenderBody()
+                            </div><!-- /.row -->
+                        </div><!-- /.page-content -->
+                    </div>
+                </div><!-- /.main-content -->
+            </div>
+        </div>
+        
+    </div>
+    <!-- /.main-container -->
+    <div id="pnl-chat">
+    </div>
+    <div id="pnl-notification">
+    </div>
+    <div id="inbox-content" class="hide">
+    </div><!--NỘI DUNG EMAIL-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='~/Content/ACE/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    <script src="/Scripts/jquery-ui-1.11.4.js"></script>
+    <script src="~/Content/ACE/js/ace.min.js"></script>
+    <script>
+        var globalUserId = '@user.UserID';
+        function viewEmailContent(id) {
+            $.ajax({
+                url: '/QuanLyEmailArea/QuanLyEmail/GetInboxContent?emailID=' + id,
+                type: 'GET',
+                dataType: 'html',
+                success: function (result) {
+                    $('#inbox-content').html(result);
+                    $('#inbox-content').removeClass('hide').dialog('open');
+                }
+            });
+        };
+    </script>
+</body>
+</html>
+<script>
+        var _ShowFavorite = 0;
+        var _ShowImportant = 0;
+        __RequestVerificationToken = '@token';
+        __ShowAjaxProcessing = true;
+        $(document).on({
+            ajaxStart: function () {
+                if (__ShowAjaxProcessing) {
+                    $("#_AjaxLoading").dialog("open");
+                }
+                __ShowAjaxProcessing = true;
+            },
+            ajaxStop: function () {
+                $("#_AjaxLoading").dialog("close");
+                $("input[name=__RequestVerificationToken]").remove();
+                $("form").append(__RequestVerificationToken);
+            }
+        });
+        $(document).ready(function () {
+            _ShowFavorite = 0;
+            _ShowImportant = 0;
+            var header_height = $("#header-top").height();
+            var menu_toolbar = $("#menu-toolbar").height();
+            var block_search_form = $("#block-search-form").height();
+            var window_height = $(window).height();
+            var menu_left_content_scroll = window_height - header_height - menu_toolbar - block_search_form;
+            $("#menu-left-content-scroll").css({ "height": menu_left_content_scroll });
+            $(".right-all-page-content").css({ "min-height": menu_left_content_scroll + block_search_form });
+            var total = header_height + window_height + 200;
+            //callNotificationdata();
+            $(window).resize(function () {
+                $(".content-main").css({ "min-height": $(window).height() - $(".top-main").height() - $(".footer-main").height() - 28 });
+            });
+            $(".content-main").css({ "min-height": $(window).height() - $(".top-main").height() - $(".footer-main").height() - 28 });
+
+            $.ajaxSetup({
+                data: {
+                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+                }
+            });
+
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                if (xhr.responseText.indexOf(atob('PCEtLUxPR19JTl9QQUdFLS0+')) > 0) {
+                    event.preventDefault();
+                    console.log("login")
+                    window.location.href = "/Account/Login";
+                }
+                if (xhr.responseText.indexOf(atob('PCEtLU1BSU5UQUlOX1BBR0UtLT4=')) > 0) {
+                    event.preventDefault();
+                    console.log("maintain")
+                    window.location.href = "/Home/ServerMaintenance";
+                }
+            });
+
+            $("#_AjaxLoading").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 200,
+                dialogClass: 'noTitleStuff',
+                height: 45,
+                resizable: false,
+                show: {
+                    effect: "fade",
+                    duration: 200
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 200
+                }
+            });
+
+            
+            $("input[name=__RequestVerificationToken]").remove();
+            $("form").append(__RequestVerificationToken);
+
+            var currentMenuID = sessionStorage.getItem("currentMenuID");
+            if (currentMenuID == null) {
+                currentMenuID = 0;
+            }
+            if ($("#m-" + currentMenuID).parent().hasClass("menu")) {
+                $("#folder-path").html($("#m-" + currentMenuID).html());
+            } else {
+                var cname = $("#m-" + currentMenuID).html();
+                var pname = $($("#m-" + currentMenuID).parent().parent().parent().find("a").get(0)).html();
+
+                $("#folder-path").html(pname + "&nbsp;&nbsp;&nbsp;»&nbsp;&nbsp;&nbsp;" + cname);
+            }
+
+        });
+
+        function DisableAjaxProcessing() {
+            __ShowAjaxProcessing = false;
+        }
+
+        
+</script>

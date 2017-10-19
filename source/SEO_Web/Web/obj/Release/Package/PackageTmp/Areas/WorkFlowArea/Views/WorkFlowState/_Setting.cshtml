@@ -1,0 +1,291 @@
+﻿@using Web.Areas.WorkFlowArea.Models
+@model WorkFlowStateCreateViewModel
+
+
+<link href="~/Content/Custom/css/multiple-select.css" rel="stylesheet" />
+<script src="~/Scripts/multiple-select.js"></script>
+<style type="text/css">
+    .table-responsive {
+        overflow: visible !important;
+    }
+
+    .ms-choice {
+        background: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .ms-drop ul li.multiple input[type=checkbox] {
+        margin: 0 !important;
+    }
+
+    .ms-drop ul li.multiple label span {
+        margin: 0 5px;
+    }
+</style>
+
+<form id="frmUpdateSetting" method="post" enctype="multipart/form-data" action="/workflowarea/workflowstate/SaveSetting">
+    <input type="hidden" id="WF_STEP_ID" name="WF_STEP_ID" value="@Model.WF_BUOCCHUYENTRANGTHAI.ID" />
+    <input type="hidden" id="WF_ID" name="WF_ID" value="@ViewData["WF_ID"]" />
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">
+            <span>Tên bước: @Model.WF_BUOCCHUYENTRANGTHAI.TENBUOC</span>
+        </h4>
+    </div>
+    <div class="modal-body" id="modal_body">
+        <div role="tabpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#user" aria-controls="user" role="tab" data-toggle="tab">Người xử lý</a>
+                </li>
+                <li role="presentation">
+                    <a href="#alert" aria-controls="alert" role="tab" data-toggle="tab">Thông báo</a>
+                </li>
+                <li role="presentation">
+                    <a href="#deadline" aria-controls="alert" role="tab" data-toggle="tab">Thời hạn xử lý</a>
+                </li>
+                <li role="presentation">
+                    <a href="#icon" aria-controls="icon" role="tab" data-toggle="tab">
+                        Icon
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#label" aria-controls="label" role="tab" data-toggle="tab">
+                        Vai trò xử lý
+                    </a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="user">
+                    <div id="block--user-config">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                Giới hạn
+                            </div>
+                            <div class="panel-body">
+                                @Html.DropDownList("UNIT_TYPE", Model.listLoaiDonVis, "--- Chọn loại đơn vị ----", new { Class = "form-control width-100 select2" })
+                            </div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                Thêm người xử lý
+                            </div>
+                            <div class="panel-body">
+                                <ul>
+
+                                    <li>
+                                        <input class="css-checkbox" value="IS_ALLOW_ADD_MAIN_PROCESS" data-text="" id="IS_ALLOW_ADD_MAIN_PROCESS" name="IS_ALLOW_ADD_MAIN_PROCESS" type="checkbox" @(Model.WF_BUOCCHUYENTRANGTHAI.IS_ALLOW_ADD_MAIN_PROCESS == true ? "checked" : string.Empty)>
+                                        <label for="IS_ALLOW_ADD_MAIN_PROCESS" class="css-label2">Được thêm người xử lý chính</label>
+                                    </li>
+                                    <li>
+                                        <input class="css-checkbox" value="IS_ALLOW_ADD_JOIN_PROCESS" data-text="" id="IS_ALLOW_ADD_JOIN_PROCESS" name="IS_ALLOW_ADD_JOIN_PROCESS" type="checkbox" @(Model.WF_BUOCCHUYENTRANGTHAI.IS_ALLOW_ADD_JOIN_PROCESS == true ? "checked" : string.Empty)>
+                                        <label for="IS_ALLOW_ADD_JOIN_PROCESS" class="css-label2">Được thêm người tham gia xử lý</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="alert">
+                    <div id="block--alert-config">
+                        <ul>
+                            <li>
+                                <input class="css-checkbox" value="IS_POPUP" data-text="" id="IS_POPUP" name="IS_POPUP" type="checkbox" @(Model.WF_BUOCCHUYENTRANGTHAI.IS_POPUP == true ? "checked" : string.Empty)>
+                                <label for="IS_POPUP" class="css-label2">Hiển thị thông báo trên cửa sổ Popup</label>
+                            </li>
+                            <li>
+                                <input class="css-checkbox" value="IS_MESG" data-text="" id="IS_MESG" name="IS_MESG" type="checkbox" @(Model.WF_BUOCCHUYENTRANGTHAI.IS_MESG == true ? "checked" : string.Empty)>
+                                <label for="IS_MESG" class="css-label2">Gửi thông báo vào inbox</label>
+                            </li>
+                            <li>
+                                <input class="css-checkbox" value="IS_EMAIL" data-text="" id="IS_EMAIL" name="IS_EMAIL" type="checkbox" @(Model.WF_BUOCCHUYENTRANGTHAI.IS_EMAIL == true ? "checked" : string.Empty)>
+                                <label for="IS_EMAIL" class="css-label2">Gửi email</label>
+                            </li>
+                            <li>
+                                <input class="css-checkbox" value="IS_SMS" data-text="" id="IS_SMS" name="IS_SMS" type="checkbox" @(Model.WF_BUOCCHUYENTRANGTHAI.IS_SMS == true ? "checked" : string.Empty)>
+                                <label for="IS_SMS" class="css-label2">Gửi tin nhắn SMS vào điện thoại</label>
+                            </li>
+                            <li>
+                                <input type="text" placeholder="Nội dung thông báo" name="NOIDUNG_THONGBAO" value="@Model.WF_BUOCCHUYENTRANGTHAI.NOIDUNG_THONGBAO" style="width:50%"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="deadline">
+                    <div id="block--deadline-config">
+                        <ul>
+                            <li>
+                                <input class="css-checkbox" value="IS_ALLOW_CHANGE_DEADLINE" data-text="" id="IS_ALLOW_CHANGE_DEADLINE" name="IS_ALLOW_CHANGE_DEADLINE" type="checkbox" @(Model.WF_BUOCCHUYENTRANGTHAI.IS_ALLOW_CHANGE_DEADLINE == true ? "checked" : string.Empty)>
+                                <label for="IS_ALLOW_CHANGE_DEADLINE" class="css-label2">Cho phép thay đổi thời hạn xử lý</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="icon">
+                    <div class="block--icon-config">
+                        <input type="file" name="stepIcon" id="stepIcon" accept="image/*">
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="label">
+                    <div class="block--label-config">
+                        <table class="table table-condensed table-hover table-bordered table-striped" id="table--wf-label">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <b>Tên nhãn</b>
+                                    </th>
+                                    <th>
+                                        <b>Vai trò</b>
+                                    </th>
+                                    <th>
+                                        <b>
+                                            Loại xử lý
+                                        </b>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (Model.listWfLabelBOs != null && Model.listWfLabelBOs.Count > 0)
+                                    {
+                                        int wfLabelCount = Model.listWfLabelBOs.Count;
+                                        for (int i = 0; i < wfLabelCount; i++)
+                                        {
+                                            var wfLabelB0 = Model.listWfLabelBOs[i];
+                                            <tr class="row--wf-label">
+                                                <td>
+                                                    <div class="form-group" style="margin:0">
+                                                        <input type="hidden" name="WF_LABEL_ID" value="@wfLabelB0.ID" />
+                                                        <input type="text" class="form-control LABEL_TEXT required" placeholder="Tên nhãn" value="@wfLabelB0.LABEL_TEXT" name="LABEL_TEXT_@i">
+                                                        <div class="note-error">
+                                                            <span class="error mes-note-error"></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <div class="form-group" style="margin:0">
+                                                            <div style="width:250px;">
+                                                                @Html.DropDownList("DM_VAITRO_ID_" + i, wfLabelB0.listDmVaiTros, new { @multiple = "multiple", Class = "select--label-role form-control required" })
+                                                                <div class="note-error">
+                                                                    <span class="error mes-note-error"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <div class="col-sm-6" style="height: 34px; padding: 5px 0;">
+                                                        <input type="radio" class="css-checkbox" id="IS_MAIN_PROCESS_@i" value="true" name="IS_MAIN_PROCESS_@i" @(wfLabelB0.IS_MAIN_PROCESS == true ? "checked" : "")>
+                                                        <label for="IS_MAIN_PROCESS_@i" class="css-label">Xử lý chính</label>
+                                                    </div>
+                                                    <div class="col-sm-6" style="height: 34px; padding: 5px 0;">
+                                                        <input type="radio" class="css-checkbox" id="IS_JOIN_PROCESS_@i" value="false" name="IS_MAIN_PROCESS_@i" @(wfLabelB0.IS_MAIN_PROCESS != true ? "checked" : "")>
+                                                        <label for="IS_JOIN_PROCESS_@i" class="css-label">Tham gia xử lý</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr class="row--wf-label">
+                                            <td>
+                                                <div class="form-group" style="margin:0">
+                                                    <input type="hidden" name="WF_LABEL_ID" value="0" />
+                                                    <input type="text" class="form-control LABEL_TEXT required" placeholder="Tên nhãn" name="LABEL_TEXT_0">
+                                                    <div class="note-error">
+                                                        <span class="error mes-note-error"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <center>
+                                                    <div class="form-group" style="margin:0">
+                                                        <div style="width:250px;">
+                                                            @Html.DropDownList("DM_VAITRO_ID_0", Model.listVaiTros, new { @multiple = "multiple", Class = "select--label-role form-control required" })
+                                                            <div class="note-error">
+                                                                <span class="error mes-note-error"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </center>
+                                            </td>
+                                            <td>
+                                                <div class="col-sm-6" style="height: 34px; padding: 5px 0;">
+                                                    <input type="radio" class="css-checkbox" id="IS_MAIN_PROCESS_0" value="true" name="IS_MAIN_PROCESS_0" checked>
+                                                    <label for="IS_MAIN_PROCESS_0" class="css-label">Xử lý chính</label>
+                                                </div>
+                                                <div class="col-sm-6" style="height: 34px; padding: 5px 0;">
+                                                    <input type="radio" class="css-checkbox" id="IS_JOIN_PROCESS_0" value="false" name="IS_MAIN_PROCESS_0">
+                                                    <label for="IS_JOIN_PROCESS_0" class="css-label">Tham gia xử lý</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    
+                                        <tr class="row--wf-label">
+                                            <td>
+                                                <div class="form-group" style="margin:0">
+                                                    <input type="hidden" name="WF_LABEL_ID" value="0" />
+                                                    <input type="text" class="form-control LABEL_TEXT required" placeholder="Tên nhãn" name="LABEL_TEXT_1">
+                                                    <div class="note-error">
+                                                        <span class="error mes-note-error"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <center>
+                                                    <div class="form-group" style="margin:0">
+                                                        <div style="width:250px;">
+                                                            @Html.DropDownList("DM_VAITRO_ID_1", Model.listVaiTros, new { @multiple = "multiple", Class = "select--label-role form-control required" })
+                                                            <div class="note-error">
+                                                                <span class="error mes-note-error"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </center>
+                                            </td>
+                                            <td>
+                                                <div class="col-sm-6" style="height: 34px; padding: 5px 0;">
+                                                    <input type="radio" class="css-checkbox" id="IS_MAIN_PROCESS_1" value="true" name="IS_MAIN_PROCESS_1">
+                                                    <label for="IS_MAIN_PROCESS_1" class="css-label">Xử lý chính</label>
+                                                </div>
+                                                <div class="col-sm-6" style="height: 34px; padding: 5px 0;">
+                                                    <input type="radio" class="css-checkbox" id="IS_JOIN_PROCESS_1" value="false" name="IS_MAIN_PROCESS_1" checked>
+                                                    <label for="IS_JOIN_PROCESS_1" class="css-label">Tham gia xử lý</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" id="btnSave" style="border-radius: 3px;">
+            Lưu
+        </button>
+        <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+    </div>
+</form>
+
+<script>
+    $('.select--label-role').multipleSelect({
+        multiple: true,
+        placeholder: 'Chọn vai trò',
+        filter: true
+    });
+</script>

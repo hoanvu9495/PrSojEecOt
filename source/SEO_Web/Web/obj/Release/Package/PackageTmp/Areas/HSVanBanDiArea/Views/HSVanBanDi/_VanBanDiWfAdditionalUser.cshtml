@@ -1,0 +1,108 @@
+﻿@using Business.CommonBusiness;
+@using Web.Areas.HSVanBanDiArea.Models;
+@model VanBanDiWfStepChangeViewModel
+@{
+    List<DMNguoiDungBO> listUsers = Model.listUsers;
+    bool isMainProcess = bool.Parse(ViewData["IS_MAIN_PROCESS"].ToString());
+}
+<style type="text/css">
+    #block--add-recipients .table thead,
+    #block--add-recipients .table tbody,
+    #block--add-recipients .table tr,
+    #block--add-recipients .table tr th,
+    #block--add-recipients .table tr td {
+        display: block;
+    }
+
+    #block--add-recipients tbody {
+        height: 350px;
+        overflow-y: auto;
+    }
+</style>
+<div id="block--add-recipients">
+    <input type="hidden" id="IS_MAIN_PROCESS" value="@(isMainProcess ? "1" : "0")">
+    <div class="table-responsive col-sm-12 smart-form">
+        <table class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th style="border:none">
+                        <h3 class="text-primary" style="margin:0">
+                            @(isMainProcess ? " XỬ LÝ CHÍNH" : "THAM GIA XỬ LÝ")
+                        </h3>
+                        <label for="input--sm-add-xuly" class="input">
+                            <input type="text" class="input-sm" placeholder="họ tên" id="input--sm-add-xuly" onkeyup="searchAdditionalProcess(event)">
+                        </label>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="clearfix">
+                    <td class="clearfix">
+                        <div class="col-sm-12 pull-right">
+                            <strong>@(isMainProcess ? " NGƯỜI XỬ LÝ MỚI" : "NGƯỜI THAM GIA XỬ LÝ MỚI")</strong>
+                        </div>
+                    </td>
+                </tr>
+                @{
+                    var listUserByRoles = listUsers.GroupBy(x => x.vaiTroId)
+                            .Select(x => new
+                            {
+                                id = x.Key,
+                                roleName = x.First().tenVaiTro,
+                                listUsers = x.Where(y => !string.IsNullOrEmpty(y.HOTEN)).OrderBy(y => y.HOTEN).ToList()
+                            }).ToList();
+                    for (int i = 0; i < listUserByRoles.Count; i++)
+                    {
+                        <tr class="clearfix">
+                            <td class="clearfix">
+                                <div class="col-sm-11 pull-right">
+                                    <strong>
+                                        @listUserByRoles[i].roleName
+                                    </strong>
+                                </div>
+                            </td>
+                        </tr>
+                        for (int j = 0; j < listUserByRoles[i].listUsers.Count; j++)
+                        {
+                            var user = listUserByRoles[i].listUsers[j];
+                            <tr class="clearfix">
+                                <td class="clearfix">
+                                    <div class="col-sm-10 pull-right">
+                                        <label class="checkbox" for="USER_ADD_PROCESS_@user.DM_NGUOIDUNG_ID">
+                                            <input name="USER_ADD_PROCESS" type="checkbox" value="@user.DM_NGUOIDUNG_ID" id="USER_ADD_PROCESS_@user.DM_NGUOIDUNG_ID" class="USER_ADD_PROCESS">
+                                            <i></i><span class="USER_ADD_PROCESS_NAME">@user.HOTEN</span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+        </table>
+    </div>
+</div>
+
+<script>
+    function searchAdditionalProcess(event) {
+        var value = $(event.currentTarget).val().trim();
+        value = CommonJS.removeVietnameseChars(value);
+        if (value !== '') {
+            $.each($('#block--add-recipients table tbody tr'), function (index, item) {
+                $col = $(this);
+                if ($col.find('input[name=USER_ADD_PROCESS]').length > 0) {
+                    var name = $col.find('input[name=USER_ADD_PROCESS]').next('i').next('.USER_ADD_PROCESS_NAME').text();
+                    name = CommonJS.removeVietnameseChars(name);
+                    if (name.indexOf(value) === -1) {
+                        $(item).hide();
+                    } else {
+                        $(item).show();
+                    }
+                } else {
+                    $col.hide();
+                }
+            });
+        } else {
+            $("#block--add-recipients table tbody tr").show();
+        }
+    }
+</script>

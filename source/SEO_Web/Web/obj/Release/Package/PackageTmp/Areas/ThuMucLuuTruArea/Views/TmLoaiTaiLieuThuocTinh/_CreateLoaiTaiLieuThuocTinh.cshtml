@@ -1,0 +1,169 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Web.Areas.ThuMucLuuTruArea.Models.LoaiTaiLieu
+
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+        color: #555;
+        display: block;
+        font-size: 13px;
+        line-height: 1.42857;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    }
+</style>
+@using (Ajax.BeginForm("SaveThuocTinh", "TmLoaiTaiLieuThuocTinh", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmLoaiVanBanCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm mới thuộc tính cho tài liệu</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td style="width:100px">
+                            <label class="lbl" for="CREATE_LOAIVANBAN" style=" width: 120px;">Loại tài liệu:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" style="width: 233px;">
+                                @Html.DropDownList("LOAITAILIEU_ID", Model.TAILIEU, new { @style = "width: 233px", @id = "LOAITAILIEU_ID", @class = "e-input" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td><label class="lbl" for="CREATE_LOAIVANBAN" style=" width: 120px;">Tên thuộc tính:(<span style="color:red">*</span>)</label></td>
+                        <td>
+                            <input class="e-input" style="width:233px" id="TEN_THUOCTINH" name="TEN_THUOCTINH" placeholder="Nhập tên thuộc tính" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="TEN_THUOCTINH_ER" style="margin-left: 0px; color: red;">Thuộc tính này đã tồn tại.</span>
+                            <span class="lb-Check" id="TEN_THUOCTINH_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập thuộc tính </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="lbl" for="CREATE_LOAIVANBAN" style=" width: 120px;">Mô tả</label></td>
+                        <td>
+                            <textarea class="form-control" style="height:50px !important;resize:vertical" placeholder="Nhập mô tả cho loại văn bản" name="MOTA_THUOCTINH" id="MOTA_THUOCTINH"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="MOTA_THUOCTINH_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập mô tả cho thuộc tính </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnSave">Thêm mới</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $(function () {
+        var isExisted = false;
+        $("#TEN_THUOCTINH").blur(function () {
+            if ($("#TEN_THUOCTINH").val().trim().length == 0) {
+            } else {
+                $("#TEN_THUOCTINH_NULL").hide();
+            }
+        });
+        $("#MOTA_THUOCTINH").focusout(function () {
+            if ($("#MOTA_THUOCTINH").val().trim().length == 0) {
+                //$("#LOAITAILIEU_NULL").show();
+            } else {
+                $("#MOTA_THUOCTINH_NULL").hide();
+            }
+        });
+        $("#btnSave").click(function () {
+            if ($("#TEN_THUOCTINH").val().trim().length == 0) {
+                $("#TEN_THUOCTINH").focus();
+                $("#TEN_THUOCTINH_NULL").show();
+                $("#TEN_THUOCTINH_ER").hide();
+                return false;
+            } else {
+                $("#TEN_THUOCTINH_NULL").hide();
+            }
+            var tenloaivanban = $("#TEN_THUOCTINH").val();
+            if (tenloaivanban.trim().length > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("Validate", "TmLoaiTaiLieuThuocTinh")',
+                    data: {
+                        thuoctinh: tenloaivanban,
+                        LOAITAILIEU: $("#LOAITAILIEU_ID").val()
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        if (data == "True") {
+                            $("#TEN_THUOCTINH").focus();
+                            $("#TEN_THUOCTINH_ER").show();
+                            $("#TEN_THUOCTINH_NULL").hide();
+                            isExisted = true;
+                            return false;
+                        } else {
+                            $("#TEN_THUOCTINH_ER").hide();
+                            isExisted = false;
+                        }
+                    }, error: function () {
+                        alert("Có lỗi xảy ra.");
+                    }
+                });
+            }
+            //if ($("#MOTA_THUOCTINH").val().trim().length == 0) {
+            //    $("#MOTA_THUOCTINH").select();
+            //    $("#MOTA_THUOCTINH_NULL").show();
+            //    return false;
+            //} else {
+            //    $("#MOTA_THUOCTINH_NULL").hide();
+            //}
+            if (!isExisted) {
+                $("#frmLoaiVanBanCreate").submit();
+                return true;
+            } else {
+                return false;
+            }
+        });
+    });
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Tạo mới thuộc tính thành công!',
+        });
+        $("#CreateLoaiVanBan").modal("hide");
+        reloadGrid();
+    }
+</script>

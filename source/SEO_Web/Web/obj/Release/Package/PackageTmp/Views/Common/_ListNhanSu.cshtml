@@ -1,0 +1,68 @@
+﻿@model List<Business.CommonBusiness.HscbNhanSuLogBO>
+<table id="tbl_list_qtl" class="webGrid" data-swhgajax="true" data-swhgcontainer="grid" data-swhgcallback="" style="width:99% !important">
+    <thead>
+        <tr class="head">
+            <th scope="col" width="5%">
+                STT
+            </th>
+
+            <th scope="col">
+                Người xử lý
+            </th>
+            <th scope="col">
+                Ngày thực hiện
+            </th>
+            <th scope="col">
+                Trạng thái
+            </th>
+            @*<th scope="col">
+                    Trạng thái sau
+                </th>*@
+            <th scope="col">
+                Ghi chú
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (Model.Count > 0 && Model != null)
+            {
+                var dem = 0;
+                foreach (var item in Model)
+                {
+                    dem++;
+                    <tr>
+                        <td>@dem</td>
+                        <td>
+                            @item.NGUOI_XU_LY
+                            @*(@item.ROLE)*@
+                        </td>
+                        <td>
+                            @string.Format("{0:dd/MM/yyyy HH:mm}", item.NGAYTAO)
+                        </td>
+                        <td>
+                            @item.TRANGTHAI_TRUOC
+                        </td>
+                        @*<td>
+                                @item.TRANGTHAI_SAU
+                            </td>*@
+                        <td width="40%">
+                            <span style="text-align:left; float:left">
+                                @item.GHICHU
+                            </span>
+                        </td>
+
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6">
+                        <span style="color:red">Không tìm thấy</span>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

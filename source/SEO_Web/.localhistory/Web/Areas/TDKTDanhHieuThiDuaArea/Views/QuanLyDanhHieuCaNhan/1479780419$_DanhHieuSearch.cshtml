@@ -1,0 +1,22 @@
+﻿@using Web.Common
+@using Web.FwCore;
+<div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" role="tabpanel" style="">
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindVanBanDen", "VanBanDen", new { SearchType = "Index" }, new AjaxOptions()
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnFailure = "failure",
+            OnSuccess = "searchSuccess",
+            UpdateTargetId = "grid",
+        }, new { id = "frmSearh" }))
+    {
+        <div>
+            <center>
+                <table style="width:80%;">
+
+                </table>
+            </center>
+        </div>
+    }
+</div>

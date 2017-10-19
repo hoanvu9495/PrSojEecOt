@@ -1,0 +1,76 @@
+﻿@using Model.eAita
+@model Web.Areas.TDKTDangKyDanhHieuArea.Models.CaNhanDangKyViewModel
+
+@foreach (var danhieu in Model.LstDanhHieuCaNhanModel)
+{
+    var Index = 1;
+    <div class="panel panel-default">
+        <div class="panel-heading">@danhieu.DANHHIEUTHIDUA</div>
+        <div class="panel-body">
+            @{
+    List<TDKT_DIEUKIENDANHHIEUCANHAN> LstCondDateTime = Model.LstCondDateTime.Where(x => x.DANHHIEUCANHAN_ID == danhieu.ID).ToList();
+            }
+            @foreach (var item in LstCondDateTime)
+            {
+                <table class="webGrid">
+                    <thead>
+                        <tr class="head">
+                            <th style="text-align: center" scope="col">Điều kiện @Index</th>
+                            <th style="text-align: center" scope="col">Số lượng</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label>Số năm công tác lớn hơn</label>
+                            </td>
+                            <td>
+                                @item.SONAMCONGTAC năm
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Số ngày nghỉ trong năm không vượt quá</label>
+                            </td>
+                            <td>
+                                @item.SONGAYNGHI ngày
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Số sáng kiến ý tưởng trong năm</label>
+                            </td>
+                            <td>
+                                @(item.SOSANGKIEN != null ? item.SOSANGKIEN : 0) sáng kiến ý tưởng
+                            </td>
+
+                        </tr>
+                        @{
+                var LstDK = Model.LstCondDanhHieu.Where(x => x.DIEUKIEN_ID == item.ID).ToList();
+                        }
+                        @foreach (var dk_item in LstDK)
+                        {
+                            <tr>
+                                <td style="text-align: center">
+                                    <div class="input-field4">
+                                        @dk_item.TEN_DANH_HIEU_COND
+                                    </div>
+                                </td>
+                                <td style="text-align: center">
+                                    @dk_item.COND_SO_LUONG lần
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                        Index = Index + 1;
+            }
+
+
+        </div>
+    </div>
+}

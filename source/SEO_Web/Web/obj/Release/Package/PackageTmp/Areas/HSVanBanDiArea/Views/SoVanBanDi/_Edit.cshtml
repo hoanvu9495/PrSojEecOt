@@ -1,0 +1,195 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.eAita;
+@model HSCV_SOVANBAN
+@{    
+    List<SelectListItem> LstNhomSo = new List<SelectListItem>();
+    LstNhomSo.Add(new SelectListItem() { Text = "Sổ văn bản đến tăng theo năm", Value = "3", Selected = (Model.NHOMSOVANBAN_ID == 3) });
+    LstNhomSo.Add(new SelectListItem() { Text = "Sổ văn bản đi tăng theo năm", Value = "1", Selected = (Model.NHOMSOVANBAN_ID == 1) });
+}
+
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+
+<style>
+    .color-red {
+        color: red;
+    }
+
+    .lbl6 {
+        margin-top: 7px;
+    }
+
+    .ms-drop {
+        /*width: 233px;*/
+        width: 100%;
+    }
+
+    .ms-choice > span {
+        width: 100%;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+        width: 100%;
+    }
+
+    .width_100 {
+        width: 100% !important;
+    }
+</style>
+@using (Ajax.BeginForm("SaveSoVanBan", "SoVanBanDen", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmVaiTroCreate" }))
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Thêm mới sổ văn bản <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="lbl6">Tên sổ văn bản<span class="color-red">*</span></label>
+            </div>
+            <div class=" col-sm-8">
+                <div class="form-group">
+                    <input type="hidden" name="ID" value="@Model.ID" />
+                    @Html.TextBox("TENSO", Model.TENSO, new { @class = "form-control required", @id = "TENSO", @maxlength = "20" })
+                    <div class="note-error">
+                        <span id="ErrVaiTro" class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="lbl6">Nhóm sổ văn bản<span class="color-red">*</span></label>
+            </div>
+            <div class=" col-sm-8">
+                @Html.DropDownList("NHOMSOVANBAN_ID", LstNhomSo, new { @class = "select2 ", @style = "width: 100%" })
+                <div class="note-error">
+                    <span class="error mes-note-error"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="lbl6">Số văn bản tối đa<span class="color-red">*</span></label>
+            </div>
+            <div class=" col-sm-8">
+                <div class="form-group">
+                    @Html.TextBox("SOVANBANTOIDA", Model.SOVANBANTOIDA, new { @class = "form-control required validateNumber", @id = "SOVANBANTOIDA" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="lbl6">Năm<span class="color-red">*</span></label>
+            </div>
+            <div class=" col-sm-8">
+                <div class="form-group">
+                    @Html.TextBox("NAM_SOVANBAN", Model.NAM_SOVANBAN, new { @class = "form-control required validateNumber", @id = "NAM_SOVANBAN" })
+                    <div class="note-error">
+                        <span class="error mes-note-error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="lbl6">Mục đích tạo</label>
+            </div>
+            <div class=" col-sm-8">
+                <textarea name="MUCDICHTAO" style="width: 100%">
+                    @Model.MUCDICHTAO
+                </textarea>
+
+                <div class="note-error">
+                    <span class="error mes-note-error"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer center">
+
+        <button type="button" class="btn btn-primary" id="btnSave" style="border-radius: 3px;">
+            Lưu
+        </button>
+        <button type="button" class="btn btn-default" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+    </div>
+
+
+}
+<script type="text/javascript">
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function CreateSuccess(rs) {
+        if (rs) {
+            NotiSuccess("Thêm mới thành công");
+        }
+        OnCloseLog();
+        location.reload();
+    }
+    function OnClose() {
+        $("#CreateVaiTro").dialog("close");
+    }
+    function OnCloseLog() {
+        $("#formCreate").html("");
+        $("#CreateVaiTro").modal("hide");
+    }
+    function pageFunction() {
+
+        $("#btnSave").click(function () {
+            var err = 0;
+            var required = requiredFieldForFormId("frmVaiTroCreate");
+            if (!required) {
+                err++
+            }
+            var required = ValidateFieldNumber("frmVaiTroCreate");
+            if (!required) {
+                err++
+            }
+            if (err == 0) {
+                $("#frmVaiTroCreate").submit();
+                return true;
+            } else {
+                NotiError("Có lỗi. Vui lòng kiểm tra lại");
+                return false;
+            }
+
+        });
+
+
+        $("#NHOMSOVANBAN_ID").multipleSelect({
+            multiple: false,
+            filter: false,
+            single: true,
+        });
+    }
+
+
+    loadScript("Scripts/jquery.unobtrusive-ajax.min.js", function () {
+        loadScript("Scripts/autoNumeric.min.js", function () {
+            loadScript("Scripts/multiple-select.js", pageFunction);
+        });
+    });
+
+
+
+</script>
+

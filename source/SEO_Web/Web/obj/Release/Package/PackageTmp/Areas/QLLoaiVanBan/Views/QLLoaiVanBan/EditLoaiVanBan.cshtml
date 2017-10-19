@@ -1,0 +1,73 @@
+﻿@model Web.Areas.QLLoaiVanBan.Models.LoaiVbViewModel
+@using Model.eAita
+@{
+    ViewBag.Title = "Quản lý loại văn bản";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+@section HeaderPopup
+{
+    <h1>@ViewBag.Title<a href="/QLGiangVienArea/QLGiangVien" title="Đóng lại"></a></h1>
+}
+<div class="SearchCriterial clearfix hot-news-list-2 mgt20">
+    <h3 class="group-tittle mt10">
+        Chỉnh sửa thông tin loại văn bản
+    </h3>
+    <form>
+        @Html.AntiForgeryToken()
+        <input type="hidden" id="LOAIVANBANID" name="ID" value="@Model.ID" />
+        <center>
+            <div class="cont-bc">
+                <table style="width:80%; margin:auto;">
+                    <tr style="height:20px"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl-title">Tên loại văn bản:<span style="color: red;">*</span></label>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBox("TENLOAIVB", Model.TENLOAIVB, new { @style = "width: 675px;", maxlength = "255", @class = "e-input", @id = "TENLOAIVANBAN" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <div class="btn-bc">
+                <div>
+                    <input type="button" onclick="UpdateLoaiVanBan()" value="Lưu thông tin" id="btnSave" class="btn btn-submit" style="border: 0 none;" />
+                    <a href="/QLLoaiVanBan/QLLoaiVanBan/" class="btn btn-success" style="min-height: auto; padding: 9px 0px">Quay lại</a>
+                </div>
+            </div>
+
+        </center>
+    </form>
+</div>
+
+<script type="text/javascript">
+    function UpdateLoaiVanBan() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("UpdateLoaiVanBan", "QLLoaiVanBan")',
+            cache: false,
+            data: {
+                TENLOAIVANBAN: $("#TENLOAIVANBAN").val(),
+                ID: '@Model.ID'
+            },
+            dataType: "html",
+            success: function (data) {
+                var tmp_data = jQuery.parseJSON(data);
+                if (tmp_data.Type == "SUCCESS") {
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: 'Update successfully!',
+                    });
+                } else {
+                    notif({
+                        type: 'error',
+                        position: 'bottom',
+                        msg: tmp_data.Message,
+                    });
+                }                
+            }
+        });
+    }
+</script>

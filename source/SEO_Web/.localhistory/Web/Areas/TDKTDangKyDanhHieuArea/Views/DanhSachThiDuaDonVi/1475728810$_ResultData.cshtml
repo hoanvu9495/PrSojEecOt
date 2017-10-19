@@ -1,0 +1,30 @@
+﻿@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.TDKTPhongTraoThiDuaArea.Models;
+@*@model Web.Areas.TDKTPhongTraoThiDuaArea.Models.PhongTraoThiDuaViewModel*@
+@{
+
+    List<TDKT_PHONGTRAO_THIDUA> LstPhongTrao = Model.LstPhongTrao;
+    var grid = new WebGrid(LstPhongTrao,
+             rowsPerPage: 10,
+             canPage: true,
+             canSort: true,
+             ajaxUpdateContainerId: "grid",
+             selectionFieldName: "selectedRow"
+               );
+
+}
+<div id="grid">
+    @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                    "<a href='/TDKTDangKyDanhHieuArea/DanhSachThiDuaDonVi/ViewReport/" + item.ID + "' >" + item.KE_HOACH_THI_DUA + "</a>")), header: "Phong trào thi đua", style: "left")                  
+    )
+</div>

@@ -1,0 +1,471 @@
+﻿@using Web.Areas.NguoiDungArea.Models;
+@model NguoiDungIndexViewModel
+@{
+    ViewBag.Title = "Quản lý người dùng";
+    //Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    Layout = "~/Views/Shared/_LayoutSmartDms.cshtml";
+
+}
+@*<script type="text/javascript" src="/Scripts/jquery.autocomplete.min.js"></script>*@
+<style type="text/css">
+    .lbl {
+        text-align: left;
+        /*display: inline-block;*/
+        width: 100%;
+        /*margin-right: 10px;*/
+    }
+
+    .tt-qlthb li {
+        float: left;
+        margin-left: 0;
+    }
+
+    ul.tt-qlthb li {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /** resets **/
+    ::selection {
+        background: #a4dcec;
+    }
+
+    ::-moz-selection {
+        background: #a4dcec;
+    }
+
+    ::-webkit-selection {
+        background: #a4dcec;
+    }
+
+    ::-webkit-input-placeholder { /* WebKit browsers */
+        color: #ccc;
+        /*font-style: italic;*/
+    }
+
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: #ccc;
+        /*font-style: italic;*/
+    }
+
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: #ccc;
+        /*font-style: italic;*/
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: #ccc !important;
+        /*font-style: italic;*/
+    }
+
+    br {
+        display: block;
+        /*line-height: 2.2em;*/
+    }
+
+    article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+        display: block;
+    }
+
+    ol, ul {
+        list-style: none;
+    }
+
+    input, textarea {
+        /*-webkit-font-smoothing: antialiased;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%*/;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        outline: none;
+    }
+
+    blockquote, q {
+        quotes: none;
+    }
+
+        blockquote:before, blockquote:after, q:before, q:after {
+            content: '';
+            content: none;
+        }
+
+    strong {
+        font-weight: bold;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    /*img {
+            border: 0;
+            max-width: 100%;
+        }*/
+
+    #topbar {
+        background: #4f4a41;
+        padding: 10px 0 10px 0;
+        text-align: center;
+    }
+
+        #topbar a {
+            color: #fff;
+            font-size: 1.3em;
+            line-height: 1.25em;
+            text-decoration: none;
+            opacity: 0.5;
+            font-weight: bold;
+        }
+
+            #topbar a:hover {
+                opacity: 1;
+            }
+
+    a {
+        /*color: #5a9352;*/
+        text-decoration: none;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    .biginput {
+        width: 682px;
+        height: 32px;
+        padding: 0 10px 0 10px;
+        background-color: #fff;
+        border: 1px solid #c8c8c8;
+        border-radius: 3px;
+        color: #aeaeae;
+        font-weight: normal;
+        font-size: 1.5em;
+        -webkit-transition: all 0.2s linear;
+        -moz-transition: all 0.2s linear;
+        transition: all 0.2s linear;
+    }
+
+        .biginput:focus {
+            color: #858585;
+        }
+
+    .flatbtn:hover {
+        color: #fff;
+        background-color: #73c437;
+    }
+
+    .flatbtn:active {
+        -webkit-box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .autocomplete-suggestions {
+        border: 1px solid #999;
+        background: #fff;
+        cursor: default;
+        overflow: auto;
+    }
+
+    .autocomplete-suggestion {
+        padding: 10px 5px;
+        font-size: 1.2em;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .autocomplete-selected {
+        background: #f0f0f0;
+    }
+
+    .autocomplete-suggestions strong {
+        font-weight: normal;
+        color: #3399ff;
+    }
+
+    input[type=text] {
+        height: 32px;
+    }
+
+    /*.format-table {
+        height: 350px;
+        overflow-y: auto;
+    }*/
+    .SearchCriterial {
+        margin: 0px;
+    }
+
+    .SearchResult {
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+<style type="text/css">
+    .create-lbl {
+        display: inline-block;
+        width: 100px;
+        font-family: 'Arial','Times New Roman';
+        font-size: 13px;
+        margin-left: 35px;
+    }
+
+    .create-txt {
+        width: 230px;
+        height: 25px;
+        margin-left: -75px;
+    }
+
+    .lb-Check {
+        color: red;
+        display: none;
+        font-size: 11px;
+        margin-left: 140px;
+    }
+
+    .btnAction {
+        padding: 5px 20px;
+        margin-left: 10px;
+    }
+</style>
+<div id="ribbon" style=" background-color:#57889c">
+
+    <div class="col-md-6 col-sm-6">
+        <ol class="breadcrumb">
+            <!-- This is auto generated -->
+        </ol>
+    </div>
+    <!-- breadcrumb -->
+    <!-- end breadcrumb -->
+
+    <div class="col-md-6 col-sm-6">
+        <a class="btn btn-default btn-flat pull-right" href="javascript:ChoosePhongBan();" >
+            <span>Thay đổi đơn vị</span>
+        </a>
+        <a class="btn btn-default btn-flat pull-right" href="javascript:OnCreate();">
+            <span>Thêm mới</span>
+        </a>
+    </div>
+</div>
+<!-- #MAIN CONTENT -->
+<div id="content">
+
+    <div id="menu-toolbar" class="date-time">
+
+        <div class="right-all-page" style="background:none; border:0px;">
+            @*<div class="row" style=" margin-bottom:7px;">
+                <div class="col-sm-9">
+
+                </div>
+                <div class="col-sm-3">
+                    <a class="btn btn-default btn-sm" href="javascript:ChoosePhongBan();" style="float: right;margin-left: 10px">
+                        <span>Thay đổi đơn vị</span>
+                    </a>
+                    <a class="btn btn-success btn-sm" href="javascript:OnCreate();" style="float: right">
+                        <span>Thêm mới</span>
+                    </a>
+                </div>
+            </div>*@
+         
+
+        </div>
+    </div>
+
+    <div class="right-all-page rightpage">
+        <div class="right-content clearfix ">
+            <div class="SearchCriterial" style="display:none">
+                <div id="SearchResult">
+                    @*@Html.Partial("_NguoiDungSearch")*@
+                </div>
+            </div>
+            <div class="row">
+                @if (Model.TreeDonVi.Child != null && Model.TreeDonVi.Child.Count > 0)
+                {
+                <div class="col-sm-3">
+                    @Html.Partial("TreeDonViPartial", Model.TreeDonVi)
+                </div>
+                <div class="col-sm-9">
+                    <div class="SearchResult clearfix">
+                        <div id="SearchResult">
+                            @Html.Partial("_NguoiDungSearchResult")
+                        </div>
+                    </div>
+                </div>
+                }
+                else
+                {
+                <div class="col-sm-12" id="SearchResult">
+                    @Html.Partial("_NguoiDungSearchResult")
+                </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+    @*modal chọn phòng ban*@
+    <div id="dialogChonPhongBan" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Chọn phòng ban muốn chuyển</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("TreeChonDonViPartial", Model.TreeDonVi)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="changeDepartment()">Lưu</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@*end*@
+<script type="text/javascript">
+    var IDDonVi = 1;
+    $(document).ready(function () {
+
+        pageSetUp();
+
+    })
+    $(document).ready(function () {
+        drawBreadCrumbManual("Quản lý người dùng/Danh sách người dùng");
+        //$("#FTS_INDEX").change(function () {
+        //    $("#FTS").val($(this).val());
+        //});
+        //document.onkeydown = function () {
+        //    if (window.event.keyCode == '13') {
+        //        $("#btnSubmit").submit();
+        //    }
+        //}
+        //$("#btnSubmit").click(function () {
+        //    $("#btnSubmit").submit();
+        //});
+    });
+
+    function AdvancedSearch() {
+        var data = $("#btnAdvancedSearch").attr("data-search");
+        if (data == "0") {
+            $("#btnAdvancedSearch").attr("data-search", "1")
+            $(".SearchCriterial").show();
+        } else {
+            $("#btnAdvancedSearch").attr("data-search", "0")
+            $(".SearchCriterial").hide();
+        }
+    }
+    function FullScreen() {
+        var data = $('#btn-fullscreen').attr("data-click");
+        if (data == "0")// full screen
+        {
+            $('#btn-fullscreen').attr("data-click", "1");
+            $(".leftpage").hide();
+            $(".rightpage").css("width", "100%");
+        } else// default
+        {
+            $('#btn-fullscreen').attr("data-click", "0");
+            $(".leftpage").show();
+            $(".rightpage").css("width", "calc(100% - 245px)");
+        }
+    }
+
+    @*$(function () {
+        var result = JSON.parse($("#data_index").val());
+        $('#FTS_INDEX').autocomplete({
+            lookup: result,
+            onSelect: function (suggestion) {
+                $.ajax({
+                    type: "GET",
+                    cache: false,
+                    data: { ID: suggestion.data },
+                    url: '@Url.Action("FindSearch", "NguoiDung")',
+                    success: function (data) {
+                        $("#grid").html(data);
+                    }
+                })
+            }
+        });
+    });*@
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadGrid", "NguoiDung")',
+            cache: false,
+            dataType: "html",
+            success: function (result) {
+                $(".SearchResult").html(result);
+            },
+            error: function (hxr) {
+                CommonJS.alert(hxr.responseText);
+
+            }
+        });
+    }
+    function boxchatshow() {
+        $("#content-box").slideToggle(1);
+    }
+    $(function () {
+
+        $('.column').sortable({
+            connectWith: '.column',
+            handle: 'h2',
+            cursor: 'move',
+            placeholder: 'placeholder',
+            forcePlaceholderSize: true,
+            opacity: 0.4,
+            stop: function (event, ui) {
+                $(ui.item).find('h2').click();
+                var sortorder = '';
+                $('.column').each(function () {
+                    var itemorder = $(this).sortable('toArray');
+                    var columnId = $(this).attr('id');
+                    sortorder += columnId + '=' + itemorder.toString() + '&';
+                });
+
+            }
+        })
+        .disableSelection();
+    });
+    function ChoosePhongBan() {
+        if ($("input[type=checkbox]:checked").length == 0) {
+            NotiError("Bạn phải chọn người dùng")
+        } else {
+            $("#dialogChonPhongBan").modal();
+        }
+    }
+    function changeDepartment() {
+        if ($("input[name=chonphongban]:checked").length == 0) {
+            NotiError("Bạn phải chọn phòng ban muốn chuyển")
+        } else {
+            var idsValue = '';
+            $("input[type=checkbox]:checked").each(function () {
+                if (this.checked) {
+                    idsValue += $(this).val() + ",";
+                }
+            });
+            idsValue = idsValue.substr(0, idsValue.length - 1);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("changeDepartment", "NguoiDung")',
+                cache: false,
+                data: { department_id: $("input[name=chonphongban]:checked").val(), nguoidungids: idsValue },
+                success: function (result) {
+                    if (result.Type == "Error") {
+                        NotiError(result.Message);
+                    } else {
+                        $("#dialogChonPhongBan").modal('hide');
+                        NotiSuccess("Chuyển người dùng thành công");
+                        setTimeout('location.reload()', 400);
+                    }
+                },
+                error: function (hxr) {
+                    NotiError(hxr.responseText);
+                }
+            });
+        }
+    }
+</script>

@@ -1,0 +1,77 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.LoaiTaiLieu
+<style>
+    .txt {
+        width: 250px;
+    }
+
+    /*.btn {
+        height: 30px;
+        background: #0099CC;
+        font-weight: bold;
+        color: white;
+        border: none;
+    }*/
+</style>
+
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("FindThuocTinh", "TmLoaiTaiLieuThuocTinh", new AjaxOptions()
+    {
+
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "frmSearch" }))
+    {
+        <table style="text-align: center; width: 35%; margin: 0 auto">
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="width:80px">Thuộc tính</td>
+                <td>@Html.TextBox("THUOCTINH", "", new { @style = "width:233px", @class = "e-input" })</td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Loại tài liệu</td>
+                <td>
+                    <div class="input-field4  clearfix">
+                        @Html.DropDownList("LOAITAILIEU_ID", Model.TAILIEU,"[---Loại tài liệu---]", new { @id = "LOAITAILIEU_ID" })
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center">
+                    <input type="submit" class="btn btn-success" id="btnSearch" value="Tìm Kiếm"  />
+                </td>
+            </tr>
+        </table>
+
+
+    }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#LOAITAILIEU").val(@ViewData["LoaiTaiLieu"]);
+    });
+    function failure(xhr, response) {
+        CommonJS.alert(xhr.responseText);
+        $("#LOAITAILIEU").val("");
+    }
+    $(function () {
+        $("#btnSearch").click(function () {
+            if ($("#LOAITAILIEU_ID").val() == "") {
+                $("#LOAITAILIEU_ID").val("0");
+            }
+            return true;
+        });
+    });
+</script>

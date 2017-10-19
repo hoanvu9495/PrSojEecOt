@@ -1,0 +1,229 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Web.Areas.HscvDonViBanHanhArea.Models
+@model DonViBanHanhViewModel
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+</style>
+@using (Ajax.BeginForm("SaveDVBanHanh", "HscvDonViBanHanh", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmDVBanHanhCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm mới đơn vị ban hành</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr style="height:20px"></tr>
+                    <tr>
+                        <td style="width:140px">
+                            <label class="lbl" for="CREATE_DIACHI" style=" width: 150px;">Đơn vị cấp trên: </label>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" style="width: 233px;">
+                                @Html.DropDownList("PARENT_ID", Model.listDonViBanHanh, "[--- Đơn vị cấp trên ---]", new { @style = "width: 100%", @id = "PARENT_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="height:20px"></tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="CREATE_TENDONVI" style=" width: 150px;">Tên đơn vị ban hành:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("TENDONVI", "", new { @style = "width: 233px;", maxlength = "50", @class = "e-input", @id = "CREATE_TENDONVI" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="CREATE_TENDONVI_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập đơn vị ban hành.</span>
+                            <span class="lb-Check" id="CREATE_TENDONVI_ERROR" style="margin-left: 0px; color: red;">Tên đơn vị ban hành đã tồn tại.</span>
+                            <span class="lb-Check" id="CREATE_TENDONVI_HTML" style="margin-left: 0px; color: red;">Tên đơn vị ban hành không được chứa thẻ HTML.</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="CREATE_MADONVI" style=" width: 150px;">Mã đơn vị ban hành:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("MADONVI", "", new { @style = "width: 233px;", maxlength = "50", @class = "e-input", @id = "CREATE_MADONVI" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="CREATE_MADONVI_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập mã đơn vị ban hành. </span>
+                            <span class="lb-Check" id="CREATE_MADONVI_HTML" style="margin-left: 0px; color: red;">Mã đơn vị ban hành không được chứa ký tự HTML</span>
+                            <span class="lb-Check" id="CREATE_MADONVI_ERROR" style="margin-left: 0px; color: red;">Mã đơn vị ban hành đã tồn tại. </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="CREATE_DIACHI" style=" width: 150px;">Địa chỉ:</label>
+                        </td>
+                        <td>
+                            @Html.TextBox("DIACHI", "", new { @style = "width: 233px;", maxlength = "50", @class = "e-input", @id = "CREATE_DIACHI" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="CREATE_DIACHI_NULL" style="margin-left: 0px; color: red;">Bạn cần phải nhập địa chỉ. </span>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                @*<input type="button" value="Lưu" id="btnSave"  />*@
+                <button type="submit" class="btn btn-danger" id="btnSave">Thêm mới</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" id="MADONVI" value="@Model.MaDonVi" />
+    <input type="hidden" id="TENDONVI" value="@Model.TenDonVi" />
+}
+<script type="text/javascript">
+    var isMADonVi = false;
+    var isTenDonVi = false;
+    function OnClose() {
+        $("#CreateDVBanHanh").dialog("close");
+    }
+    $("#CREATE_MADONVI").blur(function () {
+        if ($("#CREATE_MADONVI").val().trim() == "" || $("#CREATE_MADONVI").val() == null) {
+
+        } else {
+            $("#CREATE_MADONVI_NULL").hide();
+            $("#CREATE_MADONVI_ERROR").hide();
+
+        }
+    });
+
+    $("#CREATE_TENDONVI").blur(function () {
+        if ($("#CREATE_TENDONVI").val().trim() == "" || $("#CREATE_TENDONVI").val() == null) {
+
+        } else {
+            $("#CREATE_TENDONVI_NULL").hide();
+            $("#CREATE_TENDONVI_ERROR").hide();
+        }
+    });
+
+    function CreateSuccess() {
+        //notif({
+        //    type: 'success',
+        //    position: 'bottom',
+        //    msg: 'Thêm mới đơn vị ban hành thành công!',
+        //});
+        NotiSuccess("Thêm mới đơn vị ban hành thành công!");
+        $("#CreateDVBanHanh").modal("hide");
+        reloadGrid();
+    }
+    function failure(xhr, error) {
+        //notif({
+        //    type: 'success',
+        //    position: 'bottom',
+        //    msg: 'Có lỗi trong quá trình thêm mới!',
+        //});
+        NotiError("Có lỗi trong quá trình thêm mới!");
+        $("#CreateDVBanHanh").modal("hide");
+    }
+    $(function () {
+        $("#PARENT_ID").change(function () {
+            var parent = $("#PARENT_ID").val();
+            if ($("#PARENT_ID").val() == "") {
+                parent = 0;
+            }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetDataByParent", "HscvDonViBanHanh")',
+                data: {
+                    PARENT_ID: parent,
+                    ID: 0
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    var ma = "";
+                    var ten = "";
+                    $.each(data, function (i, ele) {
+                        ten += ele.TENDONVI + ",";
+                        ma += ele.MADONVI + ",";
+                    });
+                    $("#MADONVI").val(ma);
+                    $("#TENDONVI").val(ten);
+                }, error: function (xhr, error) {
+                    CommonJS.alert(xhr.responseText);
+                }
+            });
+        });
+        $("#btnSave").click(function () {
+            var tontai = false;
+            if ($("#CREATE_TENDONVI").val() == null || $("#CREATE_TENDONVI").val().trim() == "") {
+                $("#CREATE_TENDONVI").focus();
+                $("#CREATE_TENDONVI_NULL").show();
+                return false;
+            } else {
+                $("#CREATE_TENDONVI_NULL").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#CREATE_TENDONVI").val())) {
+                $("#CREATE_TENDONVI").focus();
+                $("#CREATE_TENDONVI_HTML").show();
+                return false;
+            } else {
+                $("#CREATE_TENDONVI_HTML").hide();
+
+            }
+            var Ma = $("#TENDONVI").val();
+            var lstMa = Ma.split(",");
+            if ($.inArray($("#CREATE_TENDONVI").val().toLowerCase(), lstMa) != -1) {
+                $("#CREATE_TENDONVI").focus();
+                $("#CREATE_TENDONVI_ERROR").show();
+                return false;
+            } else {
+                $("#CREATE_TENDONVI_ERROR").hide();
+            }
+            Ma = $("#MADONVI").val();
+            lstMa = Ma.split(",");
+            if ($("#CREATE_MADONVI").val() == null || $("#CREATE_MADONVI").val().trim() == "") {
+                $("#CREATE_MADONVI").focus();
+                $("#CREATE_MADONVI_NULL").show();
+                return false;
+            } else {
+                $("#CREATE_MADONVI_NULL").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#CREATE_MADONVI").val())) {
+                $("#CREATE_MADONVI").focus();
+                $("#CREATE_MADONVI_HTML").show();
+                return false;
+            } else {
+                $("#CREATE_MADONVI_HTML").hide();
+
+            }
+            if ($.inArray($("#CREATE_MADONVI").val().toLowerCase(), lstMa) != -1) {
+                $("#CREATE_MADONVI").focus();
+                $("#CREATE_MADONVI_ERROR").show();
+                return false;
+            } else {
+                $("#CREATE_MADONVI_ERROR").hide();
+            }
+            return true;
+           
+        });
+    });
+</script>

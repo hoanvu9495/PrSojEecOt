@@ -1,0 +1,134 @@
+﻿@model Model.eAita.TM_CHUYENTIEP_YEUCAU
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using (Ajax.BeginForm("SaveTuChoiChiaSe", "YeuCauChiaSe", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "createSuccess",
+    OnBegin = "OnBegin"
+}, new { id = "frmPheDuyet" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Từ chối yêu cầu chia sẻ</h4>
+            </div>
+            <div class="modal-body">
+                <div id="loading">Đang gửi yêu cầu....</div>
+                @if (Model != null)
+                {
+                    <input type="hidden" name="PHEDUYET" value="@ViewData["PHEDUYET"]" />
+                    <table>
+                        <tr>
+                            <td>
+                                <label class="lbl-title">Lý do:<span style="color:red">*</span></label>
+                            </td>
+                            <td>
+                                <textarea id="MOTA" name="MOTA" maxlength="500" style="width:400px;height:60px;resize:vertical" class="e-input" placeholder="Nhập lý do từ chối yêu cầu chia sẻ này...."></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <span id="NOIDUNG_NULL" style="display:none;color:red">Vui lòng nhập nội dung</span>
+                                <span id="NOIDUNG_ERROR" style="display:none;color:red">Nội dung không được chứa thẻ HTML</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="YEUCAU_ID" value="@Model.YEUCAU_ID" />
+                    <input type="hidden" name="CHUYENTIEP_ID" value="@Model.ID" />
+                }
+                else
+                {
+                    <span>Không tìm thấy yêu cầu chia sẻ bạn muốn từ chối</span>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (Model != null)
+                {
+                    <input type="submit" value="Xác nhận" id="btnXacNhan" class="btn btn-success">
+                }
+                <input type="button" value="Đóng" data-dismiss="modal" class="btn btn-default">
+            </div>
+        </div>
+    </div>
+
+}
+<script>
+    function OnBegin() {
+        $("#loading").show();
+    }
+    function createSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Đã từ chối yêu cầu chia sẻ thành công',
+        });
+        $("#TrinhDuyetYeuCau").modal("hide");
+
+        location.reload();
+    }
+    function failure(xhr, error) {
+        notif({
+            type: 'error',
+            position: 'bottom',
+            msg: 'Đã có lỗi xảy ra trog quá trình cập nhật dữ liệu',
+        });
+        $("#TrinhDuyetYeuCau").modal("hide");
+        location.reload();
+    }
+    $("#btnXacNhan").click(function () {
+        if ($("#MOTA").val().trim() == "") {
+            $("#MOTA").focus();
+            $("#NOIDUNG_NULL").show();
+            return false;
+        } else {
+            $("#NOIDUNG_NULL").hide();
+        }
+        if (/<[a-z][\s\S]*>/i.test($("#MOTA").val().trim())) {
+            $("#MOTA").select();
+            $("#NOIDUNG_ERROR").show();
+            return false;
+        } else {
+            $("#NOIDUNG_ERROR").hide();
+        }
+        return true;
+    });
+    $(function () {
+        $("#MOTA").blur(function () {
+            if ($("#MOTA").val().trim() != "") {
+                $("#NOIDUNG_NULL").hide();
+            }
+            if (/<[a-z][\s\S]*>/i.test($("#MOTA").val().trim()) == false) {
+
+                $("#NOIDUNG_ERROR").hide();
+
+            }
+        });
+
+    });
+</script>
+<style>
+    #loading {
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        background: #000 url('/Content/Images/loadajax.gif') no-repeat 50% 4px;
+        bottom: 50%;
+        color: #fff;
+        text-align: center;
+        line-height: 166px;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0.7;
+        border-radius: 5px;
+        filter: alpha(opacity=70);
+        font-size: 12px;
+        text-shadow: none;
+        display: none;
+    }
+</style>

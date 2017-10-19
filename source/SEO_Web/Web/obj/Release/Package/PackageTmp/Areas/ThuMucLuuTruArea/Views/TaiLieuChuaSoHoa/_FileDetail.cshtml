@@ -1,0 +1,156 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.TaiLieuChuaSoHoaModel
+
+<div class="modal-dialog" style="width:900px">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Chi tiết tài liệu</h4>
+        </div>
+        <div class="modal-body" style="height:500px;overflow-y:auto;">
+            <table>
+
+                <tr>
+                    <td><span style="font-weight:bold">Nơi lưu:</span></td>
+                    <td>@Model.TenTaiLieu</td>
+                    <td colspan="2" rowspan="5">
+                        <div style="max-height:250px;max-width:270px">
+                            @if (!string.IsNullOrEmpty(Model.MaTaiLieu))
+                            {
+                                <img alt="Ảnh bìa của @Model.TAILIEU.TENTAILIEU" title="Ảnh bìa của @Model.TAILIEU.TENTAILIEU" style="max-height:100%;max-width:100%" src="@(Model.UrlNavigation +"/Uploads/" +Model.MaTaiLieu.Replace("\\","/") )" />
+                            }
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td style="width:130px">
+                        <span style="font-weight:bold">Mã tài liệu:</span>
+                    </td>
+                    <td>
+                        @Model.TAILIEU.MATAILIEU
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="width:130px">
+                        <span style="font-weight:bold">Tên tài liệu:</span>
+                    </td>
+                    <td>
+                        @Model.TAILIEU.TENTAILIEU
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                @if (!string.IsNullOrEmpty(Model.TAILIEU.TACGIA))
+                {
+                    <tr>
+                        <td>
+                            <span style="font-weight:bold">Tác giả:</span>
+                        </td>
+                        <td>
+                            @Model.TAILIEU.TACGIA
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                }
+
+                @if (Model.TAILIEU.SOLUONG > 0)
+                {
+                    <tr>
+                        <td>
+                            Số lượng:
+                        </td>
+                        <td>
+                            @Model.TAILIEU.SOLUONG
+                        </td>
+                    </tr>
+                }
+
+
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+
+                </tr>
+                @if (Model.TAILIEU.SOTRANG > 0)
+                {
+                    <tr>
+                        <td>
+                            Số trang:
+                        </td>
+                        <td>@Model.TAILIEU.SOTRANG</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+
+                    </tr>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.TAILIEU.MOTA))
+                {
+                    <tr>
+                        <td>
+                            <span style="font-weight:bold">Mô tả:</span>
+                        </td>
+                        <td>
+
+                            @Model.TAILIEU.MOTA
+
+                        </td>
+                    </tr>
+                }
+                @if (Model.lstThuocTinh.Count > 0)
+                {
+                    <tr>
+                        <td colspan="2">
+                            <h3 class="group-tittle mt10" style="margin-bottom:10px">Thuộc tính của tài liệu</h3>
+                            <div>
+                                <table class="webGrid">
+                                    <thead>
+                                        <tr class=" head">
+                                            <th style="width:50%">Thuộc tính</th>
+                                            <th>Giá trị</th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.lstThuocTinh)
+                                    {
+                                        <tr>
+                                            <td>@item.TEN_THUOCTINH</td>
+                                            <td colspan="2">@item.GIATRI</td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="2">
+                        @if (Model.lstLog.Count > 0)
+                        {
+                            <h3 class="group-tittle mt10" style="margin-bottom:10px">Các lần sử dụng tài liệu trước đây</h3>
+                        }
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        @Html.Partial("_LogBorrow")
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+</div>

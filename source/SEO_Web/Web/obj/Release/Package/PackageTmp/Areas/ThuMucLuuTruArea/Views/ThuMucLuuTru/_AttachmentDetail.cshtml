@@ -1,0 +1,1092 @@
+﻿@using Model.eAita
+@using Web.FwCore;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@model Web.Areas.ThuMucLuuTruArea.Models.FileDetailModel
+@using Business.CommonBusiness;
+@if (ViewData["OPTION"] == "chitiet")
+{
+    UserInfoBO user = (UserInfoBO)SessionManager.GetUserInfo();
+    if (ViewBag.IsViewInModel)
+    {
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Chi tiết tài liệu</h4>
+                </div>
+                <div class="modal-body">
+                    <div style="height:450px;overflow-y:auto;overflow-x:hidden">
+                        @if (Model.lstThuocTinh.Count > 0 || Model.TAILIEU != null)
+                        {
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        @if (Model.TAILIEU.DINHDANG_FILE == "video/mp4" || Model.TAILIEU.DINHDANG_FILE == ".mp4")
+                                        {
+                                            <video style="max-height:100%;max-width:100%" controls autoplay loop="loop">
+                                                <source type="video/mp4" src="@(Model.UrlNavigation +"/Uploads" +Model.TAILIEU.DUONGDAN_FILE.Replace("\\","/") )" />
+                                            </video>
+                                        }
+                                        else if (Model.TAILIEU.DINHDANG_FILE == "audio/mpeg" || Model.TAILIEU.DINHDANG_FILE == ".mp3" || Model.TAILIEU.DINHDANG_FILE == "audio/mp3")
+                                        {
+                                            <audio id="PLAY_MUSIC" controls autoplay loop="loop">
+                                                <source type="audio/mp3" src="@(Model.UrlNavigation +"/Uploads" +Model.TAILIEU.DUONGDAN_FILE.Replace("\\","/") )" />
+                                            </audio>
+                                        }
+                                        else if (Model.TAILIEU.DINHDANG_FILE == ".png" || Model.TAILIEU.DINHDANG_FILE == ".jpg" || Model.TAILIEU.DINHDANG_FILE == "image/jpeg" || Model.TAILIEU.DINHDANG_FILE == "image/png")
+                                        {
+                                            <img class="imgDetail" src="@(Model.UrlNavigation +"/Uploads" +Model.TAILIEU.DUONGDAN_FILE.Replace("\\","/") )" />
+                                        }
+                                        else if (Model.TAILIEU.DINHDANG_FILE == "application/pdf" || Model.TAILIEU.DINHDANG_FILE == ".pdf" || Model.TAILIEU.DINHDANG_FILE == "application/download")
+                                        {
+                                            <object style="width:100%;height:400px" data="@(Model.UrlNavigation +"/Uploads" +Model.TAILIEU.DUONGDAN_FILE.Replace("\\","/") )" type="application/pdf"></object>
+                                        }
+                                        else if (Model.TAILIEU.DINHDANG_FILE == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || Model.TAILIEU.DINHDANG_FILE == "application/vnd.ms-word.document.12" || Model.TAILIEU.DINHDANG_FILE == "application/msword" || Model.TAILIEU.DINHDANG_FILE == ".docx" || Model.TAILIEU.DINHDANG_FILE == ".doc")
+                                        {
+                                            <iframe style="width:100%;height:400px" src="http://docs.google.com/gview?url=@(Model.UrlNavigation + "/Uploads" + Model.TAILIEU.DUONGDAN_FILE.Replace("\\", "/"))&embedded=true"></iframe>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        }
+                        else
+                        {
+                            <h3>Không tìm thấy tài liệu cần tìm</h3>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @*@if (SessionManager.GetValue("ISTRUONGDONVI").Equals("true") && (Model.TAILIEU.IS_PHEDUYET == TaiLieuDinhKemConstant.TRINHDUYET || Model.TAILIEU.IS_PHEDUYET == TaiLieuDinhKemConstant.DUTHAO || Model.TAILIEU.IS_PHEDUYET == TaiLieuDinhKemConstant.TRAVE))
+                        {
+                            <input type="hidden" value="@Model.TAILIEU.FOLDER_ID" name="FOLDER_ID" id="FOLDER_ID" />
+                            <input type="hidden" value="@ThuMucConstant.DADUYET" id="TRANGTHAI_FILE" />
+                            <button id="PHEDUYET" data-id="@Model.TAILIEU.TAILIEU_ID" type="button" class="btn btn-danger">Phê duyệt</button>
+                        }
+                        else if ((Model.TAILIEU.IS_PHEDUYET == ThuMucConstant.DUTHAO || Model.TAILIEU.IS_PHEDUYET == ThuMucConstant.DUTHAO) && user.UserID == Model.TAILIEU.USER_ID)
+                        {
+                            <input type="hidden" value="@Model.TAILIEU.FOLDER_ID" name="FOLDER_ID" id="FOLDER_ID" />
+                            <input type="hidden" value="@ThuMucConstant.DATRINH" id="TRANGTHAI_FILE" />
+                            <button id="PHEDUYET" data-id="@Model.TAILIEU.TAILIEU_ID" type="button" class="btn btn-success">Trình duyệt</button>
+                        }*@
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div>
+            @if (Model.lstThuocTinh.Count > 0 || Model.TAILIEU != null)
+            {
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            @if (Model.TAILIEU.DINHDANG_FILE == "video/mp4" || Model.TAILIEU.DINHDANG_FILE == ".mp4")
+                            {
+                                <video style="max-height:100%;max-width:100%" controls autoplay loop="loop">
+                                    <source type="video/mp4" src="@(Model.UrlNavigation +"/Uploads" +Model.TAILIEU.DUONGDAN_FILE.Replace("\\","/") )" />
+                                </video>
+                            }
+                            else if (Model.TAILIEU.DINHDANG_FILE == "audio/mpeg" || Model.TAILIEU.DINHDANG_FILE == ".mp3" || Model.TAILIEU.DINHDANG_FILE == "audio/mp3")
+                            {
+                                <audio id="PLAY_MUSIC" controls autoplay loop="loop">
+                                    <source type="audio/mp3" src="@(Model.UrlNavigation +"/Uploads" +Model.TAILIEU.DUONGDAN_FILE.Replace("\\","/") )" />
+                                </audio>
+                            }
+                            else if (Model.TAILIEU.DINHDANG_FILE == ".png" || Model.TAILIEU.DINHDANG_FILE == ".jpg" || Model.TAILIEU.DINHDANG_FILE == "image/jpeg" || Model.TAILIEU.DINHDANG_FILE == "image/png")
+                            {
+                                <img class="imgDetail" src="@(Model.UrlNavigation +"/Uploads" +Model.TAILIEU.DUONGDAN_FILE.Replace("\\","/") )" />
+                            }
+                            else if (Model.TAILIEU.DINHDANG_FILE == "application/pdf" || Model.TAILIEU.DINHDANG_FILE == ".pdf" || Model.TAILIEU.DINHDANG_FILE == "application/download")
+                            {
+                                <object style="width:100%;height:400px" data="@(Model.UrlNavigation +"/Uploads" +Model.TAILIEU.DUONGDAN_FILE.Replace("\\","/") )" type="application/pdf"></object>
+                            }
+                            else if (Model.TAILIEU.DINHDANG_FILE == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || Model.TAILIEU.DINHDANG_FILE == "application/vnd.ms-word.document.12" || Model.TAILIEU.DINHDANG_FILE == "application/msword" || Model.TAILIEU.DINHDANG_FILE == ".docx" || Model.TAILIEU.DINHDANG_FILE == ".doc")
+                            {
+                                <iframe style="width:100%;height:400px" src="http://docs.google.com/gview?url=@(Model.UrlNavigation + "/Uploads" + Model.TAILIEU.DUONGDAN_FILE.Replace("\\", "/"))&embedded=true"></iframe>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            }
+            else
+            {
+                <h3>Không tìm thấy tài liệu cần tìm</h3>
+            }
+        </div>
+    }
+}
+else
+{
+    string SL_THUOCTINH = "";
+    using (Html.BeginForm("SaveSingleFile", "ThuMucLuuTru", FormMethod.Post, new { id = "UploadFileFrm", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Kiểm nhập/ Kiểm xuất tài liệu</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="loading">Đang tải lên file....</div>
+                    <div id="including">Đang tải thuộc tính...</div>
+                    <input type="hidden" value="@Model.TAILIEU.FOLDER_ID" name="FOLDER_ID" id="FOLDER_ID" />
+                    <input type="hidden" name="TAILIEU_ID" value="@Model.TAILIEU.TAILIEU_ID" />
+                    <div style="height:450px;overflow-y:auto" id="TaiLieuModal">
+                        <div id="Check_File" style="float:left">
+                            @if (Model.TAILIEU.IS_LOCK.Value && !Model.IS_NGUOILOCKFILE)
+                            {
+                                //Nếu không phải người lock file
+                                <span style="color:#ff6a00;margin-bottom:20px">Tài liệu này đang được kiểm xuất bởi: @Model.NGUOILOCKFILE</span>
+                            }
+                            else if (!Model.TAILIEU.IS_LOCK.Value)
+                            {
+                                //nếu file lock = false => chưa có ai lock file
+                                <div style="float: left; margin-top: 8px">Kiểm nhập:</div>
+                                <img id="LOCK_FILE" src="~/Content/themes/base/images/file_unlock.png" onclick="LockFile(@Model.TAILIEU.TAILIEU_ID)" title="Kiểm nhập tài liệu" />
+                            }
+                            else
+                            {
+                                //đã có người lock file click để lock file
+                                <div style="float: left;  margin-top: 8px">Kiểm xuất:</div>
+                                <img id="LOCK_FILE" src="~/Content/themes/base/images/file_locked.png" onclick="UnlockFile(@Model.TAILIEU.TAILIEU_ID)" title="Kiểm xuất tài liệu" />
+                            }
+                        </div>
+                        @if (!Model.TAILIEU.IS_QLPHIENBAN.Value)
+                        {
+                            <div style="float:right;">
+                                <label class="switch switch-left-right">
+                                    <input class="switch-input" type="checkbox" data-id="@Model.TAILIEU.TAILIEU_ID" />
+                                    <span class="switch-label" data-on="Bật" data-off="Tắt"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                            <div style="float: right; margin-top: 8px">Quản lý phiên bản:</div>
+                        }
+                        else
+                        {
+                            <div style="float: right; ">
+                                <label class="switch switch-left-right">
+                                    <input class="switch-input" type="checkbox" checked data-id="@Model.TAILIEU.TAILIEU_ID" />
+                                    <span class="switch-label" data-on="Bật" data-off="Tắt"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                            <div style="float:right;margin-top:8px">Quản lý phiên bản:</div>
+                        }
+                        <table class="webGrid" style="margin-top:10px">
+                            <thead>
+                                <tr>
+                                    <td scope="col" class="content-left" style="width: 14%; text-align: left !important;">Tên tài liệu</td>
+                                    <td>
+                                        <input style="width:233px" type="text" class="e-input" value="@Model.TAILIEU.TENTAILIEU" placeholder="Nhập tên tài liệu" name="filename" />
+                                    </td>
+                                    <td scope="col" style="text-align: left !important;">Chọn tài liệu</td>
+                                    <td style="text-align:left">
+                                        @*@Html.ActionLink("Tải xuống", "DownloadFile", new { ID = Model.TAILIEU.TAILIEU_ID })*@
+                                        <a href="javascript:void(0)" title="Tải xuống tài liệu" onclick="DownloadFileIndex(@Model.TAILIEU.TAILIEU_ID)">Tải xuống</a>
+                                        <br />
+                                        @if (Model.TAILIEU.IS_QLPHIENBAN.Value)
+                                        {
+                                            <input style="border:none" id="filebase" class="filebase" type="file" value="Chọn tài liệu" name="filebase" />
+                                        }
+                                        else
+                                        {
+                                            <input id="filebase" class="filebase" style="display:none;border:none" type="file" value="Chọn tài liệu" name="filebase" />
+                                        }
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody id="UpLoadFile">
+                                <tr id="file_1">
+                                    <td class="content-left" style="text-align: left !important;">Loại tài liệu</td>
+                                    <td>
+                                        <div class="input-field4  clearfix" style="width: 233px; margin: 0 auto">
+                                            @Html.DropDownList("LOAITAILIEU_ID", new SelectList(Model.lstLoaiTaiLieu, "Value", "Text", Model.TAILIEU.DM_LOAITAILIEU_ID), "[--- Loại tài liệu ---]", new { @style = "width: 100%", @id = "LOAITAILIEU_ID" })
+                                        </div>
+                                    </td>
+                                    <td style="text-align: left !important;">Mô tả:</td>
+                                    <td><textarea class="e-input" style="width:70%;height:50px !important;resize:none" placeholder="Nhập mô tả cho tài liệu" name="filedescription">@Model.TAILIEU.MOTA</textarea></td>
+                                </tr>
+                                <tr>
+                                    <td class="content-left" style="text-align: left !important;">Tác giả:</td>
+                                    <td>
+                                        <input style="width:233px" class="e-input" type="text" name="AUTHOR" id="TACGIA" placeholder="Nhập tên tác giả của tài liều" value="@Model.TAILIEU.TENTACGIA" />
+                                    </td>
+                                    <td style="text-align: left !important;">Ngày phát hành:</td>
+                                    <td>
+                                        <input style="width:233px" class="e-input" type="text" name="NGAYPHATHANH" id="NGAYPHATHANH" placeholder="Nhập ngày phát hành tài liệu" value="@(Model.TAILIEU.NGAYPHATHANH != null ? string.Format("{0:dd/MM/yyyy}", Model.TAILIEU.NGAYPHATHANH) : string.Format("{0:dd/MM/yyyy}", DateTime.Now))" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-left" style="text-align: left !important;">Phiên bản hiện tại:</td>
+                                    <td>
+                                        @Model.TAILIEU.VERSION
+                                    </td>
+                                    <td style="text-align: left !important;">Trạng thái:</td>
+                                    <td>
+                                        <div class="input-field4 clearfix fix-width">
+                                            @Html.DropDownList("TRANGTHAI", new SelectList(Model.ListTrangThai, "Value", "Text", Model.TAILIEU.TRANGTHAI), new { @style = "width: 230px", @id = "TRANGTHAI" })
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                @if (Model.TAILIEU.IS_QLPHIENBAN.Value)
+                                {
+                                    <tr class="versiondisplay">
+                                        <td class="content-left" style="text-align: left !important;">Ghi chú thay đổi:</td>
+                                        <td colspan="3">
+                                            <textarea name="CONTENT_CHANGE" id="CONTENT_CHANGE" class="e-input" style="height:50px !important;resize:none;width:100%" placeholder="Nhập sự thay đổi giữa 2 phiên bản"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr class="versiondisplay">
+                                        <td class="content-left" style="text-align: left !important;">Phiên bản :<span style="color:red">*</span></td>
+                                        <td colspan="3" style="text-align:left !important">
+                                            <input name="VERSION" id="VERSION_FILE_1" class="e-input" placeholder="Nhập phiên bản của tài liệu" style="width:233px" />
+                                            <span style="color:red;display:none" id="VERSION_NULL">Vui lòng nhập phiên bản của tài liệu</span>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr class="versiondisplay" style="display:none">
+                                        <td class="content-left" style="text-align: left !important;">Ghi chú thay đổi:</td>
+                                        <td colspan="3">
+                                            <textarea name="CONTENT_CHANGE" id="CONTENT_CHANGE" class="e-input" style="height:50px !important;resize:none;width:100%" placeholder="Nhập sự thay đổi giữa 2 phiên bản"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr class="versiondisplay" style="display:none">
+                                        <td class="content-left" style="text-align: left !important;">Phiên bản :<span style="color:red">*</span></td>
+                                        <td colspan="3" style="text-align:left !important">
+                                            <input name="VERSION" id="VERSION_FILE_1" class="e-input" placeholder="Nhập phiên bản của tài liệu" style="width:233px" />
+                                            <span style="color:red;display:none" id="VERSION_NULL">Vui lòng nhập phiên bản của tài liệu</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <h3 class="group-tittle mt10" style="margin-bottom:10px">Thuộc tính của tài liệu</h3>
+                        <table class="">
+                            <tbody id="DanhSachThuocTinh">
+                                @if (Model.lstThuocTinh.Count > 0)
+                                {
+                                    int count = 0;
+                                    foreach (var item in Model.lstThuocTinh)
+                                    {
+                                        count++;
+                                        SL_THUOCTINH += count + ",";
+                                        <tr>
+                                            <td style="vertical-align: middle; width: 100px">
+                                                @item.TEN_THUOCTINH
+                                            </td>
+                                            <td colspan="2">
+                                                <input type="hidden" name="ID_@count" value="@item.ID" />
+                                                <input type="hidden" name="THUOCTINHID_@count" value="@item.THUOCTINH_ID" />
+                                                <input class="form-control e-input" name="THUOCTINH_@count" id="THUOCTINH_@count" value="@item.GIATRI" />
+                                                @*<br />
+                                                    <span style="color:red;display:none;text-align:left" id="THUOCTINHNULL_@count">Bạn vui lòng nhập @item.TEN_THUOCTINH</span>*@
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else if (Model.lstThuocTinhNull != null)
+                                {
+                                    int count = 0;
+                                    foreach (var item in Model.lstThuocTinhNull)
+                                    {
+                                        count++;
+                                        SL_THUOCTINH += count + ",";
+                                        <tr>
+                                            <td style="vertical-align:middle">
+                                                @item.TEN_THUOCTINH
+                                            </td>
+                                            <td colspan="2">
+                                                <input type="hidden" name="ID_@count" value="@item.ID" />
+                                                <input type="hidden" name="THUOCTINHID_@count" value="@item.ID" />
+                                                <input class="form-control" name="THUOCTINH_@count" id="THUOCTINH_@count" value="" />
+                                                <br />
+                                                <span style="color:red;display:none;text-align:left" id="THUOCTINHNULL_@count">Bạn vui lòng nhập @item.TEN_THUOCTINH</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                <tr style="display:none">
+                                    <td><input type="hidden" name="SL_THUOCTINH" value="@SL_THUOCTINH" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <tr>
+                                <td colspan="4">
+                                    <div style="float:left">
+                                        <h3 class="group-tittle mt10" style="margin-bottom:10px">Thông tin tài liệu chưa số hóa</h3>
+                                    </div>
+                                    <div class="onoffswitch" style="float:left;margin-left:15px;margin-top:8px">
+                                        @if (Model.ChuaSoHoa.ID > 0)
+                                        {
+                                            <input name="CHUASOHOA_ID" value="@Model.ChuaSoHoa.ID" type="hidden" />
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                                        }
+                                        else
+                                        {
+                                            <input name="CHUASOHOA_ID" value="0" type="hidden" />
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+                                        }
+                                        <label class="onoffswitch-label" for="myonoffswitch"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        @if (Model.ChuaSoHoa.ID > 0)
+                        {
+                            <table class="tblPaper">
+                                <tr>
+                                    <td>Nơi lưu :<span style="color:red">*</span></td>
+                                    <td>
+                                        @*<select name="HANG_ID" class="chosen-select" id="HANG_ID">
+                                                @foreach (var item in Model.KeLuuTru)
+                                                    {
+                                                        var lstHang = Model.HangLuuTru.Where(x => x.KE_ID == item.ID).ToList();
+                                                        if (lstHang.Count > 0)
+                                                        {
+                                                    <optgroup label="@item.TENTOANHA">
+                                                        @foreach (var ele in lstHang)
+                                                                {
+                                                                    if (Model.ChuaSoHoa.HANG_ID == ele.ID)
+                                                                    {
+                                                                <option value="@ele.ID" selected>@ele.TENHANG</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                <option value="@ele.ID">@ele.TENHANG</option>
+                                                                    }
+                                                                }
+                                                    </optgroup>
+                                                        }
+                                                    }
+                                            </select>*@
+                                        <input type="text" name="NOILUU" value="@Model.ChuaSoHoa.NOILUU" id="NOILUU" placeholder="Nhập nơi lưu trữ tài liệu" class="e-input" />
+                                    </td>
+                                    <td>
+                                        Tác giả :
+                                    </td>
+                                    <td>
+                                        <input maxlength="50" value="@Model.ChuaSoHoa.TACGIA" style="width: 233px" type="text" class="e-input form-control" placeholder="Nhập tên tác giả" name="TACGIA" id="TACGIA" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td scope="col">Số trang :</td>
+                                    <td>
+                                        <input value="@Model.ChuaSoHoa.SOTRANG" style="width: 233px" type="text" class="e-input form-control" placeholder="Nhập số trang của tài liệu" name="SOTRANG" id="SOTRANG" />
+                                    </td>
+                                    <td>
+                                        Số lượng :
+                                    </td>
+                                    <td>
+                                        <input maxlength="50" value="@Model.ChuaSoHoa.SOLUONG" style="width: 233px" type="text" class="e-input form-control" placeholder="Nhập số lượng tài liệu" name="SOLUONG" id="SOLUONG" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>Ảnh bìa: </td>
+                                    <td>
+                                        <input type="file" name="imagecover" id="COVER_IMAGE" placeholder="Lựa chọn ảnh bìa" style="border:none" accept="image/*" />
+                                    </td>
+                                </tr>
+                            </table>
+                        }
+                        else
+                        {
+                            <table class="tblPaper" style="display:none">
+                                <tr>
+                                    <td>Nơi lưu :<span style="color:red">*</span></td>
+                                    <td>
+                                        <input type="text" name="NOILUU" value="" id="NOILUU" placeholder="Nhập nơi lưu trữ tài liệu" class="e-input" />
+                                        @*<select name="HANG_ID" class="chosen-select" id="HANG_ID">
+                                                @foreach (var item in Model.KeLuuTru)
+                                                    {
+                                                        var lstHang = Model.HangLuuTru.Where(x => x.KE_ID == item.ID).ToList();
+                                                        if (lstHang.Count > 0)
+                                                        {
+                                                    <optgroup label="@item.TENTOANHA">
+                                                        @foreach (var ele in lstHang)
+                                                                {
+                                                                <option value="@ele.ID">@ele.TENHANG</option>
+                                                                }
+                                                    </optgroup>
+                                                        }
+                                                    }
+                                            </select>*@
+                                    </td>
+                                    <td>
+                                        Tác giả :
+                                    </td>
+                                    <td>
+                                        <input maxlength="50" style="width: 233px" type="text" class="e-input form-control" placeholder="Nhập tên tác giả" name="TACGIA" id="TACGIA" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td scope="col">Số trang :</td>
+                                    <td>
+                                        <input style="width: 233px" type="text" class="e-input form-control" placeholder="Nhập số trang của tài liệu" name="SOTRANG" id="SOTRANG" />
+                                    </td>
+                                    <td>
+                                        Số lượng :
+                                    </td>
+                                    <td>
+                                        <input maxlength="50" style="width: 233px" type="text" class="e-input form-control" placeholder="Nhập số lượng tài liệu" name="SOLUONG" id="SOLUONG" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>Ảnh bìa: </td>
+                                    <td>
+                                        <input type="file" name="imagecover" id="COVER_IMAGE" placeholder="Lựa chọn ảnh bìa" style="border:none" accept="image/*" />
+                                    </td>
+                                </tr>
+                            </table>
+                        }
+                        @if (Model.version.Count > 0)
+                        {
+                            <h3 class="group-tittle mt10" style="margin-bottom:10px">Danh sách các phiên bản cũ hơn</h3>
+                            <table class="webGrid VersionFile">
+                                <thead>
+                                    <tr class=" head">
+                                        <th>Tên tài liệu</th>
+                                        <th>Tác giả</th>
+                                        <th>Ngày phát hành</th>
+                                        <th>Phiên bản</th>
+                                        <th>Người tải</th>
+                                        <th>Ngày tải</th>
+                                        <th style="width:90px">Tải xuống</th>
+                                        <th style="width:50px">Xóa</th>
+                                        <th style="width:90px">Khôi phục</th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in Model.version)
+                                {
+                                    <tr>
+                                        <td>@item.TENTAILIEU</td>
+                                        <td>@item.TACGIA</td>
+                                        <td>@(item.NGAYPHATHANH == null ? "" : String.Format("{0:dd-MM-yyyy}", item.NGAYPHATHANH))</td>
+                                        <td>@item.VERSION</td>
+                                        <td>@item.TENNGUOITAI</td>
+                                        <td>@String.Format("{0:dd-MM-yyyy}", @item.NGAYTAI)</td>
+                                        <td><a class="btnDownload" href="javascript:void(0)" onclick="DownloadFile(@item.ID)"></a></td>
+                                        <td><a href="javascript:void(0)" onclick="RemoveFile(@item.ID,@item.TAILIEU_ID)" class="btnDelete" title="Xóa tài liệu"></a></td>
+                                        <td><a href="javascript:void(0)" onclick="RestoreFile(@item.ID,@item.TAILIEU_ID)" title="Sử dụng phiên bản này" class="btnRestore"></a></td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Lưu" id="btnCreateSingle" class="btn btn-submit" />
+                    <input type="button" value="Đóng" data-dismiss="modal" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+        <input type="hidden" value="off" name="Digital" id="Digital" />
+    }
+}
+<script src="~/Scripts/jquerychosen/chosen.jquery.min.js"></script>
+<link href="~/Scripts/jquerychosen/chosen.min.css" rel="stylesheet" />
+<script>
+    function LoadMetaData(MaCode) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("LoadMetaData", "ThuMucLuuTru")',
+            data: {
+                MATAILIEU: MaCode
+
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                if (data.length > 0) {
+                    $.each(data, function (i, ele) {
+                        $('#HANG_ID').val(ele.HANG_ID);
+                        $('#HANG_ID').trigger("chosen:updated");
+                        $("#SOTRANG").val(ele.SOTRANG);
+                        $("#SOLUONG").val(ele.SOLUONG);
+                        $("#TACGIA").val(ele.TACGIA);
+                        $("#filename").val(ele.TENTAILIEU);
+                        $("#filedescription").val(ele.MOTA);
+                    });
+                } else {
+                }
+            }, error: function (xrt) {
+                alert(xrt.responseText);
+            }
+        });
+    }
+    function KiemTra(Macode, FOLDER_ID, Status) {
+        var exist = false;
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckCodeFile", "ThuMucLuuTru")',
+            data: {
+                MATAILIEU: Macode,
+                FOLDER_ID: FOLDER_ID,
+                STATUS: Status
+            },
+            cache: false,
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.length > 0) {
+                    exist = true;
+                } else {
+                    exist = false;
+                }
+            }, error: function (xrt) {
+                alert(xrt.responseText);
+            }
+        });
+        return exist;
+    }
+    function OnClose() {
+        $("#FileDetail").dialog("close");
+    }
+    function LockFile(ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("LockFile", "ThuMucLuuTru")',
+            data: {
+                TAILIEU_ID: ID
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                $("#Check_File").html("<div style='float: left; margin-top: 8px'>Kiểm xuất:</div><img id='LOCK_FILE' src='/Content/themes/base/images/file_locked.png' onclick='UnlockFile(" + ID + ")' title='Kiểm xuất tài liệu' />");
+                notif({
+                    type: 'success',
+                    position: 'bottom',
+                    msg: data,
+                });
+            }, error: function (xrt) {
+                alert(xrt.responseText);
+            }
+        });
+
+    }
+    function UnlockFile(ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("UnlockFile", "ThuMucLuuTru")',
+            data: {
+                TAILIEU_ID: ID
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                $("#Check_File").html("<div style='float: left; margin-top: 8px'>Kiểm nhập:</div><img id='LOCK_FILE' src='/Content/themes/base/images/file_unlock.png' onclick='LockFile(" + ID + ")' title='Kiểm nhập tài liệu' />");
+                notif({
+                    type: 'success',
+                    position: 'bottom',
+                    msg: data,
+                });
+            }, error: function (xrt) {
+                alert(xrt.responseText);
+            }
+        });
+
+    }
+    $(function () {
+        $("#NGAYPHATHANH").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        $("#myonoffswitch").change(function () {
+            if ($("#myonoffswitch:checked").length == 1) {
+                $("#Digital").val("on");
+                $(".tblPaper").show();
+                //if ($("#filecode").val().trim() != "") {
+                // LoadMetaData($("#filecode").val().trim());
+                // }
+                $('#TaiLieuModal').animate({ scrollTop: $('.modal-body').prop("scrollHeight") }, 1000);
+            } else {
+                $('#TaiLieuModal').animate({ scrollTop: $('.modal-body').prop("scrollHeight") }, 1000);
+                $(".tblPaper").hide();
+                $("#Digital").val("off");
+            }
+        });
+        $('#FileDetail').on('hidden.bs.modal', function () {
+            $.each($('audio'), function () {
+                this.pause();
+            });
+            $.each($('video'), function () {
+                this.pause();
+            });
+        });
+        $("#PHEDUYET").click(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("PheDuyetTaiLieu", "ThuMucLuuTru")',
+                data: {
+                    TAILIEU_ID: $(this).attr("data-id"),
+                    TRANGTHAI: $("#TRANGTHAI_FILE").val()
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    LoadDataByID($("#FOLDER_ID").val());
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: data,
+                    });
+                    $("#FileDetail").modal('hide');
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+        $("#btnCreateSingle").click(function () {
+            if ($(".switch-input:checked").length == 1) {
+                if ($("#VERSION_FILE_1").val().trim().length == 0) {
+                    $("#VERSION_FILE_1").focus();
+                    $("#VERSION_NULL").show();
+                    return false;
+                } else {
+                    $("#VERSION_NULL").hide();
+                }
+            }
+            return true;
+        });
+        $(".switch-input").change(function () {
+            //alert($(".switch-input:checked").length);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("MangerVersion", "ThuMucLuuTru")',
+                data: {
+                    TAILIEU_ID: $(this).attr("data-id"),
+                    TRANGTHAI: $(".switch-input:checked").length
+                },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if ($(".switch-input:checked").length == 1) {
+                        $(".filebase").show();
+                        $(".versiondisplay").show();
+                    } else {
+                        $(".filebase").hide();
+                        $(".versiondisplay").hide();
+                    }
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: data,
+                    });
+
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+        $("#LOAITAILIEU_ID").change(function () {
+            var LOAITAILIEU = $("#LOAITAILIEU_ID").val() == "" ? 0 : $("#LOAITAILIEU_ID").val();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetThuocTinh", "ThuMucLuuTru")',
+                data: {
+                    LOAITAILIEU: LOAITAILIEU
+                },
+                cache: false,
+                dataType: "html",
+                beforeSend: function () {
+                    $("#including").show();
+                },
+                success: function (data) {
+                    $("#DanhSachThuocTinh").html(data);
+                    $("#including").hide();
+                }, error: function (xrt) {
+                    alert(xrt.responseText);
+                }
+            });
+        });
+
+    });
+
+    $("form").ajaxForm({
+        beforeSend: function () {
+            $("#loading").show();
+        },
+        uploadProgress: function () {
+
+        },
+        success: function (data) {
+            $("#loading").hide();
+            $("#FileDetail").modal('hide');
+            LoadDataByID($("#FOLDER_ID").val());
+            notif({
+                type: 'success',
+                position: 'bottom',
+                msg: data,
+            });
+        },
+        complete: function () {
+            $("#FileDetail").modal('hide');
+            $("#FileDetail").html("");
+        }, error: function (data) {
+            notif({
+                type: 'error',
+                position: 'bottom',
+                msg: "Có lỗi xảy ra trong quá trình cập nhật",
+            });
+        }
+    });
+    function RestoreFile(ID, TAILIEU) {
+        $.confirm({
+            'title': 'Xác nhận khôi phục',
+            'message': 'Bạn có chắc chắn mình muốn sử dụng phiên bản này?',
+            'buttons': {
+                'Khôi phục': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("PreviousVersionFIle", "ThuMucLuuTru")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID, TAILIEU_ID: TAILIEU },
+                            success: function (data) {
+                                ReloadGrid(TAILIEU);
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: data,
+                                });
+                            },
+                            error: function (err) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Có lỗi xảy ra trong quá trình xóa tài liệu',
+                                });
+                            }
+                        });
+                    }
+                },
+                'Đóng': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function RemoveFile(ID, TAILIEU) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa tài liệu này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("XoaFileVersion", "ThuMucLuuTru")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                ReloadGrid(TAILIEU);
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: data,
+                                });
+                            },
+                            error: function (err) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Có lỗi xảy ra trong quá trình xóa tài liệu',
+                                });
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+    function DownloadFile(ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckkingVersion", "ThuMucLuuTru")',
+            data: {
+                ID: ID
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                if (data == "Co") {
+                    location.href = "./DownloadFilePath?ID=" + ID;
+                } else {
+                    $.confirm({
+                        'title': 'Không tìm thấy tài liệu',
+                        'message': 'Xin lỗi không thể tìm thấy tài liệu mà bạn đang yêu cầu.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-info',
+                                'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>
+<style>
+    #loading, #including {
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        background: #000 url('/Content/Images/loadajax.gif') no-repeat 50% 4px;
+        bottom: 50%;
+        color: #fff;
+        text-align: center;
+        line-height: 166px;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0.7;
+        border-radius: 5px;
+        filter: alpha(opacity=70);
+        font-size: 12px;
+        text-shadow: none;
+        display: none;
+    }
+
+    .e-input {
+        width: 223px;
+        height: 25px !important;
+        font-size: 13px !important;
+    }
+
+    .onoffswitch {
+        position: relative;
+        width: 65px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .onoffswitch-checkbox {
+        display: none;
+    }
+
+    .chooseplace {
+        display: none;
+    }
+
+    .onoffswitch-label {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        height: 28px;
+        padding: 0;
+        line-height: 28px;
+        border: 2px solid #CCCCCC;
+        border-radius: 28px;
+        background-color: #FFFFFF;
+        transition: background-color 0.3s ease-in;
+    }
+
+        .onoffswitch-label:before {
+            content: "";
+            display: block;
+            width: 28px;
+            margin: 0px;
+            background: #FFFFFF;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 35px;
+            border: 2px solid #CCCCCC;
+            border-radius: 28px;
+            transition: all 0.3s ease-in 0s;
+        }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label {
+        background-color: #49E845;
+    }
+
+        .onoffswitch-checkbox:checked + .onoffswitch-label, .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+            border-color: #49E845;
+        }
+
+            .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+                right: 0px;
+            }
+
+    #PHEDUYET:hover {
+        cursor: pointer;
+    }
+
+    .webGrid th {
+        text-align: center !important;
+    }
+
+    .webGrid tr td {
+        text-align: center !important;
+    }
+
+    a {
+        /*color: blue !important;*/
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+        color: #555;
+        display: block;
+        font-size: 14px;
+        width: 300px;
+        line-height: 1.42857;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    }
+
+    .switch {
+        position: relative;
+        display: block;
+        vertical-align: top;
+        width: 100px;
+        height: 30px;
+        padding: 3px;
+        margin: 0 10px 10px 0;
+        border-radius: 18px;
+        cursor: pointer;
+    }
+
+    .switch {
+        position: relative;
+        display: block;
+        vertical-align: top;
+        width: 100px;
+        height: 30px;
+        padding: 3px;
+        margin: 0 10px 10px 0;
+        border-radius: 18px;
+        cursor: pointer;
+    }
+
+    .switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    .switch-label {
+        position: relative;
+        display: block;
+        height: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #ffb84d;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+    }
+
+        .switch-label:before, .switch-label:after {
+            position: absolute;
+            top: 50%;
+            margin-top: -.5em;
+            line-height: 1;
+            -webkit-transition: inherit;
+            -moz-transition: inherit;
+            -o-transition: inherit;
+            transition: inherit;
+        }
+
+        .switch-label:before {
+            content: attr(data-off);
+            right: 11px;
+            color: #fff;
+            text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .switch-label:after {
+            content: attr(data-on);
+            left: 11px;
+            color: #FFFFFF;
+            text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+        }
+
+    .switch-input:checked ~ .switch-label {
+        background: #34A7C1;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-input:checked ~ .switch-label:before {
+            opacity: 0;
+        }
+
+        .switch-input:checked ~ .switch-label:after {
+            opacity: 1;
+        }
+
+    .switch-handle {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+        background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+        border-radius: 100%;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-handle:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -6px 0 0 -6px;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+            background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+            border-radius: 6px;
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+        }
+
+    .switch-input:checked ~ .switch-handle {
+        left: 74px;
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+    /* Transition
+        ========================== */
+    .switch-label, .switch-handle {
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+    }
+</style>

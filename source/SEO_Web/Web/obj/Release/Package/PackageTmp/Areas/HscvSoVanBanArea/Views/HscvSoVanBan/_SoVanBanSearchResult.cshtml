@@ -1,0 +1,211 @@
+﻿@using Web.FwCore;
+@using Web.Areas.HscvSoVanBanArea.Models;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@{
+    List<HscvSoVanBanBO> listSoVanBan = new List<HscvSoVanBanBO>();
+    if (ViewBag.Search == SoVanBanConstant.IS_NOT_SEARCH)
+    {
+        listSoVanBan = (List<HscvSoVanBanBO>)SessionManager.GetValue("ListSoVanBan");
+    }
+    else
+    {
+        listSoVanBan = (List<HscvSoVanBanBO>)SessionManager.GetValue("ListSoVanBanSearch");
+    }
+
+    var grid = new WebGrid(listSoVanBan,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+
+}
+<style type="text/css">
+    #HeaderGrid > div {
+        margin: 20px 0 10px 10px;
+    }
+
+    #lblBenhChuanDoan {
+        margin-top: 90px;
+        margin-left: 5px;
+        font-weight: bold;
+    }
+
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .head th:first-child {
+        width: 10px;
+    }
+
+    .webGrid tbody tr td:nth-child(2) {
+        width: 250px;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .green {
+        color: #008000;
+    }
+</style>
+@Html.AntiForgeryToken()
+@if (listSoVanBan != null && listSoVanBan.Count > 0)
+{
+    <div id="grid">
+        <div id="HeaderGrid">
+            <div>
+                <label id="lblBenhChuanDoan">@(listSoVanBan.Count) kết quả</label>
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                           grid.Column("TENSO", "Tên sổ văn bản"),
+                            grid.Column("NHOMSOVANBAN", "Nhóm sổ văn bản"),
+               grid.Column("MUCDICHTAO", "Mục đích tạo"),
+               grid.Column("SOVANBANTOIDA", "Số văn bản tối đa"),
+               grid.Column("SOVBTHEOSO", "Số văn bản hiện tại"),
+               grid.Column("TRANGTHAI", format: (item) =>
+               {
+                   return new MvcHtmlString(item.TRANGTHAI == true ? "<span class='green'>Được sử dụng</span>" : "<span class='red'>Không được sử dụng</span>");
+               }, header: "Trạng thái"),
+                grid.Column(format: (item) =>
+                {
+                    return new MvcHtmlString("<a href='javascript:void(0)' onclick='EditSoVanBan(" + item.ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>");
+                }, header: "Sửa"),
+                grid.Column(format: (item) =>
+                {
+                    return new MvcHtmlString("<a href='javascript:void(0)' onclick='RemoveSoVanBan(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>");
+                }, header: "Xóa")))
+    </div>
+}
+else
+{
+    <div id="Empty" class="red">
+        Không tìm thấy dữ liệu phù hợp
+    </div>
+}
+<div class="modal fade" id="CreateSoVanBan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="PrepareSoVanBan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<script type="text/javascript">
+    $('.grid tbody').on('hover', function () {
+        $(this).toggleClass('clickable');
+    });
+
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("SoVanBanCreateForm", "HscvSoVanBan")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#CreateSoVanBan").html(data);
+                $("#CreateSoVanBan").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function EditSoVanBan(ID) {
+        $.ajax({
+            url: '@Url.Action("SoVanBanEditForm")',
+            type: 'post',
+            cache: false,
+            data: {
+                ID: ID
+            },
+            success: function (data) {
+                $("#PrepareSoVanBan").html(data);
+                $("#PrepareSoVanBan").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function RemoveSoVanBan(ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa sổ văn bản này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveSoVanBan", "HscvSoVanBan")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Xóa sổ văn bản thành công!',
+                                });
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { }
+                }
+            }
+        });
+    }
+</script>

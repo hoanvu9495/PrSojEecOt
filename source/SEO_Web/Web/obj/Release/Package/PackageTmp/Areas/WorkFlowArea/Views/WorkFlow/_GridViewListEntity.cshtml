@@ -1,0 +1,28 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common;
+@{
+    var grid = new WebGrid(Model.LstEntityRelated,
+                       rowsPerPage: 10,
+                       canPage: true,
+                       canSort: false,
+                       ajaxUpdateContainerId: "grid",
+                       selectionFieldName: "selectedRow"
+                         );
+}
+@grid.GetHtml(
+                                        tableStyle: "table table-bordered",
+                                    headerStyle: "head",
+                                    alternatingRowStyle: "alt",
+                                    selectedRowStyle: "select",
+                                     mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                                    columns: grid.Columns(
+                                        grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                                        grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                             "<a href='javascript:void(0)' onclick='ChooseWorkFlow(" + item.ID + ")' >" + item.ENTITY_SHOW_NAME + "</a>")), header: "Tên Module"),
+                                        grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                        "<a href='javascript:void(0)' onclick='ChooseWorkFlow(" + item.ID + ")' >" + ((item.WF_QUYTRINH_ID != null) ? item.WF_QUYTRINH.TENWF : "") + "</a>")), header: "Tên Quy Trình")
+                                    )
+                            )

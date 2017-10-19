@@ -1,0 +1,155 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Model.eAita.HSCV_TRANGTHAI_CV
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #EDIT_ID {
+        display: none;
+    }
+</style>
+@using (Ajax.BeginForm("SaveTrangThaiCV", "HscvTrangThaiCV", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmTrangThaiEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cập nhật trạng thái công việc</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr style="height: 20px;"></tr>
+
+                    @Html.TextBox("ID", Model.ID, new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "EDIT_ID", @readonly = "readonly" })
+                    <tr>
+                        <td>
+                            <label class="lbl" style=" width: 160px;">Trạng thái công việc:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("TENTRANGTHAICONGVIEC", Model.TENTRANGTHAICONGVIEC, new { @style = "width: 222px;", maxlength = "50", @class = "e-input", @id = "EDIT_TRANGTHAI" })
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="height: 20px;"></td>
+                        <td>
+                            <span class="lb-Check" id="EDIT_TRANGTHAI_NULL" style="margin-left: 0px; color: red;">Bạn cần nhập trạng thái công việc </span>
+                            <span class="lb-Check" id="EDIT_TRANGTHAI_ERROR" style="margin-left: 0px; color: red;">Trạng thái công việc đã tồn tại</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" style=" width: 150px;">Trạng Thái:<span style="color: red;">*</span></label>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" style="width: 233px;">
+                                @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text = "Có sử dụng", Value = "true" },
+                        new SelectListItem{ Text = "Không sử dụng", Value = "false" }
+                    })
+                                </div>
+</td>
+                    </tr>
+
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                @*<input type="button" value="Lưu" id="btnSave"  />*@
+                <button type="button" class="btn btn-danger" id="btnSave">Cập nhật</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+    @*<div style="margin-top: 15px; text-align:center;">
+            <input type="submit" value="Lưu" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+            <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+
+        </div>*@
+
+}
+<script type="text/javascript">
+    var tontai = false;
+    var donvi = $("#EDIT_TRANGTHAI").val();
+    function OnClose() {
+        $("#PrepareTrangThaiCV").dialog("close");
+    }
+    $("#EDIT_TRANGTHAI").blur(function () {
+        if ($(this).val().trim() == "") {
+            $("#EDIT_TRANGTHAI_NULL").show();
+        } else {
+            $("#EDIT_TRANGTHAI_NULL").hide();
+        }
+    });
+   
+    function failure(xhr, error) {
+        notif({
+            type: 'error',
+            position: 'bottom',
+            msg: 'Có lỗi xảy ra trong quá trình cập nhật!',
+        });
+    }
+    function updateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Cập nhật trạng thái công việc thành công',
+        });
+        $("#PrepareTrangThaiCV").modal("hide");
+        reloadGrid();
+    }
+    $("#btnSave").click(function () {
+        if ($("#EDIT_TRANGTHAI").val().trim() == "") {
+            $("#EDIT_TRANGTHAI").focus();
+            $("#EDIT_TRANGTHAI_NULL").show();
+            return false;
+        } else {
+            $("#EDIT_TRANGTHAI_NULL").hide();
+            var TenTrangThaiCV = $("#EDIT_TRANGTHAI").val();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("validateTrangThaiCV", "HscvTrangThaiCV")',
+                data: {
+                    TenTrangThaiCV: TenTrangThaiCV
+                },
+                cache: false,
+                dataType: "html",
+                success: function (data) {
+                    if (data == "existed") {
+                        if (donvi != TenTrangThaiCV) {
+                            $("#EDIT_TRANGTHAI_ERROR").show();
+                            return false;
+                        } else {
+                            $("#frmTrangThaiEdit").submit();
+                            return true;
+                        }
+
+                    } else {
+                        $("#EDIT_TRANGTHAI_ERROR").hide();
+                        $("#frmTrangThaiEdit").submit();
+                        return true;
+                    }
+                }, error: function () {
+                    alert("Có lỗi xảy ra.");
+                }
+            });
+
+        }
+
+    });
+
+</script>

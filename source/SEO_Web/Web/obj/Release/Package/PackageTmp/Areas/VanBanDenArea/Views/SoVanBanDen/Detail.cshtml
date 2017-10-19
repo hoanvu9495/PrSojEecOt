@@ -1,0 +1,95 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common
+
+@using Web.Areas.MarkItemArea.Models;
+@using Web.Common;
+@model Web.Areas.VanBanDenArea.Models.DetailSoVanBanDenViewModel
+@{
+    ViewBag.Title = "Quản lý sổ văn bản đến";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{    
+
+    var grid = new WebGrid(Model.ListVanBanDen,
+                        rowsPerPage: 10,
+                        canPage: true,
+                        canSort: false,
+                        ajaxUpdateContainerId: "grid",
+                        selectionFieldName: "selectedRow"
+                          );
+}
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/van_ban_den/van_ban_den.css">
+<script src="~/Scripts/workflow.js"></script>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div class="block" id="smart-dms">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none; border:none;">
+        <div id="menu-child">
+            <div class="menu-left" style="display:inline-block">
+            </div>
+            <div class="menu-right">
+                <div class="right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*@Html.Partial("_MenuVanBanDen")*@
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <table style="width: 100%;">
+        <tr>
+            <td>
+                @*<div class="SearchCriterial clearfix ">
+                </div>*@
+                <div class="SearchResult clearfix">
+                    <div class="panel panel-default" style="border-radius: 0px; border: none; margin-bottom: 0px">
+                        <div class="panel-body" style="padding: 2px 2px 2px 1px">
+
+                            <h3 class="group-tittle mt10" style="height: 39px"><span>@Model.SoVanBan.TENSO</span></h3>
+                            <div id="grid" style="height:auto;min-height:300px;margin-top:20px">
+                                @grid.GetHtml(
+                                    tableStyle: "webGrid",
+                                    headerStyle: "head",
+                                    alternatingRowStyle: "alt",
+                                    selectedRowStyle: "select",
+                                     mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                                    columns: grid.Columns(
+                                    grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                                    grid.Column("SODEN", format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.SODEN + "</span>")) : item.SODEN, header: "Số đến"),
+                                    grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.SOKYHIEU + "</span>")) : item.SOKYHIEU, header: "Số kí hiệu"),
+                                    grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.TRICHYEU + "</span>")) : item.SOKYHIEU, header: "Trích yếu"),
+                                    grid.Column("COQUANBANHANH_ID", format: (item) => (item.COQUANBANHANH_ID > 0) ? new MvcHtmlString(string.Format("<span style='" + ((item.IS_READ != true) ? "font-weight:bold" : "") + "'>" + item.DONVIBANHANH + "</span>")) : new MvcHtmlString(string.Format("<span style='" + ((item.IS_READ == true) ? "font-weight:bold" : "") + "'>" + item.COQUANBANHANHTEXT + "</span>")), header: "Đơn vị ban hành"),
+                                    //grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + string.Format("{0:dd/MM/yyyy}", item.NGAYDEN) + "</span>")) : string.Format("{0:dd/MM/yyyy}", item.NGAYDEN), header: "Ngày đến"),
+                                    //grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + string.Format("{0:dd/MM/yyyy}", item.NGAYVANBAN) + "</span>")) : string.Format("{0:dd/MM/yyyy}", item.NGAYVANBAN), header: "Ngày văn bản"),
+                                    grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.DOKHAN + "</span>")) : item.DOKHAN, header: "Độ khẩn"),
+                                    grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.LOAIVANBAN + "</span>")) : item.LOAIVANBAN, header: "Loại văn bản"),
+                                             grid.Column(format: (item) => (item.IS_READ != true) ? new MvcHtmlString(string.Format("<span style='font-weight:bold'>" + item.TRANGTHAI_XULY + "</span>")) : item.TRANGTHAI_XULY, header: "Trạng thái xử lý"),
+                                    grid.Column(format: (item) => new MvcHtmlString(string.Format((item.HAS_FILE == true) ? "<span class='btnAttFile'></span>" : "")), header: "AttFile"),
+                                    grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                                                                 "<a href='/VanBanDenArea/VanBanDen/ViewDetail/" + item.ID + "' class='btnView' title = 'Xem chi tiết'></a>")), header: "Xem"),
+                                    grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                                                 "<a href='/VanBanDenArea/VanBanDen/Edit/" + item.ID + "'  class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                                    grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                    "<a href='javascript:void(0)' onclick='DeleteVanBanDen(" + item.ID + ")'  class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+                                    )
+                                    )
+                            </div>
+
+                        </div>
+                        <div class="panel-footer">
+                            <div style="margin-top: 15px; text-align: center;">
+                                <a href="/VanBanDenArea/SoVanBanDen" style="border: medium none; color: white; padding: 7px 20px; background-color: seagreen;">Quay lại </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

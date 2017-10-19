@@ -1,0 +1,426 @@
+﻿@using Web.FwCore;
+@using Web.Models;
+@using Web.Common;
+@{
+    var currentAction = ViewContext.RouteData.Values["action"];
+    var formSubmitID = ViewData["FormSubmitID"];
+    int nhomSoID = ViewData["NhomSoID"] == null ? 0 : ViewData["NhomSoID"].ToString().ToIntOrZero();
+    int soID = ViewData["SoID"] == null ? 0 : ViewData["SoID"].ToString().ToIntOrZero();
+    int type = ViewData["Type"] == null ? 0 : ViewData["Type"].ToString().ToIntOrZero();
+}
+<style type="text/css">
+    .workflow-error {
+        color: red !important;
+        text-align: center !important;
+        display: block !important;
+    }
+
+    .modal .modal-title {
+        font-weight: bold !important;
+        text-align: center !important;
+        text-transform: uppercase !important;
+    }
+
+    #modal--process-workflow .modal-dialog{
+        width:590px;
+    }
+
+    #modal--savenote-workflow #modal--savenote-dialog {
+        width: 1080px;
+    }
+
+    #modal--savenote-dialog #modal--savenote-body {
+        padding: 0 5px;
+        height: 450px;
+        overflow: auto;
+    }
+</style>
+<div class="modal fade" id="modal--process-workflow" tabindex="-1" role="dialog" aria-labelledby="modal--process-workflow-title">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="closeWorkFlowModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <input type="hidden" class="workflow-step-name" />
+            <input type="hidden" class="workflow-entity-id" />
+            <input type="hidden" class="workflow-trangthai-1" />
+            <input type="hidden" class="workflow-trangthai-2" name="TRANGTHAI" />
+            <div class="modal-footer">
+                @if (currentAction.ToString().ToLower().Equals("createvb") || currentAction.ToString().ToLower().Equals("editvb") || currentAction.ToString().ToLower().Equals("createfromvbden"))
+                {
+                <button type="button" class="btn btn-primary" onclick="submitWorkFlowStepChange(false,false)">
+                    Gửi
+                </button>
+                }
+                else
+                {
+                    if (currentAction.ToString().ToLower().Equals("index") || currentAction.ToString().ToLower().Equals("loadpreviewvb"))
+                    {
+                <button type="button" class="btn btn-primary" onclick="submitWorkFlowStepChange(true,false)">
+                    Gửi
+                </button>
+                    }
+                    else if (currentAction.ToString().ToLower().Equals("detail"))
+                    {
+                <button type="button" class="btn btn-primary" onclick="submitWorkFlowStepChange(false,true)">
+                    Gửi
+                </button>
+                    }
+                }
+                <button type="button" class="btn btn-default" onclick="closeWorkFlowModal()">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div><!--MODAL XỬ LÝ VĂN BẢN-->
+<div class="modal fade" id="modal--edit-history" tabindex="-1" role="dialog" aria-labelledby="">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">
+                    Lịch sử thay đổi văn bản
+                </h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div><!--MODAL LỊCH SỬ CẬP NHẬT VĂN BẢN-->
+
+<div id="modal--savenote-workflow" class="modal fade">
+    <div class="modal-dialog modal-lg" role="document" id="modal--savenote-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">
+                    Lưu sổ và phát hành
+                </h3>
+            </div>
+            <div class="modal-body" id="modal--savenote-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="formSubmitSaveNote()">
+                    Lưu
+                </button>
+                <button type="button" class="btn btn-default" onclick="closeSaveNoteModal()">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div><!--MODAL LƯU SỔ VÀ PHÁT HÀNH-->
+<div class="modal fade" id="modal--process-workflow-multiple-items" tabindex="-1" role="dialog" aria-labelledby="modal--process-workflow-title">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <input type="hidden" class="workflow-step-name" />
+            <input type="hidden" class="workflow-entity-id" />
+            <input type="hidden" class="workflow-trangthai-1" />
+            <input type="hidden" class="workflow-trangthai-2" />
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="submitWorkFlowStepChangeForMultipleItems()">Lưu</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div><!--MODAL XỬ LÝ NHIỀU VĂN BẢN-->
+<script type="text/javascript">
+    var $emptyStr = "";
+    //đóng modal
+    function closeWorkFlowModal() {
+        $('#modal--process-workflow .modal-body').children().remove();
+        $('#modal--process-workflow .workflow-step-name').val($emptyStr);
+        $("#modal--process-workflow .workflow-entity-id").val($emptyStr);
+        $('#modal--process-workflow .workflow-trangthai-1').val($emptyStr);
+        $('#modal--process-workflow .workflow-trangthai-2').val($emptyStr);
+        $('#modal--process-workflow').modal('hide');
+    }
+
+    //hiển thị màn hình workflow
+    function showWorkFlowStepChange(entity_id, step_name, trang_thai_1, trang_thai_2) {
+        $.ajax({
+            url: '@Url.Action("VanBanDiWfStepChangeView")',
+            dataType: 'html',
+            type: 'POST',
+            data: {
+                TenBuocChuyenTrangThai: step_name,
+                EntityID: entity_id,
+                TrangThaiBatDau: trang_thai_1,
+                TrangThaiKetThuc: trang_thai_2,
+            },
+            success: function (view) {
+                $('#modal--process-workflow .modal-body').html(view);
+                $('#modal--process-workflow .modal-title').text(step_name);
+                $('#modal--process-workflow .workflow-step-name').val(step_name);
+                $("#modal--process-workflow .workflow-entity-id").val(entity_id);
+                $('#modal--process-workflow .workflow-trangthai-1').val(trang_thai_1);
+                $('#modal--process-workflow .workflow-trangthai-2').val(trang_thai_2);
+                $('#modal--process-workflow').modal('show');
+            }, error: function (err) {
+                alert(err.responseText);
+            }
+        });
+    }
+
+    //cập nhật trạng thái xử lý văn bản
+    function submitWorkFlowStepChange(isIndexPage, isInDetailPage) {
+        @*var comment = $('#modal--process-workflow .workflow-comment').val().trim();
+        var entity_id = $('#modal--process-workflow .workflow-entity-id').val().trim();
+        var trangthai_1 = $('#modal--process-workflow .workflow-trangthai-1').val().trim();
+        var trangthai_2 = $('#modal--process-workflow .workflow-trangthai-2').val().trim();
+        var listNhanVienXuLyChinh = [];
+        var listNhanVienThamGiaXuLy = [];
+        var hasChooseNhanVien = $('#modal--process-workflow input[name=NGUOINHAN_XULYCHINH]').length > 0;
+        if (hasChooseNhanVien) {
+            var listCheckedNhanVien = $('#modal--process-workflow input[name=NGUOINHAN_XULYCHINH]:checked');
+            if (listCheckedNhanVien.length > 0) {
+                listCheckedNhanVien.each(function () {
+                    listNhanVienXuLyChinh.push($(this).val());
+                });
+            } else {
+                $('#modal--process-workflow .workflow-error').text('Bạn cần chọn người xử lý chính văn bản');
+                setTimeout(function () {
+                    $('#modal--process-workflow .workflow-error').text($emptyStr);
+                }, 1500);
+                return false;
+            }
+        }
+        //thông tin người tham gia xử lý
+        $('#modal--process-workflow input[name=NGUOINHAN_THAMGIAXULY]:checked').each(function () {
+            listNhanVienThamGiaXuLy.push($(this).val());
+        });
+        if (isIndexPage === false && isInDetailPage === false) {
+            $('@formSubmitID').submit();
+        } else {
+            $.ajax({
+                url: '@Url.Action("CompleteWorkFlowStepTransition")',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+
+            });
+        }*@
+        if ($('#modal--process-workflow input[name=NGUOIDUNGROLE]').length > 0) {
+            if ($('#modal--process-workflow input[name=NGUOIDUNGROLE]:checked').length <= 0) {
+                $('#modal--process-workflow #ERR_comment_text_step_id').text('Bạn cần chọn người nhận văn bản');
+                setTimeout(function () {
+                    $('#modal--process-workflow #ERR_comment_text_step_id').text($emptyStr);
+                }, 1500);
+                return false;
+            }
+        }
+        //nếu đang ở form thêm mới/cập nhật
+        if (isIndexPage === false && isInDetailPage === false) {
+            $('@formSubmitID').submit();
+        } else {
+            var comment = $('#modal--process-workflow #comment_text_step_id').val().trim();
+            var entity_id = $("#modal--process-workflow .workflow-entity-id").val().trim();
+            var step_name = $('#modal--process-workflow .workflow-step-name').val().trim();
+            var trang_thai_1 = $('#modal--process-workflow .workflow-trangthai-1').val().trim();
+            var trang_thai_2 = $('#modal--process-workflow .workflow-trangthai-2').val().trim();
+            var nguoi_nhan = [];
+            $('#modal--process-workflow input[name=NGUOIDUNGROLE]:checked').each(function () {
+                nguoi_nhan.push($(this).val().trim());
+            });
+            $('#ProcessWorkFlowModal').modal('hide');
+            $.ajax({
+                url: '@Url.Action("CompleteWorkFlowStepTransition")',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify({
+                    entity_id: entity_id,
+                    trang_thai_1: trang_thai_1,
+                    trang_thai_2: trang_thai_2,
+                    message: comment,
+                    recipients: nguoi_nhan.toString()
+                }),
+                success: function (result) {
+                    notif({
+                        type: 'success',
+                        position: 'bottom',
+                        msg: step_name + " " + ' thành công!',
+                    });
+                    if (isIndexPage) {
+                        setTimeout(function () {
+                            var currentPageIndex = parseInt($('#grid tfoot td').clone().children('a').remove().end().text().trim(), 10) - 1;
+                            location.href = '/hsvanbandiarea/hsvanbandi/index?type=@type&nhomSoID=@nhomSoID&soID=@soID&pageIndex=' + currentPageIndex;
+                        }, 1000);
+                    } else {
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    }
+                }
+            });
+        }
+    }
+    //hiển thị modal lịch sử xử lý
+    function showLogHistory(id) {
+        $.ajax({
+            url: "@Url.Action("GetVanBanDiLogHistory")",
+            type: 'POST',
+            data: { 'id': id },
+            success: function (view) {
+                $('#modal--edit-history .modal-body').html(view);
+                $('#modal--edit-history').modal('show');
+            }, error: function (error) {
+                $.confirm({
+                    'title': 'Không thể hiển thị lịch sử',
+                    'message': 'Không thể hiển thị lịch sử.',
+                    'buttons': {
+                        'Đóng': {
+                            'class': 'btn-info',
+                            'action': function () { }
+                        }
+                    }
+                });
+            }
+        })
+    }
+    //mở modal lưu sổ và phát hành
+    function showWorkFlowSaveNoteModal(id) {
+        $.ajax({
+            url: "@Url.Action("SaveNoteView")",
+            dataType: 'html',
+            data: { 'id': id },
+            success: function (view) {
+                $('#modal--savenote-workflow .modal-body').html(view);
+                $('#modal--savenote-workflow').modal('show');
+            }, error: function (err) {
+                CommonJS.showNotifyError(err.status);
+            }
+        });
+    }
+    function formSubmitSaveNote() {
+        if ($('#frmSaveNote').length > 0) {
+            $('#frmSaveNote').submit();
+        }
+    }
+    function showWorkFlowStepChangeForMultipleItems(step_name, entity_id, trang_thai_1, trang_thai_2) {
+        var checkedItems = $('#grid tbody input[type=checkbox]:checked');
+        if (checkedItems.length <= 0) {
+            notif({
+                msg: 'Bạn chưa chọn văn bản',
+                position: 'bottom',
+                type: 'error'
+            });
+            return false;
+        }
+        $.ajax({
+            url: '@Url.Action("VanBanDiWfStepChangeView")',
+            dataType: 'html',
+            type: 'POST',
+            data: {
+                TenBuocChuyenTrangThai: step_name,
+                EntityID: entity_id,
+                TrangThaiBatDau: trang_thai_1,
+                TrangThaiKetThuc: trang_thai_2,
+            },
+            success: function (view) {
+                $('#modal--process-workflow-multiple-items .modal-body').html(view);
+                $('#modal--process-workflow-multiple-items .modal-title').text(step_name);
+                $('#modal--process-workflow-multiple-items .workflow-step-name').val(step_name);
+                $("#modal--process-workflow-multiple-items .workflow-entity-id").val(entity_id);
+                $('#modal--process-workflow-multiple-items .workflow-trangthai-1').val(trang_thai_1);
+                $('#modal--process-workflow-multiple-items .workflow-trangthai-2').val(trang_thai_2);
+                $('#modal--process-workflow-multiple-items').modal('show');
+            }, error: function (err) {
+                alert(err.responseText);
+            }
+        });
+    }
+    function submitWorkFlowStepChangeForMultipleItems() {
+        if ($('#modal--process-workflow-multiple-items input[name=NGUOIDUNGROLE]').length > 0) {
+            if ($('#modal--process-workflow-multiple-items input[name=NGUOIDUNGROLE]:checked').length <= 0) {
+                $('#modal--process-workflow-multiple-items #ERR_comment_text_step_id').text('Bạn cần chọn người nhận văn bản');
+                setTimeout(function () {
+                    $('#modal--process-workflow-multiple-items #ERR_comment_text_step_id').text($emptyStr);
+                }, 1500);
+                return false;
+            }
+        }
+        var comment = $('#modal--process-workflow-multiple-items #comment_text_step_id').val().trim();
+        var step_name = $('#modal--process-workflow-multiple-items .workflow-step-name').val().trim();
+        var trang_thai_1 = $('#modal--process-workflow-multiple-items .workflow-trangthai-1').val().trim();
+        var trang_thai_2 = $('#modal--process-workflow-multiple-items .workflow-trangthai-2').val().trim();
+        var nguoi_nhan = [];
+        var entity_id = [];
+        $('#modal--process-workflow-multiple-items input[name=NGUOIDUNGROLE]:checked').each(function () {
+            nguoi_nhan.push(this.value);
+        });
+        $('#grid tbody input[name=ids][type=checkbox]:checked').each(function () {
+            entity_id.push(this.value);
+        });
+        $('#ProcessWorkFlowModal').modal('hide');
+        $.ajax({
+            url: '@Url.Action("CompleteWorkFlowStepTransition")',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify({
+                entity_id: entity_id,
+                trang_thai_1: trang_thai_1,
+                trang_thai_2: trang_thai_2,
+                message: comment,
+                recipients: nguoi_nhan.toString()
+            }),
+            success: function (result) {
+                if (result.success === true) {
+                    $('#modal--process-workflow-multiple-items').modal('hide');
+                    if (result.countSuccess > 0) {
+                        notif({
+                            type: 'success',
+                            position: 'bottom',
+                            msg: step_name + " " + ' thành công!',
+                        });
+                        setTimeout(function () {
+                            var currentPageIndex = parseInt($('#grid tfoot td').clone().children('a').remove().end().text().trim(), 10) - 1;
+                            location.href = '/hsvanbandiarea/hsvanbandi/index?type=@type&nhomSoID=@nhomSoID&soID=@soID&pageIndex=' + currentPageIndex;
+                        }, 1000);
+                    } else {
+                        notif({
+                            type: 'error',
+                            position: 'bottom',
+                            msg: step_name + " " + ' không thành công!',
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    function closeSaveNoteModal() {
+        $('#modal--savenote-workflow .modal-body').children().remove();
+        $('#modal--savenote-workflow').modal('hide');
+    }
+</script>

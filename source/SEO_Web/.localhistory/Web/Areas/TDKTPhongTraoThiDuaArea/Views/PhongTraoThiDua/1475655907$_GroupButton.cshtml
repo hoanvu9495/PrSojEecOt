@@ -1,0 +1,56 @@
+﻿@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Areas.TDKTPhongTraoThiDuaArea.Models;
+@model Web.Areas.TDKTPhongTraoThiDuaArea.Models.PhongTraoThiDuaViewModel
+
+@if (Model.PhongTraoThiDua.TRANGTHAI == PhongTraoThiDuaConstant.TT_MOITAO || Model.PhongTraoThiDua.TRANGTHAI == PhongTraoThiDuaConstant.TT_TUCHOI)
+{
+    <input type="button" value="Trình lãnh đạo" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" onclick="changeStatus(@Model.PhongTraoThiDua.ID, @PhongTraoThiDuaConstant.TT_TRINHLANDAO)" />
+}
+else if (Model.PhongTraoThiDua.TRANGTHAI == PhongTraoThiDuaConstant.TT_TRINHLANDAO)
+{
+    <input type="button" value="Phê duyệt" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" onclick="changeStatus(@Model.PhongTraoThiDua.ID, @PhongTraoThiDuaConstant.TT_PHEDUYET)" />
+    <input type="button" value="Từ chối phê duyệt" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" onclick="changeStatus(@Model.PhongTraoThiDua.ID, @PhongTraoThiDuaConstant.TT_TUCHOI)" />
+}
+else if (Model.PhongTraoThiDua.TRANGTHAI == PhongTraoThiDuaConstant.TT_PHEDUYET)
+{
+    <input type="submit" value="Ban hành" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 150px; color: white;" onclick="changeStatus(@Model.PhongTraoThiDua.ID, @PhongTraoThiDuaConstant.TT_BANHANH)" />
+}
+<script>
+    function changeStatus(id, trangthai) {
+        $.confirm({
+            'title': 'Xác nhận xử lý',
+            'message': 'Bạn có chắc chắn muốn trình đơn xin nâng lương này không ?',
+            'buttons': {
+                'Yes': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("TrinhLanhDao", "QuanLyNangLuongTruocThoiHan")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: id },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Trình lãnh đạo thành công!',
+                                });
+                                //reloadGrid();
+                                setTimeout('reloadGrid()', 2000);
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'No': {
+                    'class': 'btn-info',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+</script>

@@ -1,0 +1,36 @@
+﻿@using Web.Common
+@using Web.FwCore;
+@model Web.Areas.VanBanDenArea.Models.VanBanDenSearchModel
+
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne" style="height: 50px;">
+        <h4 class="panel-title">
+            <a class="" aria-controls="collapseOne" aria-expanded="false" href="#collapseOne" data-toggle="collapse" role="button">
+                Tìm kiếm nâng cao
+            </a>
+        </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" role="tabpanel" style="">
+        @Html.AntiForgeryToken()
+        @using (Ajax.BeginForm("FindVanBanDen", "VanBanDen", new { SearchType = "Delete" }, new AjaxOptions()
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnFailure = "failure",
+            UpdateTargetId = "grid",
+        }, new { id = "frmSearh" }))
+        {
+            @Html.Partial("_VanBanDenSearchCore")
+        }
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $(function () {
+            $(".datepicker").datepicker({ dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true, yearRange: "-20:+20" });
+        });
+    });
+
+</script>

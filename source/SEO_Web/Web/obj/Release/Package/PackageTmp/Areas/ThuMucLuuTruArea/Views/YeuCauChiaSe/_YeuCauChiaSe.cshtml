@@ -1,0 +1,154 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.YeuCauChiaSeModel
+@using Web.Areas.ThuMucLuuTruArea.Models;
+@using Model.eAita
+@using Web.FwCore
+@if (Model.ListThongTin.Count > 0)
+{
+    var ListParent = Model.ListThongTin.Where(x => x.PARENT_ID == null).ToList();
+    var ListSelected = (List<TM_DANHMUC_THONGTIN>)SessionManager.GetValue("ListThongTin");
+    int count = 0;
+    <table class="webGrid">
+        <tr class="head">
+            <th>
+                <input type="checkbox" class="checkall" value="" />
+            </th>
+            <th>STT</th>
+            <th>Đơn vị</th>
+            <th>Tên thông tin</th>
+            <th>Tên tài liệu</th>
+        </tr>
+        <tbody>
+            @foreach (var item in ListParent)
+            {
+                count++;
+                var ListChild = Model.ListThongTin.Where(x => x.PARENT_ID == item.ID).ToList();
+                if (ListChild.Count > 0)
+                {
+                    <tr class="donvishow donvi_@item.DONVI_ID" data-id="@item.DONVI_ID">
+                        <td>
+                            @if (ListSelected != null)
+                            {
+                                if (ListSelected.Where(x => x.ID == item.ID).ToList().Count == 0)
+                                {
+                                    <input type="checkbox" class="checkboxchild checkdanhmuc" data-id="@item.ID" value="@item.ID">
+                                }
+                                else
+                                {
+                                    <span>&nbsp;</span>
+                                }
+                            }
+                            else
+                            {
+                                <input type="checkbox" class="checkboxchild checkdanhmuc" data-id="@item.ID" value="@item.ID">
+                            }
+                        </td>
+                        <td>@count</td>
+                        <td>@item.TENDONVI</td>
+                        <td>
+                            <div class="checkbox">
+                                <label>@item.TENTHONGTIN</label>
+                            </div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    if (ListChild.Count > 0)
+                    {
+                        int cntChild = 0;
+                        foreach (var ele in ListChild)
+                        {
+                            cntChild++;
+                            <tr class="donvishow donvi_@item.DONVI_ID" data-id="@item.DONVI_ID">
+                                <td>
+                                    @if (ListSelected != null)
+                                    {
+                                        if (ListSelected.Where(x => x.ID == ele.ID).ToList().Count == 0)
+                                        {
+                                            <input type="checkbox" class="checkboxchild checkbox_@item.ID" value="@ele.ID">
+                                        }
+                                        else
+                                        {
+                                            <span>&nbsp;</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" class="checkboxchild checkbox_@item.ID" value="@ele.ID">
+                                    }
+                                </td>
+                                <td>@(count + "." + cntChild)</td>
+                                <td>&nbsp;</td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <div class="checkbox" style="margin-left:15px">
+                                        <label>@ele.TENTHONGTIN</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+                else
+                {
+                    <tr class="donvishow donvi_@item.DONVI_ID" data-id="@item.DONVI_ID">
+                        <td>
+                            @if (ListSelected != null)
+                            {
+                                if (ListSelected.Where(x => x.ID == item.ID).ToList().Count == 0)
+                                {
+                                    <input type="checkbox" class="checkboxchild checkdanhmuc" data-id="@item.ID" value="@item.ID">
+                                }
+                                else
+                                {
+                                    <span>&nbsp;</span>
+                                }
+                            }
+                            else
+                            {
+                                <input type="checkbox" class="checkboxchild checkdanhmuc" data-id="@item.ID" value="@item.ID">
+                            }
+                        </td>
+                        <td>@count</td>
+                        <td>@item.TENDONVI</td>
+                        <td>
+                            <div class="checkbox">
+                                <label>@item.TENTHONGTIN</label>
+                            </div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div style="color:red">
+        Không tìm thấy danh mục thông tin, tài liệu nào
+    </div>
+}
+<script>
+    $(function () {
+        $(".checkall").click(function () {
+            $('.checkboxchild').prop('checked', this.checked);
+        });
+        $(".checkdanhmuc").click(function () {
+            var ID = $(this).attr("data-id");
+            $('.checkbox_' + ID).prop('checked', this.checked);
+            var totalRows = $(".checkboxchild").length;
+            var checked = $(".checkboxchild:checked").length;
+            if (checked != totalRows) {
+                $(".checkall").prop('checked', false);
+            }
+        });
+        $(".checkboxchild").click(function () {
+            var totalRows = $(".checkboxchild").length;
+            var checked = $(".checkboxchild:checked").length;
+            if (checked != totalRows) {
+                $(".checkall").prop('checked', false);
+            }
+        });
+    });
+</script>

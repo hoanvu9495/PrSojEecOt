@@ -1,0 +1,361 @@
+﻿@{
+    ViewBag.Title = "Import danh sách người dùng";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+<style type="text/css">
+    #ImportProductByExcel .widget-box .control-label {
+        font-weight: bold;
+    }
+
+    #alert-after-import {
+        background: #fff;
+        border: 1px solid #ccc;
+    }
+
+    #ImportProductByExcel .widget-body {
+        padding: 10px 0;
+    }
+
+    #alert-after-upload {
+        border: 1px solid #ccc;
+        background: #fff;
+    }
+
+    #tbl_ExcelDataContainer {
+        border: 1px solid #ddd;
+        margin: 5px auto;
+        max-width: 1300px;
+        min-width: 1000px;
+        height: 496px;
+        overflow-x: scroll;
+        overflow-y: no-display;
+    }
+
+    #ImportExcelBtn {
+        margin-top: 65px;
+    }
+
+    #tbl_ExcelDataContainer::-webkit-scrollbar {
+        width: 5px;
+        height: 10px;
+    }
+
+    #tbl_ExcelDataContainer::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    }
+
+    #tbl_ExcelDataContainer::-webkit-scrollbar-thumb {
+        background-color: #438EB9;
+        outline: 1px solid slategrey;
+    }
+
+    #simple-table thead tr th, #simple-table tbody tr td {
+        min-width: 10px;
+        max-width: 240px;
+    }
+
+    #simple-table tbody tr.selectedRow {
+        background: #6FB3E0;
+        color: #fff;
+    }
+
+    #simple-table tbody tr:not(.selectedRow):hover {
+        background: #f5f5f5;
+        color: black;
+    }
+
+    #simple-table thead, #simple-table tbody {
+        display: block;
+    }
+
+    #simple-table tbody {
+        height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+        #simple-table tbody tr td.red {
+            font-weight: bold;
+        }
+</style>
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <h2 class="group-tittle mt10">
+            Import danh sách người dùng
+        </h2>
+    </header>
+    <div class="widge-t-body no-padding">
+        <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+            <div id="ImportProductByExcel">
+                <div class="alert alert-info hide" style="font-weight:bold" id="alert-after-import">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
+                    <p id="import-success" class="green">
+                        <i class="ace-icon fa fa-check"></i> Số người dùng import thành công :&nbsp;
+                        <span id="import-success-count"></span>
+                    </p>
+                    <p id="import-fail" class="red">
+                        <i class="ace-icon fa fa-times"></i>&nbsp;Số người dùng import thất bại :&nbsp;<span id="import-fail-count"></span>
+                    </p>
+
+                    <a id="link-after-import">Download file log ghi lỗi</a>
+                    <br>
+                </div><!--THÔNG BÁO SỐ SẢN PHẨM IMPORT THÀNH CÔNG/KO THÀNH CÔNG-->
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="widget-box">
+                            <div class="widget-body">
+                                <div class="widget-main">
+                                    <div class="form-group cst-form-group form-horizontal">
+                                        <label class="col-sm-3 control-label">
+                                            Chọn file :
+                                        </label>
+                                        <div class="col-xs-9">
+                                            <input type="file" id="id-input-file-2" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="alert alert-info hide" id="alert-after-upload">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="ace-icon fa fa-times"></i>
+                            </button>
+                            <p id="import-success" class="green">
+                                <i class="ace-icon fa fa-check"></i> Số người dùng có thể import :&nbsp;
+                                <b id="can-import-count"></b>
+                            </p>
+                            <p id="import-fail" class="red">
+                                <i class="ace-icon fa fa-times"></i>&nbsp;Số người dùng không thể import :&nbsp;
+                                <b id="cannot-import-count"></b>
+                            </p>
+                            <a href="" id="link-after-upload" class="hide">Download file log ghi lỗi</a>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-success btn btn-sm pull-left disabled hide" title="Import" id="ImportExcelBtn" onclick="importProductByExcel()">
+                            <i class="ace-icon fa fa-upload"></i>
+                            Import
+                        </button>
+                    </div>
+                </div><!--THÔNG BÁO SỐ SẢN PHẨM CÓ/KHÔNG THỂ IMPORT-->
+
+                <div id="tbl_ExcelDataContainer" class="hide">
+                    <table id="simple-table" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="center">
+                                    <label class="pos-rel">
+                                        <input type="checkbox" class="ace" onclick="headerCheckExcelProduct(event)" id="SpExcelCheckAll">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </th>
+                                <th class="center">
+                                    STT
+                                </th>
+                                <th style="width: 100px">Tên đăng nhập</th>
+                                <th style="width: 170px" class="center">Họ và tên</th>
+                                <th style="width: 105px" class="center">Phòng ban</th>
+                                <th style="width: 136px">Chức vụ</th>
+                                <th style="width: 96px">Số điện thoại</th>
+                                <th style="width: 240px">Email</th>
+                                <th>Vai trò</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div><!--BẢNG HIỂN THỊ SẢN PHẨM CÓ THỂ IMPORT-->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*<script src="~/Content/CustomJS/Common.js"></script>*@
+
+<script type="text/javascript">
+    pageSetUp();
+</script>
+<script>
+    $excelMimeTypeCollection = [
+            "application/vnd.ms-excel",
+            "application/msexcel",
+            "application/x-msexcel",
+            "application/x-ms-excel",
+            "application/x-excel",
+            "application/x-dos_ms_excel",
+            "application/xls",
+            "application/x-xls",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ];
+    jQuery(function () {
+
+        $('#id-input-file-2').on('change', function () {
+            var file = $(this).prop('files')[0];
+            console.log(file);
+            var valid = validateExcelFile(file);
+            if (valid === false) {
+                NotiError('File không đúng định dạng <strong>EXCEL</strong>');
+            }
+            else
+                fillExcelData(file);
+        });
+    });
+    function validateExcelFile(file) {
+        //var file = $('input#id-input-file-2')[0].files[0];
+        if (file !== null) {
+            var fileType = file['type'];
+            console.log(fileType);
+            if ($.inArray(fileType, $excelMimeTypeCollection) < 0)
+                return false;
+            return true;
+        }
+        return false;
+    }
+
+    function clearFile() {
+        var control = $("input#id-input-file-2");
+        control.replaceWith(control = control.clone(true));
+    }
+    function fillExcelData(file) {
+        var processStart, processEnd;
+        var formData = new FormData();
+        formData.append("ProductExcelFile", file);
+        $.ajax({
+            url: '/NguoiDungArea/NguoiDung/ReviewExelUser',
+            type: 'POST',
+            dataType: 'json',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                var html = "";
+                var tblCount = 1;
+                if (result.success == true && result.list != null) {
+                    $.each(result.list, function (key, item) {
+                        if (item.excIsValidProduct) {
+                            html += '<tr onclick="getSelectedRow(event)">';
+                            html += '<td class="center">';
+                            html += '<label class="pos-rel">';
+                            html += '<input type="checkbox" class="ace" onclick="bodyCheckExcelProduct(event)" value="' + item.excelProductIndex + '">';
+                            html += '<span class="lbl"></span>';
+                            html += '</label>';
+                            html += '</td>';
+
+                            html += '<td class="center"><h4>' + tblCount + '</h4></td>';
+                            html += '<td  style="width: 100px">' + item.TENDANGNHAP + '</td>';
+                            html += '<td  style="width: 170px">' + item.HOTEN + '</td>';
+                            html += '<td  style="width: 105px">' + item.PHONGBAN + '</td>';
+                            html += '<td>' + item.CHUCVU + '</td>';
+                            html += '<td>' + item.DIENTHOAI + '</td>';
+                            html += '<td>' + item.EMAIL + '</td>';
+                            html += '<td>' + item.VAITRO + '</td>';
+                            html += '</tr>';
+                        }
+                        tblCount = tblCount + 1;
+                    });
+                    $('#tbl_ExcelDataContainer #simple-table tbody').html(html);
+                    $('#tbl_ExcelDataContainer').removeClass('hide');
+                    $('#alert-after-import').addClass('hide');
+                    $('#alert-after-upload #can-import-count').text(result.list.length);
+                    $('#alert-after-upload #cannot-import-count').text(result.failAddCount);
+                    $('#alert-after-upload,#ImportExcelBtn').removeClass('hide');
+                    if (result.logPath !== null && result.logPath !== '') {
+                        $('#link-after-upload').removeClass('hide');
+                        $('#link-after-upload').attr('href', '/NguoiDungArea/NguoiDung/DownLoadFileLog?path=' + result.logPath + '&name=' + "Log Excel");
+                    }
+                } else {
+                    commonNotifyError(result.message);
+                    var control = $("#id-file-input-2");
+                    control.replaceWith(control = control.clone(true));
+                }
+            }, error: function (result) {
+                alert(result.responseText);
+            }, beforeSend: function () {
+                processStart = new Date();
+            }, complete: function () {
+                processEnd = new Date();
+                console.log('Thời gian thực hiện : ' + (processEnd - processStart) / 1000 + " giây");
+            }
+        });
+    }
+    function getSelectedRow(event) {
+        $('#tbl_ExcelDataContainer #simple-table tbody tr').removeClass('selectedRow');
+        $(event.currentTarget).addClass('selectedRow');
+    }
+    function headerCheckExcelProduct(event) {
+        var current = $(event.currentTarget),
+                table = current.parents('table');
+        $.each(table.find('tr td input[type=checkbox]'), function () {
+            $(this).prop('checked', current.is(':checked'));
+        });
+        if (current.is(':checked'))
+            $('#ImportExcelBtn').removeClass('disabled');
+        else
+            $('#ImportExcelBtn').addClass('disabled');
+    }
+    function bodyCheckExcelProduct(event) {
+        $('#SpExcelCheckAll').prop('checked', false);
+        var isCheckingTotal = $(event.currentTarget).parents('table').find('tr td input[type=checkbox]:checked').length;
+        if (isCheckingTotal == 0)
+            $('#ImportExcelBtn').addClass('disabled');
+        else {
+            $('#ImportExcelBtn').removeClass('disabled');
+        }
+    }
+    function importProductByExcel() {
+        var processStart, processEnd;
+        var indexArray = [];
+        $('#simple-table tbody input[type=checkbox]:checked').each(function () {
+            var obj = {
+                excelProductIndex: parseInt($(this).val())
+            }
+            indexArray.push(obj);
+        });
+        console.log(indexArray);
+        $.ajax({
+            url: '/NguoiDungArea/NguoiDung/userMultipleInsert',
+            type: 'POST',
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({ lstUser: indexArray }),
+            success: function (result) {
+                if (result.success == true) {
+                    $('#alert-after-import').removeClass('hide').slideDown(function () {
+                        $('#alert-after-import #import-success-count').text(result.totalProductAdded);
+                        $('#alert-after-import #import-fail-count').text(result.totalProductAddedFail);
+                    });
+                    $('#alert-after-upload').addClass('hide');
+                    $('#simple-table tbody tr').remove();
+                    $('#tbl_ExcelDataContainer').addClass('hide');
+                    $('#SpExcelCheckAll').prop('checked', false);
+                    $('#ImportExcelBtn').addClass('disabled hide');
+
+                    if (typeof result.linkLog === 'undefined')
+                        $('#link-after-import').addClass('hide');
+                    else {
+                        $('#link-after-import').removeClass('hide');
+                        $('#link-after-import').attr('href', '/NguoiDungArea/NguoiDung/DownLoadFileLog?path=' + result.linkLog + '&name=' + "Log Excel");
+                    }
+                    clearFile();
+                    $('#id-input-file-2').ace_file_input('reset_input');
+                } else
+                    commonNotifyError(result.message);
+            }
+            , error: function (result) {
+                alert(result.responseText);
+            }, beforeSend: function () {
+                processStart = new Date();
+            }, complete: function () {
+                processEnd = new Date();
+                console.log('Thời gian thực hiện : ' + (processEnd - processStart) / 1000 + " giây");
+            }
+        });
+    }
+</script>

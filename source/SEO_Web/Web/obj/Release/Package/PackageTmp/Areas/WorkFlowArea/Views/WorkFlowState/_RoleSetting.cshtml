@@ -1,0 +1,82 @@
+﻿@model Web.Areas.WorkFlowArea.Models.WorkFlowStateCreateViewModel
+
+
+@using (Ajax.BeginForm("SaveRoleSetting", "WorkFlowState", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmSaveRoleSetting" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel"><span>Tên bước: @Model.WF_BUOCCHUYENTRANGTHAI.TENBUOC</span></h4>
+    </div>
+    <div class="modal-body" id="modal_body" style=" overflow-x: hidden; overflow-y: hidden; height: 390px">
+        <div style="width:100%; margin:auto;">
+            <div style="overflow-x: hidden;">
+                <div style="width:100%; float:left;">
+                    @*<h3 style="margin-left:150px; margin-bottom:20px; font-weight:bold;"><span>Tên bước: @Model.WF_BUOCCHUYENTRANGTHAI.TENBUOC</span></h3>*@
+                    <h3 class="group-tittle mt10"><span style="border-bottom:0;">Danh sách vai trò</span></h3>
+                    <div class="" id="DS_VAITRO" style="float: left; width: 100%; margin-top: 15px; max-height: 370px; min-height: 220px; overflow-x: hidden; overflow-y: auto; ">
+                        @if (Model.ListVaiTro != null && Model.ListVaiTro.Count > 0)
+                        {
+                            <ul class="listVaiTro" style="padding: 0; float: left; width: 70%;margin-left:15%;">
+                                @foreach (var item in Model.ListVaiTro)
+                                {
+                                    <li>
+                                        @if (Model.ListStep_VaiTro_ID != null && Model.ListStep_VaiTro_ID.Count > 0 && Model.ListStep_VaiTro_ID.Contains(item.DM_VAITRO_ID))
+                                        {
+                                            <input class="css-checkbox" value="@item.DM_VAITRO_ID" data-text="@item.TEN_VAITRO" id="VAITRO_@item.DM_VAITRO_ID" name="VAITRO_ITEM" type="checkbox" checked="checked">
+                                        }
+                                        else
+                                        {
+                                            <input class="css-checkbox" value="@item.DM_VAITRO_ID" data-text="@item.TEN_VAITRO" id="VAITRO_@item.DM_VAITRO_ID" name="VAITRO_ITEM" type="checkbox">
+                                        }
+                                        <label for="VAITRO_@item.DM_VAITRO_ID" class="css-label2">@item.TEN_VAITRO</label>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                    <div style="margin-top: 15px; text-align: center; float: left; width: 100%;">
+                        <input type="hidden" id="WF_STEP_ID" name="WF_STEP_ID" value="@Model.WF_BUOCCHUYENTRANGTHAI.ID" />
+                        <input type="hidden" id="WF_ID" name="WF_ID" value="@ViewData["WF_ID"]" />
+                        @*<input type="submit" value="Lưu" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+                            <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" id="btnSave" style="border-radius: 3px;">
+            Lưu
+        </button>
+        <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+    </div>
+}
+<script type="text/javascript">
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function updateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: "Thiết lập vai trò thành công!",
+        });
+        //$("#PhanQuyen_Dialog").dialog("close");
+        //$("#PhanQuyen_Dialog").html("");
+        OnCloseLog();
+    }
+    function OnCloseLog() {
+        //$("#PhanQuyen_Dialog").dialog("close");
+        $("#vaitro_content").html("");
+        $("#vaitro_dialog").modal("hide");
+
+    }
+</script>

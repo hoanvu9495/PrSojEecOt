@@ -1,0 +1,23 @@
+﻿@{
+    string ActionFindName = ViewBag.ActionFindName;
+    string NameTextSearch = ViewBag.NameTextSearch;
+    string btnSearch = ViewBag.btnSearch;
+    string currentController = ViewBag.currentController;
+    string currentAction = ViewBag.currentAction;
+    string currentArea = ViewBag.currentArea;
+}
+@if (currentAction != null && currentAction.ToLower() == "index")
+{
+    using (Ajax.BeginForm(ActionFindName, currentController, new { area = currentArea }, new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        OnFailure = "failure",
+        UpdateTargetId = "grid",
+    }, new { id = "search-form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.TextBox(NameTextSearch, "", new { @placeholder = "Từ khóa tìm kiếm", @id = "FUK_A_D" })
+        <input type="submit" id="@btnSearch" value="Tìm kiếm" />
+    }
+}

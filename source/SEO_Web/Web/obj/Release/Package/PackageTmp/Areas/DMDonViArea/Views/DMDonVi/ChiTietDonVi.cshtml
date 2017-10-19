@@ -1,0 +1,228 @@
+﻿@{
+    ViewBag.Title = "Chi tiết đơn vị";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Web.Areas.DMDonViArea.Models.ChiTietDonViModel
+<style>
+    .menu-left-content {
+        overflow-y: auto;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page" style="width: 245px; ">
+        <div id="smart-dms" class="block">
+            <h1 style="text-transform: uppercase; font-size: 16px; line-height: 35px; text-align:left;padding-left:2%">@ViewBag.Title</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border: 0px; background: none; width: calc(100% - 245px);">
+        <div id="menu-child">
+            <div class="menu-left">
+                <div class="btnAddNew">
+                    <a href="javascript:OnCreate()">
+                        <span>Thêm mới phòng ban</span>
+                    </a>
+                </div>
+            </div>
+            <div class="menu-right">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div id="menu-left-content-scroll" class="menu-left-content block">
+        <ul class="nav nav-list nav-menu-list-style">
+            @{
+                foreach (var item in Model.ListDonVi)
+                {
+                    var lstPhongBan = Model.PhongBan.Where(x => x.DM_DONVI_ID == item.ID).ToList();
+            <li>
+                <label class="tree-toggle nav-header glyphicon-icon-rpad">
+
+                    <span class="DONVI" data-id="@item.ID">
+                        <span class="glyphicon glyphicon-folder-close m5"></span>
+                        @item.TEN_DONVI
+                        <span class="menu-collapsible-icon glyphicon glyphicon-chevron-down"></span>
+                    </span>
+
+                </label>
+                @if (lstPhongBan.Count > 0)
+                        {
+                        <ul id="DV_1" class="nav nav-list tree bullets" style="display:block">
+
+                            @foreach (var ele in lstPhongBan)
+                                {
+                                <li><a href="#">@ele.TENPHONGBAN</a></li>
+                                }
+                        </ul>
+                        }
+            </li>
+            <li class="divider"></li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;">
+    <div class="SearchResult">
+        <div style="float:left;width:10%;font-weight:bold">
+            Tên đơn vị:
+        </div>
+        <div style="float:left;width:90%;text-align:left" id="TEN_DONVI">
+            @Model.DONVI.TEN_DONVI
+        </div>
+        <div id="tbl-PhongBan">
+            @Html.Partial("_DanhSachPhongBan")
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('.tree-toggle').click(function () {
+            $(this).parent().children('ul.tree').toggle(200);
+        });
+        $(function () {
+            $('.tree-toggle').parent().children('ul.tree').toggle(200);
+        });
+        $(".DONVI").click(function () {
+           // alert($(this).closest("label").next("ul").css("display"));
+            
+            if ($(this).closest("label").next("ul").css("display") == "none" || $(this).closest("label").next("ul").css("display") == undefined) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ViewDonVi", "DMDonVi")',
+                    data: {
+                        DONVI_ID: $(this).attr("data-id")
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        $("#tbl-PhongBan").html(data);
+                       
+                    }
+                });
+                $("#TEN_DONVI").text($(this).text());
+            }
+        });
+    });
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadGrid", "DMDonVi")',
+            data: {
+
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#tbl-PhongBan").html(data);
+            }
+        });
+    }
+</script>
+<style>
+    .DONVI:hover {
+        cursor: pointer;
+    }
+
+    .DONVI {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 200px !important;
+        text-overflow: ellipsis;
+        text-align: left !important;
+    }
+
+    .no-padding {
+        padding: 0px;
+    }
+
+    .glyphicon-icon-rpad .glyphicon, .glyphicon-icon-rpad .glyphicon.m8, .fa-icon-rpad .fa, .fa-icon-rpad .fa.m8 {
+        padding-right: 8px;
+    }
+
+    .glyphicon-icon-lpad .glyphicon, .glyphicon-icon-lpad .glyphicon.m8, .fa-icon-lpad .fa, .fa-icon-lpad .fa.m8 {
+        padding-left: 8px;
+    }
+
+    .glyphicon-icon-rpad .glyphicon.m5, .fa-icon-rpad .fa.m5 {
+        padding-right: 5px;
+    }
+
+    .glyphicon-icon-lpad .glyphicon.m5, .fa-icon-lpad .fa.m5 {
+        padding-left: 5px;
+    }
+
+    .glyphicon-icon-rpad .glyphicon.m12, .fa-icon-rpad .fa.m12 {
+        padding-right: 12px;
+    }
+
+    .glyphicon-icon-lpad .glyphicon.m12, .fa-icon-lpad .fa.m12 {
+        padding-left: 12px;
+    }
+
+    .glyphicon-icon-rpad .glyphicon.m15, .fa-icon-rpad .fa.m15 {
+        padding-right: 15px;
+    }
+
+    .glyphicon-icon-lpad .glyphicon.m15, .fa-icon-lpad .fa.m15 {
+        padding-left: 15px;
+    }
+
+    ul.nav-menu-list-style .nav-header .menu-collapsible-icon {
+        position: absolute;
+        right: 3px;
+        top: 16px;
+        font-size: 9px;
+    }
+
+    ul.nav-menu-list-style {
+        margin: 0;
+    }
+
+        ul.nav-menu-list-style .nav-header {
+            border-top: 1px solid #FFFFFF;
+            border-bottom: 1px solid #e8e8e8;
+            display: block;
+            margin: 0;
+            line-height: 42px;
+            padding: 0 8px;
+            font-weight: 600;
+        }
+
+        ul.nav-menu-list-style > li {
+            position: relative;
+        }
+            ul.nav-menu-list-style > li a {
+                border-top: 1px solid #FFFFFF;
+                border-bottom: 1px solid #e8e8e8;
+                padding: 0 40px;
+                line-height: 32px;
+            }
+
+    ul.nav-menu-list-style {
+        list-style: none;
+        padding: 0px;
+        margin: 0px;
+    }
+
+        ul.nav-menu-list-style li .badge, ul.nav-menu-list-style li .pull-right, ul.nav-menu-list-style li span.badge, ul.nav-menu-list-style li label.badge {
+            float: right;
+            margin-top: 7px;
+        }
+    ul.bullets {
+        list-style: inside disc;
+    }
+
+    ul.numerics {
+        list-style: inside decimal;
+    }
+    ul.kas-icon-aero li a:before {
+        font-family: 'Glyphicons Halflings';
+        font-size: 9px;
+        content: "\e258";
+        padding-right: 8px;
+    }
+</style>

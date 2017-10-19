@@ -1,0 +1,146 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.DanhMucThongTinModel
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using Web.FwCore
+@using Model.eAita
+@{
+    var lstParent = (List<TM_DANHMUC_THONGTIN>)SessionManager.GetValue("ListDetail");
+    var lstChildren = (List<TM_DANHMUC_THONGTIN>)SessionManager.GetValue("ListDetail");
+    if (lstParent != null)
+    {
+        lstParent = lstParent.Where(x => x.PARENT_ID == null).ToList();
+        foreach (var item in lstParent)
+        {
+            <tr>
+                <td>
+                    <span title="@item.TENTHONGTIN" class="THONGTIN">@item.TENTHONGTIN</span>
+                </td>
+                <td>&nbsp;</td>
+                @if (item.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.DIGITAL)
+                {
+                    <td class="detail-checkbox">
+                        <input type="checkbox" class="DINHDANGDIG_1 " />
+                    </td>
+                    <td class="detail-checkbox">
+                        <input type="checkbox" class="DINHDANGDIG_1" checked />
+                    </td>
+                }
+                else if (item.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.PAPER)
+                {
+                    <td class="detail-checkbox">
+                        <input type="checkbox" class="DINHDANGDIG_1" checked />
+                    </td>
+                    <td class="detail-checkbox">
+                        <input type="checkbox" class="DINHDANGDIG_1" />
+                    </td>
+                }
+                else
+                {
+                    <td class="detail-checkbox">
+                        <input type="checkbox" class="DINHDANGDIG_1" checked />
+                    </td>
+                    <td class="detail-checkbox">
+                        <input type="checkbox" class="DINHDANGDIG_1 " checked />
+                    </td>
+                }
+                <td>
+                    <span>@string.Format("{0:dd/MM/yyyy}", item.THOIGIAN_HINHTHANH)</span>
+                </td>
+                <td class="detail-checkbox">
+                    @if (item.TAI_DONVI.Value)
+                    {
+                        <input name="TAIDONVI_1" type="checkbox" checked>
+                    }
+                </td>
+                <td>
+                    <span title="@item.DIADIEM_LUUTRU" class="DIADIEM">@item.DIADIEM_LUUTRU</span>
+                </td>
+                <td>
+                    <span class="GHICHU" title="@item.GHICHU">@item.GHICHU</span>
+                </td>
+
+            </tr>
+                    var lstChild = lstChildren.Where(x => x.PARENT_ID == item.ID).ToList();
+                    foreach (var ele in lstChild)
+                    {
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <span title="@ele.TENTHONGTIN" class="TAILIEU">@ele.TENTHONGTIN</span>
+                            </td>
+                            @if (ele.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.DIGITAL)
+                            {
+                                <td class="detail-checkbox">
+                                    <input type="checkbox" class="DINHDANGDIG_1 " />
+                                </td>
+                                <td class="detail-checkbox">
+                                    <input type="checkbox" class="DINHDANGDIG_1 x" checked />
+                                </td>
+                            }
+                            else if (ele.DINHDANG_LUUTRU == DanhMucThongTinDinhDangConstant.PAPER)
+                            {
+                                <td class="detail-checkbox">
+                                    <input type="checkbox" class="DINHDANGDIG_1 " checked />
+                                </td>
+                                <td class="detail-checkbox">
+                                    <input type="checkbox" class="DINHDANGDIG_1" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="detail-checkbox">
+                                    <input type="checkbox" class="DINHDANGDIG_1 " checked />
+                                </td>
+                                <td class="detail-checkbox">
+                                    <input type="checkbox" class="DINHDANGDIG_1x" checked />
+                                </td>
+                            }
+
+                            <td>
+                                <span>@string.Format("{0:dd/MM/yyyy}", ele.THOIGIAN_HINHTHANH)</span>
+                            </td>
+                            <td class="detail-checkbox">
+                                @if (ele.TAI_DONVI.Value)
+                                {
+                                    <input name="TAIDONVI_1" type="checkbox" checked>
+                                }
+                            </td>
+                            <td>
+                                <span class="DIADIEM" title="@ele.DIADIEM_LUUTRU">@ele.DIADIEM_LUUTRU</span>
+                            </td>
+                            <td>
+                                <span class="GHICHU" title="@ele.GHICHU">@ele.GHICHU</span>
+                            </td>
+                        </tr>
+                    }
+        }
+    }
+}
+<style>
+    .THONGTIN {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 180px !important;
+        text-overflow: ellipsis;
+    }
+
+    .TAILIEU {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 180px !important;
+        text-overflow: ellipsis;
+    }
+
+    .DIADIEM, .GHICHU {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 150px !important;
+        text-overflow: ellipsis;
+    }
+
+    .detail-checkbox {
+        padding: 8px !important;
+    }
+</style>

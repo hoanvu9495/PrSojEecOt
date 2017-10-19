@@ -1,0 +1,47 @@
+﻿@using Web.FwCore;
+@using System.Text;
+@using Model.eAita;
+@{
+    List<THUMUC_LUUTRU> lstThuMuc = new List<THUMUC_LUUTRU>();
+    lstThuMuc = (List<THUMUC_LUUTRU>)SessionManager.GetValue("ListThuMuc");
+    var grid = new WebGrid(lstThuMuc,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+}
+@Html.AntiForgeryToken()
+@if (lstThuMuc.Count > 0)
+{
+    <div id="grid">
+        <div id="HeaderGrid">
+            <div style="margin:20px 0px 10px 10px;">
+                <div style="margin-top:-10px;float:right;margin-right:2px;">
+                    <img src="~/Content/Images/Add.png" id="InputImage" width="16" height="16" />
+                    <a class="btnAdd" title="Thêm mới" href='javascript:void(0)' onclick="OnCreate()">Thêm mới thư mục</a>
+                </div>
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                           grid.Column("TENTHUMUC", "Tên thư mục"),
+                            grid.Column("NGAYTAO", "Ngày tạo"),
+
+
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                   "<a href='javascript:void(0)' onclick='EditSoVanBan(" + item.ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                  "<a href='javascript:void(0)' onclick='RemoveSoVanBan(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+
+                 )
+    )
+    </div>
+}

@@ -1,0 +1,86 @@
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\Dll Out\Model.dll.config
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\Dll Out\Model.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\Model\obj\Debug\Model.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\Model\obj\Debug\Model.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\Model.dll.config
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\Model.dll
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\Model.pdb
+D:\Working\01.1HINET\2015\01.VPQH\eAita_QLDH\04.SourceCode\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\Model.dll.config
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\Model.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\DLLOUTPUT\Model.pdb
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\Model\obj\Debug\Model.dll
+E:\Project\HiNet\02.QLDieuHanh\eAita_QLDH\04.SourceCode\eAita_Model\Model\obj\Debug\Model.pdb
+D:\code\trunk\04.SourceCode\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+D:\code\trunk\04.SourceCode\eAita_Model\Model\obj\Debug\Model.dll
+D:\code\trunk\04.SourceCode\eAita_Model\Model\obj\Debug\Model.pdb
+D:\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\Model.dll.config
+D:\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\Model.dll
+D:\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\Model.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\Model.dll.config
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\Model.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\DLLOUTPUT\Model.pdb
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\Model\obj\Debug\Model.dll
+D:\03. HiNET Project\2016\02. eGov\code\trunk\04.SourceCode\eAita_Model\Model\obj\Debug\Model.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\DLLOUTPUT\Model.dll.config
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\DLLOUTPUT\Model.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\DLLOUTPUT\Model.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\Model\obj\Debug\Model.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\Model\obj\Debug\Model.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBiz\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\DLLOUTPUT\Model.dll.config
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\DLLOUTPUT\Model.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\DLLOUTPUT\Model.pdb
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\Model\obj\Debug\Model.dll
+D:\03. HiNET Project\2017\eBiz\02.Source code\eBizFinal\eAita_Model\Model\obj\Debug\Model.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\DLLOUTPUT\Model.dll.config
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\DLLOUTPUT\Model.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\DLLOUTPUT\Model.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\Model\obj\Debug\Model.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\vnio_2017\qldh_vnio\eAita_Model\Model\obj\Debug\Model.pdb
+F:\qldh_vnio24-06\eAita_Model\DLLOUTPUT\Model.dll.config
+F:\qldh_vnio24-06\eAita_Model\DLLOUTPUT\Model.dll
+F:\qldh_vnio24-06\eAita_Model\DLLOUTPUT\Model.pdb
+F:\qldh_vnio24-06\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+F:\qldh_vnio24-06\eAita_Model\Model\obj\Debug\Model.dll
+F:\qldh_vnio24-06\eAita_Model\Model\obj\Debug\Model.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\DLLOUTPUT\Model.dll.config
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\DLLOUTPUT\Model.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\DLLOUTPUT\Model.pdb
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\Model\obj\Debug\Model.dll
+E:\03.HiNET_Project\2017\18.QLDH_VNIO\qldh_vnio\eAita_Model\Model\obj\Debug\Model.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Model\DLLOUTPUT\Model.dll.config
+F:\TemplateComplex\qldh_vnio\eAita_Model\DLLOUTPUT\Model.dll
+F:\TemplateComplex\qldh_vnio\eAita_Model\DLLOUTPUT\Model.pdb
+F:\TemplateComplex\qldh_vnio\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+F:\TemplateComplex\qldh_vnio\eAita_Model\Model\obj\Debug\Model.dll
+F:\TemplateComplex\qldh_vnio\eAita_Model\Model\obj\Debug\Model.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\DLLOUTPUT\Model.dll.config
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\DLLOUTPUT\Model.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\DLLOUTPUT\Model.pdb
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\Model\obj\Debug\Model.dll
+F:\ThucTapHiNet\SVN ChiCucThue 20-09-2017\source\eAita_Model\Model\obj\Debug\Model.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\DLLOUTPUT\Model.dll.config
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\DLLOUTPUT\Model.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\DLLOUTPUT\Model.pdb
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\Model\obj\Debug\Model.dll
+F:\ThucTapHiNet\SVNChiCucThue06-10-2017\source\eAita_Model\Model\obj\Debug\Model.pdb
+E:\ToolSeo\PrSojEecOt\source\eAita_Model\DLLOUTPUT\Model.dll.config
+E:\ToolSeo\PrSojEecOt\source\eAita_Model\DLLOUTPUT\Model.dll
+E:\ToolSeo\PrSojEecOt\source\eAita_Model\DLLOUTPUT\Model.pdb
+E:\ToolSeo\PrSojEecOt\source\eAita_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+E:\ToolSeo\PrSojEecOt\source\eAita_Model\Model\obj\Debug\Model.dll
+E:\ToolSeo\PrSojEecOt\source\eAita_Model\Model\obj\Debug\Model.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\DLLOUTPUT\Model.dll.config
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\DLLOUTPUT\Model.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\DLLOUTPUT\Model.pdb
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\Model\obj\Debug\Model.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Model\Model\obj\Debug\Model.pdb

@@ -1,0 +1,209 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using Model.eAita;
+@{
+    List<TmYeuCauChiaSeBO> lstChiase = new List<TmYeuCauChiaSeBO>();
+    if (ViewData["Search"] == "0")
+    {
+        lstChiase = (List<TmYeuCauChiaSeBO>)SessionManager.GetValue("ListYeuCau");
+    }
+    if (ViewData["Search"] == "1")
+    {
+        lstChiase = (List<TmYeuCauChiaSeBO>)SessionManager.GetValue("ListYeuCauSearch");
+    }
+    var grid = new WebGrid(lstChiase,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+
+}
+@Html.AntiForgeryToken()
+@if (lstChiase.Count > 0)
+{
+    <div id="grid">
+        @grid.GetHtml(
+                tableStyle: "webGrid tbl-YeuCau",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+        //grid.Column("TENNGUOIYEUCAU", "Người yêu cầu"),
+                  grid.Column("TENDONVI", "Đơn vị"),
+                      grid.Column("LYDO", "Lý do", format: (item) => new MvcHtmlString(string.Format("<a href='" + @Url.Action("ChiTietYeuCau/" + item.ID, "CucTruongPheDuyet") + "' title='" + item.LYDO + "'>" + item.LYDO + "</a>"))),
+        //grid.Column("LYDO", "Lý do", format: (item) => new MvcHtmlString(string.Format("<span title='" + item.LYDO + "'>" + item.LYDO + "</span>"))),
+
+                             grid.Column("NGAYYEUCAU", "Ngày yêu cầu", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYYEUCAU)),
+                               grid.Column("TRANGTHAI", "Trạng thái", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI == YeuCauChiaSeConstant.DONVITUCHOI ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Không thể chia sẻ</a>" : item.TRANGTHAI == YeuCauChiaSeConstant.DUTHAO ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Chưa trình</a>" : item.TRANGTHAI == YeuCauChiaSeConstant.TRAVE ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Từ chối</a>" : item.TRANGTHAI == YeuCauChiaSeConstant.DATRINH ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")' style='color:red'>Chờ duyệt</a>" : item.TRANGTHAI == YeuCauChiaSeConstant.DADUYET ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Đồng ý</a>" : item.TRANGTHAI == YeuCauChiaSeConstant.CHUYENYEUCAU ? "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Đã chuyển yêu cầu</a>" : "<a href='javascript:void(0)' title ='Lịch sử yêu cầu chia sẻ' onclick='ShowLog(" + item.ID + ")'>Đã chia sẻ</a>"))),
+                 grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                   (item.TRANGTHAI == YeuCauChiaSeConstant.DATRINH) ? "<a href='javascript:void(0)' data-id='" + item.ID + "' class='btnDelete' title = 'Trả về đơn vị yêu cầu chia sẻ này'></a>" : "")), header: "Trả về")
+                 )
+    )
+        @if (lstChiase.Count == 0)
+        {
+            <div id="Empty" style="color: red;">
+                Không tìm thấy dữ liệu phù hợp
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div id="Empty" style="color: red;">
+        Chưa có yêu cầu chia sẻ tài liệu nào được trình
+    </div>
+}
+<div class="modal fade" id="YeuCauChiaSeLog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="TrinhDuyetYeuCau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+
+<style>
+    .btnAdd {
+        display: block;
+        width: 190px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .tbl-YeuCau td:nth-child(4) a {
+        text-align: left !important;
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 200px !important;
+        text-overflow: ellipsis;
+    }
+
+    .tbl-YeuCau td:nth-child(5) span {
+        text-align: left !important;
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 150px !important;
+        text-overflow: ellipsis;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/1460042887_arrow-return-180.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/themes/base/images/TM_Cancel.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .webGrid td:nth-child(3), .webGrid td:nth-child(5) {
+        text-align: left !important;
+    }
+</style>
+<script>
+    function ShowLog(YEUCAU_ID) {
+        $.ajax({
+            url: '@Url.Action("ShowYeuCauLog", "CucTruongPheDuyet")',
+            type: 'POST',
+            cache: false,
+            data: {
+                YEUCAU_ID: YEUCAU_ID
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#YeuCauChiaSeLog").html(data);
+                    $("#YeuCauChiaSeLog").modal("show");
+                } else {
+                    $.confirm({
+                        'title': 'Có lỗi xảy ra',
+                        'message': 'Không tìm thấy lịch sử của yêu cầu chia sẻ bạn đang tìm',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    function PheDuyetYeuCau(ID) {
+        $.ajax({
+            url: '@Url.Action("PheDuyetYeuCau", "CucTruongPheDuyet")',
+            type: 'POST',
+            cache: false,
+            data: {
+                ID: ID, TRANGTHAI: "4"
+            },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#TrinhDuyetYeuCau").html(data);
+                    $("#TrinhDuyetYeuCau").modal("show");
+                } else {
+                    $.confirm({
+                        'title': 'Có lỗi xảy ra',
+                        'message': 'Yêu cầu chia sẻ này không tồn tại hoặc bạn không có quyền truy xuất yêu cầu này!',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    $(document).on("click", ".btnDelete", function () {
+        var this1 = $(this);
+        $.ajax({
+            url: '@Url.Action("PheDuyetYeuCau", "CucTruongPheDuyet")',
+            type: 'POST',
+            cache: false,
+            data: { ID: $(this1).attr("data-id"), TRANGTHAI: "3" },
+            success: function (data) {
+                if (data.trim().length > 0) {
+                    $("#TrinhDuyetYeuCau").html(data);
+                    $("#TrinhDuyetYeuCau").modal("show");
+                } else {
+                    $.confirm({
+                        'title': 'Có lỗi xảy ra',
+                        'message': 'Yêu cầu chia sẻ này không tồn tại hoặc bạn không có quyền truy xuất yêu cầu này!',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-confirm-yes',
+                                'action': function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (err) {
+                CommonJS.alert(err.responseText);
+            }
+        });
+    });
+</script>

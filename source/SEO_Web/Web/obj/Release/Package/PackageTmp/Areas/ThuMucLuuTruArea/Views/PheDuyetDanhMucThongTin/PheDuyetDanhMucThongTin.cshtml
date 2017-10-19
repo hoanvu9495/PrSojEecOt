@@ -1,0 +1,335 @@
+﻿@{
+    ViewBag.Title = "Phê duyệt danh mục thông tin, tài liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.Models
+@using Business.CommonBusiness
+@model Web.Areas.ThuMucLuuTruArea.Models.DanhMucThongTinModel
+@using Web.Areas.ThuMucLuuTruArea.Models
+<style>
+    .menu-left-content {
+        height: 494px;
+        overflow-y: auto;
+    }
+    #smart-dms > h1 {
+        margin-left: 15px !important;
+        text-align: left !important;
+    }
+</style>
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block" style="width:490px">
+            <h1>Phê duyệt danh mục thông tin, tài liệu</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="border:0px;background:none;">
+        <div id="menu-child">
+            <div class="menu-right">
+                <button style="margin-bottom: 10px;margin-right:50px" type="button" onclick="location.href='@Url.Action("Index", "PheDuyetDanhMucThongTin")'" class="b_btn b_btn-default vbdi_search">Danh sách các tờ trình cần phê duyệt</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff;width:100%">
+    @using (Html.BeginForm("SavePheDuyet", "PheDuyetDanhMucThongTin", FormMethod.Post, new { enctype = "multipart/form-data", Id = "frmCreateDonXinNghi" }))
+    {
+        <div id="loading">Đang phê duyệt....</div>
+        <table style="width:90%;margin:0 auto">
+            <tr>
+                <td style="text-align:center;font-size:14px">
+                    CỤC TIN HỌC HÓA
+                </td>
+                <td style="text-align:center">
+                    <strong style="font-size:14px">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center">
+                    &nbsp;
+                    @*<u><strong>CỤC TRƯỞNG</strong></u>*@
+                </td>
+                <td style="text-align: center; font-size: 14px">
+                    <u><strong>Độc lập - Tự do - Hạnh Phúc</strong></u>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td style="text-align: center; font-size: 14px">Hà Nội, ngày @DateTime.Now.Day tháng @DateTime.Now.Month năm @DateTime.Now.Year</td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center;font-size:14px;font-weight:bold"><strong>PHÊ DUYỆT DANH MỤC THÔNG TIN, TÀI LIỆU QUÝ @Model.DANHMUC_TRINHCUC.QUY NĂM @Model.DANHMUC_TRINHCUC.NAM</strong></td>
+            </tr>
+            <tr><td colspan="2">&nbsp;</td></tr>
+            @*<tr>
+                    <td colspan="2">
+                        <ul style="color:red;display:none" id="DONVI_DISPLAY"></ul>
+                    </td>
+                </tr>*@
+            <tr>
+                <td valign="top">
+                    <div>
+                        <div style="float:left">
+                            <span style="font-weight:bold">Nội dung: &nbsp; </span>
+                        </div>
+                        <div style="float:left">
+                            @Model.DANHMUC_TRINHCUC.NOIDUNG
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div>
+                        <div style="float:left">
+                            <span style="font-weight:bold">Quý: &nbsp; </span>
+                        </div>
+                        <div style="float:left">
+                            @Model.DANHMUC_TRINHCUC.QUY
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div>
+                        <div style="float:left">
+                            <span style="font-weight:bold">Năm: &nbsp; </span>
+                        </div>
+                        <div style="float:left">
+                            @Model.DANHMUC_TRINHCUC.NAM
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div id="DONVI_CHUATRINH">
+                        <span class="DONVI_NULL" style="display:none;font-weight:bold">Danh sách đơn vị chưa trình danh mục thông tin tài liệu</span>
+                        <ul style="color: red; display: none; height: 100px; overflow-y: auto" id="DONVI_DISPLAY"></ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr style="height:18px"></tr>
+            <tr>
+                <td colspan="2" id="tbl-ThongTin"></td>
+            </tr>
+        </table>
+        <table style="width:60%;margin:0 auto;margin-bottom:50px">
+            <tfoot style="margin-bottom:100px">
+                <tr>
+                    <td colspan="2" style="text-align:center">
+                        <button class="btn btn-success" type="button" id="btnSaveData">Phê duyệt</button>
+                        <button class="btn btn-default" type="button" onclick="location.href='@Url.Action("Index", "PheDuyetDanhMucThongTin")'">Quay lại</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <input type="hidden" name="FOLDER_ID" id="FOLDER_ID" value="" />
+    }
+</div>
+<style>
+    #loading, #including {
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        background: #000 url('/Content/Images/loadajax.gif') no-repeat 50% 4px;
+        bottom: 50%;
+        color: #fff;
+        text-align: center;
+        line-height: 166px;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0.7;
+        border-radius: 5px;
+        filter: alpha(opacity=70);
+        font-size: 12px;
+        text-shadow: none;
+        display: none;
+    }
+
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        vertical-align: middle !important;
+    }
+
+    .first {
+        margin-right: 50px;
+    }
+
+    th {
+        font-weight: bold;
+        text-align: left;
+        word-wrap: break-word;
+    }
+
+    .datepicker {
+        text-align: right;
+    }
+
+    .THONGTIN {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 180px !important;
+        text-overflow: ellipsis;
+    }
+
+    .TAILIEU {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 180px !important;
+        text-overflow: ellipsis;
+    }
+
+    .DIADIEM, .GHICHU {
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 150px !important;
+        text-overflow: ellipsis;
+    }
+</style>
+<script>
+    function DonViChuaTrinh() {
+        $.ajax({
+            url: '@Url.Action("GetDonVi", "PheDuyetDanhMucThongTin")',
+            type: 'POST',
+            cache: false,
+            data: {
+                QUY: '@Model.DANHMUC_TRINHCUC.QUY',
+                NAM: '@Model.DANHMUC_TRINHCUC.NAM'
+            },
+            success: function (data) {
+                $("#DONVI_DISPLAY").html(data);
+                $("#DONVI_DISPLAY").show();
+                $(".DONVI_NULL").show();
+                $("#DONVI_CHUATRINH").attr("class", "clearfix hot-news-list-2");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+    $(function () {
+        $.ajax({
+            url: '@Url.Action("DuLieuToTrinh", "PheDuyetDanhMucThongTin")',
+            type: 'POST',
+            cache: false,
+            data: {
+                DANHMUC: '@Model.DANHMUC_TRINHCUC.ID'
+
+            },
+            success: function (data) {
+                DonViChuaTrinh();
+                $("#tbl-ThongTin").html(data);
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+
+        });
+        $(document).on('click', '#btnUnAccept', function () {
+            $.confirm({
+                'title': 'Xác nhận không phê duyệt',
+                'message': 'Bạn có chắc chắn không phê duyệt những danh mục thông tin tài liệu này?',
+                'buttons': {
+                    'Đồng ý': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            var selectAll = 0;
+                            var trangthai = "";
+                            $("input.selectedItem:checkbox:checked").each(function () {
+                                selectAll = 1;
+                                trangthai += $(this).attr("data-id") + ",";
+                            });
+                            if (selectAll == 0) {
+                                alert("Vui lòng chọn 1 danh mục thông tin tài liệu.");
+                            } else {
+                                $("#FOLDER_ID").val(trangthai);
+                                $.ajax({
+                                    url: '@Url.Action("PheDuyet", "PheDuyetDanhMucThongTin")',
+                                    type: 'POST',
+                                    cache: false,
+                                    data: {
+                                        THONGTIN_ID: trangthai,
+                                        TRANGTHAI: "kpheduyet"
+                                    },
+                                    success: function (data) {
+                                        notif({
+                                            type: 'success',
+                                            position: 'bottom',
+                                            msg: data,
+                                        });
+                                        $("#btnShowData").click();
+                                    },
+                                    error: function (xhr) {
+                                        CommonJS.alert(xhr.responseText);
+                                    }
+
+                                });
+                            }
+                        }
+                    },
+                    'Đóng': {
+                        'class': 'btn-info',
+                        'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+        });
+        $(document).on('click', '#btnSaveData', function () {
+            $.confirm({
+                'title': 'Xác nhận phê duyệt',
+                'message': 'Bạn có chắc chắn muốn phê duyệt những danh mục thông tin tài liệu đã chọn?',
+                'buttons': {
+                    'Đồng ý': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#loading").show();
+                            var selectAll = 0;
+                            var trangthai = "";
+                            $("input.selectedItem:checkbox:checked").each(function () {
+                                selectAll = 1;
+                                trangthai += $(this).attr("data-id") + ",";
+                            });
+                            if (selectAll == 0) {
+                                alert("Vui lòng chọn 1 danh mục thông tin tài liệu.");
+                            } else {
+                                $("#FOLDER_ID").val(trangthai);
+                                $.ajax({
+                                    url: '@Url.Action("PheDuyet", "PheDuyetDanhMucThongTin")',
+                                    type: 'POST',
+                                    cache: false,
+                                    data: {
+                                        THONGTIN_ID: trangthai,
+                                        DANHMUC_ID: '@Model.DANHMUC_TRINHCUC.ID'
+                                    },
+                                    success: function (data) {
+                                        notif({
+                                            type: 'success',
+                                            position: 'bottom',
+                                            msg: data,
+                                        });
+                                        location.href = '@Url.Action("ChiTietToTrinh/"+Model.DANHMUC_TRINHCUC.ID)'
+                                    },
+                                    error: function (xhr) {
+                                        CommonJS.alert(xhr.responseText);
+                                    }
+
+                                });
+                            }
+                        }
+                    },
+                    'Đóng': {
+                        'class': 'btn-info',
+                        'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+
+        });
+    });
+</script>

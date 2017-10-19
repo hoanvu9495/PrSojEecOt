@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "Danh sách thư mục lưu trữ";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+@section HeaderPopup{
+    <h1>@ViewBag.Title<a href="/" title="Đóng lại"></a></h1>
+}
+<link href="~/Content/themes/base/treeview/jquery.treeview.css" rel="stylesheet" />
+<script src="~/Scripts/treeview/jquery.cookie.js"></script>
+<script src="~/Scripts/treeview/jquery.treeview.js"></script>
+<link href="~/Content/themes/base/treeview/screen.css" rel="stylesheet" />
+<script src="~/Scripts/js/jquery.nu-context-menu.js"></script>
+<link href="~/Content/Custom/Font/contextMenu.css" rel="stylesheet" />
+<script>
+    $(function () {
+
+        
+        $("#treeview").resizable({
+        });
+        $("#treeview").on("resize", function () {
+            var wRight = 100 - $("#treeview").width() / 10;
+            if ($("#treeview").width() / 10 > 50) {
+                wRight = $("#treeview").width() / 10 - 50 + wRight;
+            }
+            $("#treeview").css("width", $("#treeview").width() / 10 + "%");
+            document.getElementById("treeview").style.maxWidth = "50%";
+            document.getElementById("treeview").style.minWidth = "10%";
+            document.getElementById("treeview").style.minHeight = "100px";
+            document.getElementById("treeview").style.maxHeight = "400px";
+            $("#display").css("width", wRight + "%");
+        });
+        $("#chuyentrangthai_dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 'auto',
+            height: 'auto',
+            resizable: false,
+            show: {
+                effect: "blind",
+                duration: 200
+            },
+            hide: {
+                effect: "blind",
+                duration: 200
+            }
+        });
+    });
+</script>
+<style>
+    .folder-content {
+        float: left;
+        width: 100%;
+    }
+
+    #display .webGrid tr td:first-child {
+        background: rgba(0, 0, 0, 0) url("/Content/themes/base/images/1458292626_-01.png") no-repeat scroll 13px -1px;
+        line-height: 1.3em;
+        text-align: center;
+    }
+
+    #MOTA {
+        margin-left: 10%;
+    }
+
+    #treeview {
+        float: left;
+        width: 15%;
+        overflow: auto;
+        height: 400px;
+    }
+
+    #display {
+        width: 85%;
+        height: 400px;
+        overflow: auto;
+        float: left;
+        min-height: 80%;
+    }
+
+    #right ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        padding: 10px 25px;
+        border-radius: 5px;
+    }
+
+    #right li {
+        float: left;
+        margin-right: 10px;
+    }
+
+    #right {
+        margin: 10px 0 15px;
+    }
+
+        #right li a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        #right li:hover {
+            color: #357ae8;
+            cursor: pointer;
+        }
+
+    #display .webGrid tr:hover {
+        cursor: pointer;
+    }
+
+    .webGrid th:nth-child(3) {
+        width: 115px;
+    }
+
+    #chuyentrangthai_dialog td:nth-child(2) div {
+        margin-left: 10%;
+    }
+    #approval {
+        padding: 10px 15px;
+        background: #4479BA;
+        color: #FFF;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        border: solid 1px #20538D;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+        -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    }
+
+        #approval:hover {
+            cursor: pointer;
+        }
+</style>
+<div id="head-content" style="width:100%">
+    <div id="left" style="width:20%;float:left">
+        &nbsp;
+    </div>
+    <div id="right" style="float:left">
+        <a id="approval" onclick="ChuyenTrangThai()" title="Duyệt thư mục được lựa chọn">
+            Trình cục trưởng
+        </a>
+
+    </div>
+</div>
+<div class="popup-content">
+    <div class="SearchResult hot-news-list-2 mgt20" style="float:left;width:98%;">
+        <div class="folder-content">
+
+            
+                @Html.Partial("_ThuMucAll")
+            
+            <div id="display">
+
+                @Html.Partial("_TaiLieuTrinhDuyetAll")
+            </div>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+</div>
+<div id="chuyentrangthai_dialog" title="Chuyển trạng thái thư mục">
+</div>

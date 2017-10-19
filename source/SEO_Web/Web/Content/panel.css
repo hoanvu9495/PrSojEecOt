@@ -1,0 +1,12 @@
+﻿.panel-left {
+float:left;
+width:20%;
+border: 1px solid #C0C0C0;
+margin: 5px;
+}
+.panel-right {
+float:right;
+width:77%;
+
+margin: 5px;
+}

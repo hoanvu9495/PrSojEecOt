@@ -1,0 +1,210 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@using Web.Common
+
+@using Web.Areas.MarkItemArea.Models;
+@using Web.Common;
+@model Web.Areas.VanBanDenArea.Models.VanBanDenSearchModel
+@{
+    ViewBag.Title = "[eAita] Điều hành tác nghiệp > Quản lý văn bản đến";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    var Noti = SessionManager.GetValue("Noti");
+    SessionManager.Remove("Noti");
+
+    MarkItemViewModel mark_model = new MarkItemViewModel();
+    mark_model.ITEM_TYPE = LOAITAILIEU.VANBANDEN;
+    mark_model.RELOAD_FUNCTION = "reloadGrid";
+}
+<style>
+    .e-input {
+        height: 30px;
+    }
+
+    .panel {
+        margin-bottom: 0px;
+        border-radius: 0px;
+        border-bottom: none;
+    }
+
+    /*#grid {
+        margin-top: -40px;
+    }*/
+
+    .panel-title {
+        padding-top: 5px;
+    }
+</style>
+<style>
+    table.webGrid tr.head th, table.webGrid tr.head td {
+        border: none;
+    }
+
+    table.webGrid tr td {
+        border: none;
+        border-bottom: 1px solid #e8e8e8;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/van_ban_den/van_ban_den.css">
+<script src="~/Scripts/workflow.js"></script>
+
+<div id="menu-toolbar">
+    <div class="left-all-page">
+        <div class="block" id="smart-dms">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+    <div class="right-all-page" style="background:none; border:none;">
+        <div id="menu-child">
+            <div class="menu-left" style="display:inline-block">
+                <div class="btnAddNew" style="margin-right: 20px">
+                    <a href="/VanBanDenArea/VanBanDen/Create">
+                        <span>Mới</span>
+                    </a>
+                </div>
+                @*button*@
+                @Html.Partial("~/Areas/MarkItemArea/Views/_ActionMarkItem.cshtml", mark_model)
+                @*end*@
+            </div>
+            <div class="menu-right">
+                <div class="right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*@section HeaderPopup
+    {
+
+        <h1>
+            <a tabindex="0" aria-expanded="true" title="ứng dụng E.Gov" href="#" class="egov_gb_b" style="background-image: url('/Content/Images/icon_gmail.png'); background-size: 92px 2541px; background-position: -35px -311px; opacity: 0.55; float:left; margin-top:-5px; width:30px; position:initial">
+
+            </a>
+            @ViewBag.Title<a href="/" title="Đóng lại"></a>
+        </h1>
+    }*@
+@Html.Partial("_MenuVanBanDen", Model, new ViewDataDictionary { { "SearchType", "Index" }, { "active", "o-1" } })
+
+<div class="right-all-page" style="background: #fff;">
+    <div class="SearchCriterial">
+        <div id="search_vb_den">
+            @Html.Partial("_VanBanDenSearch", Model)
+        </div>
+    </div>
+    <div class="SearchResult">
+        @Html.Partial("_VanBanDenSearchResult", Model)
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //uncheckAllNormal();
+        //$(".is_unread").parent().parent().css("font-weight", "bold");
+        if ('@Noti' == '1') {
+            notif({
+                type: 'success',
+                position: 'bottom',
+                msg: 'Thêm mới văn bản đến thành công!',
+            });
+        };
+
+        $("#ViewVanBanDen").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 960,
+            height: 760,
+            resizable: false,
+            show: {
+                effect: "blind",
+                duration: 200
+            },
+            hide: {
+                effect: "blind",
+                duration: 200
+            }
+        });
+    });
+    function getParam(name, href) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(href);
+        if (results == null) {
+            return null;
+        }
+        else {
+            return results[1] || 0;
+        }
+    }
+    function reloadGrid() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("reloadGrid", "VanBanDen")',
+            cache: false,
+            data: {
+                SearchType: 'Index'
+            },
+            dataType: "html",
+            success: function (data) {
+                $("#grid").html(data);
+            }
+        });
+    }
+
+    function PrintDetailVanBan() {
+        $("#ViewVanBanDen").printElement();
+        return false;
+    }
+
+    function ViewDetail(id) {
+        $.ajax({
+            url: '@Url.Action("ViewVanBanDen","VanBanDen" )',
+            type: 'post',
+            cache: false,
+            data: { ID: id },
+            success: function (data) {
+                $("#ViewVanBanDen").html(data);
+                $("#ViewVanBanDen").dialog("open");
+            },
+            error: function (err) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+
+    function DeleteVanBanDen(ID) {
+        $.confirm({
+            'title': 'Delete Confirmation',
+            'message': 'Bạn có chắc chắn muốn xóa văn bản đến này?',
+            'buttons': {
+                'Yes': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "VanBanDen")',
+                            type: 'post',
+                            cache: false,
+                            data: { ID: ID, SearchType: "Soft" },
+                            success: function (data) {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Delete successfully!',
+                                });
+                                reloadGrid();
+                            },
+                            error: function (err) {
+                                CommonJS.alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'No': {
+                    'class': 'btn-info',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+    }
+
+</script>
+

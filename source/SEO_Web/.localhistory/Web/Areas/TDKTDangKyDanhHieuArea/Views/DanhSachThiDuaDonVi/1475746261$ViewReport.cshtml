@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "Quản lý đơn xin nâng lương";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Web.Areas.QuanLyNangLuongTruocThoiHanArea.Models;
+@model Web.Areas.TDKTDangKyDanhHieuArea.Models.CaNhanDangKyViewModel
+<style>
+    .ms-choice {
+        color: black;
+    }
+    
+</style>
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+<script type="text/javascript" src="/Scripts/multiple-select.js"></script>
+@Html.Partial("_TopNavbar")
+@Html.Partial("_MenuLeft")
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff; min-height: 500px">
+    @*test*@
+    <div class="panel-heading" role="tab" id="headingOne" style="padding-left: 0px;margin-bottom: -11px">
+        <h3 class="panel-title group-tittle mt10" style="height: 41px; ">
+            <a class="" aria-controls="collapseOne" aria-expanded="false" href="#collapseOne" data-toggle="collapse" role="button">
+                Tìm kiếm nâng cao
+            </a>
+        </h3>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" role="tabpanel" style="">
+        @Html.Partial("_Filter")
+    </div>
+    @*end*@
+    @Html.Partial("_ResultDataTongHop")
+</div>
+<script>
+    function checkDieuKien(id) {
+        $.ajax({
+            url: '@Url.Action("Delete", "CaNhanDangKy")',
+            type: 'post',
+            cache: false,
+            data: { ID: id },
+            success: function (data) {
+                notif({
+                    type: 'success',
+                    position: 'bottom',
+                    msg: 'Xóa thành công!',
+                });
+                //reloadGrid();
+                setTimeout('reloadGrid()', 2000);
+            },
+            error: function (err) {
+                CommonJS.alert(err.responseText);
+            }
+        });
+        $("#modal_popup_id").modal("show");
+    }
+</script>
+<div class="modal fade" id="modal_popup_id">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Các danh hiệu cá nhân đăng ký</h4>
+            </div>
+            <div class="modal-body" id="modal_popup_body_id">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

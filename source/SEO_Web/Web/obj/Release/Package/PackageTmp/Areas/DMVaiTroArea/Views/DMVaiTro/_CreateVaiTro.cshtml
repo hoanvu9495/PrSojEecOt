@@ -1,0 +1,142 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Model.eAita;
+@using (Ajax.BeginForm("SaveVaiTro", "DMVaiTro", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmVaiTroCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table>
+            <tr class="height_20"></tr>
+            <tr>
+                <td>
+                    <label class="lbl6" >Mã vai trò:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("MA_VAITRO", "", new { @class = "e-input width_222", @id = "CREATE_MAVAITRO", @maxlength = "20" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span class="lb-Check2" id="MAVAITRONull" >Bạn nhập mã vai trò </span>
+                    <span class="lb-Check2" id="FINDMAVAITRO">Mã vai trò bạn nhập đã được sử dụng </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl6" >Tên vai trò:<span class="color-red">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("TEN_VAITRO", "", new {@class = "e-input width_222", @id = "CREATE_TENVAITRO", @maxlength = "100" })
+                </td>
+            </tr>
+            <tr>
+                <td class="height_20"></td>
+                <td>
+                    <span class="lb-Check2" id="TENVAITRONull" >Bạn nhập tên vai trò </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl" >Trạng thái:</label>
+                </td>
+                <td>
+                    <div class="float-width-40">
+                        <input type="radio" class="css-checkbox" name="TRANGTHAI" id="CREATE_ISACTIVE_HL" value="1" checked="checked" />
+                        <label class="css-label" for="CREATE_ISACTIVE_HL">Hiệu lực</label>
+                    </div>
+                    <div class="float-width">
+
+                        <input type="radio" class="css-checkbox" name="TRANGTHAI" id="CREATE_ISACTIVE_KHL" value="0" />
+                        <label class="css-label" for="CREATE_ISACTIVE_KHL">Không hiệu lực</label>
+                    </div>
+                </td>
+            </tr>
+            <tr class="height_20"></tr>
+        </table>
+    </div>
+
+    <div class="margin-top-10 center">
+        <input type="submit" value="Lưu" id="btnSave" class="btnSearch"/>
+        <input type="button" value="Đóng" onclick="OnClose()" class="btnSearch"/>
+    </div>
+}
+<script type="text/javascript">
+    $("#CREATE_MAVAITRO").focusout(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#MAVAITRONull").show();
+        } else {
+            $("#MAVAITRONull").hide();
+        }
+        $("#CREATE_MAVAITRO").val($("#CREATE_MAVAITRO").val().trim());
+    });
+    $("#CREATE_TENVAITRO").focusout(function () {
+        if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+            $("#TENVAITRONull").show();
+        } else {
+            $("#TENVAITRONull").hide();
+        }
+        $("#CREATE_TENVAITRO").val($("#CREATE_TENVAITRO").val().trim());
+    });
+    $("#CREATE_MAVAITRO").change(function () {
+        if ($("#CREATE_MAVAITRO").val().trim().length > 0) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("FindMa","DMVaiTro")',
+                cache: false,
+                data: { MAVAITRO: $("#CREATE_MAVAITRO").val() },
+                success: function (data) {
+                    if (data > 0) {
+                        $("#FINDMAVAITRO").show();
+                        $("#CREATE_MAVAITRO").focus();
+                    } else {
+                        $("#FINDMAVAITRO").hide();
+                        $("#CREATE_TENVAITRO").focus();
+                    }
+                }
+            });
+        }
+    });
+    $("#btnSave").click(function () {
+        if (($("#CREATE_MAVAITRO").val().trim() == null || $("#CREATE_MAVAITRO").val().trim() == "")) {
+            $("#MAVAITRONull").show();
+            $("#CREATE_MAVAITRO").focus();
+            return false;
+        }
+        if (!$("#FINDMAVAITRO").is(":hidden")) {
+            $("#CREATE_MAVAITRO").focus();
+            $("#CREATE_MAVAITRO").select();
+            return false;
+        }
+        if (($("#CREATE_TENVAITRO").val().trim() == null || $("#CREATE_TENVAITRO").val().trim() == "")) {
+            $("#TENVAITRONull").show();
+            $("#CREATE_TENVAITRO").focus();
+            return false;
+        }
+
+
+        $("#frmBenhTruyenNhiemCreate").submit();
+        return true;
+    });
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function CreateSuccess() {
+        CommonJS.alert("Tạo mới vai trò thành công");
+        $("#CreateVaiTro").dialog("close");
+        reloadGrid();
+    }
+    function OnClose() {
+        $("#CreateVaiTro").dialog("close");
+    }
+
+</script>

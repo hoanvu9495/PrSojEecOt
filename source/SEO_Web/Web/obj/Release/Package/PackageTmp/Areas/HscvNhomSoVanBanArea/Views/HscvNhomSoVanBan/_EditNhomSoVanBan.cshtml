@@ -1,0 +1,192 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@model Web.Areas.HscvNhomSoVanBanArea.Models.HscvNhomSoVanBanEditViewModel
+<style type="text/css">
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    #EDIT_ID {
+        display: none;
+    }
+
+    .modal-title {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .modal-dialog .height-20 {
+        height: 20px;
+    }
+
+    .modal-dialog .red {
+        color: red;
+    }
+
+    .modal-dialog .width-100 {
+        width: 100%;
+    }
+
+    #block--edit-nhomso, #block--edit-trangthai {
+        width: 233px;
+    }
+
+    label[for=EDIT_LOAIHOSO_ID], label[for=EDIT_NHOMSOVANBAN], label[for=EDIT_TRANGTHAI] {
+        width: 150px;
+    }
+
+    #EDIT_NHOMSOVANBAN {
+        width: 233px;
+    }
+    .ms-drop input[type=radio]{
+        margin: 0 5px 0 0;
+    }
+</style>
+@using (Ajax.BeginForm("SaveNhomSoVanBan", "HscvNhomSoVanBan", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmNhomSoVanBanEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">cập nhật nhóm sổ văn bản</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr class="height-20">
+                        <td colspan="2">
+                            <input type="hidden" name="ID" id="ID" value="@Model.NhomSoVanBan.ID" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="EDIT_LOAIHOSO_ID">
+                                Loại văn bản<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" id="block--edit-nhomso">
+                                @Html.DropDownList("LOAIHOSO_ID", Model.listNhomSoVanBan, new { @class = "width-100", @id = "EDIT_LOAIHOSO_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="height-20"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="EDIT_NHOMSOVANBAN">Nhóm sổ văn bản:<span class="red">*</span></label>
+                        </td>
+                        <td>
+                            @Html.TextBox("NHOMSOVANBAN", Model.NhomSoVanBan.NHOMSOVANBAN, new { maxlength = "50", @class = "e-input",@id = "EDIT_NHOMSOVANBAN" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="red height-20"></td>
+                        <td>
+                            <span class="lb-Check red" id="ERR_EDIT_NHOMSOVANBAN"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="lbl" for="EDIT_TRANGTHAI">
+                                Trạng Thái:<span class="red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <div class="input-field4  clearfix" id="block--edit-trangthai">
+                                @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{
+                            Text = "Được sử dụng",
+                            Value = "true",
+                            Selected = (Model.NhomSoVanBan.TRANGTHAI == true ? true : false )},
+                        new SelectListItem{
+                            Text = "Không sử dụng",
+                            Value = "false",
+                            Selected  = (Model.NhomSoVanBan.TRANGTHAI == true ? false : true)}
+                    }, new { @id = "EDIT_TRANGTHAI"})
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="height-20" colspan="2"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSave">Cập nhật</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+}
+<script type="text/javascript">
+    $(function () {
+        $('#EDIT_LOAIHOSO_ID,#EDIT_TRANGTHAI').multipleSelect({
+            single:true
+        })
+        $('#EDIT_NHOMSOVANBAN').on('keyup', function () {
+            if ($(this).val().trim() !== '') {
+                document.getElementById('ERR_EDIT_NHOMSOVANBAN').innerHTML = '';
+            }
+        });
+        $("#btnSave").click(function () {
+            if ($("#EDIT_NHOMSOVANBAN").val().trim().length == 0) {
+                $('#ERR_EDIT_NHOMSOVANBAN').show();
+                document.getElementById('ERR_EDIT_NHOMSOVANBAN').innerHTML = 'Bạn cần điền nhóm sổ văn bản';
+                $('#EDIT_NHOMSOVANBAN').focus();
+                return false;
+            } else {
+                var obj = {
+                    ID: parseInt('@Model.NhomSoVanBan.ID'),
+                    NHOMSOVANBAN: $('#EDIT_NHOMSOVANBAN').val().trim(),
+                    LOAIHOSO_ID : $('#EDIT_LOAIHOSO_ID').val().trim()
+                }
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CheckExistedNhomSoVanBan", "HscvNhomSoVanBan")',
+                    dataType: 'json',
+                    contentType: 'application/json;charset=utf-8',
+                    data:JSON.stringify(obj),
+                    cache: false,
+                    success: function (result) {
+                        if (result.isExisted == true) {
+                            $('#ERR_EDIT_NHOMSOVANBAN').show();
+                            document.getElementById('ERR_EDIT_NHOMSOVANBAN').innerHTML = 'Nhóm sổ văn bản đã tồn tại',
+                            $('EDIT_NHOMSOVANBAN').focus();
+                        } else {
+                            $('#frmNhomSoVanBanEdit').submit();
+                        }
+                    }, error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            }
+        });
+    });
+
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    function updateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Cập nhật nhóm sổ văn bản thành công!',
+        });
+        $("#PrepareNhomSoVanBan").modal("hide");
+        reloadGrid();
+    }
+</script>

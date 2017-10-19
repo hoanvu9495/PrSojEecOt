@@ -1,0 +1,982 @@
+﻿@model Web.Areas.ThuMucLuuTruArea.Models.TaiLieuChuaSoHoaModel
+@using Web.Models
+@using Web.Areas.ThuMucLuuTruArea.Models
+@using (Html.BeginForm("SaveFile", "TaiLieuChuaSoHoa", FormMethod.Post, new { id = "UploadFileFrm", enctype = "multipart/form-data" }))
+{
+    string SL_THUOCTINH = "";
+    <div class="modal-dialog" style="width:900px">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cập nhật tài liệu</h4>
+            </div>
+            <div class="modal-body" style="height:500px;overflow-y:auto;">
+                <table>
+
+                    <tr class="AutoGenerate">
+                        <td>
+                            Mã hàng:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" style="display:none" checked>
+                            <select class="chosen-select" name="HANG_ID_C" id="MAHANG">
+                                @foreach (var item in Model.lstKe)
+                                {
+                                    var lstHang = Model.lstHang.Where(x => x.KE_ID == item.ID).ToList();
+                                    if (lstHang.Count > 0)
+                                    {
+                                        <optgroup label="@item.TENKE">
+                                            @foreach (var ele in lstHang)
+                                            {
+
+                                                if (ele.ID == Model.TAILIEU.HANG_ID)
+                                                {
+                                                    <option value="@ele.ID" selected>@ele.MAHANG</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@ele.ID">@ele.MAHANG</option>
+                                                }
+                                            }
+                                        </optgroup>
+                                    }
+
+                                }
+                            </select>
+                        </td>
+                        <td colspan="2" rowspan="4" style="vertical-align:top!important">
+                            <div style="max-height:250px;max-width:270px">
+                                @if (!string.IsNullOrEmpty(Model.MaTaiLieu))
+                                {
+                                    <img id="IMAGE_DISPLAY" alt="Ảnh bìa của @Model.TAILIEU.TENTAILIEU" title="Ảnh bìa của @Model.TAILIEU.TENTAILIEU" style="max-height:100%;max-width:100%" src="@(Model.UrlNavigation +"/Uploads/" +Model.MaTaiLieu.Replace("\\","/") )" />
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="AutoGenerate">
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="MAHANG_NULL">
+                                Vui lòng nhập mã hàng
+                            </span>
+                            <span style="color:red;display:none" id="MAHANG_CHECK">
+
+                            </span>
+                            <span style="color:red;display:none" id="MAHANG_ERROR">
+                                Mã hàng chỉ được chứa chữ và số
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:130px">
+                            Mã tài liệu:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" value="@Model.TAILIEU.MATAILIEU" style="width:95%" class="form-control" name="MATAILIEU" id="MATAILIEU" placeholder="Nhập mã tài liệu" maxlength="20">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="MATAILIEU_NULL">Mã tài liệu không được để trống</span>
+                            <span style="color: red; display: none" id="MATAILIEU_ERROR">Mã tài liệu đã tồn tại</span>
+                            <span style="color: red; display: none" id="MATAILIEU_HTML">Mã tài liệu chỉ được chứa chữ và số</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:130px">
+                            Tên tài liệu:<span style="color:red">*</span>
+                        </td>
+                        <td>
+                            <input type="text" value="@Model.TAILIEU.TENTAILIEU" style="width:95%" class="form-control" name="TENTAILIEU" id="TENTAILIEU" placeholder="Nhập tên tài liệu" maxlength="255">
+                        </td>
+                        <td>
+                            Tác giả:
+                        </td>
+                        <td>
+                            <input type="text" @Model.TAILIEU.TACGIA style="width:95%" class="form-control" name="TACGIA" id="TACGIA" placeholder="Nhập tên tác giả" maxlength="255" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TENTAILIEU_NULL">Tên tài liệu không được để trống</span>
+                            <span style="color: red; display: none" id="TENTAILIEU_ERROR">Tên tài liệu đã tồn tại</span>
+                            <span style="color: red; display: none" id="TENTAILIEU_HTML">Tên tài liệu không được chứa ký tự HTML(<>)</span>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="TACGIA_NULL">Tên tác giả không được để trống</span>
+                            <span style="color: red; display: none" id="TACGIA_HTML">Tên tác giả chỉ được chứa chữ và số</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Số lượng:
+                        </td>
+                        <td>
+                            <input type="text" value="@Model.TAILIEU.SOLUONG" style="width:150px" class="form-control" name="SOLUONG" id="SOLUONG" placeholder="Nhập số lượng" />
+                        </td>
+                        <td>
+                            Số trang:
+                        </td>
+                        <td>
+                            <input type="text" value="@Model.TAILIEU.SOTRANG" style="width:150px" class="form-control" name="SOTRANG" id="SOTRANG" placeholder="Nhập số trang" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="display:none;color:red" id="SOLUONG_ERROR">Số lượng phải là số</span>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="display:none;color:red" id="SOTRANG_ERROR">Số trang phải là số</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Mô tả:
+                        </td>
+                        <td>
+                            <textarea class="form-control" maxlength="500" name="MOTA" id="MOTA" placeholder="Nhập mô tả cho tài liệu" style="resize:vertical;height:50px !important;width:95%">@Model.TAILIEU.MOTA</textarea>
+                        </td>
+                        <td>Loại tài liệu:</td>
+                        <td>
+                            <div class="input-field4  clearfix" style="width: 233px;">
+                                @Html.DropDownList("LOAITAILIEU_ID", new SelectList(Model.lstLoaiTaiLieu, "Value", "Text", Model.TAILIEU.TM_LOAITAILIEU), "[--- Loại tài liệu ---]", new { @style = "width: 100%", @id = "LOAITAILIEU_ID" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="vertical-align:top!important">
+                            Ảnh bìa:
+                        </td>
+                        <td valign="top" style="vertical-align: top !important">
+                            <input type="file" style="border:none" id="COVER_IMAGE" name="filebase" accept="image/*" />
+                        </td>
+                        <td colspan="2">
+                            <h3 class="group-tittle mt10" style="margin-bottom:10px">Thuộc tính của tài liệu</h3>
+                            <div style="overflow-y:auto;height:150px">
+                                <table class="" style="width:70%;">
+                                    <tbody id="DanhSachThuocTinh">
+                                        @if (Model.lstThuocTinh.Count > 0)
+                                        {
+                                            int count = 0;
+                                            foreach (var item in Model.lstThuocTinh)
+                                            {
+                                                count++;
+                                                SL_THUOCTINH += count + ",";
+                                                <tr>
+                                                    <td style="vertical-align:middle">
+                                                        @item.TEN_THUOCTINH
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <input type="hidden" name="ID_@count" value="@item.ID" />
+                                                        <input type="hidden" name="THUOCTINHID_@count" value="@item.THUOCTINH_ID" />
+                                                        <input class="form-control" name="THUOCTINH_@count" id="THUOCTINH_@count" value="@item.GIATRI" />
+                                                        <br />
+                                                        <span style="color:red;display:none;text-align:left" id="THUOCTINHNULL_@count">Bạn vui lòng nhập @item.TEN_THUOCTINH</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else if (Model.lstThuocTinhNull != null)
+                                        {
+                                            int count = 0;
+                                            foreach (var item in Model.lstThuocTinhNull)
+                                            {
+                                                count++;
+                                                SL_THUOCTINH += count + ",";
+                                                <tr>
+                                                    <td style="vertical-align:middle">
+                                                        @item.TEN_THUOCTINH
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <input type="hidden" name="ID_@count" value="@item.ID" />
+                                                        <input type="hidden" name="THUOCTINHID_@count" value="@item.ID" />
+                                                        <input class="form-control" name="THUOCTINH_@count" id="THUOCTINH_@count" value="" />
+                                                        <br />
+                                                        <span style="color:red;display:none;text-align:left" id="THUOCTINHNULL_@count">Bạn vui lòng nhập @item.TEN_THUOCTINH</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        <tr style="display:none">
+                                            <td><input type="hidden" name="SL_THUOCTINH" value="@SL_THUOCTINH" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <span style="color:red;display:none" id="COVERIMAGE_NULL">
+                                Ảnh bìa phải có định dạng ảnh
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td>Tình trạng:</td>
+                        <td colspan="3">
+                            @if (Model.TAILIEU.TRANGTHAI == TrangThaiTaiLieuChuaSoHoaModel.LUUKHO)
+                            {
+                                <div class="onoffswitch1">
+                                    <input type="checkbox" name="onoffStatus" class="onoffswitch-checkbox1" id="onoffStatus" checked>
+                                    <label class="onoffswitch-label1" for="onoffStatus">
+                                        <span class="onoffswitch-inner1"></span>
+                                        <span class="onoffswitch-switch1"></span>
+                                    </label>
+                                </div>
+                                <input type="hidden" name="LICHSU" id="LICHSU" value="on" />
+                            }
+                            else
+                            {
+                                <div class="onoffswitch1">
+                                    <input type="checkbox" name="onoffStatus" class="onoffswitch-checkbox1" id="onoffStatus" disabled>
+                                    <label class="onoffswitch-label1" for="onoffStatus">
+                                        <span class="onoffswitch-inner1"></span>
+                                        <span class="onoffswitch-switch1"></span>
+                                    </label>
+                                </div>
+                                <input type="hidden" name="LICHSU" id="LICHSU" value="off" />
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">&nbsp;</td>
+                    </tr>
+
+                    @if (Model.TAILIEU.TRANGTHAI == TrangThaiTaiLieuChuaSoHoaModel.SUDUNG)
+                    {
+                        int count = Model.lstLog.Count;
+                        <tr class="status_using">
+                            <td>Người đang giữ:</td>
+                            <td colspan="3">
+                                <div style="float:left">
+                                    <input type="text" id="CHUYEN_VIEN" style="width:233px;" value="@Model.lstLog[count-1].TENNGUOIMUON" class="form-control" readonly="readonly" disabled />
+                                </div>
+                                <div style="float:left;margin-top:8px;margin-left:10px">
+                                    <a id="Test_Chon" class="btnChoose" style="">Chọn</a> |
+                                    <a id="Xoa_ChuyenVien" class="btnChoose">Xóa</a>
+                                    <input type="hidden" id="CHUYEN_VIEN_HIDEN" value="@Model.lstLog[count-1].NGUOIMUON" name="CHUYEN_VIEN_HIDEN">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="status_using">
+                            <td colspan="4">&nbsp;</td>
+
+                        </tr>
+                        <tr class="status_using">
+                            <td>
+                                Từ ngày <span style="color:red">*</span>:
+                            </td>
+                            <td>
+                                <input type="text" id="NGAYMUON" style="width: 233px" value="@Model.lstLog[count-1].NGAYMUON" name="NGAYMUON" class="form-control datepicker" />
+                            </td>
+                            <td>
+                                Đến ngày <span style="color:red">*</span>:
+                            </td>
+                            <td>
+                                <input type="text" id="NGAYTRA" style="width: 233px" value="@Model.lstLog[count-1].NGAYTRA" name="NGAYTRA" class="form-control datepicker" />
+                            </td>
+
+                        </tr>
+                        <tr class="status_using">
+                            <td>&nbsp;</td>
+                            <td>
+                                <span style="color:red;display:none" id="NGAYMUON_ERROR">Ngày mượn sai định dạng.Mời nhập lại</span>
+                                <span style="color:red;display:none" id="NGAYMUON_NULL">Ngày mượn không được để trống</span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <span style="color:red;display:none" id="NGAYTRA_ERROR">Ngày trả sai định dạng.Mời nhập lại</span>
+                                <span style="color:red;display:none" id="NGAYTRA_NULL">Ngày trả không được để trống</span>
+                            </td>
+                        </tr>
+                        <tr class="status_using">
+                            <td>
+                                Tình trạng trước sử dụng:
+                            </td>
+                            <td colspan="3">
+                                <div class="input-field4  clearfix">
+                                    @Html.DropDownList("TINHTRANGTRUOC", new SelectList(Model.lstTrangThai, "Value", "Text", Model.lstLog[count - 1].TRANGTHAITRUOC), "[---Lựa chọn trạng thái---]", new { @style = "", @id = "TINHTRANGTRUOC" })
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="status_using">
+                            <td>&nbsp;</td>
+                            <td colspan="3">
+                                <span style="color:red;display:none" id="TRINHTRANG_NULL">Vui lòng chọn tình trạng trước khi cho mượn</span>
+                                <span style="color:red;display:none" id="TRINHTRANG_HTML">Tình trạng trước khi cho mượn không được chứa thẻ HTML</span>
+                            </td>
+                        </tr>
+                        <tr class="status_using">
+                            <td>
+                                Tình trạng trả <span style="color:red">*</span>:
+                            </td>
+                            <td colspan="3">
+                                <div class="input-field4  clearfix">
+                                    @Html.DropDownList("TINHTRANGTRA", new SelectList(Model.lstTrangThai, "Value", "Text", Model.lstLog[count - 1].TRANGTHAITRUOC), "[---Lựa chọn trạng thái---]", new { @style = "", @id = "TINHTRANGTRA" })
+                                </div>
+                                <input type="hidden" name="LOG_ID" value="@Model.lstLog[count-1].ID" />
+                            </td>
+                        </tr>
+                        <tr class="status_using">
+                            <td>&nbsp;</td>
+                            <td colspan="3">
+                                <span style="color:red;display:none" id="TRINHTRANG_NULL">Vui lòng chọn tình trạng hiện tại của tài liệu</span>
+                                <span style="color:red;display:none" id="TRINHTRANG_HTML">Tình trạng hiện tại của tài liệu không được chứa thẻ HTML</span>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr class="status_document">
+                            <td>Người đang giữ:<span style="color:red">*</span></td>
+                            <td colspan="3">
+                                <div style="float:left">
+                                    <input type="text" id="CHUYEN_VIEN" style="width:223px;" value="" class="form-control" readonly="readonly" disabled />
+                                </div>
+                                <div style="float:left;margin-top:8px;margin-left:10px">
+                                    <a id="Test_Chon" class="btnChoose" style="">Chọn</a> |
+                                    <a id="Xoa_ChuyenVien" class="btnChoose">Xóa</a>
+                                    <input type="hidden" id="CHUYEN_VIEN_HIDEN" value="" name="CHUYEN_VIEN_HIDEN">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="status_document">
+                            <td>&nbsp;</td>
+                            <td colspan="3">
+                                <span id="CHUYENVIEN_NULL" style="color:red;display:none">Vui lòng lựa chọn người đang giữ tài liệu</span>
+                            </td>
+                        </tr>
+                        <tr class="status_document">
+                            <td>
+                                Từ ngày <span style="color:red">*</span>:
+                            </td>
+                            <td colspan="3">
+                                <input type="text" id="NGAYMUON" style="width:233px" name="NGAYMUON" class="form-control datepicker" />
+                            </td>
+                        </tr>
+                        <tr class="status_document">
+                            <td>&nbsp;</td>
+                            <td colspan="3">
+                                <span style="color:red;display:none" id="NGAYMUON_ERROR">Ngày mượn sai định dạng.Mời nhập lại</span>
+                                <span style="color:red;display:none" id="NGAYMUON_NULL">Ngày mượn không được để trống</span>
+                            </td>
+                        </tr>
+                        <tr class="status_document">
+                            <td>
+                                Đến ngày:
+                            </td>
+                            <td colspan="3">
+                                <input type="text" id="NGAYTRA" style="width:233px" name="NGAYTRA" class="form-control datepicker" />
+                            </td>
+                        </tr>
+                        <tr class="status_document">
+                            <td>&nbsp;</td>
+                            <td colspan="3">
+                                <span style="color:red;display:none" id="NGAYTRA_ERROR">Ngày trả sai định dạng.Mời nhập lại</span>
+                            </td>
+                        </tr>
+                        <tr class="status_document">
+                            <td>
+                                Tình trạng <span style="color:red">*</span>:
+                            </td>
+                            <td colspan="3">
+                                <div class="input-field4  clearfix">
+                                    @Html.DropDownList("TINHTRANGTRUOC", Model.lstTrangThai, "[---Lựa chọn trạng thái---]", new { @style = "", @id = "TINHTRANGTRUOC" })
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="status_document">
+                            <td>&nbsp;</td>
+                            <td colspan="3">
+                                <span style="color:red;display:none" id="TRINHTRANG_NULL">Vui lòng nhập tình trạng trước khi cho mượn</span>
+                                <span style="color:red;display:none" id="TRINHTRANG_HTML">Tình trạng trước khi cho mượn không được chứa thẻ HTML</span>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btnSave">Cập nhật</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+
+    <input type="hidden" name="ID" id="ID" value="@Model.TAILIEU.ID" />
+    <input type="hidden" name="FOLDER_ID" id="PARENT_ID" value="@Model.TAILIEU.FOLDER_ID" />
+    <input type="hidden" value="@Model.MaTaiLieu" id="MATAILIEU_CHECK" />
+    <input type="hidden" value="@Model.TenTaiLieu" id="TENTAILIEU_CHECK" />
+}
+@{
+    int CosoID = Model.TAILIEU.COSO_ID.Value;
+    ChonNguoiDungModel model_one = new ChonNguoiDungModel();
+    model_one.COSO_ID = CosoID;
+    model_one.DONVI_ID = 0;
+    model_one.PHONGBAN_ID = 0;
+    model_one.TEXT_ID = "CHUYEN_VIEN";
+    model_one.VALUE_ID = "CHUYEN_VIEN_HIDEN";
+    model_one.ID_CLICK = "Test_Chon";
+    model_one.IS_MULTICHOICE = 0;
+    model_one.INDEX = 0;
+    model_one.TITLE = "Lựa chọn người đang giữ tài liệu";
+
+}
+@{ Html.RenderPartial("../Common/_ChooseUserV1", model_one);}
+<script src="~/Scripts/jquerychosen/chosen.jquery.min.js"></script>
+<link href="~/Scripts/jquerychosen/chosen.min.css" rel="stylesheet" />
+<script>
+    (function (factory) {
+        if (typeof define === "function" && define.amd) {
+            define(["../widgets/datepicker"], factory);
+        } else {
+            // Browser globals
+            factory(jQuery.datepicker);
+        }
+    }(function (datepicker) {
+        datepicker.regional.vi = {
+            closeText: "Đóng",
+            prevText: "&#x3C;Trước",
+            nextText: "Tiếp&#x3E;",
+            currentText: "Hôm nay",
+            monthNames: ["Tháng Một", "Tháng Hai", "Tháng Ba", "Tháng Tư", "Tháng Năm", "Tháng Sáu",
+            "Tháng Bảy", "Tháng Tám", "Tháng Chín", "Tháng Mười", "Tháng Mười Một", "Tháng Mười Hai"],
+            monthNamesShort: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+            "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+            dayNames: ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"],
+            dayNamesShort: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+            dayNamesMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+            weekHeader: "Tu",
+            dateFormat: "dd/mm/yy",
+            firstDay: 0,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ""
+        };
+        datepicker.setDefaults(datepicker.regional.vi);
+        return datepicker.regional.vi;
+    }));
+    $(".chosen-select").chosen({
+        disable_search_threshold: 10,
+        no_results_text: "Oops, Không có kết quả nào",
+        width: "95%"
+    });
+
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Đã thêm mới tài liệu!',
+        });
+        if ($("#PARENT_ID").val() > 0) {
+            LoadDataByID($("#PARENT_ID").val());
+            $("#THEMTHUMUC").attr("data-pid", $("#PARENT_ID").val());
+            $("#THEMTAILIEU").attr("data-pid", $("#PARENT_ID").val());
+            $("#UPLOAD_FILE").show();
+            $("#THEMTHUMUC").show();
+        }
+        if ($("#PARENT_ID").val() == 0) {
+            reloadGrid();
+            reloadTable();
+        }
+
+        $("#CreateThuMuc").modal("hide");
+
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+
+    $(function () {
+        $("#LOAITAILIEU_ID").change(function () {
+            if ($("#LOAITAILIEU_ID").val().trim() != "") {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetThuocTinh", "TaiLieuChuaSoHoa")',
+                    data: {
+                        LOAITAILIEU: $("#LOAITAILIEU_ID").val()
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        $("#DanhSachThuocTinh").html(data);
+                        $("#DanhSachThuocTinh").show();
+                        $("#h3Thuoctinh").show();
+                    }, error: function (xrt) {
+                    }
+                });
+            } else {
+                $("#h3Thuoctinh").hide();
+                $("#DanhSachThuocTinh").html("");
+                $("#DanhSachThuocTinh").hide();
+            }
+        });
+        $("#COVER_IMAGE").change(function () {
+            readURL(this);
+        });
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            minDate: 0,
+            maxDate: "+1M"
+        }).datepicker("setDate", new Date());
+
+        $("#MAHANG").change(function () {
+            if ($(this).val().trim().length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetFullPath", "TaiLieuChuaSoHoa")',
+                    data: {
+                        ID: $("#MAHANG").val(),
+                        MAHANG: $("#MAHANG").text()
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        $("#MAHANG_NULL").hide();
+                        $("#MAHANG_CHECK").html(data);
+                        $("#MAHANG_CHECK").show();
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            } else {
+                $("#MAHANG_CHECK").text("");
+            }
+        });
+        $("#myonoffswitch").change(function () {
+            if ($("#myonoffswitch:checked").length == 1) {
+                $(".AutoGenerate").show();
+                $(".chooseplace").hide();
+
+            } else {
+                $(".AutoGenerate").hide();
+                $(".chooseplace").show();
+            }
+
+        });
+        //$("#onoffStatus").change(function () {
+        //    if ($("#onoffStatus:checked").length == 1) {
+        //        $(".status_document").fadeOut();
+        //        $(".status_using").fadeIn();
+        //        $('modal-body').animate({ scrollTop: 500 }, 1200);
+        //        $("#LICHSU").val("on");
+        //        return false;
+        //    } else {
+        //        $(".status_using").fadeOut(1000);
+        //        $(".status_document").fadeIn(1000);
+        //        $('.modal-body').animate({ scrollTop: $(document).height() }, 1200);
+        //        $("#LICHSU").val("off");
+        //        return false;
+        //    }
+
+        //});
+        $("#onoffStatus").change(function () {
+            if ($("#onoffStatus:checked").length == 1) {
+                $(".status_document").fadeOut();
+                $('modal-body').animate({ scrollTop: 500 }, 1200);
+                $("#LICHSU").val("on");
+                return false;
+
+            } else {
+                $(".status_document").fadeIn(1000);
+                $('.modal-body').animate({ scrollTop: $(document).height() }, 1200);
+                $("#LICHSU").val("off");
+                return false;
+            }
+
+        });
+        $("#TOANHA_ID").change(function () {
+            if ($("#TOANHA_ID").val() != "") {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("LoadTangByToaNha", "TaiLieuChuaSoHoa")',
+                    data: {
+                        TOANHA: $("#TOANHA_ID").val()
+                    },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        $("#TANGLUUTRU").html(data);
+                    },
+                    error: function (xrt) {
+                        alert(xrt.responseText);
+                    }
+                });
+            } else {
+                $("#TANGLUUTRU").html("");
+            }
+        });
+        $("#btnSave").click(function () {
+            if ($("#myonoffswitch:checked").length == 1) {
+                if ($("#MAHANG").val().trim() == "") {
+                    $("#MAHANG").focus();
+                    $("#MAHANG_CHECK").hide();
+                    $("#MAHANG_NULL").show();
+                    return false;
+                } else {
+                    $("#MAHANG_NULL").hide();
+                    $("#MAHANG_CHECK").fadeIn(1000);
+                }
+            } else {
+                if ($("#TOANHA_ID").val() == "") {
+                    $("#TOANHA_NULL").show();
+                    return false;
+                } else {
+                    $("#TOANHA_NULL").hide();
+                }
+                if ($("#TANG_ID").val() == "") {
+                    $("#TANG_NULL").show();
+                    return false;
+                } else {
+                    $("#TANG_NULL").hide();
+                }
+                if ($("#PHONG_ID").val() == "") {
+                    $("#PHONG_NULL").show();
+                    return false;
+                } else {
+                    $("#PHONG_NULL").hide();
+                }
+                if ($("#KE_ID").val() == "") {
+                    $("#KE_NULL").show();
+                    return false;
+                } else {
+                    $("#KE_NULL").hide();
+                }
+                if ($("#HANG_ID").val() == "") {
+                    $("#KE_NULL").show();
+                    return false;
+                } else {
+                    $("#KE_NULL").hide();
+                }
+            }
+            if ($("#MATAILIEU").val().trim() == "") {
+                $("#MATAILIEU").focus();
+                $("#MATAILIEU_NULL").show();
+                return false;
+            } else {
+                $("#MATAILIEU_NULL").hide();
+                if (!/[a-z0-9]+/i.test($("#MATAILIEU").val())) {
+                    $("#MATAILIEU").focus();
+                    $("#MATAILIEU_HTML").show();
+                    return false;
+                } else {
+                    $("#MATAILIEU_HTML").hide();
+                }
+            }
+            //Kiểm tra trung ma
+
+            var Ma = $("#MATAILIEU_CHECK").val();
+            var lstMa = Ma.split(",");
+            if ($.inArray($("#MATAILIEU").val().toLowerCase(), lstMa) != -1) {
+                $("#MATAILIEU").focus();
+                $("#MATAILIEU_ERROR").show();
+                return false;
+            } else {
+                $("#MATAILIEU_ERROR").hide();
+            }
+            if ($("#TENTAILIEU").val().trim() == "") {
+                $("#TENTAILIEU").focus();
+                $("#TENTHUMUC_NULL").show();
+                return false;
+            } else {
+                $("#TENTHUMUC_NULL").hide();
+                if (/<[a-z][\s\S]*>/i.test($("#TENTAILIEU").val())) {
+                    $("#TENTAILIEU").focus();
+                    $("#TENTHUMUC_HTML").show();
+                    return false;
+                } else {
+                    $("#TENTHUMUC_HTML").hide();
+                }
+            }
+            //kiểm tra trùng tên
+            Ma = $("#TENTAILIEU_CHECK").val();
+            lstMa = Ma.split(",");
+            if ($.inArray($("#TENTAILIEU").val().toLowerCase(), lstMa) != -1) {
+                $("#TENTAILIEU").focus();
+                $("#TENTAILIEU_ERROR").show();
+                return false;
+            } else {
+                $("#TENTAILIEU_ERROR").hide();
+            }
+            if ($("#SOLUONG").val() != "") {
+                if (!/^\d+/i.test($("#SOLUONG").val())) {
+                    $("#SOLUONG").focus();
+                    $("#SOLUONG_ERROR").show();
+                    return false;
+                } else {
+                    $("#SOLUONG_ERROR").hide();
+                }
+            }
+            if ($("#SOTRANG").val() != "") {
+                if (!/^\d+/i.test($("#SOTRANG").val())) {
+                    $("#SOTRANG").focus();
+                    $("#SOTRANG_ERROR").show();
+                    return false;
+                } else {
+                    $("#SOTRANG_ERROR").hide();
+                }
+            }
+            if ($("#COVER_IMAGE").val() != "") {
+                var fsize = $('#COVER_IMAGE')[0].files[0].size;
+                var ftype = $('#COVER_IMAGE')[0].files[0].type;
+                var fname = $('#COVER_IMAGE')[0].files[0].name;
+                switch (ftype) {
+                    case 'image/png':
+                    case 'image/gif':
+                    case 'image/jpeg':
+                    case 'image/pjpeg':
+                        $("#COVERIMAGE_NULL").hide();
+                        break;
+                    default:
+                        $("#COVERIMAGE_NULL").show();
+                }
+            }
+            if ($("#onoffStatus:checked").length != 1) {
+                if ($("#CHUYEN_VIEN_HIDEN").val().trim() == "") {
+                    $("#CHUYENVIEN_NULL").show();
+                    $("#Test_Chon").click();
+                    return false;
+                } else {
+                    $("#CHUYENVIEN_NULL").hide();
+                }
+                if ($("#NGAYMUON").val().trim() == "") {
+                    $("#NGAYMUON_NULL").show();
+                    $("#NGAYMUON").focus();
+                    return false;
+                } else {
+                    $("#NGAYMUON_NULL").hide();
+                }
+                if (!checkDateTime($("#NGAYMUON").val())) {
+                    $("#NGAYMUON_ERROR").show();
+                    $("#NGAYMUON").focus();
+                    return false;
+                } else {
+                    $("#NGAYMUON_ERROR").hide();
+                }
+                if ($("#NGAYTRA").val() != "") {
+                    if (!checkDateTime($("#NGAYTRA").val())) {
+                        $("#NGAYTRA_ERROR").show();
+                        $("#NGAYTRA").focus();
+                        return false;
+                    } else {
+                        $("#NGAYTRA_ERROR").hide();
+                    }
+                }
+                if ($("#TINHTRANGTRUOC").val().trim() == "") {
+                    $("#TRINHTRANG_NULL").show();
+                    $("#TINHTRANGTRUOC").focus();
+                    return false;
+                } else {
+                    $("#TRINHTRANG_NULL").hide();
+
+                }
+                if (/<[a-z][\s\S]*>/i.test($("#TINHTRANGTRUOC").val())) {
+                    $("#TINHTRANGTRUOC").select();
+                    $("#TRINHTRANG_HTML").show();
+                    return false;
+                } else {
+                    $("#TRINHTRANG_HTML").hide();
+                }
+            }
+            return true;
+        });
+    });
+    $("form").ajaxForm({
+        beforeSend: function () {
+
+        },
+        uploadProgress: function () {
+
+        },
+        success: function (data) {
+            LoadDataByID($("#PARENT_ID").val());
+            notif({
+                type: 'success',
+                position: 'bottom',
+                msg: "Đã cập nhật tài liệu thành công",
+            });
+        },
+        complete: function () {
+            $("#FileDetail").modal('hide');
+            $('#FileDetail').on('hidden.bs.modal', function () {
+                $("#FileDetail").html("");
+            });
+        }, error: function (data) {
+            notif({
+                type: 'error',
+                position: 'bottom',
+                msg: data,
+            });
+        }
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#IMAGE_DISPLAY').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+<style>
+    .status_document {
+        display: none;
+    }
+
+    .onoffswitch1 {
+        position: relative;
+        width: 115px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .onoffswitch-checkbox1 {
+        display: none;
+    }
+
+    .onoffswitch-label1 {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid #FFFFFF;
+        border-radius: 20px;
+    }
+
+    .onoffswitch-inner1 {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+        .onoffswitch-inner1:before, .onoffswitch-inner1:after {
+            display: block;
+            float: left;
+            width: 50%;
+            height: 30px;
+            padding: 0;
+            line-height: 30px;
+            font-size: 14px;
+            color: white;
+            font-family: Trebuchet, Arial, sans-serif;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .onoffswitch-inner1:before {
+            content: "Lưu kho";
+            padding-left: 10px;
+            background-color: #34A7C1;
+            color: #FFFFFF;
+        }
+
+        .onoffswitch-inner1:after {
+            content: "Sử dụng";
+            padding-right: 10px;
+            background-color: #787C7D;
+            color: #FFFFFF;
+            text-align: right;
+        }
+
+    .onoffswitch-switch1 {
+        display: block;
+        width: 18px;
+        margin: 6px;
+        background: #FFFFFF;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 81px;
+        border: 2px solid #FFFFFF;
+        border-radius: 20px;
+        transition: all 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-checkbox1:checked + .onoffswitch-label1 .onoffswitch-inner1 {
+        margin-left: 0;
+    }
+
+    .onoffswitch-checkbox1:checked + .onoffswitch-label1 .onoffswitch-switch1 {
+        right: 0px;
+    }
+
+    .btnChoose:hover {
+        cursor: pointer !important;
+    }
+
+    .onoffswitch {
+        position: relative;
+        width: 65px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .onoffswitch-checkbox {
+        display: none;
+    }
+
+    .chooseplace {
+        display: none;
+    }
+
+    .onoffswitch-label {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        height: 28px;
+        padding: 0;
+        line-height: 28px;
+        border: 2px solid #CCCCCC;
+        border-radius: 28px;
+        background-color: #FFFFFF;
+        transition: background-color 0.3s ease-in;
+    }
+
+        .onoffswitch-label:before {
+            content: "";
+            display: block;
+            width: 28px;
+            margin: 0px;
+            background: #FFFFFF;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 35px;
+            border: 2px solid #CCCCCC;
+            border-radius: 28px;
+            transition: all 0.3s ease-in 0s;
+        }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label {
+        background-color: #49E845;
+    }
+
+        .onoffswitch-checkbox:checked + .onoffswitch-label, .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+            border-color: #49E845;
+        }
+
+            .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+                right: 0px;
+            }
+</style>

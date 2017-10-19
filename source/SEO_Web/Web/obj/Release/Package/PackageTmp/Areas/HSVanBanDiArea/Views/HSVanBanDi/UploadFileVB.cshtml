@@ -1,0 +1,100 @@
+﻿@using Model.eAita
+@model List<TAILIEUDINHKEM>
+@using Web.FwCore
+<style type="text/css">
+    #table--tailieu-dinhkem {
+        width: 100%;
+    }
+
+        #table--tailieu-dinhkem tr td {
+            text-align: left;
+            padding: 5px 10px;
+        }
+
+        #table--tailieu-dinhkem tr,
+        #table--tailieu-dinhkem tr th,
+        #table--tailieu-dinhkem tr td {
+            border: 1px solid #ccc;
+        }
+</style>
+<table class="table--file-grid" id="table--tailieu-dinhkem">
+    <thead>
+        <tr class="head">
+            <th scope="col">
+                <b>
+                    Tên tài liệu
+                </b>
+            </th>
+            <th>
+                <b>
+                    Tải tài liệu
+                </b>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var file in Model)
+        {
+            <tr>
+                <td>
+                    <a href="javascript:void(0)" onclick="FileDetail('@file.TAILIEU_ID','chitiet')" title="Chi tiết tài liệu">
+                        @file.TENTAILIEU
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" onclick="DowloadFile(@file.TAILIEU_ID)" title="Tải tài liệu">
+                        Tải xuống
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="modal fade" id="FileDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<script type="text/javascript">
+    function FileDetail(ID, OPTION) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("AttachmentDetail", "ThuMucLuuTru", new { @area="ThuMucLuuTruArea"})',
+            data: {
+                TAILIEU: ID,
+                OPTION: OPTION
+            },
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#FileDetail").html(data);
+                $("#FileDetail").modal('show');
+                $("#FileDetail").find(".modal-dialog").css("width", "1200px");
+            }
+        });
+    }
+
+    function DowloadFile(ID) {
+        $.ajax({
+            type: "POST",
+            url: '/Common/CheckkingFile/',
+            data: {
+                ID: ID
+            },
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                if (data == "Co") {
+                    location.href = "/Common/DownloadFile?ID=" + ID;
+                } else {
+                    $.confirm({
+                        'title': 'Không tìm thấy tài liệu',
+                        'message': 'Xin lỗi không thể tìm thấy tài liệu mà bạn đang yêu cầu.',
+                        'buttons': {
+                            'Đóng': {
+                                'class': 'btn-warning',
+                                'action': function () { }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>

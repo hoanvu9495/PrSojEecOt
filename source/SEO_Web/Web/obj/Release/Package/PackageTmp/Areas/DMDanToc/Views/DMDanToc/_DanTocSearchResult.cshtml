@@ -1,0 +1,204 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@{
+    List<DM_DANTOC> lstDanToc = new List<DM_DANTOC>();
+    if (ViewData["Search"] == "0")
+    {
+        lstDanToc = (List<DM_DANTOC>)SessionManager.GetValue("ListDanToc");
+    }
+    if (ViewData["Search"] == "1")
+    {
+        lstDanToc = (List<DM_DANTOC>)SessionManager.GetValue("ListDanTocSearch");
+    }
+    var grid = new WebGrid(lstDanToc,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: false,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+
+}
+@Html.AntiForgeryToken()
+
+@if (lstDanToc.Count > 0)
+{
+
+    <div id="grid">
+        <div id="HeaderGrid">
+            <div style="margin:20px 0px 10px 10px;">
+                <label id="lblBenhChuanDoan" style="margin-top:90px;margin-left:5px;font-weight:bold">@(lstDanToc == null ? "0" : lstDanToc.Count.ToString()) &nbsp; kết quả</label>
+               
+            </div>
+        </div>
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+
+                grid.Column("Số Thứ Tự", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                          grid.Column("TEN_DAN_TOC", "Tên dân tộc"),
+                                                         grid.Column("NGAYTAO", "Ngày Tạo", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYTAO)),
+                                        grid.Column("NGAYSUA", "Ngày Sửa", format: (item) => string.Format("{0:dd-MM-yyyy}", item.NGAYSUA)),
+                                grid.Column("NGUOITAO", "Người Tạo"),
+
+                                         grid.Column("NGUOISUA", "Người Sửa"),
+                                         grid.Column("TRANGTHAI", "Trạng Thái", format: (item) =>
+        item.TRANGTHAI == 1
+            ? Html.Raw("Được sử dụng")
+            : Html.Raw("Không được sử dụng")),
+
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                 "<a href='javascript:void(0)' onclick='EditDanToc(" + item.ID + ")' class='btnEdit' title = 'Chỉnh sửa'></a>")), header: "Sửa"),
+                grid.Column(format: (item) => new MvcHtmlString(string.Format(
+                                                                "<a href='javascript:void(0)' onclick='RemoveDanToc(" + item.ID + ")' class='btnDelete' title = 'Xóa'></a>")), header: "Xóa")
+
+                 )
+    )
+
+        @if (lstDanToc.Count == 0)
+        {
+            <div id="Empty" style="color: red;">
+                Không tìm thấy dữ liệu phù hợp
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div id="Empty" style="color: red;">
+        Không tìm thấy dữ liệu phù hợp
+    </div>
+}
+
+<div class="modal fade" id="CreateDanToc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+<div class="modal fade" id="PrepareDanToc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+
+<style>
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .btnAdd {
+        display: block;
+        width: 160px;
+        height: 26px;
+        margin-left: 23px;
+        margin-top: -23px;
+        text-decoration: none;
+        font-weight: 700;
+        color: black !important;
+    }
+
+    .webGrid tr td {
+        cursor: pointer;
+    }
+
+    .webGrid tbody tr td:first-child, td:nth-child(3), td:nth-child(4) {
+        width: 150px;
+    }
+
+    .webGrid td:nth-child(2) {
+        text-align: left !important;
+    }
+</style>
+<script type="text/javascript">
+  
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("AddFormDanToc", "DMDanToc")',
+            type: 'post',
+            cache: false,
+            data: {},
+            success: function (data) {
+                $("#CreateDanToc").html(data);
+                $("#CreateDanToc").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+
+    }
+    function RemoveDanToc(id) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa dân tộc  này?',
+            'buttons': {
+                'Xóa': {
+                    'class': 'btn-confirm-yes',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("RemoveDanToc", "DMDanToc")',
+                            type: 'POST',
+                            cache: false,
+                            data: { id: id },
+                            success: function () {
+                                notif({
+                                    type: 'success',
+                                    position: 'bottom',
+                                    msg: 'Xóa dân tộc thành công!',
+                                });
+                                reloadGrid();
+                            },
+                            error: function (xhr) {
+                                CommonJS.alert(xhr.responseText);
+                            }
+
+                        });
+                    }
+                },
+                'Không xóa': {
+                    'class': 'btn-info',
+                    'action': function () { } // Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+
+    }
+    function EditDanToc(ID) {
+        $.ajax({
+            url: '@Url.Action("EditDanToc", "DMDanToc")',
+            type: 'post',
+            cache: false,
+            data: {
+                id: ID
+            },
+            success: function (data) {
+                $("#PrepareDanToc").html(data);
+                $("#PrepareDanToc").modal("show");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });
+    }
+</script>

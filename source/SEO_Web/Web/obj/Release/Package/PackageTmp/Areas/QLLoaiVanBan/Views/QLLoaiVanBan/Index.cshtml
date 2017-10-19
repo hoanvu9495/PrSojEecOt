@@ -1,0 +1,68 @@
+﻿@using Model.eAita
+@{
+    ViewBag.Title = "Quản lý loại văn bản";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+@model Web.Areas.QLLoaiVanBan.Models.LoaiVbViewModel
+@section HeaderPopup
+{
+    <h1>@ViewBag.Title<a href="/home/backendindex" title="Đóng lại"></a></h1>
+}
+@using Web.FwCore;
+@using Business.CommonBusiness;
+@{
+    var grid = new WebGrid(
+        Model.listLoaiVb,
+        rowsPerPage: 1,
+        canPage: true,
+        canSort: false,
+        ajaxUpdateContainerId: "grid",
+        selectionFieldName: "selectedRow"
+        );
+}
+<div class="popup-content">
+    <table style="width: 100%">
+        <tr>
+            <td>
+                <div class="SearchCriterial clearfix hot-news-list-2">
+                    @Html.Partial("_LoaiVanBanSearch")
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="SearchResult clearfix hot-news-list-2 mgt20">
+                    <div id="SearchResult">
+                        @Html.Partial("_LoaiVanBanResult")
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script type="text/javascript">
+    function reloadGrid() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("reloadGrid", "QLLoaiVanBan")',
+            cache: false,
+            data: {
+                TENLOAIVB: $("#TENLOAIVB").val()
+            },
+            dataType: "html",
+            success: function (data) {
+                $("#SearchResult").html(data);
+            }
+        });
+    }
+    $(document).ready(function () {
+        if ('@ViewData["Noti"]' == "1") {
+            notif({
+                type: 'success',
+                position: 'bottom',
+                msg: 'Thêm mới thành công loại văn bản!',
+            });
+        } 
+    });
+</script>

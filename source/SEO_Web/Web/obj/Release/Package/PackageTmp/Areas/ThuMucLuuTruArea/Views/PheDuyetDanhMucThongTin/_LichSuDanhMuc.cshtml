@@ -1,0 +1,57 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Model.eAita;
+@model Web.Areas.ThuMucLuuTruArea.Models.DanhMucThongTinModel
+@using Web.Areas.ThuMucLuuTruArea.Models
+@{
+    List<TmThongKeDanhMucLogBO> lstLichSu = Model.ListLichSu;
+    var grid = new WebGrid(lstLichSu,
+                            rowsPerPage: 10,
+                            canPage: true,
+                            canSort: true,
+                            ajaxUpdateContainerId: "grid",
+                            selectionFieldName: "selectedRow"
+                           );
+}
+@{
+    if (lstLichSu.Count > 0)
+    {
+        @grid.GetHtml(
+                tableStyle: "webGrid tblLog",
+                headerStyle: "head",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                 mode: WebGridPagerModes.All | WebGridPagerModes.FirstLast | WebGridPagerModes.NextPrevious | WebGridPagerModes.Numeric,
+                columns: grid.Columns(
+                grid.Column("STT", format: item => item.WebGrid.Rows.IndexOf(item) + 1 + Math.Round(Convert.ToDouble(grid.TotalRowCount / grid.PageCount) / grid.RowsPerPage) * grid.RowsPerPage * grid.PageIndex, style: "center"),
+                     grid.Column("TENNGUOIGUI", "Người thực hiện", format: (item) => new MvcHtmlString(string.Format("<span>" + item.TENNGUOIGUI + "</span>"))),
+                grid.Column("NGAYGUI", "Ngày gửi", format: (item) => new MvcHtmlString(string.Format("{0:dd/MM/yyyy}", item.NGAYGUI))),
+                grid.Column("GHICHU", "Ghi chú", format: (item) => new MvcHtmlString(string.Format("<span title = '" + item.GHICHU + "'>" + item.GHICHU + "</span>"))),
+                     grid.Column("TRANGTHAI1", "Trạng thái 1", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI1 == DanhMucThongTinTrangThai.DUTHAO ? "<span style='color:red'>Dự thảo</span>" : item.TRANGTHAI1 == DanhMucThongTinTrangThai.CUCTRUONG ? "<span style='color:blue'>Đã trình Cục trưởng</span>" : item.TRANGTHAI1 == DanhMucThongTinTrangThai.PHEDUYET ? "<span style='color:green'>Đã duyệt</span>" : item.TRANGTHAI1 == DanhMucThongTinTrangThai.VANPHONG ? "<span style='color:blue'>Đã gửi Văn Phòng</span>" : ""))),
+                                              grid.Column("TRANGTHAI2", "Trạng thái 2", format: (item) => new MvcHtmlString(string.Format(item.TRANGTHAI2 == DanhMucThongTinTrangThai.DUTHAO ? "<span style='color:red'>Dự thảo</span>" : item.TRANGTHAI2 == DanhMucThongTinTrangThai.CUCTRUONG ? "<span style='color:blue'>Đã trình Cục trưởng</span>" : item.TRANGTHAI2 == DanhMucThongTinTrangThai.PHEDUYET ? "<span style='color:green'>Đã duyệt</span>" : item.TRANGTHAI2 == DanhMucThongTinTrangThai.VANPHONG ? "<span style='color:blue'>Đã gửi Văn Phòng</span>" : "")))
+                 )
+    )
+    }
+}
+<style>
+    .tblLog td:nth-child(4) span {
+        overflow: hidden;
+        text-align: left !important;
+        border: none !important;
+        display: inline-block;
+        white-space: nowrap;
+        width: 300px !important;
+        text-overflow: ellipsis;
+    }
+
+    .tblLog td:nth-child(2), .tblLog td:nth-child(2) span, .tblLog td:nth-child(4) {
+        text-align: left !important;
+    }
+       
+         .tblLog {
+            width: 90% !important;
+            margin: 0 auto;
+            margin-bottom: 50px;
+        }
+</style>

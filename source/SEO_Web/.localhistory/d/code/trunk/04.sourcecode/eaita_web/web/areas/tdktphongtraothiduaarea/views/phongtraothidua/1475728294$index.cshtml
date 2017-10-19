@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Quản lý đơn xin nâng lương";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Web.Areas.QuanLyNangLuongTruocThoiHanArea.Models;
+@model Web.Areas.TDKTPhongTraoThiDuaArea.Models.PhongTraoThiDuaViewModel
+@{    
+
+}
+<style>
+    .ms-choice {
+        color: black;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">
+<script type="text/javascript" src="/Scripts/multiple-select.js"></script>
+@Html.Partial("_TopNavbar")
+@Html.Partial("_MenuLeft")
+<div class="right-all-page" style="border-left:1px solid #cccccc; background:#fff; min-height: 500px">
+    @*test*@
+    <div class="panel-heading" role="tab" id="headingOne" style="padding-left: 0px;margin-bottom: -11px">
+        <h3 class="panel-title group-tittle mt10" style="height: 41px; ">
+            <a class="" aria-controls="collapseOne" aria-expanded="false" href="#collapseOne" data-toggle="collapse" role="button">
+                Tìm kiếm nâng cao
+            </a>
+        </h3>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" role="tabpanel" style="">
+        @Html.Partial("_Filter")        
+    </div>
+    @*end*@ 
+    @Html.Partial("_ResultData")
+</div>

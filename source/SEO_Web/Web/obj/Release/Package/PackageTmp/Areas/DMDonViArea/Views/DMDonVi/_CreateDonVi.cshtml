@@ -1,0 +1,127 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+<style>
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+</style>
+@using (Ajax.BeginForm("SaveDonVi", "DMDonVi", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "CreateSuccess"
+}, new { id = "frmDonViCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table>
+            <tr style="height:20px"></tr>
+
+            <tr>
+                <td>
+                    <label class="lbl" for="CREATE_DONVI" style=" width: 150px;">Tên đơn vị:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.TextBox("TEN_DONVI", "", new { @style = "width: 222px;", maxlength = "200", @class = "e-input", @id = "CREATE_DONVI" })
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 20px;"></td>
+                <td>
+                    <span class="lb-Check" id="CREATE_DONVI_NULL" style="margin-left: 0px; color: red;">Bạn cần phải đơn vị. </span>
+                    <span class="lb-Check" id="CREATE_DONVI_HTML" style="margin-left: 0px; color: red;">Tên đơn vị không được chứa thẻ HTML.</span>
+                    <span class="lb-Check" id="CREATE_DONVI_ERROR" style="margin-left: 0px; color: red;">Tên đơn vị đã tồn tại. </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="lbl" for="CREATE_STATUS" style=" width: 150px;">Trạng Thái:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    @Html.DropDownList("TRANGTHAI", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text = "Có sử dụng", Value = "true" },
+                        new SelectListItem{ Text = "Không sử dụng", Value = "false" }
+                    })
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin-top: 15px; text-align:center;">
+        <input type="button" value="Lưu" id="btnSave" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+        <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+    </div>
+}
+<script type="text/javascript">
+    var isExisted = false;
+    function OnClose() {
+        $("#CreateDonVi").dialog("close");
+    }
+    $("#CREATE_DONVI").blur(function () {
+        if ($("#CREATE_DONVI").val().trim() == "" || $("#CREATE_DONVI").val() == null) {
+        } else {
+            $("#CREATE_DONVI_NULL").hide();
+        }
+        if (/<[a-z][\s\S]*>/i.test($("#TIEU_DE").val())) {
+
+            $("#CREATE_DONVI_HTML").show();
+
+        } else {
+            $("#CREATE_DONVI_HTML").hide();
+        }
+    });
+
+    function CreateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: 'Tạo mới đơn vị thành công!',
+        });
+        $("#CreateDonVi").dialog("close");
+        reloadGrid();
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    $("#btnSave").click(function () {
+        if ($("#CREATE_DONVI").val() == null || $("#CREATE_DONVI").val().trim() == "" || isExisted == true) {
+            $("#CREATE_DONVI").focus();
+            $("#CREATE_DONVI_NULL").show();
+            return false;
+        } else {
+            $("#CREATE_DONVI_NULL").hide();
+            if (/<[a-z][\s\S]*>/i.test($("#TIEU_DE").val())) {
+                $("#CREATE_DONVI").focus();
+                $("#CREATE_DONVI_HTML").show();
+                return false;
+            } else {
+                $("#CREATE_DONVI_HTML").hide();
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("validateDonVi", "DMDonVi")',
+                    data: {
+                        tendonvi: $("#CREATE_DONVI").val()
+                    },
+                    cache: false,
+                    success: function (data) {
+                        if (data == "existed") {
+                            $("#CREATE_DONVI").select();
+                            $("#CREATE_DONVI_ERROR").show();
+                            return false;
+                        } else {
+                            $("#CREATE_DONVI_ERROR").hide();
+                            $("#frmDonViCreate").submit();
+                        }
+                    }, error: function () {
+                        return false;
+                    }
+                });
+            }
+            
+        }
+    });
+</script>

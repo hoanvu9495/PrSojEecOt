@@ -1,0 +1,247 @@
+﻿@using Business.CommonBusiness;
+@using Web.FwCore;
+@{
+    UserInfoBO user = ((UserInfoBO)SessionManager.GetUserInfo());
+    //string Username = user == null ? "" : user.Username;
+    //string DeptName = user == null ? "" : user.UnitName;
+}
+
+<script>
+    function showPrivateNotification() {
+        //set trang thai click Notification -> hien notification, an privateNotification
+        var ishowNotification = true;
+        if (isShowPrivateNotification) {
+            $('#PrivateNotification').fadeIn();
+            //set trang thai click -> an privateNotification
+            var isShowPrivateNotification = false;
+        }
+        else {
+            $('#PrivateNotification').fadeOut();
+            //set trang thai click -> hien privateNotification
+            var isShowPrivateNotification = true;
+        }
+    }
+</script>
+<style>
+    /*.user-info td {
+            border-width: 0px !important;
+            padding: 0px !important;
+        }*/
+
+    /*.modal-content {
+        min-width: 820px;
+    }*/
+</style>
+@*<div class="user-info" style="text-align: right;">*@
+@if (user != null)
+{
+    <a class="user-st my-account" data-dropdown="#dropdown-@user.UserID" href="javascript:void(0)">
+        @*@user.Username*@
+        <img src="@user.ImagesUrl" />
+    </a>
+    <div class="account-box dropdown" id="dropdown-@user.UserID">
+        <ul>
+            @*<li><a href="#">Thông tin tài khoản</a></li>*@
+            @{
+    if (user.ListRole != null && user.ListRole.Count > 1 && user.RoleID > 0)
+    {
+        <li><a id="SettingRole" href="javascript:SettingRole()">Chọn vai trò khác</a></li>
+    }
+    if (user.HoSo_ID.HasValue && user.HoSo_ID > 0)
+    {
+
+        <li>
+            @{
+        if (user.LOAI_HOSO == QLHoSoCanBoConstant.CONGCHUC)
+        {
+            <a href="/QLHoSoCongChucArea/QLHoSoCongChuc/Detail/@user.HoSo_ID" title="Chi tiết hồ sơ">Thông tin cá nhân</a>
+        }
+        else
+        {
+            <a href="/QLHoSoVienChucArea/QLHoSoVienChuc/Detail/@user.HoSo_ID" title="Chi tiết hồ sơ">Thông tin cá nhân</a>
+        }
+            }
+        </li>
+                <li>
+                    <a href="/InformationPersonalArea/InformationPersonal/Index" title="Cập nhập thông tin">Cập nhập thông tin</a>
+                </li>
+    }
+            }
+            <li><a id="Password" href="javascript:PasswordChange();">Đổi mật khẩu</a></li>
+            <li><a id="Logout" href="javascript:Logout()">Đăng xuất</a></li>
+
+        </ul>
+        <span class="arrow"></span>
+    </div>
+    @*<table>
+        <tr>
+            <td>&nbsp;<a href="javascript:void(0)" id="lnkusername" data-dropdown="#dropdown-@user.UserID">@user.Username</a></td>
+            <td>
+                <div id="dropdown-@user.UserID" class="dropdown dropdown-tip ctxmenu" style="margin-top:8px;">
+                    <ul class="dropdown-menu account-action">
+                        <li><a href="#">Thông tin tài khoản</a></li>
+                        <li><a id="Password" onclick="PasswordChange();">Đổi mật khẩu</a></li>
+                        <li><a id="Logout" href="/Account/Logout">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr></table>*@
+}
+<div id="modal_role" class="modal" style=" margin:3.2%">
+    <div class="modal-dialog animated">
+        <div class="modal-content" style=" min-width: 700px; height: auto">
+            @*@using (Ajax.BeginForm("SettingRole", "Home", new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "POST",
+                    OnFailure = "failure",
+                    OnSuccess = "updateSuccess"
+                }, new { id = "frmRole" }))
+                    {*@
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <strong>Chọn vai trò xử lý cho phiên làm việc</strong>
+            </div>
+            <div class="modal-body">
+                <div style="width:100%; margin:auto;">
+                    <div style="overflow-x: hidden;">
+                        @{
+                            if (user.ListRole != null && user.ListRole.Count > 0)
+                            {
+                                foreach (var item in user.ListRole)
+                                {
+                                    <div style="width: 32%; float: left; cursor:pointer; padding-bottom:10px">
+                                        @*<img src="../../Content/Images/role.png" width="100" />*@
+                                        <input type="radio" class="css-checkbox" checked="@(user.RoleID==item.DM_VAITRO_ID)" name="OptionRole" value="@item.DM_VAITRO_ID" id="OptionRole_Info_@item.DM_VAITRO_ID" />
+                                        <label style="font-weight:bold" class="css-label" for="OptionRole_Info_@item.DM_VAITRO_ID">@item.TEN_VAITRO</label>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                    <p>
+                        <span class="lb-Check" id="ROLE_INFO_NULL" style="margin-left: 0px;">Bạn chọn vai trò </span>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*<button class="btn btn-default" type="button" onclick="modal.close();">Cancel</button>*@<button class="btn btn-primary" type="button" onclick="SaveInfoRole()">Chọn vai trò</button>
+                <button class="btn btn-default" type="button" onclick="InfoRoleClose()">Hủy</button>
+            </div>
+            @*}*@
+        </div>
+    </div>
+</div>
+
+<div id="ChangePassword" title="Đổi mật khẩu"></div>
+<div class="modal fade" id="nhan_su_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="create_user">
+        </div>
+    </div>
+</div>
+@*</div>*@
+<style>
+    .modal-backdrop {
+        z-index: 99;
+    }
+</style>
+@*<script src="~/Nodejs/socket.io-client/socket.io.js"></script>*@
+<script src="http://127.0.0.1:3000/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+    function InfoRoleClose() {
+        $("#modal_role").modal("hide");
+    }
+    function SettingRole() {
+        $("#modal_role").modal("show");
+    }
+    function SaveInfoRole() {
+        if ($("input[name=OptionRole]:checked").val() == "" || $("input[name=OptionRole]:checked").val() == null) {
+            $("#ROLE_INFO_NULL").show();
+            return false;
+        } else {
+            $("#ROLE_INFO_NULL").hide();
+        }
+        $.ajax({
+            type: "POST",
+            cache: false,
+            data: { OptionRole: $("input[name=OptionRole]:checked").val() },
+            url: '/Home/SettingRole',
+            success: function (data) {
+                notif({
+                    type: 'success',
+                    position: 'bottom',
+                    msg: "Chọn vai trò cho phiên làm việc thành công",
+                });
+                window.location = "/Home/Index";
+            }, error: function (er) {
+                alert(er);
+            }
+        })
+    }
+    function updateSuccess() {
+        notif({
+            type: 'success',
+            position: 'bottom',
+            msg: "Chọn vai trò cho phiên làm việc thành công",
+        });
+        window.location = "/Home/Index";
+        //CommonJS.alert("Tạo mới người dùng thành công");
+        //$("#CreateNguoiDung").dialog("close");
+    }
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    var socket = io.connect("http://127.0.0.1:3000");
+    function Logout() {
+        //Gọi hàm Logout emit to server
+        //logOutFromServer();
+        try {
+            socket.on('log out', { UserName: '@user.Username', CosoID: '@user.CoSoID', FullName: '@user.Fullname' });
+            window.location = "/account/logout";
+        } catch (err) {
+            window.location = "/account/logout";
+        }
+                
+    }
+    function PasswordChange() {
+        //$('#ChangePassword').dialog('open');
+        $('#ChangePasswordContent').html("Đang tải dữ liệu...");
+        $.ajax({
+            url: '/Account/ChangePassword',
+            type: "GET",
+            //data: { userId : userId },
+            success: function (result) {
+                //$('#ChangePassword').html(result);
+                $("#create_user").html(result);
+                $("#nhan_su_dialog").modal("show");
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        //$("#lnkusername").click(function () {
+        //    $(".ctxmenu").hide();
+        //    setTimeout(function () {
+        //        $(".ctxmenu").attr("style", "margin-top: 8px; left: 946px; top: 35px; display: block;");
+        //        $(".ctxmenu").show();
+        //    }, 10);
+        //});
+
+        $('#ChangePassword').dialog({
+            autoOpen: false,
+            modal: true,
+            width: 540,
+            height: 300,
+            resizable: false,
+            show: {
+                effect: "blind",
+                duration: 200
+            },
+            hide: {
+                effect: "blind",
+                duration: 200
+            }
+        });
+    });
+</script>

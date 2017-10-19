@@ -1,0 +1,417 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using System.Text;
+@using Newtonsoft.Json;
+@using System.Data;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@using PagedList.Mvc;
+@using Web.Areas.NguoiDungArea.Models;
+@using PagedList;
+@model NguoiDungIndexViewModel
+
+<link rel="stylesheet" href="~/Scripts/jquery.webui-popover.min.css">
+@{
+    
+
+    var jsonData = Html.Raw(JsonConvert.SerializeObject(Model.ListNguoiDung.ListItem));
+
+}
+<style>
+    .btnEdit {
+        background: url('/Content/Images/Edit.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .webGrid {
+        margin: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #B4CFC3;
+    }
+
+    .btnDelete {
+        background: url('/Content/Images/Delete.png') no-repeat;
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .modal-dialog {
+        width: 950px;
+        margin: 50px auto;
+        margin-top: 5%;
+    }
+</style>
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+
+        <h2 class="group-tittle mt10">
+            Danh sách người dùng <span id="countTotal" class="text-danger">(@(Model.ListNguoiDung.ListItem == null ? "0" : Model.ListNguoiDung.Count.ToString()))</span>
+        </h2>
+    </header>
+
+    <div class="widge-t-body no-padding">
+        <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+            <table class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tài khoản</th>
+                        <th>Họ tên</th>
+                        @*<th>Cán bộ CCVC</th>
+                        <th>Cấp cơ sở</th>
+                        <th>Cơ sở</th>*@
+                        <th>Đơn vị</th>
+                        <th>Vai trò</th>
+                        <th>Trạng thái</th>
+                        @*<th>Phân quyền</th>*@
+                        <th>Reset mật khẩu</th>
+                        <th>Thao tác</th>
+
+                    </tr>
+                </thead>
+            </table>
+            <div class="center">
+                <ul class="pagination pagination-sm" id="paging1"></ul>
+            </div>
+            
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="nhan_su_dialog_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+</div>
+<div class="modal fade" id="edit_nhan_su_dialog_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+</div>
+<div class="modal fade" id="reset_dialog_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+</div>
+<div class="modal fade" id="phanquyen_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" style="width:1050px; margin-top:1.5%" role="document">
+        <div class="modal-content" id="phanquyen_user">
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery.webui-popover.min.js"></script>
+<script type="text/javascript">
+   
+    var currentPage=1;
+    var JsonDatas = eval(@jsonData);
+
+
+    function LoadDataTable(item) {
+        var table = $('.wtfayo').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "bInfo":false,
+            "iDisplayLength": 20,
+            paging: false,
+            "aoColumns": [
+                 {
+                     "mData": function (data, type, dataToSet) {
+                         return '<input class="global_checkbox" type="checkbox" name="ids" value="' + data.DM_NGUOIDUNG_ID + '" />';
+                     },
+                     "orderable": false,
+                 },
+
+                    //{
+                    //    "class": 'details-control',
+                    //    "orderable": false,
+                    //    "data": null,
+                    //    "defaultContent": ''
+                    //},
+
+                  {
+                      "mData": function (data, type, dataToSet) {
+                          return "<span class='tr_left'>" + data.TENDANGNHAP + "</span>";
+                      },
+
+                  },
+                   {
+                       "width": "200px",
+                       "mData": function (data, type, dataToSet) {
+                           return "<span >" + data.HOTEN + "</span>";
+                       },
+
+                   },
+                   //{
+                   //    "mData": function (data, type, dataToSet) {
+                   //        return "<span >" + data.CANBO + "</span>";
+                   //    },
+
+                   //},
+
+                   // {
+                   //     "width": "80px",
+                   //     "mData": function (data, type, dataToSet) {
+                   //         return "<span >" + data.CAPCOSO + "</span>";
+                   //     },
+
+                   // },
+                   // {
+                   //     "mData": function (data, type, dataToSet) {
+                   //         return "<span >" + data.TEN_COSO + "</span>";
+                   //     },
+
+                   // },
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            return "<span >" + data.TENDONVI + "</span>";
+                        },
+
+                    },
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            return "<span >" + data.TENVAITRO + "</span>";
+                        },
+
+                    },
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            return data.TRANGTHAI == 0 ? "<span style='color:red; text-align:center;'>Không hiệu lực</span>" : "<span style='color:green;text-align:center;'>Hiệu lực</span>";
+                        },
+
+                    },
+                    //{
+                    //    "sClass": "center",
+                    //    "mData": function (data, type, dataToSet) {
+                    //        return "<a href='javascript:void(0)' onclick='PhanQuyenNguoiDung(" + data.DM_NGUOIDUNG_ID + ")'   title = 'Phân quyền'><i class='fa  fa-cogs' style='    font-weight: bolder;'></i></a>";
+                    //    },
+
+                    //},
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            return "<a href='javascript:void(0)' onclick='ResetMK(" + data.DM_NGUOIDUNG_ID + ")'  title = 'Reset Mật Khẩu'><i class='fa  fa-key' style='    font-weight: bolder;'></i></a>";
+                        },
+
+                    },
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            var result = "<div class='btn-group'>";
+                            result += "<a href='javascript:void(0)' onclick='EditNguoiDung(" + data.DM_NGUOIDUNG_ID + ")'  title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>";
+                            result += "<a href='javascript:void(0)' onclick='DeleteNguoiDung(" + data.DM_NGUOIDUNG_ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
+                            result += "</div>";
+                            return result;
+                        },
+
+                    },
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                runAllCharts()
+            }
+        });
+    }
+    function GetDataPage(page){
+        $.ajax({
+            url: '@Url.Action("GetDSByPhongBan","nguoidung")',
+            type: 'POST',
+            dataType: 'Json',
+            async:false,
+            data: {
+                id:IDDonVi,
+                page:page,
+            },
+            success: function (rs) {
+                $('#countTotal').html('(' + rs.Count+')');
+                currentPage=page;
+                LoadDataTable(rs.ListItem);
+            }, error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+
+    function ReloadPage() {
+        $.ajax({
+            url: '@Url.Action("GetDSByPhongBan")',
+            type: 'POST',
+            dataType: 'Json',
+            data: {
+                id:IDDonVi,
+                page:1
+            },
+            success: function (rs) {
+                $('#countTotal').html('(' + rs.Count+')');
+                currentPage=1;
+                LoadDataTable(rs.ListItem);
+                GenPaging(1,rs.TotalPage, "paging1", 'GetDataPage');
+            }, error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+
+    var pagefunction = function () {
+        LoadDataTable(JsonDatas)
+        $(".pagination>li:first>a").attr("href", "javascript:GetDataPage(1)");
+        $(".pagination>li>a").click(function () {
+            $(".pagination>li").removeClass("active");
+            $(this).parent().addClass("active");
+        })
+
+        GenPaging(1, @Model.ListNguoiDung.TotalPage, "paging1", 'GetDataPage');
+    };
+
+
+    function OnCreate() {
+        $.ajax({
+            url: '@Url.Action("CreateUser", "NguoiDung")',
+            type: 'GET',
+            data:{id:IDDonVi},
+            cache: false,
+            success: function (data) {
+                $("#nhan_su_dialog_modal").html(data);
+                $("#nhan_su_dialog_modal").modal("show");
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+    //function OnPrint() {
+    //    window.location = "/NguoiDungArea/NguoiDung/Print";
+
+    //}
+    function ResetMK(DM_NGUOIDUNG_ID) {
+        $.ajax({
+            url: '@Url.Action("ResetFormMK", "NguoiDung")',
+            type: 'GET',
+            cache: false,
+            data: {
+                DM_NGUOIDUNG_ID: DM_NGUOIDUNG_ID,
+                Type: 1
+            },
+            success: function (data) {
+                $("#reset_dialog_modal").html(data);
+                $("#reset_dialog_modal").modal("show");
+                $("#MATKHAUMOI").focus();
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+    function EditNguoiDung(DM_NGUOIDUNG_ID) {
+        $.ajax({
+            url: '@Url.Action("EditUser", "NguoiDung")',
+            type: 'GET',
+            cache: false,
+            data: {
+                DM_NGUOIDUNG_ID: DM_NGUOIDUNG_ID,
+                //Type: 1
+            },
+            success: function (data) {
+                $("#edit_nhan_su_dialog_modal").html(data);
+                $("#edit_nhan_su_dialog_modal").modal("show");
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+
+    function DeleteNguoiDung(DM_NGUOIDUNG_ID) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn muốn xóa dữ liệu này?',
+            'buttons': {
+                'Đồng ý': {
+                    'class': 'btn-confirm-yes btn-primary',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("DeleteNguoiDung", "NguoiDung")',
+                            type: 'post',
+                            cache: false,
+                            data: { DM_NGUOIDUNG_ID: DM_NGUOIDUNG_ID },
+                            success: function (data) {
+                                NotiSuccess("Xóa người dùng thành công")
+                                ReloadPage();
+                            },
+                            error: function (err) {
+                                alert(err.responseText);
+                            }
+                        });
+                    }
+                },
+                'Hủy bỏ': {
+                    'class': 'btn-default',
+                    'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                }
+            }
+        });
+
+
+
+    }
+    function reloadGrid() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ReloadGrid")',
+            data: "{}",
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#grid").html(data);
+            }
+        });
+    }
+    function PhanQuyenNguoiDung(NGUOIDUNG_ID) {
+        window.location = "/NguoiDungArea/NguoiDung/RoleAuthorities/" + NGUOIDUNG_ID;
+        @*$.ajax({
+            url: '@Url.Action("PhanQuyenNguoiDung", "NguoiDung")',
+            type: 'post',
+            cache: false,
+            data: { NGUOIDUNG_ID: NGUOIDUNG_ID },
+            success: function (data) {
+                $("#phanquyen_user").html(data);
+                $("#phanquyen_dialog").modal("show");
+                //$("#AddPhanQuyen").html(data);
+                //$("#AddPhanQuyen").dialog("open");
+            },
+            error: function (xhr) {
+                CommonJS.alert(xhr.responseText);
+            }
+        });*@
+    }
+    $(document).ready(function () {
+        pageSetUp();
+        loadScript("/js/plugin/datatables/jquery.dataTables.min.js", function () {
+            loadScript("/js/plugin/datatables/dataTables.colVis.min.js", function () {
+                loadScript("/js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                    loadScript("/js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                        loadScript("/js/plugin/datatable-responsive/datatables.responsive.min.js", function () {
+                            loadScript("/Scripts/jquery.unobtrusive-ajax.min.js", pagefunction);
+                        })
+                    });
+                });
+            });
+        });
+    })
+   
+</script>
+

@@ -1,0 +1,1494 @@
+﻿@using Business.CommonBusiness
+@using Web.Models;
+@using Web.FwCore;
+@using Model.eAita;
+@using Web.Common;
+@using Web.Areas.VanBanDiArea.Models;
+@model VBDiCreateViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Thêm mới Văn bản đi";
+    List<WF_TRANGTHAI> lstSteps = new List<WF_TRANGTHAI>();
+    lstSteps = (List<WF_TRANGTHAI>)SessionManager.GetValue("ListBuocChuyenTrangThaiVanBanDi");
+    var list_coquantrongdonvi_id = "";
+}
+<style type="text/css">
+    .nhieunguoiky {
+        display: none;
+    }
+
+    #vb_di_tabs section {
+        height: 100px;
+    }
+
+    #tab_thongtinchinh, #tab_quytrinhxuly {
+        overflow: auto;
+        height: 34em;
+        padding-bottom: 20px;
+    }
+
+    #tab_noidungvanban {
+        padding-bottom: 20px;
+    }
+
+    #tab_butphelanhdao {
+        padding-bottom: 20px;
+    }
+
+    #tab_donvinhan_theodoi_vb {
+        overflow: auto;
+        height: 34em;
+        padding-bottom: 20px;
+    }
+
+    #frmVanBanDiCreate label {
+        font-weight: normal !important;
+    }
+
+    #TRICHYEU {
+        width: 100%;
+        height: 40px;
+        margin-left: 10px;
+        font-size: 13px;
+    }
+
+    #button--add-new-vanbandi {
+        margin-right: 10px;
+    }
+
+    #block--left-element-1 {
+        background: none;
+        border: 0;
+    }
+
+    #list--admin-menu {
+        z-index: 10;
+    }
+
+    #list--has-child-1, #list--has-child-2 {
+        z-index: 10;
+    }
+
+    #vb_di_tabs {
+        padding-bottom: 10px;
+    }
+
+    .required-mark {
+        color: red;
+    }
+    #block--table-container-1 {
+        width: 100%;
+        overflow: scroll;
+        max-height: 150px;
+        border: 1px solid #d8d8d8;
+    }
+
+    .height-15 {
+        height: 15px;
+    }
+    .height-25{
+        height:25px;
+    }
+    #block--select-DOKHAN_ID, #block--select-LINHVUC_ID,
+    #block--select-DONVISOANTHAO_ID,#block--SOVANBAN_ID,
+    #SODITHEOSO,#SOTRALOI,#TUKHOA,#block--DOKHAN_ID,
+    #block--DONVIBANHANH_ID,#SOHIEU
+    {
+        width: 233px;
+        margin-left: 10px;
+    }
+
+    #block--select-HINHTHUCTIEPNHAN {
+        padding-left: 10px;
+        width: 233px;
+    }
+
+    .width-100 {
+        width: 100%;
+    }
+
+    #THOIHAN_HOIBAO {
+        width: 223px;
+        margin-left: 10px;
+    }
+
+    #THOIHAN_HOIBAO_FORMAT {
+        padding-left: 115px;
+    }
+
+    #NGAY_XULY {
+        width: 233px;
+        margin-left: 10px;
+    }
+
+    #NOIDUNGVANBAN {
+        width: 700px;
+        height: 280px;
+        margin-left: 10px;
+    }
+
+    #LOAIVANBAN_ID ~ .ms-parent {
+        margin-left: 10px;
+    }
+    
+
+    #DIEUKHOANLIENQUANCONGVIEC, #GHICHU {
+        width: 700px;
+        height: 40px;
+        margin-left: 10px;
+    }
+
+    #LANHDAOBUTPHE {
+        width: 250px;
+    }
+
+    #CHONLANHDAO,
+    #CHONNGUOITHEODOICHINH {
+        margin: 0 10px 0 5px;
+    }
+    #XOALANHDAO,#CHONNGUOIKY,#CHONNGUOISOAN
+    #XOANGUOITHEODOICHINH,#XOANGUOIKY,#XOANGUOISOAN{
+        margin-left:10px;
+    }
+    #YKIENCHIDAO{
+        width:600px;
+        height:200px; 
+        margin-left:10px
+    }
+    #title--donvitheodoi{
+        margin-bottom:10px;
+        text-transform:none;
+    }
+    #cell--donvitheodoi-label{
+        width:200px;
+    }
+    #block--DONVITHEODOICHINH_ID{
+        width:233px;
+    }
+    #NGUOITHEODOICHINH{
+        width:350px;
+    }
+    #title--DONVINHANVANBAN{
+        margin-bottom:10px;
+        text-transform:none;
+    }
+    #block--CHK_DVTRONGCQ_TATCA{
+        padding-left:20px
+    }
+    #block--CHK_DVTRONGCQ-specify{
+        width:45%;
+        margin-left:2%
+    }
+    #title-DONVINHANBAN_NGOAIHETHONG{
+        margin-bottom:10px;
+        text-transform:none;
+    }
+    #COQUANNGOAI_KHAC{
+        width:750px;
+        height:40px;
+    }
+    #NGAYBANHANH{
+        width:150px; 
+        margin-left:10px; 
+    }
+    #SOTRANG, #SOBAN{
+        width:85px;
+        margin-left:10px;
+    }
+    #NGUOIKYACCOUNT,#NGUOISOAN{
+        width:150px; 
+        margin-left:10px;
+    }
+    #SOBANSAO_FORMAT{
+        padding-left:45px;
+    }
+</style>
+<link href="/Content/Custom/css/multiple-select.css" rel="stylesheet" />
+<div id="menu-toolbar" class="date-time">
+    <div class="left-all-page">
+        <div id="smart-dms" class="block">
+            <h1>Smart DMS</h1>
+        </div>
+    </div>
+    <div class="right-all-page" id="block--left-element-1">
+        <div class="menu-left">
+            <div id="button--add-new-vanbandi" class="btnAddNew">
+                <a href="/vanbandiarea/vanbandi/createvb">
+                    <span>Văn bản đi Mới</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-all-page" id="menu-middle-left">
+    <div class="left-content block">
+        <ul class="admin-menu">
+            <li class="menu" id="list--admin-menu">
+                <a href="/VanBanDiArea/VanBanDi/Index">Tất cả Văn bản đi</a>
+                <ul class="admin-menu-child">
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanToiDaKy">Văn bản đi tôi đã ký</a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanToiTheoDoi">Văn bản đi tôi theo dõi chính</a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanToiSoanThao">Văn bản đi tôi soạn thảo</a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanPhongToiTheoDoi">Văn bản đi phòng tôi theo dõi</a>
+                    </li>
+                    <li>
+                        <a href="/VanBanDiArea/VanBanDi/DanhSachVanBanPhongToiSoanThao">Văn bản đi phòng tôi soạn thảo</a>
+                    </li>
+                </ul>
+            </li>
+            @if (lstSteps != null && lstSteps.Count > 0)
+            {
+                <li class="menu">
+                    <a href="javascript:void(0)">Văn bản theo luồng xử lý</a>
+                    <ul class="admin-menu-child">
+                        @foreach (var item in lstSteps)
+                        {
+                            <li>
+                                <div class="">
+                                    <a href="/VanBanDiArea/VanBanDi/DanhSachVanBan/@item.ID">Văn bản đi @item.TENTRANGTHAI</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+            <li class="menu has-child" id="list--has-child-1">
+                <a href="/VanBanDenArea/VanBanDen/Index">Quản lý Văn bản đến</a>
+            </li>
+            <li class="menu has-child" id="list--has-child-2">
+                <a href="/CongViecArea/CongViec/Index">Quản lý Công việc</a>
+            </li>
+            <li class="menu has-child">
+                <a href="javascript:void(0)">Cấu hình</a>
+                <ul class="">
+                    <li class="menu">
+                        <div class="">
+                            <a href="/WorkFlowArea/WorkFlow/ChonLuongXuLy">Chọn luồng xử lý cho văn bản đi/đến</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="right-all-page">
+    <div class="right-content clearfix">
+        <div class="hsContent">
+            @using (Html.BeginForm("InsertVanBanDi", "VanBanDi", FormMethod.Post, new { enctype = "multipart/form-data", Id = "frmVanBanDiCreate" }))
+            {
+                @Html.AntiForgeryToken()
+                <div id="vb_di_tabs">
+                    <h3>
+                        Thông tin chính
+                        <span class="required-mark">*</span>
+                    </h3>
+                    <section>
+                        <div id="tab_thongtinchinh">
+                            <table class="edit-table" style="width:99%">
+                                @*Hàng 1*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="TRICHYEU">
+                                            Trích yếu:<span class="required-mark">*</span>
+                                        </label>
+                                    </td>
+                                    <td colspan="4">
+                                        <textarea id="TRICHYEU" name="TRICHYEU" placeholder="" class="e-input" maxlength="500"></textarea>
+                                    </td>
+                                </tr>
+                                <tr class="height-15">
+                                    <td></td>
+                                    <td colspan="4">
+                                        <span class="lb-Check" id="TRICHYEU_NULL">Bạn hãy nhập trích yếu của văn bản</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 2*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="LOAIVANBAN_ID">
+                                            Hình thức văn bản:
+                                            <span class="required-mark">*</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" id="LOAIVANBAN_container">
+                                            <select name="LOAIVANBAN_ID" id="LOAIVANBAN_ID">
+                                                <option value=''>[--- Chọn hình thức văn bản ---]</option>
+                                                @foreach (var item in Model.ListLoaiVanBan)
+                                                {
+                                                    <option value="@item.ID" data-id="@item.KYHIEU">@item.TENLOAIVANBAN    --- (@item.KYHIEU)</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td colspan="3" rowspan="5">
+                                        <div id="block--table-container-1">
+                                            <table class="webGrid">
+                                                <thead>
+                                                    <tr class="head">
+                                                        <th scope="col">
+                                                            Trích yếu
+                                                        </th>
+                                                        <th scope="col">
+                                                            Số ký hiệu
+                                                        </th>
+                                                        <th scope="col">
+                                                            Người xử lý
+                                                        </th>
+                                                        <th scope="col">
+                                                            Số đến
+                                                        </th>
+                                                        <th scope="col">
+                                                            Loại liên quan
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                        <td>không có gì</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="height-15">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="LOAIVANBAN_ID_NULL">
+                                            Bạn hãy chọn hình thức văn bản
+                                        </span>
+                                    </td>
+                                </tr>
+                                @*Hàng 3*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="DOKHAN_ID">Độ khẩn:</label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" id="block--select-DOKHAN_ID">
+                                            @Html.DropDownList("DOKHAN_ID", Model.ListDoKhanVanBan, new { @class = "create-phanloai width-100", })
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="height-15">
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                @*Hàng 4*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="LINHVUC_ID">
+                                            Lĩnh vực:
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" id="block--select-LINHVUC_ID">
+                                            @Html.DropDownList("LINHVUC_ID", Model.ListLinhVucVanBan, "[--- Chọn lĩnh vực ---]", new { @class = "create-phanloai width-100", })
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;">
+                                    <td colspan="5"></td>
+                                </tr>
+                                @*Hàng 5*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="DONVISOANTHAO_ID">
+                                            Đơn vị soạn thảo:<span class="required-mark">*</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" id="block--select-DONVISOANTHAO_ID">
+                                            @Html.DropDownList("DONVISOANTHAO_ID", Model.ListDonViTrongCoQuan, "[---Chọn đơn vị soạn thảo---]", new { @class = "create-phanloai width-100", })
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary btn-sm" id="btnAdd_VanBanLienQuan">
+                                            Thêm văn bản liên quan
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="float-left">
+                                            <input type="checkbox" id="THOIHAN_HOIBAO_CHECKBOX" />
+                                            <label for="THOIHAN_HOIBAO_CHECKBOX">
+                                                Thời hạn hồi báo
+                                            </label>
+                                        </span>
+                                        @Html.TextBox("THOIHAN_HOIBAO", "", new { @placeholder = "", @class = "e-input datepicker", @disabled = "disabled", @maxlength = "10" })
+                                    </td>
+                                </tr>
+                                <tr class="height-15">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="DONVISOAN_ID_NULL">Bạn hãy chọn đơn vị soạn văn bản</span>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="THOIHAN_HOIBAO_FORMAT">
+                                            Bạn hãy nhập đúng định dạng
+                                        </span>
+                                    </td>
+                                </tr>
+                                @*Hàng 6*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="NGAY_XULY_CHECK">
+                                            <input type="checkbox" id="NGAY_XULY_CHECK" />
+                                            Thời hạn xử lý:
+                                        </label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGAY_XULY", "", new { @placeholder = "", @class = "e-input datepicker", @disabled = "disabled", @maxlength = "10" })
+                                    </td>
+                                    <td colspan="3">
+                                        <div>
+                                            <a class="btn btn-sm btn-primary" id="btnAdd_YKienGiaiQuyet">
+                                                Thêm ý kiến giải quyết&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </a>
+                                            <a class="btn btn-sm btn-primary" id="btnAdd_DuKienChuyen">
+                                                Dự kiến chuyển
+                                            </a>
+                                            <a class="btn btn-sm btn-primary" id="btnAdd_GhiAm">
+                                                Ghi âm
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="height-15">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="NGAYXULY_FORMAT">Bạn hãy nhập đúng định dạng</span>
+                                    </td>
+                                    <td colspan="3"></td>
+                                </tr>
+                                @*Hàng 7*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Tài liệu đính kèm:</label>
+                                    </td>
+                                    <td colspan="3">
+                                        <div style="margin-left:10px;">
+                                            @{Html.RenderPartial("../Common/UploadFile", new List<Model.eAita.TAILIEUDINHKEM>());}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="height-15">
+                                    <td colspan="5"></td>
+                                </tr>
+                                @*Hàng 8*@
+                                <tr>
+                                    <td colspan="5">
+                                        @Html.TextArea("NOIDUNGVANBAN", "", new { @placeholder = "", @class = "e-input", @maxlength = "500" })
+                                    </td>
+                                </tr>
+                                <tr class="height-15">
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="clear"></div>
+                    </section>
+                    <h3>Thông tin khác</h3>
+                    <section>
+                        <div id="tab_thongtinkhac">
+                            <table class="edit-table" style="width:95.5%">
+                                @*Hàng 2*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="HINHTHUCTIEPNHAN">Nhận văn bản:</label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" id="block--select-HINHTHUCTIEPNHAN">
+                                            <select name="HINHTHUCTIEPNHAN" id="HINHTHUCTIEPNHAN">
+                                                <option value='2'>Để biết</option>
+                                                <option value='1'>Để xử lý</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <label class="lbl" for="SOTRALOI">Số trả lời:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("SOTRALOI", "", new { @placeholder = "", @class = "e-input", @maxlength = "250" })
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                @*Hàng 3*@
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr class="height-15"></tr>
+                                @*Hàng 4*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="DIEUKHOANLIENQUANCONGVIEC">
+                                            Thông tin liên quan công việc:
+                                        </label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextArea("DIEUKHOANLIENQUANCONGVIEC", "", new { @placeholder = "", @class = "e-input", @maxlength = "500" })
+                                    </td>
+                                </tr>
+                                <tr class="height-15"></tr>
+                                @*Hàng 5*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="GHICHU">Ghi chú:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextArea("GHICHU", "", new { @placeholder = "", @class = "e-input", @maxlength = "500" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </section>
+                    <h3>
+                        Quy trình xử lý
+                        <span class="required-mark">*</span>
+                    </h3>
+                    <section>
+                        <div id="tab_quytrinhxuly">
+                            @{Html.RenderAction("GetDetailWorkFlow", "Common", new { area = "", contentType = LOAITAILIEU.VANBANDI, vaitroID = Model.UserInfo.RoleID, cosoID = Model.UserInfo.CoSoID });}
+                        </div>
+                    </section>
+                    <h3>Bút phê lãnh đạo</h3>
+                    <section>
+                        <div id="tab_butphelanhdao">
+                            <table class="edit-table" style="width:95.5%">
+                                @*Hàng 1*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="LANHDAOBUTPHE">Lãnh đạo bút phê:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextBox("LANHDAOBUTPHE", "", new { @placeholder = "", @class = "e-input", @maxlength = "250" })
+                                        <a href="javascript:void(0)" id="CHONLANHDAO">
+                                            Chọn
+                                        </a>|
+                                        <a href="javascript:XoaLanhDao()" id="XOALANHDAO">
+                                            Xóa
+                                        </a>
+                                        <input type="hidden" id="LANHDAO_ID" name="LANHDAO_ID" value="" />
+                                    </td>
+                                </tr>
+                                <tr class="height-15"></tr>
+                                @*Hàng 2*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="YKIENCHIDAO">Ý kiến chỉ đạo:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        @Html.TextArea("YKIENCHIDAO", "", new {@placeholder = "", @class = "e-input", @maxlength = "500" })
+                                    </td>
+                                </tr>
+                                <tr class="height-15"></tr>
+                                @*Hàng 3*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">
+                                            Tính chất:
+                                        </label>
+                                    </td>
+                                    <td colspan="4">
+                                        <input class="css-checkbox" id="CHK_IS_QUANTRONG" value="True" name="CHK_IS_QUANTRONG" type="checkbox">
+                                        <label for="CHK_IS_QUANTRONG" class="css-label2">Quan trọng</label>
+                                    </td>
+                                </tr>
+                                <tr class="height-15"></tr>
+                                @*Hàng 4*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">Thông báo:</label>
+                                    </td>
+                                    <td colspan="4">
+                                        <input class="css-checkbox" id="CHK_HAS_THONGBAOVANTHU" value="True" name="CHK_HAS_THONGBAOVANTHU" type="checkbox">
+                                        <label for="CHK_HAS_THONGBAOVANTHU" class="css-label2">Gửi cho Văn thư</label>
+                                    </td>
+                                </tr>
+                                <tr class="height-25"></tr>
+                            </table>
+                        </div>
+                    </section>
+                    <h3>
+                        Lưu sổ và theo dõi
+                        <span class="required-mark">*</span>
+                    </h3>
+                    <section>
+                        <div id="tab_donvinhan_theodoi_vb">
+                            <table class="edit-table" style="width:95.5%">
+                                @*Hàng 1*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">
+                                            Sổ văn bản:<span class="required-mark">*</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" id="block--SOVANBAN_ID">
+                                            <select name="SOVANBAN_ID" id="SOVANBAN_ID">
+                                                <option value=''>[--- Chọn sổ văn bản ---]</option>
+                                                @if (Model.ListSoVanBan != null && Model.ListSoVanBan.Count > 0)
+                                                {
+                                                    foreach (var item in Model.ListSoVanBan)
+                                                    {
+                                                        <option data-sovb="@item.SOVBTHEOSO" value="@item.ID">@item.TENSO</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <label class="lbl" id="block--SODITHEOSO">
+                                            @*<input type="checkbox" id="SODITHEOSO_CHECK" />&nbsp;*@
+                                            Số đi theo sổ
+                                            :<span class="required-mark">*</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("SODITHEOSO", "", new { @placeholder = "", @class = "e-input", @maxlength = "10" })
+                                    </td>
+                                </tr>
+                                <tr class="height-15">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="SOVANBAN_ID_NULL">
+                                            Bạn hãy chọn sổ văn bản
+                                        </span>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="SODITHEOSO_NULL">
+                                            Bạn hãy nhập số đi theo sổ
+                                        </span>
+                                    </td>
+                                </tr>
+                                @*Hàng 1-a*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl">
+                                            Số hiệu văn bản:<span class="required-mark">*</span>
+                                        </label>
+                                    </td>
+                                    <td colspan="3">
+                                        @Html.TextBox("SOHIEU", "", new { @placeholder = "", @class = "e-input", @maxlength = "250" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="SOHIEU_NULL">Bạn hãy nhập số hiệu văn bản</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <span style="margin-left:10px; font-style:italic;">
+                                            <b>
+                                                Ghi chú:
+                                            </b>Số hiệu văn bản được tạo ra từ 3 thông tin (Số văn bản theo sổ, loại văn bản và đơn vị ban hành)
+                                        </span>
+                                    </td>
+                                </tr>
+                                @*Hàng 1-b*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="NGAYBANHANH">Ngày ban hành:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGAYBANHANH", "", new { @placeholder = "", @class = "e-input datepicker", @maxlength = "10" }) (Ví dụ: 24/11/2010)
+                                    </td>
+                                    <td>
+                                        <label class="lbl" for="SOTRANG">Số trang:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("SOTRANG", "", new { @placeholder = "", @class = "e-input", @maxlength = "3" })
+                                            Số bản:
+                                        @Html.TextBox("SOBAN", "", new { @placeholder = "", @class = "e-input", @maxlength = "3" })
+                                    </td>
+                                </tr>
+                                <tr class="height-15">
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="NGAYBANHANH_FORMAT">Bạn hãy nhập đúng định dạng</span>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <span class="lb-Check" id="SOTO_FORMAT">Nhập định dạng số</span>
+                                        <span class="lb-Check" id="SOBANSAO_FORMAT">Nhập định dạng số</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 1-c*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="TUKHOA">Từ khóa:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("TUKHOA", "", new { @placeholder = "", @class = "e-input", @maxlength = "250" })
+                                    </td>
+                                    <td>
+                                        <label class="lbl">Độ mật:</label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix float-left" id="block--DOKHAN_ID">
+                                            @Html.DropDownList("MUCDOQUANTRONG_ID", Model.ListMucDoQuanTrongVanBan, new { @class = "create-phanloai", @style = "width: 100%" })
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="height-15"></tr>
+                                @*Hàng 1-d*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="NGUOIKY">Người ký:</label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGUOIKYACCOUNT", "", new { @placeholder = "", @class = "e-input float-left", @maxlength = "250" })
+                                        <a style="" href="javascript:void(0)" id="CHONNGUOIKY">
+                                            Chọn
+                                        </a>|
+                                        <a style="margin-left:10px;" href="javascript:XoaNguoiKy(1)" id="XOANGUOIKY">
+                                            Xóa
+                                        </a>
+                                        <input type="hidden" id="NGUOIKY" name="NGUOIKY" value="" />
+                                    </td>
+                                    <td>
+                                        <label class="lbl" for="NGUOISOAN">
+                                            Người soạn: <span class="required-mark">*</span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("NGUOISOAN", Model.UserInfo.Fullname, new { @placeholder = "", @class = "e-input float-left", @maxlength = "250" })
+                                        <a style="margin-left:5px;margin-right:10px;" href="javascript:void(0)" id="CHONNGUOISOAN">
+                                            Chọn
+                                        </a>|<a style="margin-left:10px;" href="javascript:XoaNguoiSoan()" id="XOANGUOISOAN">Xóa</a>
+                                        <input type="hidden" id="NGUOISOAN_ID" name="NGUOISOAN_ID" value="@Model.UserInfo.UserID" />
+                                    </td>
+                                </tr>
+                                <tr class="height-15">
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        
+                                    </td>
+                                    <td>
+                                        <span class="lb-Check" id="NGUOISOAN_NULL">Bạn hãy chọn người soạn văn bản</span>
+                                    </td>
+                                </tr>
+                                @*Hàng 1-e*@
+                                <tr>
+                                    <td>
+                                        <label class="lbl" for="DONVIBANHANH_ID">Đơn vị lưu bản gốc:</label>
+                                    </td>
+                                    <td>
+                                        <div class="input-field4 clearfix" id="block--DONVIBANHANH_ID">
+                                            <select name="DONVIBANHANH_ID" id="DONVIBANHANH_ID">
+                                                <option value=''>[--- Chọn đơn vị ban hành ---]</option>
+                                                @if (Model.ListDonViBanHanh != null && Model.ListDonViBanHanh.Count > 0)
+                                                {
+                                                    foreach (var item in Model.ListDonViBanHanh)
+                                                    {
+                                                        if (item.MADONVI == "AITA")
+                                                        {
+                                                            <option data-madv="@item.MADONVI" value="@item.ID" selected="selected">@item.TENDONVI</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option data-madv="@item.MADONVI" value="@item.ID">@item.TENDONVI</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+
+                                </tr>
+                                @*Hàng 3*@
+                                <tr>
+                                    <td colspan="5">
+                                        <h3 class="group-tittle" id="title--DONVINHANVANBAN">
+                                            01. Đơn vị nhận văn bản trong cơ quan
+                                        </h3>
+                                        <table class="edit-table" style="width:95.5%">
+                                            <tr>
+                                                <td colspan="5">
+                                                    @if (Model.ListDonViTrongCoQuan != null && Model.ListDonViTrongCoQuan.Count > 0)
+                                                    {
+                                                        <div class="width-100 float-left" id="block--CHK_DVTRONGCQ_TATCA">
+                                                            <input class="css-checkbox" id="CHK_DVTRONGCQ_TATCA" name="CHK_DVTRONGCQ_TATCA" type="checkbox">
+                                                            <label for="CHK_DVTRONGCQ_TATCA" class="css-label2">
+                                                                <b>Tất cả</b>
+                                                            </label>
+                                                        </div>
+                                                        foreach (var item in Model.ListDonViTrongCoQuan)
+                                                        {
+                                                            list_coquantrongdonvi_id += item.Value + ",";
+                                                            <div class="float-left" id="block--CHK_DVTRONGCQ-specify">
+                                                                <input class="css-checkbox" id="CHK_DVTRONGCQ_@item.Value" value="@item.Value" name="CHK_DVTRONGCQ" type="checkbox">
+                                                                <label style="width:auto;" for="CHK_DVTRONGCQ_@item.Value" class="css-label2">
+                                                                    @item.Text
+                                                                </label>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    <input type="hidden" name="list_coquantrongdonvi_id" id="list_coquantrongdonvi_id" value="@list_coquantrongdonvi_id" />
+                                                    <input type="hidden" name="list_coquantrongdonvi" id="list_coquantrongdonvi" value="" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr class="height-15">
+                                    <td colspan="4"></td>
+                                </tr>
+                                @*Hàng 4*@
+                                <tr>
+                                    <td colspan="5">
+                                        <h3 class="group-tittle" id="title-DONVINHANBAN_NGOAIHETHONG">
+                                            02. Đơn vị nhận văn bản ngoài hệ thống
+                                        </h3>
+                                        <table class="edit-table" style="width:95.5%">
+                                            <tr>
+                                                <td>
+                                                    <label class="lbl" for="COQUANNGOAI_KHAC">
+                                                        Đơn vị:
+                                                    </label>
+                                                </td>
+                                                <td colspan="4">
+                                                    @Html.TextArea("COQUANNGOAI_KHAC", "", new {@placeholder = "", @class = "e-input", @maxlength = "500" })
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr class="height-25">
+                                    <td colspan="4"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                <div style="text-align: center;">
+                    <input type="button"  value="Lưu văn bản" id="btnSave" style="background-color: #336699; height: 25px; border: none; width: 100px; color: white;" />
+                    <input type="button" value="Hủy bỏ" onclick="OnClose()" style="background-color: #336699; height: 25px; border: none; width: 100px; color: white;" />
+                </div>
+            }
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<script src="/Scripts/multiple-select.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#vb_di_tabs").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            enableFinishButton: false,
+            enablePagination: true,
+            enableAllSteps: true,
+            titleTemplate: "#title#",
+            cssClass: "tabcontrol"
+        });
+
+        $('#THOIHAN_HOIBAO_CHECKBOX').on('change', function (event) {
+            if ($(this).is(':checked')) {
+                $('#THOIHAN_HOIBAO').removeAttr('disabled');
+            } else {
+                $('#THOIHAN_HOIBAO').val('');
+                $('#THOIHAN_HOIBAO').attr('disabled', 'disabled');
+            }
+        });
+
+        $('#NGAY_XULY_CHECK').on('change', function (event) {
+            if ($(this).is(':checked')) {
+                $('#NGAY_XULY').removeAttr('disabled');
+            } else {
+                $('#NGAY_XULY').val('');
+                $('#NGAY_XULY').attr('disabled', 'disabled');
+            }
+        });
+        $('#SODITHEOSO_CHECK').on('change', function (event) {
+            if ($(this).is(':checked')) {
+                $('#SODITHEOSO').removeAttr('disabled');
+            } else {
+                $('#SODITHEOSO').attr('disabled', 'disabled');
+            }
+        });
+        $("#LOAIVANBAN_ID").multipleSelect({
+            single: true,
+            filter: true,
+        });
+        $("#DONVIBANHANH_ID").multipleSelect({
+            single: true,
+            filter: true,
+        });
+        $("#DONVIBANHANH_ID").change(function () {
+            TaoSoHieu();
+        });
+        $("#DONVITHEODOICHINH_ID").multipleSelect({
+            single: true,
+            filter: true,
+        });
+        //Setting DatePicker
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-50:+20"
+        });
+        tinymce.init({
+            selector: '#NOIDUNGVANBAN',
+            language: 'vi_VN',
+            width: '100%',
+            height: 270,
+            plugins: [
+                    "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | fontselect fontsizeselect |" +
+                "cut copy paste pastetext | bullist numlist | outdent indent | link unlink code | forecolor backcolor | table | hr | emoticons",
+            menubar: true,
+            convert_urls: false,
+            paste_data_images: true,
+            toolbar_items_size: 'small'
+        });
+        tinymce.init({
+            selector: '#YKIENCHIDAO',
+            language: 'vi_VN',
+            width: '100%',
+            height: 180,
+            plugins: [
+                    "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons template textcolor paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | fontselect fontsizeselect |" +
+                "cut copy paste pastetext ",
+            toolbar2: "bullist numlist | outdent indent | link unlink code | forecolor backcolor | table | hr | emoticons",
+            menubar: false,
+            convert_urls: false,
+            paste_data_images: true,
+            toolbar_items_size: 'small'
+        });
+
+        $('#cssmenu li.active').addClass('open').children('ul').show();
+        $('#cssmenu li.has-sub>a').on('click', function () {
+            $(this).removeAttr('href');
+            var element = $(this).parent('li');
+            if (element.hasClass('open')) {
+                element.removeClass('open');
+                element.find('li').removeClass('open');
+                element.find('ul').slideUp(200);
+            }
+            else {
+                element.addClass('open');
+                element.children('ul').slideDown(200);
+                element.siblings('li').children('ul').slideUp(200);
+                element.siblings('li').removeClass('open');
+                element.siblings('li').find('li').removeClass('open');
+                element.siblings('li').find('ul').slideUp(200);
+            }
+        });
+        $("#SOVANBAN_ID").change(function () {
+            var item = $("#SOVANBAN_ID").val().trim().length;
+            if (item <= 0) {
+                $("#SOVANBAN_ID_NULL").show();
+            }
+            else {
+                $("#SOVANBAN_ID_NULL").hide();
+                var sovanban = $("#SOVANBAN_ID option:selected").attr("data-sovb");
+                $("#SODITHEOSO").val(parseInt(sovanban) + 1);
+            }
+            TaoSoHieu();
+        });
+        $("#LOAIVANBAN_ID").change(function () {
+            var item = $("#LOAIVANBAN_ID").val().trim().length;
+            if (item <= 0) {
+                $("#LOAIVANBAN_ID_NULL").show();
+            }
+            else {
+                $("#LOAIVANBAN_ID_NULL").hide();
+            }
+            TaoSoHieu();
+        });
+        //Setting TRICHYEU
+        $("#TRICHYEU").keyup(function () {
+            var item = $("#TRICHYEU").val().trim().length;
+            if (item <= 0) {
+                $("#TRICHYEU_NULL").show();
+            }
+            else { $("#TRICHYEU_NULL").hide(); }
+        });
+        $("TRICHYEU").focus();
+        $("#btnSave").click(function () {
+            //SOVANBAN_ID
+            if (validate_element($("#SOVANBAN_ID"), $("#SOVANBAN_ID_NULL"), "", "", "0") == 0) {
+                SelectTab(4);
+                $("#SOVANBAN_ID").focus();
+                return false;
+            }
+            //LOAIVANBAN_ID
+            if (validate_element($("#LOAIVANBAN_ID"), $("#LOAIVANBAN_ID_NULL"), "", "", "0") == 0) {
+                SelectTab(0);
+                $("#LOAIVANBAN_ID").focus();
+                return false;
+            }
+            if (validate_element($("#SOHIEU"), $("#SOHIEU_NULL"), "", "", "0") == 0) {
+                SelectTab(4);
+                $("#SOHIEU").focus();
+                return false;
+            }
+            //SODITHEOSO
+            if (validate_element($("#SODITHEOSO"), $("#SODITHEOSO_NULL"), "", "", "0") == 0) {
+                SelectTab(4);
+                $("#SODITHEOSO").focus();
+                return false;
+            }
+
+            //NGAYBANHANH
+            if ($("#NGAYBANHANH").val().trim().length > 0) {
+                if (checkDateTime($("#NGAYBANHANH").val()) == false) {
+                    SelectTab(3);
+                    $("#NGAYBANHANH_FORMAT").show();
+                    $("#NGAYBANHANH").focus();
+                    return false;
+                }
+                else {
+                    $("#NGAYBANHANH_FORMAT").hide();
+                }
+            }
+            //THOIHAN_XYLY
+            if ($("#NGAY_XULY").val().trim().length > 0) {
+                if (checkDateTime($("#NGAY_XULY").val()) == false) {
+                    SelectTab(0);
+                    $("#NGAYXULY_FORMAT").show();
+                    $("#NGAY_XULY").focus();
+                    return false;
+                }
+                else {
+                    $("#NGAYXULY_FORMAT").hide();
+                }
+            }
+
+            //THOIHAN_HOIBAO
+            if ($("#THOIHAN_HOIBAO").val().trim().length > 0) {
+                if (checkDateTime($("#THOIHAN_HOIBAO").val()) == false) {
+                    SelectTab(3);
+                    $("#THOIHAN_HOIBAO_FORMAT").show();
+                    $("#THOIHAN_HOIBAO").focus();
+                    return false;
+                }
+                else {
+                    $("#THOIHAN_HOIBAO_FORMAT").hide();
+                }
+            }
+
+            //TRICHYEU
+            if (validate_element($("#TRICHYEU"), $("#TRICHYEU_NULL"), "", "", "0") == 0) {
+                SelectTab(0);
+                $("#TRICHYEU").focus();
+                return false;
+            }
+            //SOBANSAO
+            if ($("#SOBAN").val().trim().length > 0) {
+                if ($.isNumeric($("#SOBAN").val()) == false) {
+                    SelectTab(0);
+                    $("#SOBANSAO_FORMAT").show();
+                    $("#SOBAN").focus();
+                    return false;
+                }
+                else {
+                    $("#SOBANSAO_FORMAT").hide();
+                }
+            }
+            //SOTO
+            if ($("#SOTRANG").val().trim().length > 0) {
+                if ($.isNumeric($("#SOTRANG").val()) == false) {
+                    SelectTab(3);
+                    $("#SOTO_FORMAT").show();
+                    $("#SOTRANG").focus();
+                    return false;
+                }
+                else {
+                    $("#SOTO_FORMAT").hide();
+                }
+            }
+            
+            //NGUOISOAN
+            if (validate_element($("#NGUOISOAN"), $("#NGUOISOAN_NULL"), "", "", "0") == 0) {
+                SelectTab(0);
+                return false;
+            }
+            //DONVISOAN
+            if (validate_element($("#DONVISOANTHAO_ID"), $("#DONVISOAN_ID_NULL"), "", "", "0") == 0) {
+                SelectTab(0);
+                $("#DONVISOANTHAO_ID").focus();
+                return false;
+            }
+            //submit form tao van ban di
+            $('#frmVanBanDiCreate').submit();
+        });
+
+        $("input[name=CHK_DVTRONGCQ]").change(function () {
+            var listChecked = "";
+            $("input[name=CHK_DVTRONGCQ]:checked").each(function () {
+                listChecked += $(this).val() + ",";
+            });
+            $("#list_coquantrongdonvi").val(listChecked);
+            if (listChecked.length > 0) {
+                if (listChecked == $("#list_coquantrongdonvi_id").val()) {
+                    $("#CHK_DVTRONGCQ_TATCA").prop("checked", "checked");
+                    $("#CHK_DVTRONGCQ_TATCA").prop("indeterminate", false);
+                }
+                else {
+                    $("#CHK_DVTRONGCQ_TATCA").prop("checked", "");
+                    $("#CHK_DVTRONGCQ_TATCA").prop("indeterminate", true);
+                }
+            }
+            else {
+                $("#CHK_DVTRONGCQ_TATCA").prop("checked", "");
+                $("#CHK_DVTRONGCQ_TATCA").prop("indeterminate", false);
+            }
+        });
+        $("input[name=CHK_DVTRONGCQ_TATCA]").change(function () {
+            if ($(this).is(":checked")) {
+                $("input[name=CHK_DVTRONGCQ]").prop("checked", "checked");
+                $("#list_coquantrongdonvi").val($("#list_coquantrongdonvi_id").val());
+            } else {
+                $("input[name=CHK_DVTRONGCQ]").prop("checked", "");
+                $("#list_coquantrongdonvi").val("");
+            }
+        });
+    });
+
+    function LoadCoSo() {
+        var capCoSoID = $("#CAPCOSO_ID").val();
+        if (capCoSoID.length > 0) {
+            $.ajax({
+                type: 'GET',
+                cache: false,
+                async: false,
+                data: { capCoSo: capCoSoID, list_coso_dachon: $("#COSO_NHANVB_IDS").val() },
+                url: '@Url.Action("GetListCoSo", "VanBanDi")',
+                success: function (data) {
+                    $("#List_CoSo_NhanVB").html(data);
+                }
+            })
+        }
+        else {
+            $("#List_CoSo_NhanVB").html("");
+        }
+    }
+    function ChonCoSoNhanVanBan() {
+        var list_coso_dachon = "";
+        $("input[name='CHK_COSO']").each(function () {
+            if ($(this).is(":checked")) {
+                var coso = $(this).val();
+                list_coso_dachon += coso + ",";
+                var _html = $("#li_" + coso).find("label").html();
+                var _capcoso = $("#li_" + coso).attr("data-cap-id");
+                //Xóa bên trái
+                $("#li_" + coso).remove();
+                //Chèn bên phải
+                $("#List_CoSo_NhanVB_DaChon").append("<li id='li_s_" + coso + "'>- <span>" + _html + "</span><img data-id='" + coso + "' id='img_" + coso + "' class='delete_coso' onclick='javascript:XoaCoSoDaChon(" + coso + ")' data-cap-id='" + _capcoso + "' style='cursor:pointer;margin-left:15px;' title='Bỏ cơ sở này' src='/Content/Images/Delete.png' /></li>");
+            }
+        });
+        $("#COSO_NHANVB_IDS").val($("#COSO_NHANVB_IDS").val() + list_coso_dachon);
+    }
+    function XoaCoSoDaChon(coso_id) {
+        var _capcoso = $("#img_" + coso_id).attr("data-cap-id");
+        var tencoso = $("#li_s_" + coso_id).find("span").html();
+        //Xóa bên phải, cập nhật lại List_ID
+        $("#li_s_" + coso_id).remove();
+        //Nếu cấp đang chọn chứa cơ sở bị xóa, thì phải hiển thị lại bên trái (thêm data-cap-id)
+        if ($("#CAPCOSO_ID").val() == _capcoso) {
+            var _li = "<li id='li_" + coso_id + "'>";
+            _li += "<input class=\"css-checkbox\" id=\"CHK_" + coso_id + "\" value=\"" + coso_id + "\" name=\"CHK_COSO\" type=\"checkbox\">";
+            _li += "<label style=\"width:auto;\" for=\"CHK_" + coso_id + "\" class=\"css-label2\">" + tencoso + "</label></li>";
+            $("#List_CoSo_NhanVB ul").append(_li);
+        }
+        var list_coso_dachon = "";
+        $(".delete_coso").each(function () {
+            list_coso_dachon += $(this).attr("data-id") + ",";
+        });
+        $("#COSO_NHANVB_IDS").val(list_coso_dachon);
+    }
+    function SelectTab(tab_id) {
+        var tab_current = $("li[aria-selected='true'] a").attr("id");
+        var current_id = tab_current.split('-')[2];
+        if (tab_id != current_id) {
+            $("#vb_di_tabs-t-" + tab_id).click();
+        }
+    }
+    function ThemNguoiKy() {
+        var is_show = $("input[id='CHK_NHIEUNGUOIKY']:checked").length;
+        if (is_show > 0) {
+            $(".nhieunguoiky").show("slow");
+        }
+        else {
+            $(".nhieunguoiky").hide();
+        }
+    }
+    function TaoSoHieu() {
+        //alert("Số hiệu văn bản được tạo ra từ 3 thông tin (Số văn bản, loại văn bản và đơn vị ban hành)!");
+        var so_vanban = $("#SODITHEOSO").val();
+        var loai_vanban = $("#LOAIVANBAN_ID option:selected").attr("data-id");
+        var donvi_banhanh = $("#DONVIBANHANH_ID option:selected").attr("data-madv");
+        var sohieu_vanban = "";
+        if (so_vanban !== undefined) {
+            sohieu_vanban += so_vanban + "/";
+        }
+        if (loai_vanban !== undefined) {
+            sohieu_vanban += loai_vanban + "-";
+        }
+        if (donvi_banhanh !== undefined) {
+            sohieu_vanban += donvi_banhanh;
+        }
+        $("#SOHIEU").val(sohieu_vanban);
+    }
+
+    function XoaNguoiKy(stt) {
+        var hasValue = false;
+        if (parseInt(stt) > 1) {
+            hasValue = $("#NGUOIKYACCOUNT" + stt).val().length > 0;
+        }
+        else {
+            hasValue = $("#NGUOIKYACCOUNT").val().length > 0;
+        }
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa người ký này?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            if (parseInt(stt) > 1) {
+                                $("#NGUOIKYACCOUNT" + stt).val("");
+                                $("#NGUOIKY" + stt).val("");
+                            }
+                            else {
+                                $("#NGUOIKYACCOUNT").val("");
+                                $("#NGUOIKY").val("");
+                            }
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+    function XoaNguoiSoan() {
+        var hasValue = $("#NGUOISOAN").val().length > 0;
+
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa người soạn này?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#NGUOISOAN").val("");
+                            $("#NGUOISOAN_ID").val("");
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+    function XoaLanhDao() {
+        var hasValue = $("#LANHDAOBUTPHE").val().length > 0;
+
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa thông tin Lãnh đạo cho bút phê này?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#LANHDAOBUTPHE").val("");
+                            $("#LANHDAO_ID").val("");
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+    function XoaNguoiTheoDoiChinh() {
+        var hasValue = $("#NGUOITHEODOICHINH").val().length > 0;
+        if (hasValue) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa thông tin người theo dõi chính?',
+                'buttons': {
+                    'Xóa': {
+                        'class': 'btn-confirm-yes',
+                        'action': function () {
+                            $("#NGUOITHEODOICHINH").val("");
+                            $("#NGUOITHEODOICHINH_ID").val("");
+                        }
+                    },
+                    'Không xóa': {
+                        'class': 'btn-info',
+                        'action': function () { }
+                    }
+                }
+            });
+        }
+    }
+</script>
+@{
+    LuaChonThuMucModel model_chonthumuc = new LuaChonThuMucModel();
+    model_chonthumuc.USER_ID = (long)Model.UserInfo.UserID;
+    model_chonthumuc.TITLE = "Lựa chọn thư mục để lưu file";
+    model_chonthumuc.ID_CLICK = "ChooseFile";
+    model_chonthumuc.DONVI_ID = Model.UserInfo.DonViID;
+    model_chonthumuc.COSO_ID = Model.UserInfo.CoSoID;
+}
+@{ Html.RenderPartial("../Common/_LuaChonThuMuc", model_chonthumuc);}
+@{
+    #region Tạo model Người ký văn bản
+    ChonNguoiDungModel nguoiky = new ChonNguoiDungModel();
+    nguoiky.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoiky.DONVI_ID = 0;
+    nguoiky.PHONGBAN_ID = 0;
+    nguoiky.TEXT_ID = "NGUOIKYACCOUNT";
+    nguoiky.VALUE_ID = "NGUOIKY";
+    nguoiky.ID_CLICK = "CHONNGUOIKY";
+    nguoiky.IS_MULTICHOICE = 0;
+    nguoiky.INDEX = 1;
+    nguoiky.TITLE = "Chọn người ký văn bản";
+    nguoiky.SHOW_CHUC_VU_ID = "CHUCVU";
+    //nguoiky.CALLBACK_FUNCTION = "";
+
+    ChonNguoiDungModel nguoiky_2 = new ChonNguoiDungModel();
+    nguoiky_2.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoiky_2.DONVI_ID = 0;
+    nguoiky_2.PHONGBAN_ID = 0;
+    nguoiky_2.TEXT_ID = "NGUOIKYACCOUNT2";
+    nguoiky_2.VALUE_ID = "NGUOIKY2";
+    nguoiky_2.ID_CLICK = "CHONNGUOIKY2";
+    nguoiky_2.IS_MULTICHOICE = 0;
+    nguoiky_2.INDEX = 2;
+    nguoiky_2.TITLE = "Chọn người ký văn bản";
+    nguoiky_2.SHOW_CHUC_VU_ID = "CHUCVU2";
+    //nguoiky_2.CALLBACK_FUNCTION = "";
+
+    ChonNguoiDungModel nguoiky_3 = new ChonNguoiDungModel();
+    nguoiky_3.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoiky_3.DONVI_ID = 0;
+    nguoiky_3.PHONGBAN_ID = 0;
+    nguoiky_3.TEXT_ID = "NGUOIKYACCOUNT3";
+    nguoiky_3.VALUE_ID = "NGUOIKY3";
+    nguoiky_3.ID_CLICK = "CHONNGUOIKY3";
+    nguoiky_3.IS_MULTICHOICE = 0;
+    nguoiky_3.INDEX = 3;
+    nguoiky_3.TITLE = "Chọn người ký văn bản";
+    nguoiky_3.SHOW_CHUC_VU_ID = "CHUCVU3";
+#endregion
+}
+
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiky);}
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiky_2);}
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiky_3);}
+@*@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiky_4);}
+    @{ Html.RenderPartial("../Common/_ChooseUserV1", nguoiky_5);}*@
+
+@{
+    ChonNguoiDungModel nguoisoan = new ChonNguoiDungModel();
+    nguoisoan.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoisoan.DONVI_ID = 0;
+    nguoisoan.PHONGBAN_ID = 0;
+    nguoisoan.TEXT_ID = "NGUOISOAN";
+    nguoisoan.VALUE_ID = "NGUOISOAN_ID";
+    nguoisoan.ID_CLICK = "CHONNGUOISOAN";
+    nguoisoan.IS_MULTICHOICE = 0;
+    nguoisoan.INDEX = 6;
+    nguoisoan.TITLE = "Chọn người soạn thảo văn bản";
+    //nguoisoan.CALLBACK_FUNCTION = "";
+}
+
+@{ Html.RenderPartial("../Common/_ChooseUserV1", nguoisoan);}
+
+@{
+    ChonNguoiDungModel lanhdaobutphe = new ChonNguoiDungModel();
+    lanhdaobutphe.COSO_ID = Model.UserInfo.CoSoID.Value;
+    lanhdaobutphe.DONVI_ID = 0;
+    lanhdaobutphe.PHONGBAN_ID = 0;
+    lanhdaobutphe.TEXT_ID = "LANHDAOBUTPHE";
+    lanhdaobutphe.VALUE_ID = "LANHDAO_ID";
+    lanhdaobutphe.ID_CLICK = "CHONLANHDAO";
+    lanhdaobutphe.IS_MULTICHOICE = 0;
+    lanhdaobutphe.INDEX = 7;
+    lanhdaobutphe.TITLE = "Chọn lãnh đạo cho bút phê";
+    //nguoisoan.CALLBACK_FUNCTION = "";
+    Html.RenderPartial("../Common/_ChooseUserV1", lanhdaobutphe);
+}
+@{
+    ChonNguoiDungModel nguoitheodoichinh = new ChonNguoiDungModel();
+    nguoitheodoichinh.COSO_ID = Model.UserInfo.CoSoID.Value;
+    nguoitheodoichinh.DONVI_ID = 0;
+    nguoitheodoichinh.PHONGBAN_ID = 0;
+    nguoitheodoichinh.TEXT_ID = "NGUOITHEODOICHINH";
+    nguoitheodoichinh.VALUE_ID = "NGUOITHEODOICHINH_ID";
+    nguoitheodoichinh.ID_CLICK = "CHONNGUOITHEODOICHINH";
+    nguoitheodoichinh.IS_MULTICHOICE = 0;
+    nguoitheodoichinh.INDEX = 7;
+    nguoitheodoichinh.TITLE = "Chọn người theo dõi chính";
+    //nguoisoan.CALLBACK_FUNCTION = "";
+    Html.RenderPartial("../Common/_ChooseUserV1", nguoitheodoichinh);}
+

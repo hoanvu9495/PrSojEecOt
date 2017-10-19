@@ -1,0 +1,708 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using Web.Areas.HSVanBanDiArea.Models;
+@using Web.Areas.MarkItemArea.Models;
+@using Web.Common;
+@using System.Text;
+@using System.Globalization;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Web.Script.Serialization;
+@using PagedList.Mvc;
+@using PagedList;
+@model VBDiIndexViewModel
+
+@{
+    CultureInfo vnCulture = new CultureInfo("vi-VN");
+    List<VanBanDiBO> listVanBanDi = new List<VanBanDiBO>();
+    listVanBanDi = Model.ListVanBanDi;
+
+
+    var jsonDatas = Html.Raw(JsonConvert.SerializeObject(Model.ListVanBanDi));
+
+
+}
+<style type="text/css">
+    .grid--header-tittle {
+        height: 35px;
+        overflow: hidden;
+        margin: 10px 0;
+        border-bottom: 1px solid #ccc;
+        color: #003479;
+        text-transform: uppercase;
+    }
+
+        .grid--header-tittle h3 {
+            float: left;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px 0;
+        }
+
+    .red {
+        color: red;
+    }
+
+    #block--step-possible {
+        /*display:none;*/
+        text-align: right;
+        float: right;
+        /*margin:5px 0;*/
+    }
+
+        #block--step-possible button {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+            color: #337ab7;
+            font-weight: bold;
+        }
+
+    #GridSaveNoteModal > .modal-dialog {
+        width: 1080px;
+    }
+
+    #GridSaveNoteModal .modal-body {
+        height: 460px;
+        overflow-y: scroll;
+    }
+
+    #GridProcessWorkFlowModal .modal-title {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .button--workflow-in-grid {
+        font-size: 11px;
+        font-weight: bold;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 90px;
+        padding: 5px 0;
+    }
+
+    .webGrid #row--grid-filter .ms-parent {
+        padding: 0;
+        max-width: 135px;
+    }
+
+    .webGrid .ms-choice {
+        background: none;
+        outline: none;
+        width: 100%;
+        padding: 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+        .webGrid .ms-choice > div[class='open'] {
+            background: url('../../../../Content/Custom/css/multiple-select.png') right top no-repeat;
+        }
+
+        .webGrid .ms-choice > div {
+            background: url('../../../../Content/Custom/css/multiple-select.png') left top no-repeat;
+        }
+
+        .webGrid .ms-choice > span {
+            top: 5px;
+            left: 0;
+            width: 100%;
+            padding: 0;
+        }
+
+
+    .webGrid .ms-drop {
+        left: 0;
+        border-radius: 0;
+        width: auto;
+    }
+
+        .webGrid .ms-drop input[type=checkbox] {
+            vertical-align: unset;
+            margin: 0 5px 0 0;
+        }
+
+        .webGrid .ms-drop input[type=radio] {
+            margin: 0 5px 0 0;
+        }
+
+        .webGrid .ms-drop ul li label span {
+            vertical-align: middle;
+            margin: 0;
+            padding: 0;
+        }
+
+    .webGrid #QUERY_BANHANH_FROM, .webGrid #QUERY_BANHANH_TO {
+        width: 80px;
+        float: left;
+        margin: 0 5px 0 0;
+    }
+
+    #block--search-banhanh {
+        width: 170px;
+        overflow: hidden;
+    }
+
+    .dropdown-toggle {
+        padding-left: 24px;
+    }
+
+    .justify {
+        text-align: justify;
+    }
+
+
+    .center {
+        text-align: center;
+    }
+</style>
+
+<div class="jarviswidget" id="wid-id-0">
+    <header role="heading">
+        <h2 class="group-tittle mt10">
+            <i>Danh sách văn bản đi </i><strong id="countTotal" class="text-danger">(@(Model == null ? "0" : Model.CountResult.ToString()))</strong>
+        </h2>
+    </header>
+    <div class="widge-t-body no-padding">
+        <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+            <table class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Xem nhanh</th>
+                        <th>Đánh dấu</th>
+                        <th>Ban hành</th>
+                        <th>Số hiệu</th>
+                        <th>Trích yếu</th>
+                        <th>Đơn vị ban hành</th>
+                        <th>Người soạn</th>
+                        <th>Đơn vị soạn thảo</th>
+                        <th>Người tạo</th>
+                        <th>Trạng thái</th>
+                        @*<th>Xử lý</th>*@
+                        <th>Thao tác</th>
+
+                    </tr>
+                </thead>
+            </table>
+            <div class="center">
+                <ul class="pagination pagination-sm" id="paging1"></ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@Html.Partial("_VanBanDiWorkFlowInfo", new ViewDataDictionary { { "NhomSoID", Model.NhomSoID }, { "Type", Model.Type }, { "SoID", Model.SoID } })
+<script type="text/javascript">
+
+    pageSetUp();
+    var JsonDatas = eval(@jsonDatas);
+
+    $(".pagination>li:first>a").attr("href","javascript:GetDataPage(1)");
+    $(".pagination>li>a").click(function(){
+        $(".pagination>li").removeClass("active");
+        $(this).parent().addClass("active");
+    })
+
+    function GetDataPage(page){
+        $.ajax({
+            url: '@Url.Action("RefreshData")',
+            type: 'POST',
+            dataType: 'Json',
+            async:false,
+            data: {
+                pageIndex: page,
+                type: '@Model.Type',
+                nhomSoID: '@Model.NhomSoID',
+                soID: '@Model.SoID'
+            },
+            success: function (rs) {
+                $('#countTotal').html('(' + rs.Count+')');
+                for (var i = 0; i < rs.ListItem.length; i++) {
+                    if (rs.ListItem[i].NGAYBANHANH != null) {
+                        var str = rs.ListItem[i].NGAYBANHANH;
+                        rs.ListItem[i].NGAYBANHANH = ConvertToDateISO(str);
+                    }
+                }
+                currentPage=page;
+                LoadData(rs.ListItem);
+            }, error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+    GenPaging(1, @Model.TotalPage, "paging1", GetDataPage);
+
+    $.date = function (dateObject) {
+        var d = new Date(dateObject);
+        var day = d.getDate();
+        var month = d.getMonth() + 1;
+        var year = d.getFullYear();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+        var date = day + "/" + month + "/" + year;
+
+        return date;
+    };
+
+    function format(d) {
+        // `d` is the original data object for the row
+        var tabledata = '<table cellpadding="5" cellspacing="0" border="0" class="table table-hover table-condensed">' +
+            '<tr>' +
+                '<td style="width:140px">Ngày ban hành:</td>' +
+                '<td>' + $.date(d.NGAYBANHANH) + '</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>Số hiệu:</td>' +
+                '<td>' + d.SOHIEU + '</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>Trích yếu:</td>' +
+                '<td>' + d.TRICHYEU + '</td>' +
+            '</tr>' +
+        '<tr>' +
+           '<td>Đơn vị soạn thảo:</td>' +
+           '<td>' + d.DONVISOANTHAO
+        '</tr>';
+
+
+        tabledata +=
+            '<tr>' +
+                '<td>Nội dung văn bản:</td>' +
+                '<td>' + '</td>' +
+                '</tr>';
+
+        tabledata += '</table>';
+        return tabledata;
+    }
+
+
+    var LoadData = function (item) {
+
+        var table = $('.wtfayo').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "iDisplayLength": 20,
+            paging: false,
+            "bPaginate":false,
+            "bInfo":false,
+            "aoColumns": [
+                 {
+                     "mData": function (data, type, dataToSet) {
+                         return '<input class="global_checkbox ' + ((data.IS_READ == true) ? "is_read" : "is_unread") + '" type="checkbox" name="ids" value="' + data.ID + '" />';
+                     },
+                     "orderable": false,
+                 },
+
+                    {
+                        "class": 'details-control',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": ''
+                    },
+
+                  {
+                      "width": "45px",
+                      "class": 'center',
+                      "orderable": false,
+                      "mData": function (data, type, dataToSet) {
+                          var str = "<div class='btn-group'>";
+                          str += (data.IS_FAVORITE != null && data.IS_FAVORITE == true) ? "<a class='favorite' style='margin-right:5px' href='javascript:void(0)' onclick='ActionDauSao(" + data.ID + ",false)'><i class='fa fa-star text-success'></i></a>" : "<a class='notset_favorite' href='javascript:void(0)' onclick='ActionDauSao(" + data.ID + ",true)' style='margin-right:5px'><i class='fa fa-star-o text-muted'></i></a>";
+                          str += (data.IS_IMPORTANT != null && data.IS_IMPORTANT == true) ? "<a class='important' href='javascript:void(0)' onclick='ActionDauSao(" + data.ID + ",false)'><i class='fa fa-bookmark text-success'></i></a>" : "<a class='notset_important' href='javascript:void(0)' onclick='ActionQuanTrong(" + data.ID + ",true)'><i class='fa   fa-bookmark-o text-muted'></i></a> ";
+                          str += (data.HAS_FILE != null && data.HAS_FILE == true) ? "<a  href='javascript:void(0)' onclick=''><i class='fa fa-paperclip text-success'></i></a>" : "";
+
+                          str += "</div>";
+                          return str;
+
+                      },
+                  },
+
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            return data.NGAYBANHANH != null ? data.IS_READ != true ? ("<b>" + $.date(data.NGAYBANHANH) + "</b>") : $.date(data.NGAYBANHANH) : "";
+                        },
+
+                    },
+                    {
+
+                        "mData": function (data, type, dataToSet) {
+                            return data.SOHIEU != null ? (data.IS_READ != true ? ("<b>" + data.SOHIEU + "</b>") : data.SOHIEU) : "";
+                        },
+
+                    },
+                    {
+                        "class":"justify",
+                        "mData": function (data, type, dataToSet) {
+                            var str = "";
+                            if (data.IS_READ != true) {
+                                str += "<b>" + data.TRICHYEU + "</b>";
+                            } else {
+                                str += data.TRICHYEU;
+                            }
+                            return "<a id='item" + data.ID + "' href='javascript:void(0);'onclick='return ViewDetail(" + data.ID + ")'>" + str + "</a>";
+                        },
+
+                    },
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            return data.DONVIBANHANH != null ? (data.IS_READ != true ? ("<b>" + data.DONVIBANHANH + "</b>") : data.DONVIBANHANH) : "";
+                        },
+
+                    },
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            var nguoi_soan = "";
+                            if (data.IS_READ) {
+                                nguoi_soan = data.NGUOISOAN;
+                            }
+                            else {
+                                nguoi_soan = "<b>" + data.NGUOISOAN + "</b>";
+                            }
+                            return nguoi_soan;
+                        },
+
+                    },
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            var donvi_soan = "";
+                            if (data.IS_READ) {
+                                donvi_soan = data.DONVISOANTHAO;
+                            }
+                            else {
+                                donvi_soan = "<b>" + data.DONVISOANTHAO + "</b>";
+                            }
+                            return donvi_soan;
+                        },
+
+                    },
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            var nguoi_gui = "";
+                            if (data.IS_READ) {
+                                nguoi_gui = data.NGUOITAO;
+                            }
+                            else {
+                                nguoi_gui = "<b>" + data.NGUOITAO + "</b>";
+                            }
+                            return nguoi_gui;
+                        },
+
+                    },
+                    {
+                        "mData": function (data, type, dataToSet) {
+                            if (data.IS_READ) {
+                                return data.TENTRANGTHAI;
+                            }
+                            else {
+                                return "<b>" + data.TENTRANGTHAI + "</b>";
+                            }
+                        },
+
+                    },
+                    //{
+                    //    "mData": function (data, type, dataToSet) {
+                    //        var actionsBuilder = "";
+                    //        //if (data.ListSteps.Count > 0) {
+                    //        //    for (var i = 0; data.ListSteps.length; i++) {
+                    //        //        actionsBuilder += "<span class='" + data.ListSteps[i].CSS_CLASS + "' onclick='showWorkFlowStepChange(" + data.ID + "," + "\"" + data.ListSteps[i].TENBUOC + "\"" + "," + data.ListSteps[i].TRANGTHAI_1 + "," + data.ListSteps[i].TRANGTHAI_2 + ")' title='" + data.ListSteps[i].TENBUOC + "'>";
+                    //        //        actionsBuilder += "</span>";
+                    //        //    }
+                    //        //}
+                    //        //else {
+                    //        //    if (data.IS_FINISH && data.CanSaveNote == true) {
+                    //        //        actionsBuilder += "<span class='btn-wf-save' type='button' onclick='showWorkFlowSaveNoteModal(" + data.ID + ")' title='Lưu sổ và phát hành'></span>";
+                    //        //    }
+                    //        //}
+                    //        return actionsBuilder;
+                    //    },
+
+                    //},
+
+                    {
+                        "orderable": false,
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            var result = "<div class='btn-group'>";
+                            //if (data.ListSteps.length > 0) {
+                            if (data.Is_ThaoTac==true) {
+                                result += "<a href='javascript:void(0)' onclick='actionEdit(" + data.ID + ")'   title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>";
+                                result += "<a href='javascript:void(0)' onclick='DeleteVanBanDi(" + data.ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
+                            }
+
+                            //}
+                            result += "</div>";
+                            return result;
+                        },
+
+                    },
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                runAllCharts()
+            }
+        });
+        $('.wtfayo tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child(format(row.data())).show();
+                tr.addClass('shown');
+            }
+        });
+    }
+
+    function actionEdit(id) {
+        window.location.href = "/#hsvanbandiarea/hsvanbandi/EditVB?id=" + id;
+    }
+    var pagefunction = function () {
+        LoadData(JsonDatas);
+    };
+
+
+    function DeleteVanBanDi(id) {
+        $.confirm({
+            'title': 'Xác nhận xóa',
+            'message': 'Bạn có chắc chắn muốn xóa văn bản đi này?',
+            'buttons': {
+                'Đồng ý': {
+                    'class': 'btn-confirm-yes btn-primary',
+                    'action': function () {
+                        $.ajax({
+                            url: '@Url.Action("Delete")',
+                            type: 'POST',
+                            data: { 'id': id },
+                            success: function (data) {
+                                if (data.success === true) {
+                                    NotiSuccess("Xóa văn bản đi thành công")
+                                    ReloadPage();
+                                } else {
+                                    NotiError("Bạn không thể xóa văn bản này");
+                                }
+                            },
+                            error: function (data) {
+                                alert(data.responseText);
+                            },
+                        });
+                    }
+                },
+                'Hủy bỏ': {
+                    'class': 'btn-default ',
+                    'action': function () { }
+                }
+            }
+        });
+    }
+    function gridCallBack() {
+        assginGrid();
+        //==> isFullScreen biến toàn cục ở view _SearchVanBanDi
+        if (!isFullScreen) {
+            $('#grid .webGrid #row--grid-filter').hide();
+        }
+        if ($('#QUERY_NGUOISOAN').length > 0) {
+            $('#QUERY_NGUOISOAN').on('keyup', function (e) {
+                if (e.keyCode === 13) {
+                    searchGrid();
+                }
+            });
+        }
+        if ($('#QUERY_NGUOIGUI').length > 0) {
+            $('#QUERY_NGUOIGUI').on('keyup', function (e) {
+                if (e.keyCode === 13) {
+                    searchGrid();
+                }
+            });
+        }
+        $('#QUERY_BANHANH_FROM,#QUERY_BANHANH_TO,#QUERY_SOHIEU').on('keyup', function (e) {
+            if (e.keyCode === 13) {
+                searchGrid();
+            }
+        });
+        $('#QUERY_BANHANH_TO').on('keyup', function (e) {
+            if (e.keyCode === 13) {
+                searchGrid();
+            }
+        });
+
+        $('#QUERY_TRICHYEU').on('keyup', function (e) {
+            if (e.keyCode === 13) {
+                searchGrid();
+            }
+        });
+        $('#grid .webGrid tr td').each(function (element) {
+            if ($(this).css('display') == 'none') {
+                $(this).show();
+            }
+        });
+        $('#grid .webGrid tr th').each(function (element) {
+            if ($(this).css('display') == 'none') {
+                $(this).show();
+            }
+        });
+        if ($('#searchPanel').is(':visible')) {
+            $('#grid #row--grid-filter').hide();
+        }
+        $('#grid .vbdi_datepicker').datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-50:+20",
+            language: 'vi',
+            onSelect: function (date) {
+                searchGrid();
+            }
+        });
+
+
+        $('#grid .webGrid input[name=ids]').on('change', function () {
+            if (this.checked) {
+                if ($('#block--step-possible').is(':hidden')) {
+                    //$('#block--step-possible').show();
+                }
+            } else {
+                if ($('#checkbox--all-grid').is(':checked')) {
+                    $('#checkbox--all-grid').prop('checked', false);
+                }
+                var checkedCount = $('#grid .webGrid tbody input[type=checkbox][name=ids]:checked').length;
+                if (checkedCount === 0) {
+                    //$('#block--step-possible').hide();
+                }
+            }
+        });
+    }
+    function assginGrid() {
+        $('#grid .webGrid #QUERY_SOHIEU').val($globalSoHieu);
+        //$('#grid .webGrid #QUERY_SODI').val($gloSoDi);
+        $('#grid .webGrid #QUERY_TRICHYEU').val($globalTrichYeu);
+        $('#grid .webGrid #QUERY_BANHANH_FROM').val($gloBanHanhFrom);
+        $('#grid .webGrid #QUERY_BANHANH_TO').val($gloBanHanhTo);
+        if ($('#grid .webGrid #QUERY_NGUOISOAN').length > 0) {
+            $('#grid .webGrid #QUERY_NGUOISOAN').val($gloNguoiSoan);
+        }
+        if ($('#grid .webGrid #QUERY_NGUOIGUI').length > 0) {
+            $('#grid .webGrid #QUERY_NGUOIGUI').val($gloNguoiGui);
+        }
+        $('#grid .webGrid #QUERY_TRANGTHAI_XULY').val($gloTrangThai);
+        if ($('#grid .webGrid #QUERY_DONVI_BANHANH').length > 0) {
+            $('#grid .webGrid #QUERY_DONVI_BANHANH').val($gloDonViBanHanh);
+        }
+        if ($('#grid .webGrid #QUERY_DONVI_SOANTHAO').length > 0) {
+            $('#grid .webGrid #QUERY_DONVI_SOANTHAO').val($gloDonViSoanThao);
+        }
+
+        $('#grid .webGrid #QUERY_TRANGTHAI_XULY').multipleSelect({
+            single: true,
+            filter: true,
+            onClick: function (event) {
+                $gloTrangThai = event.value;
+                searchGrid();
+            }
+        });
+
+        if ($('#grid .webGrid #QUERY_DONVI_BANHANH').length > 0) {
+            $('#grid .webGrid #QUERY_DONVI_BANHANH').multipleSelect({
+                single: true,
+                filter: true,
+                onClick: function (event) {
+                    $gloDonViBanHanh = event.value;
+                    searchGrid();
+                }
+            });
+        }
+
+        if ($('#grid .webGrid #QUERY_DONVI_SOANTHAO').length > 0) {
+            $('#grid .webGrid #QUERY_DONVI_SOANTHAO').multipleSelect({
+                single: true,
+                filter: true,
+                onClick: function (event) {
+                    $gloDonViSoanThao = event.value;
+                    searchGrid();
+                }
+            });
+        }
+        $('#frmGridSearch').on('submit', function (event) {
+            event.preventDefault();
+            alert('hello');
+        });
+    }
+
+    function searchGrid() {
+        var so_hieu = $('#grid .webGrid #QUERY_SOHIEU').length > 0 ? $('#grid .webGrid #QUERY_SOHIEU').val().trim() : "";
+        var so_di = $('#grid .webGrid #QUERY_SODI').length > 0 ? $('#grid .webGrid #QUERY_SODI').val().trim() : "";
+        var trich_yeu = $('#grid .webGrid #QUERY_TRICHYEU').val().trim();
+        var nguoisoan = $('#grid .webGrid #QUERY_NGUOISOAN').length > 0 ? $('#grid .webGrid #QUERY_NGUOISOAN').val().trim() : "";
+        var nguoigui = $('#grid .webGrid #QUERY_NGUOIGUI').length > 0 ? $('#grid .webGrid #QUERY_NGUOIGUI').val().trim() : "";
+        var banhanh_from = $('#grid .webGrid #QUERY_BANHANH_FROM').val().trim();
+        var banhanh_to = $('#grid .webGrid #QUERY_BANHANH_TO').val().trim();
+        var trang_thai = $gloTrangThai;
+        var donvi_soanthao = $gloDonViSoanThao;
+        var donvi_banhanh = $gloDonViBanHanh;
+        $.ajax({
+            url: '@Url.Action("GridSearchVanBanDi", new { type = Model.Type})',
+            dataType: 'html',
+            type: 'POST',
+            data: {
+                QUERY_SOHIEU: so_hieu,
+                QUERY_SODI: so_di,
+                QUERY_TRICHYEU: trich_yeu,
+                QUERY_NGUOISOAN: nguoisoan,
+                QUERY_NGUOIGUI: nguoigui,
+                QUERY_TRANGTHAI_XULY: $gloTrangThai,
+                QUERY_DONVI_SOANTHAO: $gloDonViSoanThao,
+                QUERY_DONVI_BANHANH: $gloDonViBanHanh,
+                QUERY_BANHANH_FROM: banhanh_from,
+                QUERY_BANHANH_TO: banhanh_to,
+                NHOMSO_ID: '@Model.NhomSoID',
+                SO_ID: '@Model.SoID'
+            }, success: function (view) {
+                $('#grid').html(view);
+                //$globalSoHieu = so_hieu;
+                $gloSoDi = so_di;
+                $globalSoHieu = so_hieu;
+                $globalTrichYeu = trich_yeu;
+                $gloNguoiSoan = nguoisoan;
+                $gloTrangThai = trang_thai;
+                $gloDonViBanHanh = donvi_banhanh;
+                $gloDonViSoanThao = donvi_soanthao;
+                $gloBanHanhTo = banhanh_to;
+                $gloBanHanhFrom = banhanh_from;
+                $gloNguoiGui = nguoigui;
+                assginGrid();
+                $('#grid .webGrid #row--grid-filter').show();
+            }, error: function (result) {
+                console.log(result.responseText);
+            }
+        });
+    }
+    loadScript("js/plugin/datatables/jquery.dataTables.min.js", function () {
+        loadScript("js/plugin/datatables/dataTables.colVis.min.js", function () {
+            loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                loadScript("js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                    loadScript("js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
+                });
+            });
+        });
+    });
+</script>

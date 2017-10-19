@@ -1,0 +1,500 @@
+﻿@using Business.CommonBusiness
+@using Web.FwCore
+@using Web.Common
+@using Web.Areas.NguoiDungArea.Models;
+@model Web.Areas.NguoiDungArea.Models.NguoiDungEditViewModel
+@{
+    UserInfoBO userInfo = (UserInfoBO)SessionManager.GetUserInfo();
+}
+<link rel="stylesheet" type="text/css" href="/Content/Custom/css/multiple-select.css">  
+<style type="text/css">
+    .ms-drop {
+        width: 233px;
+    }
+
+    .ms-choice {
+        background: none;
+        border: 1px solid #999;
+        border-radius: 0px;
+        height: 30px;
+    }
+
+
+    .lbl {
+        display: inline-block;
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    ul.tt-qlthb {
+        margin-left: 0px;
+    }
+
+        ul.tt-qlthb li {
+            margin-left: 0px;
+            padding-bottom: 10px;
+            min-width: 225px;
+            margin-right: 0px;
+        }
+
+    .width_100 {
+        width: 100%;
+    }
+    .btn-file {
+        background: none repeat scroll 0 0 #eff4f7;
+        border: 1px solid #e2ebf0;
+        border-radius: 2px;
+        color: #6a7074;
+        float: left;
+        margin-left: 15px;
+        margin-top: 12px;
+        overflow: hidden;
+        padding: 6px 15px;
+        position: relative;
+        white-space: nowrap;
+        width: 115px;
+    }
+    .btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 999px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    background: red;
+    cursor: inherit;
+    display: block;
+    height: 28px;
+    width: 116px;
+}
+</style>
+<div class="modal-dialog" style="width:850px" role="document">
+    <div class="modal-content">
+
+       @* @using (Ajax.BeginForm("SaveNguoiDung", "NguoiDung", new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnFailure = "failure",
+            OnSuccess = "updateSuccess"
+        }, new { id = "frmNguoiDungEdit" }))
+        {
+            @Html.AntiForgeryToken()
+            *@
+        <form id="frmNguoiDungEdit" action='@Url.Action("SaveNguoiDung", "NguoiDung", new { area="NguoiDungArea"})' enctype="multipart/form-data" method="post">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Cập nhật người dùng - @Model.DONVI.NAME <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+            </div>
+            <div class="modal-body" id="modal_body" @*style="height:410px; "*@>
+                <div style="width:100%; margin:auto;">
+
+
+                    <input type="hidden" name="NGUOITAO" value="@userInfo.Username" />
+                    <input type="hidden" name="DM_NGUOIDUNG_ID" id="DM_NGUOIDUNG_ID" value="@Model.NGUOIDUNG.DM_NGUOIDUNG_ID" />
+                    <input type="hidden" name="DM_PHONGBAN_ID" id="DM_PHONGBAN_ID" value="@Model.NGUOIDUNG.DM_PHONGBAN_ID" />
+
+                    <div class="row">
+                        <div class="col-sm-6" style="margin-bottom:7px">
+
+
+                            <div class="form-group">
+                                <div class="col-sm-4 label-Field">
+                                    Tên đăng nhập:<span style="color: red;">*</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBox("TENDANGNHAP", Model.NGUOIDUNG.TENDANGNHAP, new { maxlength = 20, @class = "form-control ", @id = "TENDANGNHAP", @readonly = "readonly" })
+                                    <div class="note-error">
+                                        <span id="ErrTENDANGNHAP" class="error mes-note-error"></span>
+                                    </div>
+
+                                    @*<span class="lb-Check" id="TENDANGNHAPExit" style="margin-left: 0px;"></span>
+                                        <span class="lb-Check" id="TENDANGNHAPNull" style="margin-left: 0px;">Bạn nhập tên đăng nhập </span>
+                                        <span class="lb-Check" id="TENDANGNHAPEr" style="margin-left: 0px;">Bạn nhập sai định dạng </span>
+                                        <span class="lb-Check" id="TENDANGNHAPMax" style="margin-left: 0px;">Tên đăng nhập không quá 20 kí tự</span>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6" style="margin-bottom:7px">
+
+                                <div class="col-sm-4 label-Field">
+                                    Mật khẩu:<span style="color: red;">*</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.Password("MATKHAU", Model.NGUOIDUNG.MATKHAU, new { maxlength = 100, @class = "form-control ", @id = "matkhauid", @readonly = "readonly" })
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                    @*<span class="lb-Check" id="MATKHAUNull" style="margin-left:0px">Bạn nhập mật khẩu </span>
+                                        <span class="lb-Check" id="MATKHAUEr" style="margin-left:0px">Mật khẩu phải lớn hơn 8 ký tự và nhỏ hơn 100 ký tự </span>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-6" style="margin-bottom:7px">
+                            <div class="form-group">
+                                <div class="col-sm-4 label-Field">
+                                    Họ tên:<span style="color: red;">*</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBox("HOTEN", Model.NGUOIDUNG.HOTEN, new { maxlength = 255, @class = "form-control required", @id = "CREATE_HOTEN" })
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                    @*<span class="lb-Check" id="CREATE_HOTEN_NULL" style="margin-left: 0px;">Bạn phải nhập họ tên</span>*@
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-6" style="margin-bottom:7px">
+                            <div class="form-group">
+                                <div class="col-sm-4 label-Field">
+                                    Email:<span style="color: red;">*</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBox("EMAIL", Model.NGUOIDUNG.EMAIL, new { @placeholder = "Ví dụ: tenban@gmail.com", maxlength = 255, @class = "form-control validateEmail", @id = "EMAIL" })
+                                    <div class="note-error">
+                                        <span id="ErrEMAIL" class="error mes-note-error"></span>
+                                    </div>
+                                    @*<span class="lb-Check" id="EMAIL_NULL" style="margin-left: 0px;">Bạn phải nhập email</span>
+                                        <span class="lb-Check" id="EMAIL_Exist" style="margin-left: 0px;">Email bạn nhập đã tồn tại</span>
+                                        <span class="lb-Check" id="EMAIL_RE" style="margin-left: 0px;">Bạn phải nhập đúng định dạng email</span>*@
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-6" style="margin-bottom:7px">
+                            <div class="form-group">
+                                <div class="col-sm-4 label-Field">
+
+                                    Điện thoại:
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBox("DIENTHOAI", Model.NGUOIDUNG.DIENTHOAI, new { maxlength = 20, @class = "form-control validatePhone", @id = "dienthoaiid" })
+                                    <div class="note-error">
+                                        <span id="ErrDIENTHOAI" class="error mes-note-error"></span>
+                                    </div>
+                                    @*<span class="lb-Check" id="DIENTHOAIEr" style="margin-left: 0px;">Bạn nhập sai định dạng </span>
+                                        <span class="lb-Check" id="DIENTHOAI10" style="margin-left: 0px;">Bạn nhập ít nhất 10 kí tự </span>
+                                        <span class="lb-Check" id="DIENTHOAIQUA" style="margin-left: 0px;">Không nhập quá 20 kí tự </span>*@
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6" style="margin-bottom:7px">
+                            <div class="form-group">
+
+                                <div class="col-sm-4 label-Field">
+                                    Trạng thái:<span style="color: red;">*</span>
+                                </div>
+                                <div class="col-sm-8">
+
+                                    <select name="TRANGTHAI" id="TRANGTHAI" style="width: 100%;">
+                                        @if (Model.NGUOIDUNG.TRANGTHAI == 1)
+                                        {
+                                            <option value="1" selected>Hiệu lực</option>
+                                            <option value="0">Không hiệu lực</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="1">Hiệu lực</option>
+                                            <option value="0" selected>Không hiệu lực</option>
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+
+                        <div class="col-sm-6" style="margin-bottom:7px;    ">
+                            <div class="form-group">
+
+                                <div class="col-sm-4 label-Field">
+                                    Chức vụ:<span style="color: red;">*</span>
+                                </div>
+
+                                <div class="col-sm-8">
+                                    <div class="input-field4 clearfix" style="width: 233px;">
+                                        @Html.DropDownList("CHUCVU_ID", Model.ListChucVu, new { @style = "width: 100%", @class = "", id = "CREATE_CHUCVU_ID" })
+                                        <div class="note-error">
+                                            <span class="error mes-note-error"></span>
+                                        </div>
+                                        @*<span class="lb-Check" id="CREATE_CHUCVU_ID_NULL" style="margin-left: 0px;">Bạn chọn chức vụ</span>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-6" style="margin-bottom:7px;    ">
+                            <div class="form-group">
+
+                                <div class="col-sm-4 label-Field">
+                                    Vai trò:<span style="color: red;">*</span>
+                                </div>
+
+                                <div class="col-sm-8">
+
+                                    @*<div id="CREATE_DM_VAITRO" class="input-field4 clearfix fix-width ">*@
+
+
+                                    @Html.DropDownList("CREATE_VAITRO_ALL", Model.ListVaiTro, new { @class = "width_100", @multiple = "multiple" })
+
+
+
+                                    @*</div>*@
+
+                                    @*<input type="hidden" name="VAITRO_ID" id="CREATE_VAITRO_ID" />*@
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                    @*<span class="lb-Check" id="CREATE_VAITRO_NULL" style="margin-left: 0px;">Bạn chọn vai trò</span>*@
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+                        <input type="hidden" name="OptionRole" id="OptionRole" value="@(NguoiDungConstant.USE_ROLE_DEFAULT)">
+
+
+                    </div>
+                     <div class="row">
+                        <div class="col-sm-6" style="margin-bottom: 7px;">
+                            <div class="col-sm-4 label-Field">
+                                Ảnh đại diện
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="photo" style="float: left; padding: 0 10px; position: relative">
+                                    <a href="" style="float: left">
+                                        @if(!string.IsNullOrEmpty(Model.NGUOIDUNG.ANH_DAIDIEN)){
+                                            <img id="imgAvatar" class="img-thumbnail" src="~/@Model.NGUOIDUNG.ANH_DAIDIEN" style="height: 60px; width: 60px">    
+                                        }
+                                        else
+                                        {
+                                            <img id="imgAvatar" class="img-thumbnail" src="img/avatars/male.png" style="height: 60px; width: 60px">    
+                                        }
+                                    </a>
+                                    <span class="file-input btn-file">Thay đổi<input type="file" multiple="" name="AVATAR" id="AVATAR">
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer center">
+                <button type="submit" class="btn btn-primary" id="btnSaveEdit" style="border-radius: 3px;">
+                    Lưu
+                </button>
+                <button type="button" class="btn btn-default" onclick="OnCloseLog()" style="border-radius: 3px;" data-dismiss="modal">Đóng</button>
+            </div>
+                </form>
+        @*}*@
+    </div>
+</div>
+<script type="text/javascript">
+
+
+    function OnClose() {
+        $("#PrepareNguoiDung").dialog("close");
+    }
+
+    function failure(xhr, error) {
+        alert(xhr.responseText);
+    }
+
+    function updateSuccess(rs) {
+        if (rs) {
+            NotiSuccess("Cập nhật người dùng thành công");
+        }
+        OnCloseLog();
+        $("#frmNguoiDungEdit").remove();
+        ReloadPage();
+    }
+    function OnCloseLog() {
+        $("#edit_nhan_su_dialog_modal").html("");
+        $("#edit_nhan_su_dialog_modal").modal("hide");
+    }
+
+
+    function pageFunction() {
+
+
+        $("#CREATE_VAITRO_ALL").multipleSelect({
+            multiple: true,
+            filter: true,
+            placeholder: "Chọn vai trò"
+        });
+        $("#TRANGTHAI").multipleSelect({
+            multiple: false,
+            filter: false,
+            single: true,
+
+        });
+        $("#CREATE_CAPCOSO").multipleSelect({
+            multiple: false,
+            filter: false,
+            single: true,
+
+            placeholder: "Chọn cấp cơ sở"
+        });
+        $("#CREATE_COSO").multipleSelect({
+            multiple: false,
+            filter: false,
+            single: true,
+            selectAll: false,
+            ellipsis: true,
+            placeholder: "Chọn cơ sở"
+        });
+
+        $("#CreateDonVi").multipleSelect({
+            multiple: false,
+            filter: false,
+            single: true,
+            placeholder: "Chọn đơn vị"
+        });
+        $("#CREATE_CHUCVU_ID").multipleSelect({
+            multiple: false,
+            single: true,
+            filter: false,
+            placeholder: "Chọn chức vụ"
+        });
+
+
+        $("#EMAIL").change(function () {
+            $("#EMAIL").val($("#EMAIL").val().trim());
+            var EMAIL = $("#EMAIL").val();
+            if ($("#EMAIL").val().trim() == "") {
+
+            } else {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("isEmailExist", "NguoiDung")',
+                    cache: false,
+                    data: {
+                        EMAIL: EMAIL,
+                        userID: '@Model.NGUOIDUNG.DM_NGUOIDUNG_ID'
+                    },
+                    success: function (data) {
+                        if (data) {
+                            $("#ErrEMAIL").html("Email đã tồn tại");
+                            $("#ErrEMAIL").css("display", "inline");
+                            $("#EMAIL").val("");
+
+                        } else {
+                            $("#ErrEMAIL").css("display", "none");
+                        }
+                    }
+                });
+
+            }
+
+        });
+
+        $("#btnSaveEdit").click(function () {
+            var err = 0;
+            var required = requiredFieldForFormId("frmNguoiDungEdit");
+            if (!required) {
+                err++;
+            }
+            var matkhau = ValidateFieldPassword("frmNguoiDungEdit");
+            if (!matkhau) {
+                err++;
+            }
+
+            var email = ValidateFieldEmail("frmNguoiDungEdit");
+            if (!email) {
+                err++;
+            }
+            if ($("#dienthoaiid").val() != "") {
+                var phone = RegexPhone("frmNguoiDungCreate", "dienthoaiid");
+                if (!phone) {
+                    err++;
+                }
+            } else {
+                $("#ErrDIENTHOAI").css("display", "none");
+            }
+
+
+
+            var vaitro = checkRequireElementSelect("frmNguoiDungEdit", "CREATE_VAITRO_ALL");
+            if (!vaitro) {
+                err++;
+            }
+            if (err == 0) {
+                return true;
+            } else {
+                NotiError("Có lỗi, vui lòng kiểm tra lại");
+                return false;
+            }
+        });
+
+        $("#TENDANGNHAP").change(function () {
+
+            if (($(this).val().trim() == null || $(this).val().trim() == "")) {
+
+                //$(this).focus();
+            } else {
+
+                $.ajax({
+                    type: "GET",
+                    data: { TenDangNhap: $("#TENDANGNHAP").val(), NguoiDungId: $("#DM_NGUOIDUNG_ID").val() },
+                    cache: false,
+                    url: '@Url.Action("TenDangNhapExit", "NguoiDung")',
+                    success: function (data) {
+                        if (data.error == true) {
+                            $("#ErrTENDANGNHAP").html("Tên đăng nhập đã tồn tại");
+                            $("#ErrTENDANGNHAP").css("display", "inline");
+
+
+                        } else {
+                            $("#ErrTENDANGNHAP").css("display", "none");
+                        }
+                    }
+                });
+            }
+
+
+        });
+
+    }
+    $("#AVATAR").change(function () {
+        readURL(this);
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("#imgAvatar").attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    loadScript("Scripts/jquery.unobtrusive-ajax.min.js", function () {
+        loadScript("Scripts/multiple-select.js", pageFunction);
+    });
+</script>

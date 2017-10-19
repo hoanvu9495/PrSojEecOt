@@ -1,0 +1,68 @@
+﻿@model Web.Areas.WorkFlowArea.Models.WorkFlowContentTypeViewModel
+
+@using (Ajax.BeginForm("SaveConfigContentType", "WorkFlow", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnFailure = "failure",
+    OnSuccess = "updateSuccess"
+}, new { id = "frmWorkFlowCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div style="margin-left: 20%;">
+        <table>
+            <tr style="height: 20px;"></tr>
+            <tr>
+                <td>
+                    <label class="lbl">Tên loại nội dung:</label>
+                </td>
+                <td>
+                    <b>@Model.WF_LOAINOIDUNG.TENLOAINOIDUNG</b>
+                </td>
+            </tr>
+            <tr style="height: 20px;"></tr>
+            <tr>
+                <td>
+                    <label class="lbl">Luồng xử lý:<span style="color: red;">*</span></label>
+                </td>
+                <td>
+                    <div class="input-field4  clearfix" style="width: 233px;">
+                        @Html.DropDownListFor(m => m.WF_LOAINOIDUNG.WF_ID, Model.ListWorkFlow, "[--- Chọn luồng xử lý ---]", new { @id = "WF_ID", @style = "width: 100%" })
+                    </div>
+                </td>
+            <tr>
+                <td style="height: 20px;"></td>
+                <td>
+                    <span class="lb-Check" id="WF_ID_NULL" style="margin-left: 0px;">Bạn hãy chọn luồng xử lý</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin-top: 15px; text-align: center;">
+        @Html.HiddenFor(m => m.WF_LOAINOIDUNG.LOAINOIDUNG_ID)
+        @Html.HiddenFor(m => m.WF_LOAINOIDUNG.TENLOAINOIDUNG)
+        <input type="submit" class="btnSave" value="Lưu" id="btnSave" />
+        <input type="button" value="Đóng" onclick="OnClose()" style="background-color: #336699; height: 30px; border: none; width: 100px; color: white;" />
+    </div>
+}
+
+<script type="text/javascript">
+    function failure(xhr, error) {
+        CommonJS.alert(xhr.responseText);
+    }
+    function updateSuccess(xhr) {
+        CommonJS.alert(xhr.Message);
+    }
+    $(document).ready(function () {
+        $("#btnSave").click(function () {
+            if (validate_element($("#WF_ID"), $("#WF_ID_NULL"), "", "", "0") == 0) {
+                $("#WF_ID_NULL").show();
+                $("#WF_ID").focus();
+                return false;
+            }
+        });
+    });
+    function OnClose() {
+        $("#Config_Dialog").dialog("close");
+    }
+</script>
