@@ -1,6 +1,7 @@
 ﻿@using Web.FwCore;
 @using Business.CommonBusiness;
-@model List<GroupTuDienBO>
+@using Web.Areas.BaiVietArea.Models;
+@model ImportSpinVM
 
 <style>
     .control-label {
@@ -8,24 +9,61 @@
         font-weight: bold;
         margin-left: 15px;
     }
+
+    #content-hthong .bootstrap-tagsinput .tag [data-role="remove"] {
+        display: none;
+    }
+
+    #content-hthong .bootstrap-tagsinput input {
+        display: none;
+    }
 </style>
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Quản lý từ thay thế <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+    <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Thêm từ thay thế <span id="detail" style="color: yellow; text-transform: none"></span></h4>
 </div>
 <div class="modal-body">
-    <div class="row form">
-        @foreach (var item in Model)
-        {
-            <input class="form-control tagsinput" value="@item.Words" data-role="tagsinput">
-        }
 
+    <div class=" row">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="center">STT</th>
+                    <th>Tên nhóm</th>
+                    <th>Danh sách từ</th>
+                    <th>Chọn</th>
+                </tr>
+            </thead>
+            <tbody id="content-hthong">
+                @for (int i = 0; i < Model.LstTuSpin.Count; i++)
+                {
+
+                    <tr>
+                        <td width="50" class="center txt-id" data-id="@Model.LstTuSpin[i].ID">@(i + 1) </td>
+                        <td>
+
+                            @Model.LstTuSpin[i].NAME
+
+                        </td>
+                        <td width="60%">
+                            <input class="form-control tagsinput " disabled value="@Model.LstTuSpin[i].Words" data-role="tagsinput">
+                        </td>
+                        <td class="center">
+                            <input data-name="rowWord" type="checkbox" />
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
     </div>
 </div>
 <div class="modal-footer">
     <div class="center">
-        <button class="btn btn-primary btn-sm" id="btn-themmoi-BaiViet">Thêm mới</button>
+        <button class="btn btn-info btn-sm" onclick="addTuDien()">Thêm mới</button>
+        <button class="btn btn-default btn-sm" data-dismiss="modal">Đóng</button>
     </div>
 </div>
 
@@ -35,7 +73,53 @@
     function PagefunctionCreate() {
         CKEDITOR.replace('NOIDUNGBaiViet');
 
+
     }
+
+    function getLstGroup() {
+        var arrGroup=[];
+        $("#content-hthong input:checkbox:checked").each(function () {
+            var objtr= $(this).parents('tr').find("td.txt-id");
+            
+            arrGroup.push(parseInt(objtr.attr("data-id")));
+        });
+        return arrGroup;
+    }
+
+    function addTuDien() {
+        var arrGroup=getLstGroup();
+        if (arrGroup.length>0) {
+            var datapram = { 'idbai': parseInt(@Model.BaiViet.ID), 'lstGroup': arrGroup };
+
+            $.ajax({
+                url: '/baivietarea/baiviet/SaveCauHinh',
+                type: 'post',
+                contentType:"application/json",
+                dataType:"json",
+                data:JSON.stringify(datapram),
+                success:function (rs) {
+                    if (rs.Status) {
+                        NotiSuccess("Cập nhật thành công");
+                        onCloseCauHinh();
+                    }
+                },
+                error:function () {
+                    NotiError("Không thực hiện được thao tác");
+                }
+            });
+        }else {
+            NotiError("Vui lòng chọn nhóm từ");
+        }
+        
+    }
+
+    $("#content-hthong input:checkbox[data-name=rowWord]").change(function () {
+        var trobj = $(this).parents("tr");
+        if (trobj.length!=0) {
+            trobj.toggleClass("success");
+        }
+
+    })
     $(document).ready(function () {
         loadScript("/js/plugin/bootstrap-tags/bootstrap-tagsinput.min.js", function () {
             $('.tagsinput').tagsinput('refresh')

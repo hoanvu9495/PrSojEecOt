@@ -15,7 +15,12 @@
     padding: 10px 20px 0px !important;
     margin: 0px !important;
 }
-
+ .header-block {
+        font-weight: bold;
+        font-size: 16px;
+        margin: 10px 0 5px 0;
+        text-transform: uppercase;
+    }
 
 
 

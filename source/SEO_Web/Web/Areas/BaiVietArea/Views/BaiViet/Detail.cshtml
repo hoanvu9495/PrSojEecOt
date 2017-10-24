@@ -19,6 +19,23 @@
         margin: 10px 0 5px 0;
         text-transform: uppercase;
     }
+
+    .block-content {
+        margin: 10px;
+    }
+
+    blockquote {
+        font-size: 13px;
+    }
+
+        blockquote .small, blockquote footer, blockquote small {
+            font-size: 90%;
+        }
+
+    .clear-both {
+        clear: both;
+        margin-top: 15px;
+    }
 </style>
 <div id="ribbon" style=" background-color:#57889c">
 
@@ -37,43 +54,89 @@
 <div id="content">
     <div class="well">
         <div class="header-block">Thông tin bài viết</div>
-        <div>
-            <table class="projects-table table table-striped table-bordered table-hover">
-                <tbody>
-                    <tr>
-                        <td class="title">Tiêu đề</td>
-                        <td>@Model.BaiViet.TIEUDE</td>
-                    </tr>
-                    <tr>
-                        <td class="title">Ngày tạo</td>
-                        <td>@string.Format("{0:dd/MM/yyyy HH:mm:ss}", Model.BaiViet.NGAYTAO)</td>
+        <div class="block-content">
+            <blockquote>
+                <h5 class="margin-top-0"><strong>@Model.BaiViet.TIEUDE</strong><br><small class="font-xs"><i>Ngày tạo @string.Format("{0:dd/MM/yyyy HH:mm:ss}", Model.BaiViet.NGAYTAO)</i></small></h5>
+                <p>
+                    @Html.Raw(Model.BaiViet.NOIDUNG)
+                </p>
+            </blockquote>
+            @*<table class="projects-table table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td class="title">Tiêu đề</td>
+                            <td>@Model.BaiViet.TIEUDE</td>
+                        </tr>
+                        <tr>
+                            <td class="title">Ngày tạo</td>
+                            <td>@string.Format("{0:dd/MM/yyyy HH:mm:ss}", Model.BaiViet.NGAYTAO)</td>
 
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="title">Nội dung</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="title">Nội dung</td>
 
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="margin:10px 30px;">@Html.Raw(Model.BaiViet.NOIDUNG)</td>
-                    </tr>
-                </tbody>
-            </table>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="margin:10px 30px;">@Html.Raw(Model.BaiViet.NOIDUNG)</td>
+                        </tr>
+                    </tbody>
+                </table>*@
             <div class="center">
                 <div class="btn-group">
                     <a class="btn btn-primary">Đăng bài viết</a>
-                    <a class="btn btn-primary">Tạo bài viết mở rộng</a>
-                    <a href="javascript:CauHinhSpin()" class="btn btn-primary ">Quản lý từ thay thế</a>
+                    <a href="javascript:TaoBaiViet()" class="btn btn-primary">Tạo bài viết mở rộng</a>
+                    <a href="javascript:TaoBaiVietAuto()" class="btn btn-primary">Tạo bài viết tự động</a>
+                    <a href="/baivietarea/baiviet/QuanLySpinBaiViet/@Model.BaiViet.ID" class="btn btn-primary ">Quản lý từ thay thế</a>
                 </div>
             </div>
 
         </div>
     </div>
     <div class="well">
-        <div class="header-block">Thông tin bài viết mở rộng</div>
-        <div>
+        <div class="header-block">
+            Danh sách bài viết mở rộng <span class="red" id="countTotal">(@Model.LstBaiVietExtend.Count)</span>
+            <div class="pull-right col-md-4">
+                <div class="input-group">
+                    <input class="form-control" id="key-search-detail" type="text" style="font-weight:normal;" placeholder="Từ khóa tiêu đề ..." />
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" id="btn-searchDetail">Tìm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="BVExtendContent" class="clear-both">
+            @if (Model.LstBaiVietExtend.ListItem.Any())
+            {
+                foreach (var item in Model.LstBaiVietExtend.ListItem)
+                {
+                    <div class="block-content">
+                        <blockquote>
+                            @Html.Raw(item.NOIDUNG)
+                            <small>
+                                @item.TIEUDE <cite title="Source Title">@String.Format("{0:dd/MM/yyyy HH:mm:ss}", item.NGAYTAO)</cite>
+                                <span class="btn-group pull-right">
+                                    <a class="btn btn-info btn-xs" title="Đăng bài viết">Đăng</a>
+                                    <a class="btn btn-info btn-xs" href="javascript:EditBaiViet(@item.ID)" title="Sửa bài viết">Sửa</a>
+                                    <a href="javascript:DeleteBaiViet(@item.ID)" class="btn btn-info btn-xs" title="Xóa bài viết">Xóa</a>
+                                </span>
+                            </small>
+
+                        </blockquote>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="center"><i>Không có bài viết mở rộng nào</i></div>
+            }
 
         </div>
+        <div class="center row">
+            <ul class="pagination pagination-sm" id="paging1"></ul>
+        </div>
     </div>
+
 </div>
 
 <div id="CauHinhSpin" title="Quản lý từ thay thế" role="dialog" class="modal fade">
@@ -85,7 +148,211 @@
     </div>
 
 </div>
+
+<div id="TaoBaiViet" title="Tạo bài viết" role="dialog" class="modal fade">
+    <div class="modal-dialog" style=" width: 80%;">
+        <!-- Modal content-->
+        <div class="modal-content" id="div_TaoBai_Spin">
+
+        </div>
+    </div>
+
+</div>
+
+<div id="EditBaiViet" title="Cập nhật bài viết" role="dialog" class="modal fade">
+    <div class="modal-dialog" style=" width: 80%;">
+        <!-- Modal content-->
+        <div class="modal-content" id="div_formCapNhat_BaiViet">
+
+        </div>
+    </div>
+
+</div>
+
+
+<div id="TaoBaiVietAuto" title="Tạo bài viết tự động" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" id="div_TaoBaiAuto_Spin">
+
+        </div>
+    </div>
+
+</div>
 <script>
+
+
+    function CloseCapNhatModal() {
+        $("#EditBaiViet #form_CapNhat_BaiViet")[0].reset();
+        $("#EditBaiViet").modal("hide");
+    }
+
+    function EditBaiViet(id) {
+        if (id > 0) {
+            $.ajax({
+                url: '/BaiVietArea/BaiViet/Edit/' + id,
+                type: 'Get',
+                success: function (rs) {
+                    $("#div_formCapNhat_BaiViet").html(rs);
+                    $("#EditBaiViet").modal("show");
+                }, error: function () {
+                    NotiError("Không thực hiện được thao tác");
+                }
+            });
+        } else {
+            NotiError("Không tìm thấy nội dung.");
+        }
+
+    }
+    var pageCurrent=1;
+
+    $("#btn-searchDetail").click(function () {
+        $.ajax({
+            url: '/baivietarea/baiviet/SearchDetail',
+            type:'Post',
+            dataType: 'Json',
+            async:false,
+            data:{'id':@Model.BaiViet.ID,'key':$("#key-search-detail").val()},
+            success:function (rs) {
+                pageCurrent=1;
+                $("#countTotal").html('('+rs.Count+')');
+                loadDataExtend(rs.ListItem);
+                GenPaging(1, rs.TotalPage, "paging1", 'GetDataPage');
+            },
+            error:function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+    })
+    function GetDataPage(page) {
+        $.ajax({
+            url: '/baivietarea/baiviet/ReloadExtendBV',
+            type:'Post',
+            dataType: 'Json',
+            async:false,
+            data:{'idBV':@Model.BaiViet.ID,'page':page},
+            success:function (rs) {
+                pageCurrent=page;
+                $("#countTotal").html('('+rs.Count+')');
+                loadDataExtend(rs.ListItem);
+                GenPaging(1, rs.TotalPage, "paging1", 'GetDataPage');
+            },
+            error:function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+    }
+
+    function loadDataExtend(arr){
+        var strResutl="";
+        if (arr.length>0) {
+            for (var i = 0; i < arr.length; i++) {
+                strResutl+="<div class='block-content'>";
+                strResutl+="<blockquote>";
+                strResutl+=arr[i].NOIDUNG;
+                strResutl+="<small>";
+                strResutl+=arr[i].TIEUDE ;
+                strResutl+=" <cite title='Source Title'>";
+                strResutl+=GetTextDateTime(arr[i].NGAYTAO);
+                strResutl+="</cite>";
+                strResutl+="<span class='btn-group pull-right'>";
+                strResutl+="<a class='btn btn-info btn-xs' title='Đăng bài viết'>Đăng</a>";
+                strResutl+="<a class='btn btn-info btn-xs' href='javascript:EditBaiViet("+arr[i].ID+")' title='Sửa bài viết'>Sửa</a>";
+                strResutl+="<a href='javascript:DeleteBaiViet("+arr[i].ID+")' class='btn btn-info btn-xs' title='Xóa bài viết'>Xóa</a>";
+                strResutl+="</span></small></blockquote></div>";
+            }
+        }else {
+            strResutl+=' <div class="center"><i>Không có bài viết mở rộng nào</i></div>';
+        }
+
+        $("#BVExtendContent").html(strResutl);
+    }
+
+    function reloadData() {
+        GetDataPage(1);
+    }
+
+    function DeleteBaiViet(id) {
+        if (id > 0) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa bài viết này?',
+                'buttons': {
+                    'Đồng ý': {
+                        'class': 'btn-confirm-yes btn-primary',
+                        'action': function () {
+                            $.ajax({
+                                url: '@Url.Action("Delete", "BaiViet", new { @area = "BaiVietArea" })',
+                                type: 'post',
+                                cache: false,
+                                data: { 'id': id },
+                                success: function (rs) {
+                                    if (rs.Status) {
+                                        NotiSuccess("Xóa thành công bài viết");
+                                        reloadData();
+                                    } else {
+                                        NotiError(rs.Message);
+                                    }
+                                },
+                                error: function (err) {
+                                    NotiError("Không thực hiện được thao tác");
+                                }
+                            });
+                        }
+                    },
+                    'Hủy bỏ': {
+                        'class': 'btn-default',
+                        'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+        } else {
+            NotiError("Không tìm thấy nội dung.");
+        }
+
+
+    }
+
+    function  oncloseTaoBaiViet() {
+        $("#div_TaoBai_Spin").empty();
+        $("#TaoBaiViet").modal("hide");
+    }
+    function TaoBaiViet(){
+
+        $.ajax({
+            url: '/baivietarea/baiviet/TaoBai/'+@Model.BaiViet.ID,
+            type:'get',
+            success:function (rs) {
+                $("#div_TaoBai_Spin").html(rs);
+                $("#TaoBaiViet").modal('show');
+            },
+            error:function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+
+    }
+
+    function onCloseTaoMoiAuto() {
+        $("#div_TaoBaiAuto_Spin").empty();
+        $("#TaoBaiVietAuto").modal('hide');
+    }
+
+    function TaoBaiVietAuto(){
+
+        $.ajax({
+            url: '/baivietarea/baiviet/TaoBaiAuto/'+@Model.BaiViet.ID,
+            type:'get',
+            success:function (rs) {
+                $("#div_TaoBaiAuto_Spin").html(rs);
+                $("#TaoBaiVietAuto").modal('show');
+            },
+            error:function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+
+    }
     function CauHinhSpin() {
         $.ajax({
             url: '/baivietarea/baiviet/CauHinhSpin/'+@Model.BaiViet.ID,
@@ -100,5 +367,13 @@
         });
     }
 
+    function pagefunctionDetail(){
+        DefineCssPageList();
+        GenPaging(1, 1, "paging1", 'GetDataPage');
+    }
+
+    $(document).ready(function () {
+        loadScript("/Scripts/jquery.unobtrusive-ajax.min.js", pagefunctionDetail);
+    })
 
 </script>

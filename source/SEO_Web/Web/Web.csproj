@@ -251,8 +251,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\BaiVietArea\BaiVietAreaAreaRegistration.cs" />
     <Compile Include="Areas\BaiVietArea\Controllers\BaiVietController.cs" />
+    <Compile Include="Areas\BaiVietArea\Models\DataSpinVM.cs" />
     <Compile Include="Areas\BaiVietArea\Models\DetailBaiVietVM.cs" />
+    <Compile Include="Areas\BaiVietArea\Models\ImportSpinVM.cs" />
     <Compile Include="Areas\BaiVietArea\Models\IndexBaiVietVM.cs" />
+    <Compile Include="Areas\BaiVietArea\Models\TaoBaiVM.cs" />
     <Compile Include="Areas\CoCauToChucArea\CoCauToChucAreaAreaRegistration.cs" />
     <Compile Include="Areas\CoCauToChucArea\Controllers\CoCauToChucController.cs" />
     <Compile Include="Areas\CoCauToChucArea\Models\CoCauToChucIndexModel.cs" />
@@ -289,6 +292,7 @@
     <Compile Include="Common\NotifyHelper.cs" />
     <Compile Include="Common\PasswordHelper.cs" />
     <Compile Include="Common\SmtpMailer.cs" />
+    <Compile Include="Common\SpinProvider.cs" />
     <Compile Include="Common\StaticData.cs" />
     <Compile Include="Common\UIConstant.cs" />
     <Compile Include="Common\Ultilities.cs" />
@@ -1876,6 +1880,7 @@
     <Content Include="Nodejs\socket.io-client\test\socket.test.js" />
     <Content Include="Nodejs\socket.io-client\test\util.test.js" />
     <Content Include="Nodejs\socket.io-client\test\worker.js" />
+    <Content Include="Scripts\autoNumeric.min.js" />
     <Content Include="Scripts\bootstrap-waitingfor.min.js" />
     <Content Include="Scripts\ContextMenu\font\context-menu-icons.eot" />
     <Content Include="Scripts\ContextMenu\font\context-menu-icons.ttf" />
@@ -2332,6 +2337,10 @@
     <Content Include="Areas\BaiVietArea\Views\BaiViet\_SearchFormBaiVietPartial.cshtml" />
     <Content Include="Areas\BaiVietArea\Views\BaiViet\Detail.cshtml" />
     <Content Include="Areas\BaiVietArea\Views\BaiViet\_QuanLySpinPartial.cshtml" />
+    <Content Include="Areas\BaiVietArea\Views\BaiViet\_TaoBaiSpinPartial.cshtml" />
+    <Content Include="Areas\BaiVietArea\Views\BaiViet\_TaoBaiAutoPartial.cshtml" />
+    <Content Include="Areas\BaiVietArea\Views\BaiViet\QuanLySpinBaiViet.cshtml" />
+    <Content Include="Areas\BaiVietArea\Views\BaiViet\_KeThuaPartial.cshtml" />
     <None Include="Properties\PublishProfiles\eBiz.pubxml" />
     <None Include="Properties\PublishProfiles\vnio.pubxml" />
     <None Include="Scripts\jquery-1.11.0.intellisense.js" />

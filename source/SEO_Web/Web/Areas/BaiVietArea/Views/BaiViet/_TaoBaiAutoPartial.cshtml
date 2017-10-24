@@ -1,0 +1,101 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using Web.Areas.BaiVietArea.Models;
+@using Model.DBTool;
+@model SPIN_BAIVIET
+
+<style>
+    .control-label {
+        font-size: small;
+        font-weight: bold;
+        margin-left: 15px;
+    }
+
+    .select2-container .select2-choice .select2-arrow {
+        border: none;
+        background: none;
+    }
+
+    /*.select2-container .select2-choice {
+        border:none;
+        height: 22px;
+    }*/
+</style>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Tạo bài viết mới tự động <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="form-horizontal" id="form-taomoi-auto">
+            <div class="control-label col-md-4">Số bài</div>
+            <div class="col-md-8">
+                <input type="text" class="form-control txt-number required" id="sl_baiViet" />
+                <div class="note-error">
+                    <span class="error mes-note-error"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="center">
+        <button class="btn btn-primary btn-sm" id="btn-GenBai">Tạo</button>
+    </div>
+</div>
+
+
+<script>
+    //onCloseTaoMoiAuto
+    $("#btn-GenBai").click(function () {
+        var err=0;
+        err+=requiredFieldForFormId("form-taomoi-auto")?0:1;
+        if (!err) {
+            var sl = parseInt($("#sl_baiViet").val());
+            if (sl>0) {
+                $.ajax({
+                    url: '/baivietarea/baiviet/GenBaiAuto/'+@Model.ID,
+                    type:'post',
+                    data:{'id':@Model.ID,'sl':sl},
+                   
+                    success:function (rs) {
+                        if (rs.Status) {
+                            GetDataPage(1);
+                            onCloseTaoMoiAuto();
+                        }else {
+                            NotiError(rs.Message);
+                        }
+
+                    },
+                    error:function () {
+                        NotiError("Không thực hiện được thao tác");
+                    },
+                  
+                });
+            }else {
+                NotiError("Vui lòng nhập số lượng bài");
+            }
+        }else {
+            NotiError("Vui lòng nhập số lượng bài");
+        }
+
+
+
+    })
+    function pagefuntionTaoMoiAuTO() {
+        $(".txt-number").autoNumeric( { vMin: 0, mDec: 0 });
+    }
+
+
+
+    $(document).ready(function () {
+        loadScript("/Scripts/autoNumeric.min.js", function () {
+            loadScript("/js/plugin/ckeditor/ckeditor.js", function () {
+                loadScript("/js/plugin/select2/select2.min.js", pagefuntionTaoMoiAuTO);
+            });
+        });
+
+    });
+
+</script>

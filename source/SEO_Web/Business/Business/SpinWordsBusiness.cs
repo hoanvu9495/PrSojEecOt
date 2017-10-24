@@ -34,5 +34,10 @@ namespace Business.Business
                 throw new Exception(ex.Message);
             }
         }
+
+        public List<SPIN_WORDS> getListByGroup(int groupid)
+        {
+            return this.context.SPIN_WORDS.Where(x => x.NHOMTU_ID == groupid).ToList();
+        }
     }
 }

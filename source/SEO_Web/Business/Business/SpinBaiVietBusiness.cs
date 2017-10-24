@@ -37,9 +37,58 @@ namespace Business.Business
             }
         }
 
-        public List<SPIN_BAIVIET> GetListExtend(int baivietID)
+        public PageListResultBO<SPIN_BAIVIET> GetListExtend(SearchBaiVietBO searchModel, int baivietID, int pageIndex = 1, int pageSize = 10)
         {
-            return this.context.SPIN_BAIVIET.Where(x => x.IS_ORIGIN == false && x.EXTEND_OF == baivietID).ToList();
+            var result = new PageListResultBO<SPIN_BAIVIET>();
+            var pagelist = this.context.SPIN_BAIVIET.Where(x => x.IS_ORIGIN == false && x.EXTEND_OF == baivietID);
+            if (searchModel != null)
+            {
+                if (!string.IsNullOrEmpty(searchModel.TieuDe))
+                {
+                    pagelist = pagelist.Where(x => x.TIEUDE.Contains(searchModel.TieuDe));
+                }
+
+            }
+            var resultpagelist = pagelist.OrderByDescending(x => x.ID).ToPagedList(pageIndex, pageSize);
+            result.Count = resultpagelist.TotalItemCount;
+            result.TotalPage = resultpagelist.PageCount;
+            result.ListItem = resultpagelist.ToList();
+            return result;
+        }
+
+        public List<BaiVietGroupTuBO> GetListBaiVietUser(int userID)
+        {
+            var query = (from baiviet in this.context.SPIN_BAIVIET.Where(x => x.USER_ID == userID && x.IS_ORIGIN == true)
+                        join tbl_group in this.context.SPIN_BAIVIET_GROUP on baiviet.ID equals tbl_group.ID_BAI into gGrouptu
+                        select new BaiVietGroupTuBO()
+                        {
+                            ID = baiviet.ID,
+                            TIEUDE = baiviet.TIEUDE,
+                            NOIDUNG = baiviet.NOIDUNG,
+                            lstGroup = this.context.SPIN_GROUP_WORD.Where(x => gGrouptu.Select(o => o.ID_GROUP_TU).Contains(x.ID)).Select(x => new GroupTuDienBO()
+                         {
+                             ID = x.ID,
+                             FOR_USER = x.FOR_USER,
+                             IS_DELETE = x.IS_DELETE,
+                             IS_GLOBAL = x.IS_GLOBAL,
+                             NAME = x.NAME,
+                             NGAYSUA = x.NGAYSUA,
+                             NGAYTAO = x.NGAYTAO,
+                             NGUOISUA = x.NGUOISUA,
+                             NGUOITAO = x.NGUOITAO,
+                             LstWords = this.context.SPIN_WORDS.Where(y => y.NHOMTU_ID == x.ID).ToList(),
+                           
+                         }).OrderByDescending(x => x.ID).ToList()
+                        }).OrderByDescending(x => x.ID).ToList();
+            foreach (var item in query)
+            {
+                foreach (var itemword in item.lstGroup)
+                {
+                    itemword.Words = string.Join(",", itemword.LstWords.Select(x => x.TU_CUMTU).ToArray());
+                }
+               
+            }
+            return query;
         }
 
         public BaiVietBO GetByID(int idBaiViet)

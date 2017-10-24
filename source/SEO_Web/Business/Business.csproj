@@ -133,6 +133,7 @@
     <Compile Include="Business\XaBusiness.cs" />
     <Compile Include="Business\VaitroThaotacBusiness.cs" />
     <Compile Include="CommonBusiness\BaiVietBO.cs" />
+    <Compile Include="CommonBusiness\BaiVietGroupTuBO.cs" />
     <Compile Include="CommonBusiness\BaoCaoResultBO.cs" />
     <Compile Include="CommonBusiness\CCTCItemTreeBO.cs" />
     <Compile Include="CommonBusiness\ChartItemBO.cs" />
@@ -149,9 +150,11 @@
     <Compile Include="CommonBusiness\BusinessException.cs" />
     <Compile Include="CommonBusiness\ImapSmtpMailServer.cs" />
     <Compile Include="CommonBusiness\NguoiDungVaiTroBO.cs" />
+    <Compile Include="CommonBusiness\ParamReplceSpinBO.cs" />
     <Compile Include="CommonBusiness\SearchBaiVietBO.cs" />
     <Compile Include="CommonBusiness\SearchBaoCaoNoThueBO.cs" />
     <Compile Include="CommonBusiness\SearchChamToKhaiBO.cs" />
+    <Compile Include="CommonBusiness\SpinMarkBO.cs" />
     <Compile Include="CommonBusiness\SysTinNhanBO.cs" />
     <Compile Include="CommonBusiness\ChatBO.cs" />
     <Compile Include="CommonBusiness\ChucNangTrangChuVaiTroBO.cs" />

@@ -35,8 +35,13 @@ namespace Business.Business
                 throw new Exception(ex.Message);
             }
         }
+        public SPIN_BAIVIET_GROUP GetNhomTuByBaiViet(long idBaiViet, int nhomtuID)
+        {
+            var query = this.context.SPIN_BAIVIET_GROUP.Where(x => x.ID_BAI == idBaiViet && x.ID_GROUP_TU == nhomtuID).FirstOrDefault();
+            return query;
+        }
 
-        public List<GroupTuDienBO> GetTuDienSpin(int idBaiViet)
+        public List<GroupTuDienBO> GetTuDienSpin(long idBaiViet)
         {
             var query = (from grp in this.context.SPIN_BAIVIET_GROUP.Where(x => x.ID_BAI == idBaiViet)
                          join gr_word in this.context.SPIN_GROUP_WORD on grp.ID_GROUP_TU equals gr_word.ID
@@ -60,5 +65,7 @@ namespace Business.Business
             }
             return query;
         }
+
+       
     }
 }

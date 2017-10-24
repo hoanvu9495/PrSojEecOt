@@ -1,0 +1,231 @@
+﻿@{
+    ViewBag.Title = "Quản lý từ thay thế bài viết";
+    Layout = "~/Views/Shared/_LayoutSmartDms.cshtml";
+}
+
+@using Model.DBTool;
+@using Newtonsoft.Json;
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Web.Areas.BaiVietArea.Models;
+@model DataSpinVM
+<style>
+    .control-label {
+        font-size: small;
+        font-weight: bold;
+        margin-left: 15px;
+    }
+
+    .width100 {
+        width: 100% !important;
+    }
+
+    .has-change {
+        border-color: #b94a48;
+    }
+</style>
+<div id="ribbon" style=" background-color:#57889c">
+
+    <div class="col-md-6 col-sm-6">
+        <ol class="breadcrumb">
+            <!-- This is auto generated -->
+        </ol>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        <a class="btn btn-default btn-flat pull-right" href="/baivietarea/baiviet/index">
+            <i class="fa fa-reply"></i> <span>Quay lại</span>
+        </a>
+        <a class="btn btn-default btn-flat pull-right" href="javascript:CauHinhSpin()">
+            <i class="fa fa-database"></i> <span>Nhập từ hệ thống</span>
+        </a>
+        <a class="btn btn-default btn-flat pull-right" href="javascript:KeThuaCauHinhSpin()">
+            <i class="fa fa-clipboard"></i> <span>Kế thừa từ bài viết khác</span>
+        </a>
+    </div>
+</div>
+<div id="content">
+    <div class="well">
+        <div class="header-block">Thông tin bài viết</div>
+        <div class="block-content">
+            <blockquote>
+                <h5 class="margin-top-0"><strong>@Model.BaiViet.TIEUDE</strong><br><small class="font-xs"><i>Ngày tạo @string.Format("{0:dd/MM/yyyy HH:mm:ss}", Model.BaiViet.NGAYTAO)</i></small></h5>
+                <p>
+                    @Html.Raw(Model.BaiViet.NOIDUNG)
+                </p>
+            </blockquote>
+        </div>
+    </div>
+    <div class="jarviswidget" id="wid-id-0">
+        <header role="heading">
+            <h2 class="group-tittle mt10">
+                Từ thay thế bài viết: @Model.BaiViet.TIEUDE
+            </h2>
+
+        </header>
+        <div class="widge-t-body no-padding">
+            <div class="custom-scroll table-responsive  form-inline dt-bootstrap  no-footer">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="center">STT</th>
+                            <th>Tên nhóm</th>
+                            <th>Danh sách từ</th>
+                            <th class="center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="content-ttt">
+                        @for (int i = 0; i < Model.DataSpin.Count; i++)
+                        {
+
+
+                            <tr>
+                                <td width="50" data-type="id" class="center" data-id="@Model.DataSpin[i].ID">@(i + 1) </td>
+                                <td>
+                                    <div class="form-group width100">
+                                        <input data-type="name" class="form-control width100" type="text" value="@Model.DataSpin[i].NAME" />
+                                        <div class="note-error">
+                                            <span class="error mes-note-error"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td width="60%">
+                                    <input data-type="word" class="form-control tagsinput" value="@Model.DataSpin[i].Words" data-role="tagsinput">
+                                </td>
+                                <td class="center">
+                                    <div class="btn-group">
+                                        <button class="btn btn-success btn-xs" onclick="LuuGroup(this)">Lưu</button>
+                                        <button class="btn btn-danger btn-xs" onclick="XoaGroup(this)">Xóa</button>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ImportSpin" title="Thêm từ thay thế" role="dialog" class="modal fade">
+    <div class="modal-dialog" style=" width: 80%;">
+        <!-- Modal content-->
+        <div class="modal-content" id="div_QuanLy_Spin">
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    function onCloseCauHinh() {
+        $("#div_QuanLy_Spin").empty();
+        $("#ImportSpin").modal('hide');
+        window.location.reload();
+    }
+
+    //$("#content-ttt input").focus(function () {
+    //    $(this).parents("tr").addClass("danger");
+    //})
+    function KeThuaCauHinhSpin() {
+        $.ajax({
+            url: '/baivietarea/baiviet/KeThuaCauHinhSpin/'+@Model.BaiViet.ID,
+            type:'get',
+            success:function (rs) {
+                $("#div_QuanLy_Spin").html(rs);
+                $("#ImportSpin").modal('show');
+            },
+            error:function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+    }
+
+    function LuuGroup(element) {
+
+        var obj= $(element).parents("tr");
+        var id= parseInt(obj.find("td[data-type=id]").attr("data-id"));
+        var name=obj.find("input[data-type=name]").val();
+        var word=obj.find("input[data-type=word]").val();
+        $.ajax({
+            url: '/baivietarea/baiviet/saveGroup',
+            type:'post',
+            data:{'idgroup':id,'name':name,'words':word},
+            success:function (rs) {
+                if (rs.Status) {
+                    NotiSuccess("Cập nhật thành công");
+                }
+            },
+            error:function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+
+    }
+
+
+
+    function XoaGroup(element) {
+
+        var obj= $(element).parents("tr");
+        var id= parseInt(obj.find("td[data-type=id]").attr("data-id"));
+
+        if (id > 0) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa nhóm từ này?',
+                'buttons': {
+                    'Đồng ý': {
+                        'class': 'btn-confirm-yes btn-primary',
+                        'action': function () {
+                            $.ajax({
+                                url: '/baivietarea/baiviet/DeleteGroup',
+                                type:'post',
+                                data:{'idgroup':id,'idbaiviet':parseInt(@Model.BaiViet.ID)},
+                                success:function (rs) {
+                                    if (rs.Status) {
+                                        NotiSuccess("Xóa nhóm từ thành công");
+                                        window.location.reload();
+                                    }
+                                },
+                                error:function () {
+                                    NotiError("Không thực hiện được thao tác");
+                                }
+                            });
+                        }
+                    },
+                    'Hủy bỏ': {
+                        'class': 'btn-default',
+                        'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+        } else {
+            NotiError("Không tìm thấy nội dung.");
+        }
+        
+
+    }
+    function CauHinhSpin() {
+        $.ajax({
+            url: '/baivietarea/baiviet/CauHinhSpin/'+@Model.BaiViet.ID,
+            type:'get',
+            success:function (rs) {
+                $("#div_QuanLy_Spin").html(rs);
+                $("#ImportSpin").modal('show');
+            },
+            error:function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        loadScript("/js/plugin/bootstrap-tags/bootstrap-tagsinput.min.js", function () {
+            $('.tagsinput').tagsinput('refresh')
+        });
+    });
+
+</script>

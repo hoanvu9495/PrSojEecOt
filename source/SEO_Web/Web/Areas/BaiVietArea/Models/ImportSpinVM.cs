@@ -4,12 +4,14 @@ using System.Linq;
 using System.Web;
 using Business.CommonBusiness;
 using Model.DBTool;
+
+
 namespace Web.Areas.BaiVietArea.Models
 {
-    public class DetailBaiVietVM
+    public class ImportSpinVM
     {
+        public List<GroupTuDienBO> LstTuSpin { get; set; }
         public BaiVietBO BaiViet { get; set; }
-
-        public PageListResultBO<SPIN_BAIVIET> LstBaiVietExtend { get; set; }
+        public List<BaiVietGroupTuBO> lstBaiViet { get; set; }
     }
 }

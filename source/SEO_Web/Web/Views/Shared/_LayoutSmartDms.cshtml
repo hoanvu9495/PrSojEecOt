@@ -82,18 +82,18 @@
         }
     </style>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script>
+    @*<script>
         if (!window.jQuery) {
             document.write('<script src="/js/libs/jquery-2.1.1.min.js"><\/script>');
         }
-    </script>
+    </script>*@
 
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    <script>
+    @*<script>
         if (!window.jQuery.ui) {
             document.write('<script src="/js/libs/jquery-ui-1.10.3.min.js"><\/script>');
         }
-    </script>
+    </script>*@
 
 </head>
 @using Web.FwCore;
@@ -110,7 +110,7 @@
     var mainStyle = "0px";
     List<ChucNangBO> LstChucNang = new List<ChucNangBO>();
     List<ThaoTacBO> LstThaoTac = new List<ThaoTacBO>();
-    if (user.ListCN != null && user.ListThaoTac!=null)
+    if (user!=null && user.ListCN != null && user.ListThaoTac != null)
     {
         LstChucNang = user.ListCN;
         LstThaoTac = user.ListThaoTac;

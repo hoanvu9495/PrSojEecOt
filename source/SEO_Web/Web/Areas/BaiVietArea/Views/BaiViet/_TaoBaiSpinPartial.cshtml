@@ -1,0 +1,122 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using Web.Areas.BaiVietArea.Models;
+
+@model TaoBaiVM
+
+<style>
+    .control-label {
+        font-size: small;
+        font-weight: bold;
+        margin-left: 15px;
+    }
+
+    .select2-container .select2-choice .select2-arrow {
+        border: none;
+        background: none;
+    }
+
+    /*.select2-container .select2-choice {
+        border:none;
+        height: 22px;
+    }*/
+</style>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Tạo bài viết mới <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+</div>
+<div class="modal-body">
+    <strong>Tùy chỉnh</strong>
+    <div id="BaiVietMoi" class="well" style="line-height:30px;">
+        @Html.Raw(Model.ContentEdit)
+    </div>
+    <strong>Kết quả</strong>
+    <div class="well" style="line-height:25px;">
+        <textarea id="Result"></textarea>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="center">
+        <button class="btn btn-primary btn-sm" id="btn-KetQua">Kết xuất</button>
+        <button class="btn btn-primary btn-sm" id="btn-Luu">Lưu lại</button>
+    </div>
+</div>
+
+
+<script>
+
+    //function PagefunctionCreate() {
+    //    CKEDITOR.replace('NOIDUNGBaiViet');
+
+    //}
+    function pagefuntionTaoMoi() {
+        //$(".txt-select2").select2(
+        //    {
+        //        width: 'style',
+        //        theme: "classic"
+        //    });
+        CKEDITOR.replace('Result');
+    }
+    function GetListChange() {
+        var arrlst = [];
+        $("#BaiVietMoi select").each(function () {
+            var obj = { 'key': $(this).prop("name"), 'value': $(this).val() }
+            arrlst.push(obj);
+        });
+        return arrlst;
+    }
+    $("#btn-KetQua").click(function () {
+        var lstParm = GetListChange();
+        if (lstParm.length>0) {
+            $.ajax({
+                url: '/baivietarea/baiviet/GetContentResult',
+                type: 'post',
+                data:JSON.stringify({"idBai":@Model.BaiViet.ID,"param":lstParm}),
+                contentType : 'application/json',
+                dataType:'json',
+                success:function (rs) {
+                    //$("#Result").html(rs);
+                    CKEDITOR.instances["Result"].setData(rs);
+                },
+                error:function () {
+                    NotiError("Không thực hiện được thao tác");
+                }
+            });
+        }
+    })
+
+    $("#btn-Luu").click(function () {
+        var contetnex= CKEDITOR.instances["Result"].getData();
+        if (contetnex.trim()!="") {
+            var dataParam={"id":@Model.BaiViet.ID,"content":contetnex};
+            $.ajax({
+                url: '/baivietarea/baiviet/SaveBaiViet',
+                type: 'post',
+                data:dataParam,
+                //contentType : 'application/json',
+                //dataType:'json',
+                success:function (rs) {
+                    if (rs.Status) {
+                        NotiSuccess("Tạo mới bài viết mở rộng thành công");
+                        oncloseTaoBaiViet();
+                        window.location.reload();
+                    }
+                },
+                error:function () {
+                    NotiError("Không thực hiện được thao tác");
+                }
+            });
+        }else {
+            NotiError("Không thể để trống nội dung.<br/>Vui lòng kết xuất nội dung trước khi lưu");
+        }
+
+    })
+    $(document).ready(function () {
+        loadScript("/js/plugin/ckeditor/ckeditor.js",function () {
+            loadScript("/js/plugin/select2/select2.min.js", pagefuntionTaoMoi);
+        });
+
+    });
+
+</script>

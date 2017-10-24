@@ -34,7 +34,7 @@
 
 <div id="content">
 
-    @Html.Partial("_SearchFormBaiVietPartial");
+    @Html.Partial("_SearchFormBaiVietPartial")
     <div class="jarviswidget" id="wid-id-0">
         <header role="heading">
             <h2 class="group-tittle mt10">
@@ -154,7 +154,7 @@
                         "sClass": "center",
                         "mData": function (data, type, dataToSet) {
                             var result = "<div class='btn-group'>";
-                            result += "<a href='javascript:void(0)' onclick='ConfigTaiLieu(" + data.ID + ")'   title = 'Cấu hình'><i class='glyphicon glyphicon-cog'> </i></a>&nbsp";
+                            //result += "<a href='javascript:void(0)' onclick='ConfigTaiLieu(" + data.ID + ")'   title = 'Cấu hình'><i class='glyphicon glyphicon-cog'> </i></a>&nbsp";
                             result += "<a href='javascript:void(0)' onclick='EditBaiViet(" + data.ID + ")'   title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>&nbsp";
                             result += "<a href='javascript:void(0)' onclick='DeleteBaiViet(" + data.ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
 
