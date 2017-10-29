@@ -1,0 +1,46 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using Model.DBTool;
+@model FB_POST
+
+<style>
+    .control-label {
+        font-size: small;
+        font-weight: bold;
+        margin-left: 15px;
+    }
+
+    .bg-active {
+        background-color: rgba(230, 126, 34,0.5);
+    }
+</style>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Nội dung bài viết <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+</div>
+<div class="modal-body">
+    <div class=" row" id="box-item-post">
+       <textarea rows="10" class="form-control">@Html.Raw(Model.NOIDUNG)</textarea>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="center">
+        <button class="btn btn-info btn-sm" onclick="copyNoidung()">Sao chép</button>
+        <button class="btn btn-default btn-sm" data-dismiss="modal">Đóng</button>
+    </div>
+</div>
+
+
+<script>
+  
+
+    function copyNoidung() {
+        var nd = $("#box-item-post textarea");
+        nd.select();
+        document.execCommand("Copy");
+        NotiSuccess("Đã sao chép");
+    }
+  
+
+</script>

@@ -24,58 +24,60 @@
     <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Kế thừa từ thay thế <span id="detail" style="color: yellow; text-transform: none"></span></h4>
 </div>
 <div class="modal-body">
-    <div class="panel-group smart-accordion-default" id="accordion-2">
+    <div class="row nomargin" style="margin:10px;">
+        <div class="panel-group smart-accordion-default" id="accordion-2">
 
-        @foreach (var item in Model.lstBaiViet)
-        {
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseItem-@item.ID" aria-expanded="false" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i> @item.TIEUDE </a></h4>
-                </div>
-                <div id="collapseItem-@item.ID" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                    <div class="panel-body">
-                        <div class=" row">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th class="center">STT</th>
-                                        <th>Tên nhóm</th>
-                                        <th>Danh sách từ</th>
-                                        <th>Chọn</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="content-kethua">
-
-
-                                    @for (int i = 0; i < item.lstGroup.Count; i++)
-                                    {
-
+            @foreach (var item in Model.lstBaiViet)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#collapseItem-@item.ID" aria-expanded="false" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i> @item.TIEUDE </a></h4>
+                    </div>
+                    <div id="collapseItem-@item.ID" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                        <div class="panel-body">
+                            <div class=" row">
+                                <table class="table table-bordered">
+                                    <thead>
                                         <tr>
-                                            <td width="50" class="center txt-id" data-id="@item.lstGroup[i].ID">@(i + 1) </td>
-                                            <td>
-
-                                                @item.lstGroup[i].NAME
-
-                                            </td>
-                                            <td width="60%">
-                                                <input class="form-control tagsinput " disabled value="@item.lstGroup[i].Words" data-role="tagsinput">
-                                            </td>
-                                            <td class="center">
-                                                <input data-name="rowWord" type="checkbox" />
-                                            </td>
-
+                                            <th class="center">STT</th>
+                                            <th>Tên nhóm</th>
+                                            <th>Danh sách từ</th>
+                                            <th>Chọn</th>
                                         </tr>
-                                    }
+                                    </thead>
+                                    <tbody class="content-kethua">
 
-                                </tbody>
-                            </table>
+
+                                        @for (int i = 0; i < item.lstGroup.Count; i++)
+                                        {
+
+                                            <tr>
+                                                <td width="50" class="center txt-id" data-id="@item.lstGroup[i].ID">@(i + 1) </td>
+                                                <td>
+
+                                                    @item.lstGroup[i].NAME
+
+                                                </td>
+                                                <td width="60%">
+                                                    <input class="form-control tagsinput " disabled value="@item.lstGroup[i].Words" data-role="tagsinput">
+                                                </td>
+                                                <td class="center">
+                                                    <input data-name="rowWord" type="checkbox" />
+                                                </td>
+
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
 
 
+        </div>
     </div>
 
 </div>

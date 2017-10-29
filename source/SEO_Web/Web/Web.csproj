@@ -91,6 +91,10 @@
       <HintPath>..\packages\EPPlus.4.1.1\lib\net40\EPPlus.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\lib\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -251,6 +255,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\BaiVietArea\BaiVietAreaAreaRegistration.cs" />
     <Compile Include="Areas\BaiVietArea\Controllers\BaiVietController.cs" />
+    <Compile Include="Areas\BaiVietArea\Controllers\ThuThapContentController.cs" />
     <Compile Include="Areas\BaiVietArea\Models\DataSpinVM.cs" />
     <Compile Include="Areas\BaiVietArea\Models\DetailBaiVietVM.cs" />
     <Compile Include="Areas\BaiVietArea\Models\ImportSpinVM.cs" />
@@ -270,6 +275,11 @@
     <Compile Include="Areas\DMVaiTroArea\Controllers\DMVaiTroController.cs" />
     <Compile Include="Areas\DMVaiTroArea\DMVaiTroAreaAreaRegistration.cs" />
     <Compile Include="Areas\DMVaiTroArea\Models\VaiTroChucNangViewModel.cs" />
+    <Compile Include="Areas\FacebookArea\Controllers\ChuKyController.cs" />
+    <Compile Include="Areas\FacebookArea\Controllers\facebookController.cs" />
+    <Compile Include="Areas\FacebookArea\FacebookAreaAreaRegistration.cs" />
+    <Compile Include="Areas\FacebookArea\Models\KeThuaBaiVietVM.cs" />
+    <Compile Include="Areas\FacebookArea\Models\TaoBaiVietVM.cs" />
     <Compile Include="Areas\NguoiDungArea\Controllers\NguoiDungController.cs" />
     <Compile Include="Areas\NguoiDungArea\Models\NguoiDungViewModel.cs" />
     <Compile Include="Areas\NguoiDungArea\Models\UserImportModel.cs" />
@@ -2341,12 +2351,38 @@
     <Content Include="Areas\BaiVietArea\Views\BaiViet\_TaoBaiAutoPartial.cshtml" />
     <Content Include="Areas\BaiVietArea\Views\BaiViet\QuanLySpinBaiViet.cshtml" />
     <Content Include="Areas\BaiVietArea\Views\BaiViet\_KeThuaPartial.cshtml" />
+    <Content Include="Areas\FacebookArea\Views\Web.config" />
+    <Content Include="Areas\FacebookArea\Views\facebook\Index.cshtml" />
+    <Content Include="Areas\FacebookArea\Views\facebook\Emotion.cshtml" />
+    <Content Include="Areas\FacebookArea\Views\facebook\_EmotionPartial.cshtml" />
+    <Content Include="Areas\FacebookArea\Views\ChuKy\_ChonChuKyPartial.cshtml" />
+    <Content Include="Areas\FacebookArea\Views\ChuKy\Index.cshtml" />
+    <Content Include="Areas\FacebookArea\Views\facebook\_ViewBaiVietPartial.cshtml" />
+    <Content Include="Areas\BaiVietArea\Views\ThuThapContent\Index.cshtml" />
+    <Content Include="Areas\BaiVietArea\Views\ThuThapContent\Thuthap.cshtml" />
+    <Content Include="Areas\FacebookArea\Views\facebook\Edit.cshtml" />
+    <Content Include="Areas\FacebookArea\Views\facebook\_searchFacebookPartial.cshtml" />
+    <Content Include="Areas\FacebookArea\Views\facebook\_ChonBaiVietPartial.cshtml" />
+    <Content Include="Areas\FacebookArea\Views\facebook\_KeThuaHashTagPartial.cshtml" />
     <None Include="Properties\PublishProfiles\eBiz.pubxml" />
     <None Include="Properties\PublishProfiles\vnio.pubxml" />
     <None Include="Scripts\jquery-1.11.0.intellisense.js" />
     <Content Include="Scripts\ContextMenu\jquery.contextMenu.css" />
     <Content Include="Scripts\ContextMenu\jquery.contextMenu.js" />
     <Content Include="Scripts\ContextMenu\stupidtable.js" />
+    <Content Include="Scripts\Emoji\emoji.css" />
+    <Content Include="Scripts\Emoji\emoji.js" />
+    <Content Include="Scripts\Emoji\emotion.css" />
+    <Content Include="Scripts\Emoji\f0.png" />
+    <Content Include="Scripts\Emoji\f1.png" />
+    <Content Include="Scripts\Emoji\f2.png" />
+    <Content Include="Scripts\Emoji\f3.png" />
+    <Content Include="Scripts\Emoji\f4.png" />
+    <Content Include="Scripts\Emoji\f5.png" />
+    <Content Include="Scripts\Emoji\f6.png" />
+    <Content Include="Scripts\Emoji\f7.png" />
+    <Content Include="Scripts\Emoji\f8.png" />
+    <Content Include="Scripts\Emoji\f9.png" />
     <Content Include="Scripts\jquery-1.11.0.js" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.0.min.js" />
@@ -2707,7 +2743,6 @@
     <Content Include="Areas\DMChucNangArea\Views\DMChucNang\_ChucNangSearchResult.cshtml" />
     <Content Include="Areas\DMChucNangArea\Views\Web.config" />
     <Content Include="Areas\DMThaoTacArea\Views\DMThaoTac\Index.cshtml" />
-    <Content Include="Areas\DMThaoTacArea\Views\DMThaoTac\_EditThaoTac.cshtml" />
     <Content Include="Areas\DMThaoTacArea\Views\DMThaoTac\_ThaoTacSearch.cshtml" />
     <Content Include="Areas\DMThaoTacArea\Views\DMThaoTac\_ThaoTacSearchResult.cshtml" />
     <Content Include="Areas\DMThaoTacArea\Views\Web.config" />
@@ -3186,6 +3221,7 @@
     <Folder Include="Areas\DMChucNangArea\Views\Shared\" />
     <Folder Include="Areas\DMThaoTacArea\Views\Shared\" />
     <Folder Include="Areas\DMVaiTroArea\Views\Shared\" />
+    <Folder Include="Areas\FacebookArea\Views\Shared\" />
     <Folder Include="Areas\NguoiDungArea\Views\Shared\" />
     <Folder Include="Content\Barcodes\" />
     <Folder Include="Content\js\" />

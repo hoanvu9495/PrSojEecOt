@@ -6,26 +6,28 @@
     <edmx:Diagrams>
       <Diagram DiagramId="d20cfc213e934fb882ef8bf30b4330ec" Name="Diagram1" ZoomLevel="34">
         <EntityTypeShape EntityType="DBTool.CCTC_THANHPHAN" Width="1.5" PointX="5.75" PointY="5.75" />
-        <EntityTypeShape EntityType="DBTool.DM_CHUCNANG" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="DBTool.DM_CHUCNANG" Width="1.5" PointX="0.75" PointY="1" />
         <EntityTypeShape EntityType="DBTool.DM_LOAI_DONVI" Width="1.5" PointX="7.75" PointY="0.75" />
         <EntityTypeShape EntityType="DBTool.DM_NGUOIDUNG" Width="1.5" PointX="7.75" PointY="4.75" />
-        <EntityTypeShape EntityType="DBTool.DM_THAOTAC" Width="1.5" PointX="3" PointY="5.875" />
-        <EntityTypeShape EntityType="DBTool.DM_VAITRO" Width="1.5" PointX="0.75" PointY="1.125" />
-        <EntityTypeShape EntityType="DBTool.HUYEN" Width="1.5" PointX="9.75" PointY="0.75" />
-        <EntityTypeShape EntityType="DBTool.NGUOIDUNG_VAITRO" Width="1.5" PointX="9.75" PointY="3.75" />
-        <EntityTypeShape EntityType="DBTool.SPIN_BAIVIET" Width="1.5" PointX="9.75" PointY="6.75" />
-        <EntityTypeShape EntityType="DBTool.SPIN_BAIVIET_GROUP" Width="1.5" PointX="0.75" PointY="10.75" />
-        <EntityTypeShape EntityType="DBTool.SPIN_CHUDE" Width="1.5" PointX="2.75" PointY="10.75" />
-        <EntityTypeShape EntityType="DBTool.SPIN_GROUP_WORD" Width="1.5" PointX="4.75" PointY="10.75" />
-        <EntityTypeShape EntityType="DBTool.SPIN_WORDS" Width="1.5" PointX="9.75" PointY="10.75" />
-        <EntityTypeShape EntityType="DBTool.TAILIEUDINHKEM" Width="1.5" PointX="11.75" PointY="0.75" />
-        <EntityTypeShape EntityType="DBTool.TBL_CONFIG_TAILIEU" Width="1.5" PointX="6.75" PointY="11.75" />
-        <EntityTypeShape EntityType="DBTool.TBL_SOKETXUAT" Width="1.5" PointX="11.75" PointY="7.75" />
-        <EntityTypeShape EntityType="DBTool.TBL_TAILIEU_KETXUAT" Width="1.5" PointX="11.75" PointY="11.75" />
-        <EntityTypeShape EntityType="DBTool.TINH" Width="1.5" PointX="13.75" PointY="0.75" />
-        <EntityTypeShape EntityType="DBTool.VAITRO_CHUCNANG" Width="1.5" PointX="3" PointY="1" />
-        <EntityTypeShape EntityType="DBTool.VAITRO_THAOTAC" Width="1.5" PointX="5.25" PointY="1.25" />
-        <EntityTypeShape EntityType="DBTool.XA" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="DBTool.DM_THAOTAC" Width="1.5" PointX="3" PointY="6.125" />
+        <EntityTypeShape EntityType="DBTool.DM_VAITRO" Width="1.5" PointX="0.75" PointY="6.25" />
+        <EntityTypeShape EntityType="DBTool.FB_CHUKY" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBTool.FB_POST" Width="1.5" PointX="9.75" PointY="3.75" />
+        <EntityTypeShape EntityType="DBTool.HUYEN" Width="1.5" PointX="9.75" PointY="7.75" />
+        <EntityTypeShape EntityType="DBTool.NGUOIDUNG_VAITRO" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="DBTool.SPIN_BAIVIET" Width="1.5" PointX="2.75" PointY="10.75" />
+        <EntityTypeShape EntityType="DBTool.SPIN_BAIVIET_GROUP" Width="1.5" PointX="4.75" PointY="10.75" />
+        <EntityTypeShape EntityType="DBTool.SPIN_CHUDE" Width="1.5" PointX="9.75" PointY="10.75" />
+        <EntityTypeShape EntityType="DBTool.SPIN_GROUP_WORD" Width="1.5" PointX="11.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBTool.SPIN_WORDS" Width="1.5" PointX="11.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DBTool.TAILIEUDINHKEM" Width="1.5" PointX="6.75" PointY="11.75" />
+        <EntityTypeShape EntityType="DBTool.TBL_CONFIG_TAILIEU" Width="1.5" PointX="11.75" PointY="8.75" />
+        <EntityTypeShape EntityType="DBTool.TBL_SOKETXUAT" Width="1.5" PointX="11.75" PointY="11.75" />
+        <EntityTypeShape EntityType="DBTool.TBL_TAILIEU_KETXUAT" Width="1.5" PointX="13.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBTool.TINH" Width="1.5" PointX="13.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DBTool.VAITRO_CHUCNANG" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="DBTool.VAITRO_THAOTAC" Width="1.5" PointX="5.25" PointY="1.375" />
+        <EntityTypeShape EntityType="DBTool.XA" Width="1.5" PointX="13.75" PointY="7.75" />
         <AssociationConnector Association="DBTool.FK_VAITRO_CHUCNANG_DM_CHUCNANG" />
         <AssociationConnector Association="DBTool.FK_VAITRO_THAOTAC_DM_THAOTAC" />
         <AssociationConnector Association="DBTool.FK_VAITRO_CHUCNANG_DM_VAITRO" />

@@ -31,6 +31,8 @@ namespace Model.DBTool
         public virtual DbSet<DM_NGUOIDUNG> DM_NGUOIDUNG { get; set; }
         public virtual DbSet<DM_THAOTAC> DM_THAOTAC { get; set; }
         public virtual DbSet<DM_VAITRO> DM_VAITRO { get; set; }
+        public virtual DbSet<FB_CHUKY> FB_CHUKY { get; set; }
+        public virtual DbSet<FB_POST> FB_POST { get; set; }
         public virtual DbSet<HUYEN> HUYEN { get; set; }
         public virtual DbSet<NGUOIDUNG_VAITRO> NGUOIDUNG_VAITRO { get; set; }
         public virtual DbSet<SPIN_BAIVIET> SPIN_BAIVIET { get; set; }

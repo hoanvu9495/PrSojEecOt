@@ -1814,3 +1814,5 @@ E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\obj\Debug\Web.csprojResolveAssemblyRefe
 E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\obj\Debug\Web.dll
 E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\obj\Debug\Web.pdb
 E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\EntityFramework.SqlServer.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Facebook.dll
+E:\ToolSeo\PrSojEecOt\source\SEO_Web\Web\bin\Facebook.xml

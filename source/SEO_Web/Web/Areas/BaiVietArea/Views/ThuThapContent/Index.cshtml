@@ -1,0 +1,352 @@
+﻿@{
+    ViewBag.Title = "Quản lý thu thập bài viết";
+    Layout = "~/Views/Shared/_LayoutSmartDms.cshtml";
+}
+@using Model.DBTool;
+@using Newtonsoft.Json;
+@using Business.CommonBusiness;
+@using Web.FwCore;
+@using Web.Areas.BaiVietArea.Models;
+@model IndexBaiVietVM
+@{
+    var lstData = Html.Raw(JsonConvert.SerializeObject(Model.ListBaiViet.ListItem));
+
+}
+
+
+<div id="ribbon" style=" background-color:#57889c">
+
+    <div class="col-md-6 col-sm-6">
+        <ol class="breadcrumb">
+            <!-- This is auto generated -->
+        </ol>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        <a href="#collapseSearch" class="btn btn-default btn-flat pull-right" aria-controls="collapseSearch" data-toggle="collapse" role="button" style="float: right; margin-right:5px;">
+            <i class="glyphicon glyphicon-search"></i>
+            <span>Tìm kiếm</span>
+        </a>
+        <a class="btn btn-default btn-flat pull-right" href="javascript:ThemMoi()">
+            <i class="fa fa-plus"></i> <span>Thêm mới bài viết</span>
+        </a>
+    </div>
+</div>
+
+<div id="content">
+
+    @Html.Partial("_SearchFormBaiVietPartial")
+    <div class="jarviswidget" id="wid-id-0">
+        <header role="heading">
+            <h2 class="group-tittle mt10">
+                Danh sách bài viết <span id="totalItem" class="red">(@(Model == null ? "0" : Model.ListBaiViet.Count.ToString()))</span>
+            </h2>
+
+        </header>
+        <div class="widge-t-body no-padding">
+            <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+                <table id="tbl_baiViet" class="wtfayo display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Tiêu đề</th>
+                            <th>Nội dung</th>
+                            <th>Ngày tạo</th>
+                            <th>Ngày sửa</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="center">
+                    <ul class="pagination pagination-sm" id="paging1"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="CreateBaiViet" title="Thêm mới bài viết" role="dialog" class="modal fade">
+    <div class="modal-dialog" style=" width: 80%;">
+        <!-- Modal content-->
+        <div class="modal-content" id="div_formThemMoi_BaiViet">
+
+        </div>
+    </div>
+
+</div>
+
+<div id="EditBaiViet" title="Cập nhật bài viết" role="dialog" class="modal fade">
+    <div class="modal-dialog" style=" width: 80%;">
+        <!-- Modal content-->
+        <div class="modal-content" id="div_formCapNhat_BaiViet">
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+
+    var currentIndexpage = 1;
+    var JsonDatas = eval(@lstData);
+
+    var loadDataTable = function (item) {
+        var table = $('#tbl_baiViet').DataTable({
+
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+            },
+            "data": item,
+            "bDestroy": true,
+            "iDisplayLength": 20,
+            paging: false,
+            "bInfo": false,
+            "aoColumns": [
+                 {
+                     "mData": function (data, type, dataToSet) {
+                         return '<input class="global_checkbox" ' + ((data.IS_READ == true) ? "is_read" : "is_unread") + ' type="checkbox" name="ids" value="' + data.ID + '" />';
+                     },
+                     "orderable": false,
+                 },
+
+                    //{
+                    //    "class": 'details-control',
+                    //    "orderable": false,
+                    //    "data": null,
+                    //    "defaultContent": ''
+                    //},
+                      {
+                          "mData": function (data, type, dataToSet) {
+                              return data.TIEUDE;
+                          },
+
+                      },
+                  {
+                      "mData": function (data, type, dataToSet) {
+                          var str="<a href='/baivietarea/baiviet/detail/"+data.ID+"'>"+SummaryText(data.NOIDUNG,200)+"</a>";
+                          return str;
+                      },
+
+                  },
+
+
+                   {
+
+                       "mData": function (data, type, dataToSet) {
+                           return data.NGAYTAO;
+                       },
+
+
+                   },
+
+                   {
+
+                       "mData": function (data, type, dataToSet) {
+                           return data.NGAYSUA;
+                       },
+
+                   },
+
+                    {
+                        "sClass": "center",
+                        "mData": function (data, type, dataToSet) {
+                            var result = "<div class='btn-group'>";
+                            //result += "<a href='javascript:void(0)' onclick='ConfigTaiLieu(" + data.ID + ")'   title = 'Cấu hình'><i class='glyphicon glyphicon-cog'> </i></a>&nbsp";
+                            result += "<a href='javascript:void(0)' onclick='EditBaiViet(" + data.ID + ")'   title = 'Chỉnh sửa'><i class='glyphicon glyphicon-edit'> </i></a>&nbsp";
+                            result += "<a href='javascript:void(0)' onclick='DeleteBaiViet(" + data.ID + ")'  title = 'Xóa'><i class=' glyphicon glyphicon-remove' style='color:red'> </i></a>";
+
+
+                            result += "</div>";
+                            return result;
+                        },
+
+                    },
+            ],
+            //"order": [[1, 'asc']],
+            "fnDrawCallback": function (oSettings) {
+                //runAllCharts()
+            }
+        });
+    }
+
+    var reloadData = function () {
+        $.ajax({
+            url: '/BaiVietArea/BaiViet/reloadPage',
+            type: 'post',
+            data:{"page": currentIndexpage},
+            success: function (rs) {
+                $("#totalItem").html('(' + rs.Count + ')');
+                for (var i = 0; i < rs.ListItem.length; i++) {
+                    rs.ListItem[i].NGAYTAO = GetTextDateTime(rs.ListItem[i].NGAYTAO);
+                    rs.ListItem[i].NGAYSUA = GetTextDateTime(rs.ListItem[i].NGAYSUA);
+                }
+                loadDataTable(rs.ListItem);
+            },
+            error: function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+
+    }
+
+
+    function CloseCapNhatModal() {
+        $("#EditBaiViet #form_CapNhat_BaiViet")[0].reset();
+        $("#EditBaiViet").modal("hide");
+    }
+
+    function EditBaiViet(id) {
+        if (id > 0) {
+            $.ajax({
+                url: '/BaiVietArea/BaiViet/Edit/' + id,
+                type: 'Get',
+                success: function (rs) {
+                    $("#div_formCapNhat_BaiViet").html(rs);
+                    $("#EditBaiViet").modal("show");
+                }, error: function () {
+                    NotiError("Không thực hiện được thao tác");
+                }
+            });
+        } else {
+            NotiError("Không tìm thấy nội dung.");
+        }
+
+    }
+
+    function DeleteBaiViet(id) {
+        if (id > 0) {
+            $.confirm({
+                'title': 'Xác nhận xóa',
+                'message': 'Bạn có chắc chắn muốn xóa bài viết này?',
+                'buttons': {
+                    'Đồng ý': {
+                        'class': 'btn-confirm-yes btn-primary',
+                        'action': function () {
+                            $.ajax({
+                                url: '@Url.Action("Delete", "BaiViet", new { @area = "BaiVietArea" })',
+                                type: 'post',
+                                cache: false,
+                                data: { 'id': id },
+                                success: function (rs) {
+                                    if (rs.Status) {
+                                        NotiSuccess("Xóa thành công bài viết");
+                                        reloadData();
+                                    } else {
+                                        NotiError(rs.Message);
+                                    }
+                                },
+                                error: function (err) {
+                                    NotiError("Không thực hiện được thao tác");
+                                }
+                            });
+                        }
+                    },
+                    'Hủy bỏ': {
+                        'class': 'btn-default',
+                        'action': function () { }	// Nothing to do in this case. You can as well omit the action property.
+                    }
+                }
+            });
+        } else {
+            NotiError("Không tìm thấy nội dung.");
+        }
+
+
+    }
+
+
+    function CloseThemMoiModal() {
+        $("#CreateBaiViet #form_themmoi_BaiViet")[0].reset();
+        $("#CreateBaiViet").modal("hide");
+    }
+
+
+    function ThemMoi() {
+
+        $.ajax({
+            url: '/BaiVietArea/BaiViet/Create',
+            type: 'Get',
+            success: function (rs) {
+                $("#div_formThemMoi_BaiViet").html(rs);
+                $("#CreateBaiViet").modal("show");
+            }, error: function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+
+    }
+
+    function GetDataPage(page){
+        $.ajax({
+            url: '@Url.Action("reloadPage", "BaiViet")',
+            type: 'POST',
+            dataType: 'Json',
+            async:false,
+            data: {
+                page:page,
+            },
+            success: function (rs) {
+                $('#countTotal').html('(' + rs.Count+')');
+                currentIndexpage=page;
+                for (var i = 0; i < rs.ListItem.length; i++) {
+                    rs.ListItem[i].NGAYTAO = GetTextDateTime(rs.ListItem[i].NGAYTAO);
+                    rs.ListItem[i].NGAYSUA = GetTextDateTime(rs.ListItem[i].NGAYSUA);
+                }
+                loadDataTable(rs.ListItem);
+            }, error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+
+    function pagefunction() {
+
+        for (var i = 0; i < JsonDatas.length; i++) {
+            JsonDatas[i].NGAYTAO = convertDateTime(JsonDatas[i].NGAYTAO);
+            JsonDatas[i].NGAYSUA = convertDateTime(JsonDatas[i].NGAYSUA);
+        }
+        DefineCssPageList();
+        GenPaging(1, @Model.ListBaiViet.TotalPage, "paging1", 'GetDataPage');
+        loadDataTable(JsonDatas);
+
+        $(".input_datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true, yearRange: "-50:+20",
+            showWeek: false, weekHeader: "Tuần",
+            language: 'vi',
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            onSelect: function (date) {
+
+            },
+            beforeShow: function() {
+                setTimeout(function(){
+                    $('.ui-datepicker').css('z-index', 999);
+                }, 0);
+            }
+        });
+    }
+
+
+
+    $(document).ready(function () {
+        loadScript("/js/plugin/datatables/jquery.dataTables.min.js", function () {
+            loadScript("/js/plugin/datatables/dataTables.colVis.min.js", function () {
+                loadScript("/js/plugin/datatables/dataTables.tableTools.min.js", function () {
+                    loadScript("/js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                        loadScript("/js/plugin/datatables/dataTables.bootstrap.min.js", function () {
+                            loadScript("/js/plugin/select2/select2.min.js", function () {
+                                loadScript("/Scripts/jquery.unobtrusive-ajax.min.js", pagefunction)
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    })
+
+</script>

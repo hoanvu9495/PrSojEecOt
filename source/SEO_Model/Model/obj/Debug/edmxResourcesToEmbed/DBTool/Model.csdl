@@ -7,6 +7,8 @@
     <EntitySet Name="DM_NGUOIDUNG" EntityType="DBTool.DM_NGUOIDUNG" />
     <EntitySet Name="DM_THAOTAC" EntityType="DBTool.DM_THAOTAC" />
     <EntitySet Name="DM_VAITRO" EntityType="DBTool.DM_VAITRO" />
+    <EntitySet Name="FB_CHUKY" EntityType="DBTool.FB_CHUKY" />
+    <EntitySet Name="FB_POST" EntityType="DBTool.FB_POST" />
     <EntitySet Name="HUYEN" EntityType="DBTool.HUYEN" />
     <EntitySet Name="NGUOIDUNG_VAITRO" EntityType="DBTool.NGUOIDUNG_VAITRO" />
     <EntitySet Name="SPIN_BAIVIET" EntityType="DBTool.SPIN_BAIVIET" />
@@ -154,6 +156,28 @@
     <Property Name="CAPCOSO_ID" Type="Int32" />
     <Property Name="IS_DELETE" Type="Boolean" />
     <NavigationProperty Name="VAITRO_CHUCNANG" Relationship="DBTool.FK_VAITRO_CHUCNANG_DM_VAITRO" FromRole="DM_VAITRO" ToRole="VAITRO_CHUCNANG" />
+  </EntityType>
+  <EntityType Name="FB_CHUKY">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="USER_ID" Type="Int32" />
+    <Property Name="CHUKY" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IS_MAIN" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="FB_POST">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TIEUDE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="NOIDUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="NGAYTAO" Type="DateTime" Precision="3" />
+    <Property Name="NGUOITAO" Type="Int32" />
+    <Property Name="NGAYSUA" Type="DateTime" Precision="3" />
+    <Property Name="NGUOISUA" Type="Int32" />
+    <Property Name="TUKHOA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="HUYEN">
     <Key>

@@ -112,6 +112,8 @@
   <ItemGroup>
     <Compile Include="Business\CCTCThanhPhanBusiness.cs" />
     <Compile Include="Business\DMLoaiDonViBusiness.cs" />
+    <Compile Include="Business\FbChuKyBusiness.cs" />
+    <Compile Include="Business\FbPostBusiness.cs" />
     <Compile Include="Business\NguoiDungVaiTroBusiness.cs" />
     <Compile Include="Business\DmChucnangBusiness.cs" />
     <Compile Include="Business\DmNguoidungBusiness.cs" />

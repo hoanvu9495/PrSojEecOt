@@ -248,15 +248,12 @@
     }
     function EditThaoTac(DM_THAOTAC_ID) {
         $.ajax({
-            url: '@Url.Action("EditFromThaoTac", "DMThaoTac")',
-            type: 'post',
+            url: '/DMThaoTacArea/DMThaoTac/EditFromThaoTac?DM_THAOTAC_ID=' + DM_THAOTAC_ID,
+            type: 'get',
             cache: false,
-            data: {
-                DM_THAOTAC_ID: DM_THAOTAC_ID
-            },
+          
             success: function (data) {
-                //$("#PrepareThaoTac").html(data);
-                //$("#PrepareThaoTac").dialog("open");
+                
                 $("#create_user").html(data);
                 $("#nhan_su_dialog").modal("show");
             },

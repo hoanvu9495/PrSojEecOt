@@ -118,6 +118,28 @@
           <Property Name="CAPCOSO_ID" Type="int" />
           <Property Name="IS_DELETE" Type="bit" />
         </EntityType>
+        <EntityType Name="FB_CHUKY">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USER_ID" Type="int" />
+          <Property Name="CHUKY" Type="ntext" />
+          <Property Name="IS_MAIN" Type="bit" />
+        </EntityType>
+        <EntityType Name="FB_POST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TIEUDE" Type="nvarchar" MaxLength="250" />
+          <Property Name="NOIDUNG" Type="ntext" />
+          <Property Name="NGAYTAO" Type="datetime" />
+          <Property Name="NGUOITAO" Type="int" />
+          <Property Name="NGAYSUA" Type="datetime" />
+          <Property Name="NGUOISUA" Type="int" />
+          <Property Name="TUKHOA" Type="ntext" />
+        </EntityType>
         <EntityType Name="HUYEN">
           <Key>
             <PropertyRef Name="HUYEN_ID" />
@@ -372,6 +394,8 @@
           <EntitySet Name="DM_NGUOIDUNG" EntityType="Self.DM_NGUOIDUNG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DM_THAOTAC" EntityType="Self.DM_THAOTAC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DM_VAITRO" EntityType="Self.DM_VAITRO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FB_CHUKY" EntityType="Self.FB_CHUKY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FB_POST" EntityType="Self.FB_POST" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HUYEN" EntityType="Self.HUYEN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NGUOIDUNG_VAITRO" EntityType="Self.NGUOIDUNG_VAITRO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SPIN_BAIVIET" EntityType="Self.SPIN_BAIVIET" Schema="dbo" store:Type="Tables" />
@@ -415,6 +439,8 @@
           <EntitySet Name="DM_NGUOIDUNG" EntityType="DBTool.DM_NGUOIDUNG" />
           <EntitySet Name="DM_THAOTAC" EntityType="DBTool.DM_THAOTAC" />
           <EntitySet Name="DM_VAITRO" EntityType="DBTool.DM_VAITRO" />
+          <EntitySet Name="FB_CHUKY" EntityType="DBTool.FB_CHUKY" />
+          <EntitySet Name="FB_POST" EntityType="DBTool.FB_POST" />
           <EntitySet Name="HUYEN" EntityType="DBTool.HUYEN" />
           <EntitySet Name="NGUOIDUNG_VAITRO" EntityType="DBTool.NGUOIDUNG_VAITRO" />
           <EntitySet Name="SPIN_BAIVIET" EntityType="DBTool.SPIN_BAIVIET" />
@@ -562,6 +588,28 @@
           <Property Name="CAPCOSO_ID" Type="Int32" />
           <Property Name="IS_DELETE" Type="Boolean" />
           <NavigationProperty Name="VAITRO_CHUCNANG" Relationship="DBTool.FK_VAITRO_CHUCNANG_DM_VAITRO" FromRole="DM_VAITRO" ToRole="VAITRO_CHUCNANG" />
+        </EntityType>
+        <EntityType Name="FB_CHUKY">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USER_ID" Type="Int32" />
+          <Property Name="CHUKY" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IS_MAIN" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="FB_POST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TIEUDE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="NOIDUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NGAYTAO" Type="DateTime" Precision="3" />
+          <Property Name="NGUOITAO" Type="Int32" />
+          <Property Name="NGAYSUA" Type="DateTime" Precision="3" />
+          <Property Name="NGUOISUA" Type="Int32" />
+          <Property Name="TUKHOA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="HUYEN">
           <Key>
@@ -937,6 +985,30 @@
                 <ScalarProperty Name="TEN_VAITRO" ColumnName="TEN_VAITRO" />
                 <ScalarProperty Name="MA_VAITRO" ColumnName="MA_VAITRO" />
                 <ScalarProperty Name="DM_VAITRO_ID" ColumnName="DM_VAITRO_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FB_CHUKY">
+            <EntityTypeMapping TypeName="DBTool.FB_CHUKY">
+              <MappingFragment StoreEntitySet="FB_CHUKY">
+                <ScalarProperty Name="IS_MAIN" ColumnName="IS_MAIN" />
+                <ScalarProperty Name="CHUKY" ColumnName="CHUKY" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FB_POST">
+            <EntityTypeMapping TypeName="DBTool.FB_POST">
+              <MappingFragment StoreEntitySet="FB_POST">
+                <ScalarProperty Name="TUKHOA" ColumnName="TUKHOA" />
+                <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+                <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+                <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+                <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+                <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+                <ScalarProperty Name="TIEUDE" ColumnName="TIEUDE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

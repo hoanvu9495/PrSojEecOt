@@ -70,6 +70,12 @@
     <Compile Include="DBTool\DM_VAITRO.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBTool\FB_CHUKY.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBTool\FB_POST.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBTool\HUYEN.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Thu thập nội dung";
+    Layout = "~/Views/Shared/_LayoutSmartDms.cshtml";
+}
+
+
+<div id="ribbon" style=" background-color:#57889c">
+
+    <div class="col-md-6 col-sm-6">
+        <ol class="breadcrumb">
+            <!-- This is auto generated -->
+        </ol>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        @*<a href="#collapseSearch" class="btn btn-default btn-flat pull-right" aria-controls="collapseSearch" data-toggle="collapse" role="button" style="float: right; margin-right:5px;">
+                <i class="glyphicon glyphicon-search"></i>
+                <span>Tìm kiếm</span>
+            </a>
+            <a class="btn btn-default btn-flat pull-right" href="javascript:ThemMoi()">
+                <i class="fa fa-plus"></i> <span>Thêm mới bài viết</span>
+            </a>*@
+    </div>
+</div>
+
+<div id="content">
+
+
+    <div class="jarviswidget" id="wid-id-0">
+        <header role="heading">
+            <h2 class="group-tittle mt10">
+                Thu thập nội dung
+            </h2>
+
+        </header>
+        <div class="widge-t-body no-padding">
+            <div class="custom-scroll table-responsive dataTables_wrapper form-inline dt-bootstrap  no-footer">
+                <input type="text" id="url" />
+                <button id="btn-load">Load Nội dung</button>
+                <div id="txt-contain" style="width:100%">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#btn-load").click(function () {
+        var url = $("#url").val();
+        ////$("#contain").load("<iframe src='" + url + "' width='560' height='315' target='_parent' frameborder='0' X-Frame-Options='sameorigin'  id='myFrame'></iframe>");
+        //$('<iframe src="' + url + '" frameborder="0" scrolling="no" id="myFrame"></iframe>').appendTo('#contain');
+        $.ajax({
+            url: '/BaiVietArea/ThuThapContent/GetHTML?url=' + url,
+            type: 'get',
+            success: function (rs) {
+                if (rs.Status) {
+                    NotiSuccess("Lưu bài viết thành công");
+                    var htmlcontent = rs.Message.replace("http://localhost:8090/", url);
+                    $('#txt-contain').html(htmlcontent);
+                }
+            },
+            error: function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+    })
+
+
+
+
+
+
+</script>

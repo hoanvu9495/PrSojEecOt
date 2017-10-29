@@ -1,0 +1,119 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using Model.DBTool;
+@model List<FB_CHUKY>
+
+<style>
+    .control-label {
+        font-size: small;
+        font-weight: bold;
+        margin-left: 15px;
+    }
+
+    .bg-active{
+        background-color:rgba(230, 126, 34,0.5);
+    }
+</style>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Chọn chữ ký cho bài viết <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+</div>
+<div class="modal-body">
+
+    <div class=" row" id="box-item-chuky">
+        @foreach (var item in Model)
+        {
+            //var isMain = item.IS_MAIN.GetValueOrDefault(false) ? " bg-color-teal " : "";
+            <div class="col-md-4 ">
+                <div class="div-item-chuky well well-sm">
+                    <pre>@item.CHUKY</pre>
+                    <div class="center">
+                        <button class="btn btn-info btn-xs" onclick="ChonItem(this)">Chọn</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="center">
+        <button class="btn btn-info btn-sm" onclick="addChuKy()">Hoàn thành</button>
+        <button class="btn btn-default btn-sm" data-dismiss="modal">Đóng</button>
+    </div>
+</div>
+
+
+<script>
+    var itemselected = "";
+    function ChonItem(e) {
+        var element = $(e).parents("div.div-item-chuky");
+        itemselected = element.find("pre").html();
+        $("#box-item-chuky div.div-item-chuky").removeClass("bg-active");
+        $(element).addClass("bg-active");
+    }
+
+    function addChuKy() {
+        
+        var bv = $("#txt-main").val();
+        bv += "\n-------------------------------\n" + itemselected;
+        $("#txt-main").val(bv);
+        CloseChonChuKy();
+    }
+    @*function PagefunctionCreate() {
+        CKEDITOR.replace('NOIDUNGBaiViet');
+
+
+    }
+
+    function getLstGroup() {
+        var arrGroup=[];
+        $("#content-hthong input:checkbox:checked").each(function () {
+            var objtr= $(this).parents('tr').find("td.txt-id");
+
+            arrGroup.push(parseInt(objtr.attr("data-id")));
+        });
+        return arrGroup;
+    }
+
+    function addTuDien() {
+        var arrGroup=getLstGroup();
+        if (arrGroup.length>0) {
+            var datapram = { 'idbai': parseInt(@Model.BaiViet.ID), 'lstGroup': arrGroup };
+
+            $.ajax({
+                url: '/baivietarea/baiviet/SaveCauHinh',
+                type: 'post',
+                contentType:"application/json",
+                dataType:"json",
+                data:JSON.stringify(datapram),
+                success:function (rs) {
+                    if (rs.Status) {
+                        NotiSuccess("Cập nhật thành công");
+                        onCloseCauHinh();
+                    }
+                },
+                error:function () {
+                    NotiError("Không thực hiện được thao tác");
+                }
+            });
+        }else {
+            NotiError("Vui lòng chọn nhóm từ");
+        }
+
+    }
+
+    $("#content-hthong input:checkbox[data-name=rowWord]").change(function () {
+        var trobj = $(this).parents("tr");
+        if (trobj.length!=0) {
+            trobj.toggleClass("success");
+        }
+
+    })
+    $(document).ready(function () {
+        loadScript("/js/plugin/bootstrap-tags/bootstrap-tagsinput.min.js", function () {
+            $('.tagsinput').tagsinput('refresh')
+        });
+    });*@
+
+</script>

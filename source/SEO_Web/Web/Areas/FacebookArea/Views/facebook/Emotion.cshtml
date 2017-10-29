@@ -1,0 +1,398 @@
+﻿@{
+    ViewBag.Title = "Emotion";
+    Layout = "~/Views/Shared/_LayoutSmartDms.cshtml";
+}
+
+@using Model.DBTool;
+@using Web.Areas.FacebookArea.Models;
+@model TaoBaiVietVM
+<style>
+    .emotion .category {
+        position: relative;
+        box-sizing: border-box;
+        display: block;
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 7px;
+        background: 0 0;
+        background-size: 0 0;
+        line-height: 6px;
+        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+        .emotion .category p {
+            position: relative;
+            display: block;
+            width: 32px;
+            height: 32px;
+            margin: 6px;
+            padding: 0;
+            border: 4px solid #fff;
+            border-radius: 3px;
+            background-color: #fff !important;
+            background-image: inherit;
+            background-size: auto 24px !important;
+            background-position: center center;
+            background-repeat: no-repeat;
+            font-size: 0;
+            color: transparent;
+            color: transparent;
+            line-height: 0;
+            float: left;
+            cursor: pointer;
+        }
+
+    .panel-body {
+        height: 200px;
+        overflow: scroll;
+    }
+
+    .emotion .tab-pane {
+        height: 150px;
+        width: 100%;
+        overflow: scroll;
+    }
+
+    .box-editor {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+        .box-editor textarea {
+            resize: vertical;
+        }
+
+    .block {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .width-100 {
+        width: 100%;
+    }
+</style>
+<div id="ribbon" style=" background-color:#57889c">
+
+
+    <div class="col-md-6">
+        <ol class="breadcrumb">
+            <!-- This is auto generated -->
+        </ol>
+    </div>
+    <!-- breadcrumb -->
+    <!-- end breadcrumb -->
+
+    <div class="col-md-6">
+        <a class="btn btn-default btn-flat pull-right" href="javascript:openKeThuaBaiViet()">
+            <i class="fa fa-plus"></i> <span>Nhập từ bài viết khác</span>
+        </a>
+        <a class="btn btn-default btn-flat pull-right" href="javascript:ThemMoiTaiLieu_action()">
+            <i class="fa fa-plus"></i> <span>Nhập từ template</span>
+        </a>
+        <a class="btn btn-default btn-flat pull-right" href="javascript:openChonChuKy()">
+            <i class="fa fa-plus"></i> <span>Chọn chữ ký</span>
+        </a>
+
+    </div>
+</div>
+<!-- #MAIN CONTENT -->
+
+<div id="content">
+    <div class="jarviswidget" id="wid-id-0">
+        <header role="heading">
+            <h2 class="group-tittle mt10">
+                Chèn ký hiệu facebook
+            </h2>
+        </header>
+        <div class="widge-t-body no-padding">
+            <div class="custom-scroll table-responsive  form-inline dt-bootstrap  no-foot" style=" padding:10px;">
+                @Html.Partial("_EmotionPartial")
+
+                <div id="form-vietbai">
+                    <div class="box-editor clear-both" style=" margin-top:20px; clear:both">
+                        <div class="width-100">
+                            <div><strong>Tiêu đề</strong><span class="red">(*)</span><br /></div>
+                            <div class="col-md-12 nomargin nopadding">
+                                <div class="form-group width-100">
+                                    <input class="form-control required " id="txt-tieude" type="text" style="width:100%" />
+                                    <div class="note-error">
+                                        <span class="error mes-note-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="box-editor clear-both" style=" margin-top:20px; clear:both">
+                        <strong>Bài viết</strong>
+                        <textarea class="required" id="txt-main" rows="10" style="width:100%">@Html.Raw(Model.ChuKy != null ? "\n \n-------------------------------\n" + Model.ChuKy.CHUKY : "")</textarea>
+                        <div class="note-error">
+                            <span class="error mes-note-error"></span>
+                        </div>
+                    </div>
+                    <div class="center ">
+                        <button class="btn btn-info" onclick="LuuBaiViet()">Lưu bài viết</button>
+                        <button class="btn btn-info" onclick="LuuChuKy()">Lưu thành chữ ký</button>
+                        <button class="btn btn-info">Lưu thành template</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="well">
+        <div class="header-block">
+            Từ khóa hashtag
+        </div>
+        <div class="box-keyword">
+            <input id="key-hashtag" class="form-control tagsinput " placeholder="Nhập các từ cần hashtag" data-role="tagsinput">
+            <div class="center block">
+                <button class="btn btn-info" onclick="openKeThuaHashTag()">Kế thừa Hashtag</button>
+                <button class="btn btn-info" onclick="hashtag()">Hashtag</button>
+                <button class="btn btn-default" onclick="clearTag()">Xóa tag</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ChonChuKy" title="Chọn chữ ký" role="dialog" class="modal fade">
+    <div class="modal-dialog" style=" width: 80%;">
+        <!-- Modal content-->
+        <div class="modal-content" id="div_ChonChuKy">
+
+        </div>
+    </div>
+
+</div>
+
+<div id="ChonBaiViet" title="Chọn bài viết" role="dialog" class="modal fade">
+    <div class="modal-dialog" style=" width: 80%;">
+        <!-- Modal content-->
+        <div class="modal-content" id="form_ChonBaiViet">
+
+        </div>
+    </div>
+
+</div>
+
+<div id="ChonHashtag" title="Kế thừa hashtag" role="dialog" class="modal fade">
+    <div class="modal-dialog" style=" width: 80%;">
+        <!-- Modal content-->
+        <div class="modal-content" id="form_ChonHashtag">
+
+        </div>
+    </div>
+
+</div>
+KeThuaHashTag
+<script>
+    var positionCursor = 0;
+    $('#ChonChuKy').on('hidden.bs.modal', function (e) {
+        $("#div_ChonChuKy").empty();
+    })
+
+    $('#ChonHashtag').on('hidden.bs.modal', function (e) {
+        $("#form_ChonHashtag").empty();
+    })
+    $('#ChonBaiViet').on('hidden.bs.modal', function (e) {
+        $("#form_ChonBaiViet").empty();
+    })
+
+    function CloseChonChuKy() {
+        $("#div_ChonChuKy").empty();
+        $("#ChonChuKy").modal("hide");
+    }
+
+    function CloseKeThuaHashtag() {
+        $("#form_ChonHashtag").empty();
+        $("#ChonHashtag").modal("hide");
+    }
+
+    function CloseChonBaiViet() {
+        $("#form_ChonBaiViet").empty();
+        $("#ChonBaiViet").modal("hide");
+    }
+
+    
+
+    function LuuBaiViet() {
+        var err = 0;
+        err += requiredFieldForFormId("form-vietbai") ? 0 : 1;
+        if (!err) {
+            var bv = $("#txt-main").val();
+            var tieude = $("#txt-tieude").val();
+            var key = $("#key-hashtag").val();
+            if (bv.trim() != "") {
+                $.ajax({
+                    url: '/facebookarea/facebook/SavePost',
+                    type: 'post',
+                    data: { "tieude": tieude, "NoiDung": bv, "keyWord": key },
+                    success: function (rs) {
+                        if (rs.Status) {
+                            NotiSuccess("Lưu bài viết thành công");
+                            setTimeout(function () {
+                                location.href = "/Facebookarea/facebook/index";
+                            }, 2000);
+                        }
+                    },
+                    error: function () {
+                        NotiError("Không thực hiện được thao tác");
+                    }
+                });
+            } else {
+                NotiError("Nội dung trống không thể lưu thành chữ ký được");
+            }
+        } else {
+            NotiError("Vui lòng hoàn thiện bài viết trước khi lưu");
+        }
+
+    }
+    function openKeThuaBaiViet() {
+        $.ajax({
+            url: '/facebookarea/facebook/KeThuaBaiViet?vt=' + positionCursor,
+            type: 'get',
+            success: function (rs) {
+                $("#form_ChonBaiViet").html(rs);
+                $("#ChonBaiViet").modal("show");
+            },
+            error: function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+    }
+
+    function openKeThuaHashTag() {
+        $.ajax({
+            url: '/facebookarea/facebook/KeThuaHashTag',
+            type: 'get',
+            success: function (rs) {
+                $("#form_ChonHashtag").html(rs);
+                $("#ChonHashtag").modal("show");
+            },
+            error: function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+    }
+
+    function openChonChuKy() {
+        $.ajax({
+            url: '/facebookarea/chuky/ChonChuKy',
+            type: 'get',
+            success: function (rs) {
+                $("#div_ChonChuKy").html(rs);
+                $("#ChonChuKy").modal("show");
+            },
+            error: function () {
+                NotiError("Không thực hiện được thao tác");
+            }
+        });
+    }
+
+    function LuuChuKy() {
+        var bv = $("#txt-main").val();
+        if (bv.trim() != "") {
+            $.ajax({
+                url: '/facebookarea/chuky/SaveChuKy',
+                type: 'post',
+                data: { "chuky": bv, "isActive": true },
+                success: function (rs) {
+                    if (rs.Status) {
+                        NotiSuccess("Lưu chữ ký thành công");
+                    }
+                },
+                error: function () {
+                    NotiError("Không thực hiện được thao tác");
+                }
+            });
+        } else {
+            NotiError("Nội dung trống không thể lưu thành chữ ký được");
+        }
+    }
+
+    function clearTag() {
+        $('.tagsinput').tagsinput('removeAll');
+    }
+
+    function createHashtag(str) {
+        str = str.trim();
+        if (str != "") {
+            var arrstr = str.split(" ");
+            str = arrstr.join("_");
+            str = "#" + str;
+        }
+        return str;
+    }
+
+    function hashtag() {
+        var key = $("#key-hashtag").val();
+        if (key != "") {
+            var listKey = [];
+            listKey = key.split(',');
+            console.log(listKey);
+            var bv = $("#txt-main").val();
+            for (var i = 0; i < listKey.length; i++) {
+                bv = bv.replace(listKey[i].trim(), createHashtag(listKey[i]));
+                console.log(listKey[i]);
+
+
+            }
+            $("#txt-main").val(bv);
+            console.log(bv);
+        }
+
+    }
+
+    function pagefunction() {
+        pageSetUp();
+        $('.tagsinput').tagsinput('refresh');
+
+        (function ($, undefined) {
+            $.fn.getCursorPosition = function () {
+                var el = $(this).get(0);
+                var pos = 0;
+                if ('selectionStart' in el) {
+                    pos = el.selectionStart;
+                } else if ('selection' in document) {
+                    el.focus();
+                    var Sel = document.selection.createRange();
+                    var SelLength = document.selection.createRange().text.length;
+                    Sel.moveStart('character', -el.value.length);
+                    pos = Sel.text.length - SelLength;
+                }
+                return pos;
+            }
+        })(jQuery);
+       
+        $("#content .category p").click(function () {
+            var str = $(this).html();
+            //var pa = $(this).parents("div.category");
+            //var po = pa.clone();
+            //var e = $(this).clone();
+            //po.attr("id", "");
+            //po.empty();
+            //po.append(e);
+            //$("#lastIcon").prepend(po);
+            var tst = $("#txt-main").val();
+            $("#txt-main").val(tst.slice(0, positionCursor) + str.trim() + tst.slice(positionCursor));
+        })
+        $("#txt-main").bind("mouseenter mouseleave click mouseup mousedown forcus change", function (e) {
+            positionCursor = $("#txt-main").getCursorPosition();
+        });
+    }
+
+    $(document).ready(function () {
+
+        loadScript("/js/plugin/select2/select2.min.js", function () {
+            loadScript("/js/plugin/bootstrap-tags/bootstrap-tagsinput.min.js", function () {
+                loadScript("/Scripts/jquery.unobtrusive-ajax.min.js", pagefunction)
+            });
+        });
+    });
+
+
+
+</script>

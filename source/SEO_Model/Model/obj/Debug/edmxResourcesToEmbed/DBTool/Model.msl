@@ -120,6 +120,30 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="FB_CHUKY">
+      <EntityTypeMapping TypeName="DBTool.FB_CHUKY">
+        <MappingFragment StoreEntitySet="FB_CHUKY">
+          <ScalarProperty Name="IS_MAIN" ColumnName="IS_MAIN" />
+          <ScalarProperty Name="CHUKY" ColumnName="CHUKY" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FB_POST">
+      <EntityTypeMapping TypeName="DBTool.FB_POST">
+        <MappingFragment StoreEntitySet="FB_POST">
+          <ScalarProperty Name="TUKHOA" ColumnName="TUKHOA" />
+          <ScalarProperty Name="NGUOISUA" ColumnName="NGUOISUA" />
+          <ScalarProperty Name="NGAYSUA" ColumnName="NGAYSUA" />
+          <ScalarProperty Name="NGUOITAO" ColumnName="NGUOITAO" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+          <ScalarProperty Name="TIEUDE" ColumnName="TIEUDE" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="HUYEN">
       <EntityTypeMapping TypeName="DBTool.HUYEN">
         <MappingFragment StoreEntitySet="HUYEN">

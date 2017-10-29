@@ -113,6 +113,28 @@
     <Property Name="CAPCOSO_ID" Type="int" />
     <Property Name="IS_DELETE" Type="bit" />
   </EntityType>
+  <EntityType Name="FB_CHUKY">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="USER_ID" Type="int" />
+    <Property Name="CHUKY" Type="ntext" />
+    <Property Name="IS_MAIN" Type="bit" />
+  </EntityType>
+  <EntityType Name="FB_POST">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TIEUDE" Type="nvarchar" MaxLength="250" />
+    <Property Name="NOIDUNG" Type="ntext" />
+    <Property Name="NGAYTAO" Type="datetime" />
+    <Property Name="NGUOITAO" Type="int" />
+    <Property Name="NGAYSUA" Type="datetime" />
+    <Property Name="NGUOISUA" Type="int" />
+    <Property Name="TUKHOA" Type="ntext" />
+  </EntityType>
   <EntityType Name="HUYEN">
     <Key>
       <PropertyRef Name="HUYEN_ID" />
@@ -367,6 +389,8 @@
     <EntitySet Name="DM_NGUOIDUNG" EntityType="Self.DM_NGUOIDUNG" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DM_THAOTAC" EntityType="Self.DM_THAOTAC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DM_VAITRO" EntityType="Self.DM_VAITRO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FB_CHUKY" EntityType="Self.FB_CHUKY" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FB_POST" EntityType="Self.FB_POST" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="HUYEN" EntityType="Self.HUYEN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="NGUOIDUNG_VAITRO" EntityType="Self.NGUOIDUNG_VAITRO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SPIN_BAIVIET" EntityType="Self.SPIN_BAIVIET" Schema="dbo" store:Type="Tables" />

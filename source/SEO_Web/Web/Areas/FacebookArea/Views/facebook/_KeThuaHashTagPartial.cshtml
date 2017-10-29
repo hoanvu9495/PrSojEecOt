@@ -1,0 +1,112 @@
+﻿@using Web.FwCore;
+@using Business.CommonBusiness;
+@using Web.Areas.BaiVietArea.Models;
+@using Model.DBTool;
+@model List<FB_POST>
+
+<style>
+    .control-label {
+        font-size: small;
+        font-weight: bold;
+        margin-left: 15px;
+    }
+
+    #content-hthong .bootstrap-tagsinput .tag [data-role="remove"] {
+        display: none;
+    }
+
+    #content-hthong .bootstrap-tagsinput input {
+        display: none;
+    }
+</style>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 style="font-weight: bold; text-transform: uppercase;" class="modal-title" id="myModalLabel">Kế thừa hashtag <span id="detail" style="color: yellow; text-transform: none"></span></h4>
+</div>
+<div class="modal-body">
+
+    <div class=" row">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="center">STT</th>
+                    <th>Bài viết</th>
+                    <th>Danh sách từ</th>
+                    <th>Chọn</th>
+                </tr>
+            </thead>
+            <tbody id="content-hthong">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+
+                    <tr>
+                        <td width="50" class="center txt-id" data-id="@Model[i].ID">@(i + 1) </td>
+                        <td>
+
+                            @Model[i].TIEUDE
+
+                        </td>
+                        <td class="txt-tag" width="60%">
+                            <input class="form-control tagsinput " disabled value="@Model[i].TUKHOA" data-role="tagsinput">
+                        </td>
+                        <td class="center">
+                            <input data-name="rowWord" type="radio" />
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="center">
+        <button class="btn btn-info btn-sm" onclick="addTuDien()">Thêm mới</button>
+        <button class="btn btn-default btn-sm" data-dismiss="modal">Đóng</button>
+    </div>
+</div>
+
+
+<script>
+
+
+
+    function getLstGroup() {
+
+        var arrGroup = $("#content-hthong input:radio:checked").parents('tr').find("td.txt-tag input.tagsinput").val();
+
+        return arrGroup;
+    }
+
+    function addTuDien() {
+        var arrGroup = getLstGroup();
+        if (arrGroup != "") {
+            var key = $("#key-hashtag").val();
+            key += "," + arrGroup;
+            $("#key-hashtag").val(key);
+            $('.tagsinput').tagsinput('refresh');
+
+            CloseKeThuaHashtag();
+        } else {
+            NotiError("Vui lòng chọn bài viết cần kế thừa");
+        }
+
+
+    }
+
+    $("#content-hthong input:checkbox[data-name=rowWord]").change(function () {
+        var trobj = $(this).parents("tr");
+        if (trobj.length != 0) {
+            trobj.toggleClass("success");
+        }
+
+    })
+    $(document).ready(function () {
+        loadScript("/js/plugin/bootstrap-tags/bootstrap-tagsinput.min.js", function () {
+            $('.tagsinput').tagsinput('refresh')
+        });
+    });
+
+</script>

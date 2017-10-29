@@ -853,7 +853,15 @@ var convertDateTime = function (dateObject) {
     if (month < 10) {
         month = "0" + month;
     }
-    var date = day + "/" + month + "/" + year +" "+ d.getHours()+":"+ d.getMinutes();
+    var hour = d.getHours();
+    if (hour < 10) {
+        hour = "0" + hour;
+    }
+    var minute = d.getMinutes()
+    if (minute < 10) {
+        minute = "0" + minute;
+    }
+    var date = day + "/" + month + "/" + year + " " + hour + ":" + minute;
 
     return date;
 };

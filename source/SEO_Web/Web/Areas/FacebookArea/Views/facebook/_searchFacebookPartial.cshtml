@@ -1,0 +1,86 @@
+﻿
+<style>
+    .row-block {
+        margin: 5px 0px;
+    }
+
+    .txt-label {
+        padding-top: 7px;
+        font-size: small;
+        font-weight: bold;
+    }
+</style>
+<div id="collapseSearch" class="panel-collapse collapse well" aria-expanded="false" role="tabpanel" style="">
+
+
+    @Html.AntiForgeryToken()
+    @using (Ajax.BeginForm("SearchFB", "facebook",
+            new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            OnFailure = "failure",
+            OnSuccess = "searchSuccessFB",
+           
+        }, new { id = "frmSearchBaiViet" }))
+    {
+        <div class="row row-block" style="margin:0px 50px 15px;">
+
+            <div class="col-md-12 row-block">
+
+                <div class="col-md-2 txt-label">Tiêu đề</div>
+                <div class="col-md-10" style="padding-left: 0px;">
+                    <input class="form-control" type="text" name="TIEUDE_SEARCH" />
+                </div>
+
+            </div>
+
+            <div class="col-md-6 row-block" style="padding-left: 0px;">
+                <div class="col-md-4 txt-label">Ngày Tạo từ</div>
+                <div class="col-md-8">
+
+                    <input class="form-control input_datepicker" type="text" name="StartDate_Search" />
+                </div>
+            </div>
+            <div class="col-md-6 row-block" style="padding-left: 0px;">
+                <div class="col-md-4 txt-label">Đến</div>
+                <div class="col-md-8">
+                    <input class="form-control input_datepicker" type="text" name="EndtDate_Search" />
+                </div>
+            </div>
+
+            <div class="col-md-12 center">
+
+
+                <button id="btnSearchVanBanDi" type="submit" class="btn btn-labeled btn-primary">
+                    <span class="btn-label">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </span>
+                    Tìm kiếm
+                </button>
+
+                <a aria-expanded="false" href="#collapseSearch" data-toggle="collapse" role="button" class="btn btn-labeled btn-danger">
+                    <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>
+                    Đóng
+                </a>
+
+            </div>
+        </div>
+
+    }
+</div>
+
+<script>
+    function searchSuccessFB(rs) {
+        currentIndexpage = 1;
+        $("#totalItem").html('('+rs.Count+')')
+        for (var i = 0; i < rs.ListItem.length; i++) {
+            rs.ListItem[i].NGAYTAO = GetTextDateTime(rs.ListItem[i].NGAYTAO);
+            rs.ListItem[i].NGAYSUA = GetTextDateTime(rs.ListItem[i].NGAYSUA);
+        }
+        loadDataTable(rs.ListItem);
+        GenPaging(1, rs.TotalPage, "paging1", 'GetDataPage');
+    }
+    function failure() {
+        NotiError("Không tìm kiếm được");
+    }
+</script>
